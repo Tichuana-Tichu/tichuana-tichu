@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 
 public class Translator {
 
-	private Locale locales;
+	private Locale locale;
 	private ResourceBundle resourceBundle;
 
 	/**
@@ -13,7 +13,9 @@ public class Translator {
 	 * @param locale
 	 */
 	public Translator(String locale) {
-		// TODO - implement Translator.Translator
+		this.locale = new Locale(locale);
+		String path = ServiceLocator.getServiceLocator().getConfiguration().getProperty("resourceBundle.path");
+		this.resourceBundle = ResourceBundle.getBundle(path, this.locale);
 	}
 
 	/**
@@ -28,9 +30,8 @@ public class Translator {
 	 * 
 	 * @param key
 	 */
-	public String getString(int key) {
-		// TODO - implement Translator.getString
-		return null;
+	public String getString(String key) {
+		return resourceBundle.getString(key);
 	}
 
 }
