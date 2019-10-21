@@ -1,7 +1,6 @@
 package ch.tichuana.tichu.client.services;
 
-import com.sun.java.accessibility.util.Translator;
-
+import ch.tichuana.tichu.client.Client;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -9,8 +8,9 @@ public class ServiceLocator {
 
 	private static ServiceLocator serviceLocator;
 	private Translator translator;
-	private Properties properties;
+	private Configuration configuration;
 	private Locale[] locales; // = {new Locale("de"), new Locale("de")};
+	final private Class<?> APP_CLASS = Client.class;
 
 	/**
 	 * ServiceLocator is a singleton. There's only one instance.
@@ -39,10 +39,10 @@ public class ServiceLocator {
 	public void setTranslator(Translator translator) {
 		this.translator = translator;
 	}
-	public Properties getProperties() {
-		return properties;
+	public Configuration getConfiguration() {
+		return configuration;
 	}
-	public void setProperties(Properties properties) {
-		this.properties = properties;
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
 	}
 }
