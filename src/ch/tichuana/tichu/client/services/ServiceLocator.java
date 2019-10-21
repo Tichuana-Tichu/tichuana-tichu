@@ -1,4 +1,9 @@
-package client.services;
+package ch.tichuana.tichu.client.services;
+
+import com.sun.java.accessibility.util.Translator;
+
+import java.util.Locale;
+import java.util.Properties;
 
 public class ServiceLocator {
 
@@ -12,7 +17,7 @@ public class ServiceLocator {
 	}
 
 	public static ServiceLocator getServiceLocator() {
-		return this.serviceLocator;
+		return serviceLocator;
 	}
 
 }

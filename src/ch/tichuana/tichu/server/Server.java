@@ -1,6 +1,7 @@
-package server;
+package ch.tichuana.tichu.server;
 
-import server.model.*;
+import ch.tichuana.tichu.server.controller.ServerController;
+import ch.tichuana.tichu.server.model.*;
 
 public class Server {
 

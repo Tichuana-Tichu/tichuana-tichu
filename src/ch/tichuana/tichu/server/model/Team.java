@@ -1,4 +1,4 @@
-package server.model;
+package ch.tichuana.tichu.server.model;
 
 public class Team implements Comparable {
 
@@ -38,10 +38,10 @@ public class Team implements Comparable {
 
 	/**
 	 * 
-	 * @param t
+	 * @param o
 	 */
-	public int compareTo(Team t) {
-		// TODO - implement Team.compareTo
+	@Override
+	public int compareTo(Object o) {
+		return 0;
 	}
-
 }

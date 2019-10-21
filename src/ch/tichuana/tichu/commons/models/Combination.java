@@ -1,16 +1,9 @@
-package commons.models;
+package ch.tichuana.tichu.commons.models;
+
+import java.util.ArrayList;
 
 public enum Combination {
-	;
-
-	int HighCard;
-	int OnePair;
-	int ThreeOfAKind;
-	int Steps;
-	int FullHouse;
-	int Straight;
-	int FourOfAKindBomb;
-	int StraightFlushBomb;
+	HighCard, OnePair, ThreeOfAKind, Steps, FullHouse, Straight, FourOfAKindBomb, StraightFlushBomb;
 
 	Combination() {
 		// TODO - implement Combination.Combination
@@ -22,6 +15,7 @@ public enum Combination {
 	 */
 	public static Combination evaluateCombination(ArrayList<Card> cards) {
 		// TODO - implement Combination.evaluateCombination
+		return null;
 	}
 
 	/**
@@ -30,6 +24,7 @@ public enum Combination {
 	 */
 	public static boolean isOnePair(ArrayList<Card> cards) {
 		// TODO - implement Combination.isOnePair
+		return false;
 	}
 
 	/**
@@ -38,6 +33,7 @@ public enum Combination {
 	 */
 	public static boolean isThreeOfAKind(ArrayList<Card> cards) {
 		// TODO - implement Combination.isThreeOfAKind
+		return false;
 	}
 
 	/**
@@ -46,6 +42,7 @@ public enum Combination {
 	 */
 	public static boolean isSteps(ArrayList<Card> cards) {
 		// TODO - implement Combination.isSteps
+		return false;
 	}
 
 	/**
@@ -54,6 +51,7 @@ public enum Combination {
 	 */
 	public static boolean isFullHouse(ArrayList<Card> cards) {
 		// TODO - implement Combination.isFullHouse
+		return false;
 	}
 
 	/**
@@ -62,6 +60,7 @@ public enum Combination {
 	 */
 	public static boolean isStraight(ArrayList<Card> cards) {
 		// TODO - implement Combination.isStraight
+		return false;
 	}
 
 	/**
@@ -70,6 +69,7 @@ public enum Combination {
 	 */
 	public static boolean isFourOfAKindBomb(ArrayList<Card> cards) {
 		// TODO - implement Combination.isFourOfAKindBomb
+		return false;
 	}
 
 	/**
@@ -78,6 +78,7 @@ public enum Combination {
 	 */
 	public static boolean isStraightFlushBomb(ArrayList<Card> cards) {
 		// TODO - implement Combination.isStraightFlushBomb
+		return false;
 	}
 
 }

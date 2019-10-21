@@ -1,6 +1,6 @@
-package server.services;
+package ch.tichuana.tichu.server.services;
 
-import server.model.*;
+import ch.tichuana.tichu.server.model.*;
 
 public class PlayerRepository {
 
@@ -16,6 +16,7 @@ public class PlayerRepository {
 	 */
 	public Player getPlayerByUsername(String username) {
 		// TODO - implement PlayerRepository.getPlayerByUsername
+		return null;
 	}
 
 	/**
@@ -24,6 +25,7 @@ public class PlayerRepository {
 	 */
 	public Player getPlayerById(int id) {
 		// TODO - implement PlayerRepository.getPlayerById
+		return null;
 	}
 
 }

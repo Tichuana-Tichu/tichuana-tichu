@@ -1,24 +1,11 @@
-package commons.models;
+package ch.tichuana.tichu.commons.models;
 
 public enum Rank {
-	;
+	dog, majhong, two, three, four, five, six, seven, eight, nine, ten, Jack, Queen, King, Ace, phoenix, dragon;
 
-	private Rank two;
-	private Rank three;
-	private Rank four;
-	private Rank five;
-	private Rank six;
-	private Rank seven;
-	private Rank eight;
-	private Rank nine;
-	private Rank ten;
-	private Rank Jack;
-	private Rank Queen;
-	private Rank King;
-	private Rank Ace;
-
-	public string toString() {
+	public String toString() {
 		// TODO - implement Rank.toString
+		return null;
 	}
 
 }

@@ -1,6 +1,6 @@
-package commons.message;
+package ch.tichuana.tichu.commons.message;
 
-import commons.models.*;
+import ch.tichuana.tichu.commons.models.TichuType;
 
 public class TichuMsg extends Message {
 

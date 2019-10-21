@@ -1,4 +1,8 @@
-package client.view;
+package ch.tichuana.tichu.client.view;
+
+import javafx.scene.layout.HBox;
+
+import java.util.ArrayList;
 
 public class CardArea {
 

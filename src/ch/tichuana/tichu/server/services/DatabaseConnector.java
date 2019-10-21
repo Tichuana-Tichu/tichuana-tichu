@@ -1,4 +1,8 @@
-package server.services;
+package ch.tichuana.tichu.server.services;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class DatabaseConnector {
 
@@ -17,6 +21,7 @@ public class DatabaseConnector {
 	 */
 	public ResultSet executeQuery(PreparedStatement statement) {
 		// TODO - implement DatabaseConnector.executeQuery
+		return null;
 	}
 
 }

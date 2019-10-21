@@ -1,4 +1,6 @@
-package commons.message;
+package ch.tichuana.tichu.commons.message;
+
+import java.net.Socket;
 
 public abstract class Message {
 
@@ -16,6 +18,7 @@ public abstract class Message {
 	 */
 	public static Message receive(Socket socket) {
 		// TODO - implement Message.receive
+		return null;
 	}
 
 }

@@ -1,4 +1,4 @@
-package ch.tichuana.tichu.server;
+package ch.tichuana.tichu.server.controller;
 
 public class ServerController {
 

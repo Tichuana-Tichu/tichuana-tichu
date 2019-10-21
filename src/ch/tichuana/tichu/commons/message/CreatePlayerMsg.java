@@ -1,4 +1,4 @@
-package commons.message;
+package ch.tichuana.tichu.commons.message;
 
 public class CreatePlayerMsg extends Message {
 

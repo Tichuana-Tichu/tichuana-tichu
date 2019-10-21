@@ -1,4 +1,4 @@
-package server.model;
+package ch.tichuana.tichu.server.model;
 
 public class Match {
 
@@ -33,6 +33,7 @@ public class Match {
 
 	public Player getNextPlayer() {
 		// TODO - implement Match.getNextPlayer
+		return null;
 	}
 
 }

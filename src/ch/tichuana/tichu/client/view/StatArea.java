@@ -1,4 +1,6 @@
-package client.view;
+package ch.tichuana.tichu.client.view;
+
+import javafx.scene.layout.VBox;
 
 public class StatArea {
 

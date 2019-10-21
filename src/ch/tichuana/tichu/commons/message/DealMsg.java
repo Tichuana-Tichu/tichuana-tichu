@@ -1,6 +1,9 @@
-package commons.message;
+package ch.tichuana.tichu.commons.message;
 
-import client.view.*;
+import ch.tichuana.tichu.commons.models.Card;
+import ch.tichuana.tichu.commons.models.TichuType;
+
+import java.util.ArrayList;
 
 public class DealMsg extends Message {
 

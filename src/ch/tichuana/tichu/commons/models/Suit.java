@@ -1,15 +1,11 @@
-package commons.models;
+package ch.tichuana.tichu.commons.models;
 
 public enum Suit {
-	;
+	Jade, Pagodas, Stars, Swords;
 
-	private Suit Jade;
-	private Suit Pagodas;
-	private Suit Stars;
-	private Suit Swords;
-
-	public string toString() {
+	public String toString() {
 		// TODO - implement Suit.toString
+		return null;
 	}
 
 }

@@ -1,4 +1,4 @@
-package server.model;
+package ch.tichuana.tichu.server.model;
 
 public class Referee {
 

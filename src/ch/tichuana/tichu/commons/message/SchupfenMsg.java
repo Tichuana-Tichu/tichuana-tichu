@@ -1,6 +1,7 @@
-package commons.message;
+package ch.tichuana.tichu.commons.message;
 
-import client.view.*;
+import ch.tichuana.tichu.commons.models.Card;
+import ch.tichuana.tichu.commons.models.TichuType;
 
 public class SchupfenMsg extends Message {
 

@@ -1,4 +1,4 @@
-package client.controller;
+package ch.tichuana.tichu.client.controller;
 
 public class ClientController {
 

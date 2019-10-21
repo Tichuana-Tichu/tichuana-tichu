@@ -1,6 +1,6 @@
-package commons.message;
+package ch.tichuana.tichu.commons.message;
 
-import server.model.*;
+import ch.tichuana.tichu.server.model.*;
 
 public class GameStartedMsg extends Message {
 

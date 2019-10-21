@@ -1,6 +1,9 @@
-package client.model;
+package ch.tichuana.tichu.client.model;
 
-import client.view.*;
+import javafx.beans.property.SimpleIntegerProperty;
+import ch.tichuana.tichu.commons.models.*;
+
+import java.util.ArrayList;
 
 public class Hand {
 

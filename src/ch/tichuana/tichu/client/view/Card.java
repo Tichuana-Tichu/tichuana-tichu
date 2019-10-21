@@ -1,4 +1,7 @@
-package client.view;
+package ch.tichuana.tichu.client.view;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Card {
 

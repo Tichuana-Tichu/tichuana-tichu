@@ -1,4 +1,7 @@
-package client.services;
+package ch.tichuana.tichu.client.services;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class Translator {
 
@@ -27,6 +30,7 @@ public class Translator {
 	 */
 	public String getString(int key) {
 		// TODO - implement Translator.getString
+		return null;
 	}
 
 }

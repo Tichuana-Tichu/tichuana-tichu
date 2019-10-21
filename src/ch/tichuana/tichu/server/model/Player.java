@@ -1,4 +1,6 @@
-package server.model;
+package ch.tichuana.tichu.server.model;
+
+import java.net.Socket;
 
 public class Player {
 
@@ -59,6 +61,7 @@ public class Player {
 
 	public static Player getPlayerByName() {
 		// TODO - implement Player.getPlayerByName
+		return null;
 	}
 
 }

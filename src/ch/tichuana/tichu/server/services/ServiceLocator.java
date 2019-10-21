@@ -1,4 +1,6 @@
-package server.services;
+package ch.tichuana.tichu.server.services;
+
+import java.util.Properties;
 
 public class ServiceLocator {
 

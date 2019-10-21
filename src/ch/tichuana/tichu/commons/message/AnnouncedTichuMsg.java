@@ -1,7 +1,9 @@
-package commons.message;
+package ch.tichuana.tichu.commons.message;
 
-import server.model.*;
-import commons.models.*;
+import ch.tichuana.tichu.commons.models.TichuType;
+import ch.tichuana.tichu.server.model.Player;
+
+import java.util.ArrayList;
 
 public class AnnouncedTichuMsg extends Message {
 

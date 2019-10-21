@@ -1,8 +1,10 @@
-package client;
+package ch.tichuana.tichu.client;
 
-import client.model.*;
-import client.controller.*;
-import client.view.*;
+import ch.tichuana.tichu.client.model.ClientModel;
+import ch.tichuana.tichu.client.controller.*;
+import ch.tichuana.tichu.client.view.*;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 public class Client extends Application {
 
@@ -22,8 +24,9 @@ public class Client extends Application {
 	 * 
 	 * @param primaryStage
 	 */
-	public void start(Stage primaryStage) {
-		// TODO - implement Client.start
-	}
 
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+
+	}
 }
