@@ -9,7 +9,8 @@ public class Translator {
 	private ResourceBundle resourceBundle;
 
 	/**
-	 * 
+	 * Translator class loads properties from a resource bundle. Based on the JavaFX-App-Template.
+	 * @author Christian
 	 * @param locale
 	 */
 	public Translator(String locale) {
@@ -19,15 +20,19 @@ public class Translator {
 	}
 
 	/**
-	 * 
+	 * Alternate Constructor, locale as parameter
+	 * @author Christian
 	 * @param locale
 	 */
 	public Translator(Locale locale) {
-		// TODO - implement Translator.Translator
+		this.locale = locale;
+		String path = ServiceLocator.getServiceLocator().getConfiguration().getProperty("resourceBundle.path");
+		this.resourceBundle = ResourceBundle.getBundle(path, this.locale);
 	}
 
 	/**
-	 * 
+	 * Returns the value belonging to its key.
+	 * @author Christian
 	 * @param key
 	 */
 	public String getString(String key) {
