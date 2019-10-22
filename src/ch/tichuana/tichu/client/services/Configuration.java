@@ -26,12 +26,17 @@ public class Configuration {
         }
     }
 
+    // return property by key
     public String getProperty(String key){
         return properties.getProperty(key);
     }
+
+    // set a property
     public void setProperty(String key, String value){
         properties.setProperty(key, value);
     }
+
+    // save current properties to file
     public void save(){
         FileOutputStream propertiesFile = null;
         try {
