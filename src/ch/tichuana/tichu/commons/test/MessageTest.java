@@ -21,6 +21,7 @@ class MessageTest {
         assertEquals(MessageType.JoinMsg, msg.getMsgType());
         assertEquals("player1", msg.getPlayerName());
         assertEquals("pw123", msg.getPassword());
+        assertEquals(json.toJSONString(), msg.toString());
     }
 
     @Test
@@ -33,6 +34,7 @@ class MessageTest {
         assertEquals(MessageType.CreatePlayerMsg, msg.getMsgType());
         assertEquals("player1", msg.getPlayerName());
         assertEquals("pw123", msg.getPassword());
+        assertEquals(json.toJSONString(), msg.toString());
     }
 
 }

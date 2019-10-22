@@ -10,7 +10,6 @@ import java.net.Socket;
 
 public abstract class Message {
 
-	private JSONObject msg;
 	private MessageType msgType;
 
 	/**
@@ -99,11 +98,6 @@ public abstract class Message {
 				break;
 		}
 		return newMessage;
-	}
-
-	@Override
-	public String toString(){
-		return this.msg.toString();
 	}
 
 	public MessageType getMsgType(){

@@ -13,7 +13,8 @@ public class ConnectedMsg extends Message {
 	 * @param status
 	 */
 	public ConnectedMsg(boolean status) {
-		// TODO - implement ConnectedMsg.ConnectedMsg
+		this.status = status;
+		super.setMsgType(MessageType.ConnectedMsg);
 	}
 
 }
