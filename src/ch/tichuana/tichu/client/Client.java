@@ -17,10 +17,6 @@ import java.util.Properties;
 
 public class Client extends Application {
 
-	private ClientModel clientModel;
-	private ClientController clientController;
-	private GameView gameView;
-
 	/**
 	 * 
 	 * @param args
