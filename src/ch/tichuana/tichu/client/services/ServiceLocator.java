@@ -2,7 +2,6 @@ package ch.tichuana.tichu.client.services;
 
 import ch.tichuana.tichu.client.Client;
 import java.util.Locale;
-import java.util.Properties;
 
 public class ServiceLocator {
 
