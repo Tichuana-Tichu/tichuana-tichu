@@ -2,6 +2,8 @@ package ch.tichuana.tichu.commons.message;
 
 import ch.tichuana.tichu.commons.models.TichuType;
 import ch.tichuana.tichu.server.model.Player;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 
@@ -24,7 +26,8 @@ public class AnnouncedTichuMsg extends Message {
 	 * @param tichuType
 	 */
 	public AnnouncedTichuMsg(ArrayList<Player> players, TichuType tichuType) {
-		// TODO - implement AnnouncedTichuMsg.AnnouncedTichuMsg
+		this.players = players;
+		this.tichuType = tichuType;
 	}
 
 }

@@ -5,10 +5,12 @@ public class JoinMsg extends Message {
 	private String playerName;
 	private String password;
 
+	@Override
 	public String getPlayerName() {
 		return this.playerName;
 	}
 
+	@Override
 	public String getPassword() {
 		return this.password;
 	}
@@ -19,7 +21,9 @@ public class JoinMsg extends Message {
 	 * @param password
 	 */
 	public JoinMsg(String playerName, String password) {
-		// TODO - implement JoinMsg.JoinMsg
+		this.playerName = playerName;
+		this.password = password;
+		super.setMsgType(MessageType.JoinMsg);
 	}
 
 }
