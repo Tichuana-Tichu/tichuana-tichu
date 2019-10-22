@@ -77,7 +77,10 @@ public abstract class Message {
 				break;
 
 			case ConnectedMsg:
+				String status = (String) json.get("status");
+				newMessage = new ConnectedMsg(Boolean.parseBoolean(status));
 				break;
+
 			case GameStartedMsg:
 				break;
 			case DealMsg:
@@ -112,6 +115,9 @@ public abstract class Message {
 	}
 	public String getPassword(){
 		return null;
+	}
+	public boolean getStatus(){
+		return false;
 	}
 
 }
