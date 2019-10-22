@@ -11,11 +11,12 @@ public class Translator {
 	/**
 	 * Translator class loads properties from a resource bundle. Based on the JavaFX-App-Template.
 	 * @author Christian
-	 * @param locale
+	 * @param localeString
 	 */
-	public Translator(String locale) {
-		this.locale = new Locale(locale);
-		String path = ServiceLocator.getServiceLocator().getConfiguration().getProperty("resourceBundle.path");
+	public Translator(String localeString) {
+		ServiceLocator serviceLocator= ServiceLocator.getServiceLocator();
+		String path = serviceLocator.getConfiguration().getProperty("resourceBundle.path");
+		this.locale = new Locale(localeString);
 		this.resourceBundle = ResourceBundle.getBundle(path, this.locale);
 	}
 
@@ -25,8 +26,9 @@ public class Translator {
 	 * @param locale
 	 */
 	public Translator(Locale locale) {
+		ServiceLocator serviceLocator= ServiceLocator.getServiceLocator();
+		String path = serviceLocator.getConfiguration().getProperty("resourceBundle.path");
 		this.locale = locale;
-		String path = ServiceLocator.getServiceLocator().getConfiguration().getProperty("resourceBundle.path");
 		this.resourceBundle = ResourceBundle.getBundle(path, this.locale);
 	}
 

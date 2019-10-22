@@ -45,4 +45,8 @@ public class ServiceLocator {
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
 	}
+	public Class<?> getAPP_CLASS() {
+		return APP_CLASS;
+	}
+
 }
