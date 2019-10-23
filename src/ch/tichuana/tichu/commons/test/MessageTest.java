@@ -112,6 +112,7 @@ class MessageTest {
         Message msg = Message.parseMessage(json);
         assertEquals(MessageType.AnnouncedTichuMsg, msg.getMsgType());
         assertEquals(TichuType.GrandTichu, msg.getTichuType());
+        assertEquals(true, msg.getPlayers().contains("Christian"));
         assertEquals(json.toJSONString(), msg.toString());
     }
 

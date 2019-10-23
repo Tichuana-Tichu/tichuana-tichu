@@ -154,5 +154,8 @@ public abstract class Message {
 	public TichuType getTichuType() {
 		return null;
 	}
+	public ArrayList getPlayers(){
+		return null;
+	}
 
 }

@@ -12,14 +12,6 @@ public class AnnouncedTichuMsg extends Message {
 	private ArrayList<String> players;
 	private TichuType tichuType;
 
-	public ArrayList<String> getPlayers() {
-		return this.players;
-	}
-
-	public TichuType getTichuType() {
-		return this.tichuType;
-	}
-
 	/**
 	 * 
 	 * @param players
@@ -44,5 +36,16 @@ public class AnnouncedTichuMsg extends Message {
 		json.put("players", players);
 		return json.toJSONString();
 	}
+
+	@Override
+	public ArrayList<String> getPlayers() {
+		return this.players;
+	}
+
+	@Override
+	public TichuType getTichuType() {
+		return this.tichuType;
+	}
+
 
 }
