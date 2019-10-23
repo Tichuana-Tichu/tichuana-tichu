@@ -2,6 +2,7 @@ package ch.tichuana.tichu.commons.test;
 
 import ch.tichuana.tichu.commons.message.Message;
 import ch.tichuana.tichu.commons.message.MessageType;
+import ch.tichuana.tichu.commons.models.TichuType;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.Test;
 
@@ -55,6 +56,19 @@ class MessageTest {
         Message msg = Message.parseMessage(json);
         assertEquals(MessageType.DemandSchupfenMsg, msg.getMsgType());
         assertEquals("player1", msg.getPlayerName());
+        assertEquals(json.toJSONString(), msg.toString());
+    }
+
+    @Test
+    public void testTichuMsg(){
+        JSONObject json = new JSONObject();
+        json.put("msg", "TichuMsg");
+        json.put("playerName","player1");
+        json.put("tichuType","GrandTichu");
+        Message msg = Message.parseMessage(json);
+        assertEquals(MessageType.TichuMsg, msg.getMsgType());
+        assertEquals("player1", msg.getPlayerName());
+        assertEquals(TichuType.GrandTichu, msg.getTichuType());
         assertEquals(json.toJSONString(), msg.toString());
     }
 

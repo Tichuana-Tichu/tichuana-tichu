@@ -95,8 +95,13 @@ public abstract class Message {
 				break;
 			case DemandTichuMsg:
 				break;
+
 			case TichuMsg:
+				playerName = (String) json.get("playerName");
+				TichuType tichuType = TichuType.valueOf((String) json.get("tichuType"));
+				newMessage = new TichuMsg(playerName,tichuType);
 				break;
+
 			case DemandSchupfenMsg:
 				playerName = (String) json.get("playerName");
 				newMessage = new DemandSchupfenMsg(playerName);
@@ -129,6 +134,9 @@ public abstract class Message {
 	}
 	public boolean getStatus(){
 		return false;
+	}
+	public TichuType getTichuType() {
+		return null;
 	}
 
 }
