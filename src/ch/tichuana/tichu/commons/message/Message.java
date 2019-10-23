@@ -30,6 +30,7 @@ public abstract class Message {
 
 	/**
 	 * Receives a JSON-String from a specified
+	 * @author Christian
 	 * @param socket
 	 */
 	public static Message receive(Socket socket) {
@@ -62,6 +63,7 @@ public abstract class Message {
 	public static Message parseMessage(JSONObject json){
 		String playerName;
 		String password;
+		String status;
 
 		MessageType messageType = MessageType.valueOf((String) json.get("msg"));
 		Message newMessage = null;
@@ -83,7 +85,7 @@ public abstract class Message {
 				break;
 
 			case ConnectedMsg:
-				String status = (String) json.get("status");
+				status = (String) json.get("status");
 				newMessage = new ConnectedMsg(Boolean.parseBoolean(status));
 				break;
 
@@ -91,8 +93,12 @@ public abstract class Message {
 				break;
 			case DealMsg:
 				break;
+
 			case ReceivedMsg:
+				status = (String) json.get("status");
+				newMessage = new ReceivedMsg(Boolean.parseBoolean(status));
 				break;
+
 			case DemandTichuMsg:
 				break;
 
@@ -124,7 +130,6 @@ public abstract class Message {
 	public void setMsgType(MessageType msgType) {
 		this.msgType = msgType;
 	}
-
 
 	public String getPlayerName(){
 		return null;

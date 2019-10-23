@@ -72,4 +72,15 @@ class MessageTest {
         assertEquals(json.toJSONString(), msg.toString());
     }
 
+    @Test
+    public void testReceivedMsg(){
+        JSONObject json = new JSONObject();
+        json.put("msg", "ReceivedMsg");
+        json.put("status","true");
+        Message msg = Message.parseMessage(json);
+        assertEquals(MessageType.ReceivedMsg, msg.getMsgType());
+        assertEquals("true", Boolean.toString(msg.getStatus()));
+        assertEquals(json.toJSONString(), msg.toString());
+    }
+
 }
