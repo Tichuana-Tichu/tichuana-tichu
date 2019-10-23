@@ -1,6 +1,5 @@
 package ch.tichuana.tichu.commons.test;
 
-import ch.tichuana.tichu.commons.message.JoinMsg;
 import ch.tichuana.tichu.commons.message.Message;
 import ch.tichuana.tichu.commons.message.MessageType;
 import org.json.simple.JSONObject;
@@ -45,6 +44,17 @@ class MessageTest {
         Message msg = Message.parseMessage(json);
         assertEquals(MessageType.ConnectedMsg, msg.getMsgType());
         assertEquals("true", Boolean.toString(msg.getStatus()));
+        assertEquals(json.toJSONString(), msg.toString());
+    }
+
+    @Test
+    public void testDemandSchupfenMsg(){
+        JSONObject json = new JSONObject();
+        json.put("msg", "DemandSchupfenMsg");
+        json.put("playerName","player1");
+        Message msg = Message.parseMessage(json);
+        assertEquals(MessageType.DemandSchupfenMsg, msg.getMsgType());
+        assertEquals("player1", msg.getPlayerName());
         assertEquals(json.toJSONString(), msg.toString());
     }
 

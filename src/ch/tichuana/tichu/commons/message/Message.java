@@ -29,7 +29,7 @@ public abstract class Message {
 	}
 
 	/**
-	 * 
+	 * Receives a JSON-String from a specified
 	 * @param socket
 	 */
 	public static Message receive(Socket socket) {
@@ -53,6 +53,12 @@ public abstract class Message {
 
 	}
 
+	/**
+	 * Parses a JSON-Message and returns a Message-object of the corresponding Message class
+	 * @author Christian
+	 * @param json
+	 * @return Message
+	 */
 	public static Message parseMessage(JSONObject json){
 		String playerName;
 		String password;
@@ -92,7 +98,10 @@ public abstract class Message {
 			case TichuMsg:
 				break;
 			case DemandSchupfenMsg:
+				playerName = (String) json.get("playerName");
+				newMessage = new DemandSchupfenMsg(playerName);
 				break;
+
 			case SchupfenMsg:
 				break;
 			case PlayMsg:
@@ -110,6 +119,8 @@ public abstract class Message {
 	public void setMsgType(MessageType msgType) {
 		this.msgType = msgType;
 	}
+
+
 	public String getPlayerName(){
 		return null;
 	}
