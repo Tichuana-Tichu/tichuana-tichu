@@ -64,6 +64,7 @@ public abstract class Message {
 		String playerName;
 		String password;
 		String status;
+		TichuType tichuType;
 
 		MessageType messageType = MessageType.valueOf((String) json.get("msg"));
 		Message newMessage = null;
@@ -100,11 +101,13 @@ public abstract class Message {
 				break;
 
 			case DemandTichuMsg:
+				tichuType = TichuType.valueOf((String) json.get("tichuType"));
+				newMessage = new DemandTichuMsg(tichuType);
 				break;
 
 			case TichuMsg:
 				playerName = (String) json.get("playerName");
-				TichuType tichuType = TichuType.valueOf((String) json.get("tichuType"));
+				tichuType = TichuType.valueOf((String) json.get("tichuType"));
 				newMessage = new TichuMsg(playerName,tichuType);
 				break;
 

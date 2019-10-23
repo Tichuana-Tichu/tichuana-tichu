@@ -83,4 +83,15 @@ class MessageTest {
         assertEquals(json.toJSONString(), msg.toString());
     }
 
+    @Test
+    public void testDemandTichuMsg(){
+        JSONObject json = new JSONObject();
+        json.put("msg", "DemandTichuMsg");
+        json.put("tichuType","GrandTichu");
+        Message msg = Message.parseMessage(json);
+        assertEquals(MessageType.DemandTichuMsg, msg.getMsgType());
+        assertEquals(TichuType.GrandTichu, msg.getTichuType());
+        assertEquals(json.toJSONString(), msg.toString());
+    }
+
 }
