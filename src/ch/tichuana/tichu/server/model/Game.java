@@ -8,34 +8,6 @@ public class Game {
 	private int matchesPlayed = 0;
 	private Team[] teams;
 
-	public int getGameID() {
-		return this.gameID;
-	}
-
-	public int getMAX_SCORE() {
-		return this.MAX_SCORE;
-	}
-
-	public int getCurrentScore() {
-		return this.currentScore;
-	}
-
-	public void setCurrentScore(int currentScore) {
-		this.currentScore = currentScore;
-	}
-
-	public int getMatchesPlayed() {
-		return this.matchesPlayed;
-	}
-
-	public void setMatchesPlayed(int matchesPlayed) {
-		this.matchesPlayed = matchesPlayed;
-	}
-
-	public Team[] getTeams() {
-		return this.teams;
-	}
-
 	/**
 	 * 
 	 * @param teamOne
@@ -45,4 +17,26 @@ public class Game {
 		// TODO - implement Game.Game
 	}
 
+	//Getter & Setter
+	public int getGameID() {
+		return this.gameID;
+	}
+	public int getMAX_SCORE() {
+		return this.MAX_SCORE;
+	}
+	public int getCurrentScore() {
+		return this.currentScore;
+	}
+	public void setCurrentScore(int currentScore) {
+		this.currentScore = currentScore;
+	}
+	public int getMatchesPlayed() {
+		return this.matchesPlayed;
+	}
+	public void setMatchesPlayed(int matchesPlayed) {
+		this.matchesPlayed = matchesPlayed;
+	}
+	public Team[] getTeams() {
+		return this.teams;
+	}
 }
