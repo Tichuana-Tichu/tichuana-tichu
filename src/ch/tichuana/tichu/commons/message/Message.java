@@ -1,12 +1,15 @@
 package ch.tichuana.tichu.commons.message;
 
 import ch.tichuana.tichu.commons.models.TichuType;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public abstract class Message {
 
@@ -61,16 +64,21 @@ public abstract class Message {
 	 * @return Message
 	 */
 	public static Message parseMessage(JSONObject json){
-		String playerName;
-		String password;
-		String status;
+		String playerName, password, status;
 		TichuType tichuType;
+		ArrayList<String> players = new ArrayList();
 
 		MessageType messageType = MessageType.valueOf((String) json.get("msg"));
 		Message newMessage = null;
+
 		switch (messageType){
+
 			case AnnouncedTichuMsg:
-				// TODO: implement AnnouncedTichuMsg
+				tichuType = TichuType.valueOf((String) json.get("tichuType"));
+				JSONArray jsonPlayers = (JSONArray) json.get("players");
+				Iterator<String> iterator = jsonPlayers.iterator();
+				while (iterator.hasNext()){ players.add(iterator.next()); }
+				newMessage = new AnnouncedTichuMsg(players, tichuType);
 				break;
 
 			case JoinMsg:

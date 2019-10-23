@@ -1,10 +1,16 @@
 package ch.tichuana.tichu.commons.test;
 
+import ch.tichuana.tichu.commons.message.AnnouncedTichuMsg;
 import ch.tichuana.tichu.commons.message.Message;
 import ch.tichuana.tichu.commons.message.MessageType;
 import ch.tichuana.tichu.commons.models.TichuType;
+import ch.tichuana.tichu.server.model.Player;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.Test;
+
+import java.net.Socket;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -90,6 +96,21 @@ class MessageTest {
         json.put("tichuType","GrandTichu");
         Message msg = Message.parseMessage(json);
         assertEquals(MessageType.DemandTichuMsg, msg.getMsgType());
+        assertEquals(TichuType.GrandTichu, msg.getTichuType());
+        assertEquals(json.toJSONString(), msg.toString());
+    }
+
+    @Test
+    public void testAnnouncedTichuMsg(){
+        JSONObject json = new JSONObject();
+        JSONArray array = new JSONArray();
+        array.add("Christian");
+        array.add("Philipp");
+        json.put("msg", "AnnouncedTichuMsg");
+        json.put("tichuType","GrandTichu");
+        json.put("players", array);
+        Message msg = Message.parseMessage(json);
+        assertEquals(MessageType.AnnouncedTichuMsg, msg.getMsgType());
         assertEquals(TichuType.GrandTichu, msg.getTichuType());
         assertEquals(json.toJSONString(), msg.toString());
     }
