@@ -13,7 +13,7 @@ public class Card implements Comparable {
 	 * @author Christian
 	 */
 	public Card() {
-		// TODO - implement Card.Card
+		//TODO: check if we ever even need this constructor
 	}
 
 	/**
@@ -24,6 +24,15 @@ public class Card implements Comparable {
 	 */
 	public Card(Suit suit, Rank rank){
 		this.suit = suit;
+		this.rank = rank;
+	}
+
+	/**
+	 * Constructor for special cards
+	 * @author
+	 * @return
+	 */
+	public Card(Rank rank){
 		this.rank = rank;
 	}
 
@@ -105,4 +114,16 @@ public class Card implements Comparable {
 		return this.rank;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		try{
+			Card card = (Card) o;
+			if (card.getRank() == this.rank && card.getSuit() == this.getSuit()){
+				return true;
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

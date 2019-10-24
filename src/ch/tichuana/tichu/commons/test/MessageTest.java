@@ -1,16 +1,14 @@
 package ch.tichuana.tichu.commons.test;
 
-import ch.tichuana.tichu.commons.message.AnnouncedTichuMsg;
 import ch.tichuana.tichu.commons.message.Message;
 import ch.tichuana.tichu.commons.message.MessageType;
+import ch.tichuana.tichu.commons.models.Card;
+import ch.tichuana.tichu.commons.models.Rank;
+import ch.tichuana.tichu.commons.models.Suit;
 import ch.tichuana.tichu.commons.models.TichuType;
-import ch.tichuana.tichu.server.model.Player;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.Test;
-
-import java.net.Socket;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -131,5 +129,20 @@ class MessageTest {
         assertEquals("Dominik", msg.getTeamMate());
         assertEquals(json.toJSONString(), msg.toString());
     }
+
+    @Test
+    public void testSchupfenMsg(){
+        Card card = new Card(Suit.Jade, Rank.Ace);
+        JSONObject json = new JSONObject();
+        json.put("msg", "SchupfenMsg");
+        json.put("playerName","player1");
+        json.put("card", card.toJSON());
+        Message msg = Message.parseMessage(json);
+        assertEquals(MessageType.SchupfenMsg, msg.getMsgType());
+        assertEquals("player1", msg.getPlayerName());
+        assertEquals(true, card.equals(msg.getCard()));
+        assertEquals(json.toJSONString(), msg.toString());
+    }
+
 
 }

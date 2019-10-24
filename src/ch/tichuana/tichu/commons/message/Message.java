@@ -1,5 +1,6 @@
 package ch.tichuana.tichu.commons.message;
 
+import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.TichuType;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -132,7 +133,11 @@ public abstract class Message {
 				break;
 
 			case SchupfenMsg:
+				playerName = (String) json.get("playerName");
+				Card card = Card.cardFactory((JSONObject) json.get("card"));
+				newMessage = new SchupfenMsg(playerName,card);
 				break;
+
 			case PlayMsg:
 				break;
 			case UpdateMsg:
@@ -168,6 +173,9 @@ public abstract class Message {
 		return null;
 	}
 	public String getTeamMate(){
+		return null;
+	}
+	public Card getCard() {
 		return null;
 	}
 

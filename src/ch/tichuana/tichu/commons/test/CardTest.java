@@ -23,10 +23,28 @@ class CardTest {
 
     @Test
     void cardFactory() {
+        Card c1 = new Card(Suit.Jade,Rank.Ace);
+        Card card = Card.cardFactory(c1.toJSON());
+        assertEquals(c1.getRank(), card.getRank());
+        assertEquals(c1.getSuit(), card.getSuit());
     }
 
     @Test
     void getScoreValue() {
+        Card card = new Card(Suit.Jade,Rank.Ace);
+        assertEquals(0,card.getScoreValue());
+
+        card = new Card(Suit.Jade,Rank.five);
+        assertEquals(5,card.getScoreValue());
+
+        card = new Card(Suit.Jade,Rank.ten);
+        assertEquals(10,card.getScoreValue());
+
+       card = new Card(Rank.dragon);
+       assertEquals(25, card.getScoreValue());
+
+        card = new Card(Rank.phoenix);
+        assertEquals(-25, card.getScoreValue());
     }
 
     @Test

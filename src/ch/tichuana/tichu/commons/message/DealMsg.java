@@ -9,16 +9,17 @@ public class DealMsg extends Message {
 
 	private ArrayList<Card> cards;
 
-	public ArrayList<Card> getCards() {
-		return this.cards;
-	}
-
 	/**
-	 * 
+	 * @author Christian
 	 * @param cards
 	 */
 	public DealMsg(ArrayList<Card> cards) {
-		// TODO - implement DealMsg.DealMsg
+		this.cards = cards;
+		this.setMsgType(MessageType.DealMsg);
+	}
+
+	public ArrayList<Card> getCards() {
+		return this.cards;
 	}
 
 }
