@@ -116,4 +116,20 @@ class MessageTest {
         assertEquals(json.toJSONString(), msg.toString());
     }
 
+    @Test
+    public void testGameStartedMsg(){
+        JSONObject json = new JSONObject();
+        JSONArray array = new JSONArray();
+        array.add("Christian");
+        array.add("Philipp");
+        json.put("msg", "GameStartedMsg");
+        json.put("teamMate","Dominik");
+        json.put("opponents", array);
+        String[] opponents = {"Christian","Philipp"};
+        Message msg = Message.parseMessage(json);
+        assertEquals(MessageType.GameStartedMsg, msg.getMsgType());
+        assertEquals("Dominik", msg.getTeamMate());
+        assertEquals(json.toJSONString(), msg.toString());
+    }
+
 }

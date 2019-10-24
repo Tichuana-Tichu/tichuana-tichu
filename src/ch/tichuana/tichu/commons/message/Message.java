@@ -99,7 +99,14 @@ public abstract class Message {
 				break;
 
 			case GameStartedMsg:
+				playerName = (String) json.get("teamMate");
+				JSONArray jsonOpponents = (JSONArray) json.get("opponents");
+				String[] opponents = new String[2];
+				opponents[0] = (String) jsonOpponents.get(0);
+				opponents[1] = (String) jsonOpponents.get(1);
+				newMessage = new GameStartedMsg(playerName, opponents);
 				break;
+
 			case DealMsg:
 				break;
 
@@ -155,6 +162,12 @@ public abstract class Message {
 		return null;
 	}
 	public ArrayList getPlayers(){
+		return null;
+	}
+	public String[] getOpponents(){
+		return null;
+	}
+	public String getTeamMate(){
 		return null;
 	}
 
