@@ -15,6 +15,7 @@ public class DemandSchupfenMsg extends Message {
 		this.setMsgType(MessageType.DemandSchupfenMsg);
 	}
 
+	@Override
 	public String getPlayerName() {
 		return this.playerName;
 	}

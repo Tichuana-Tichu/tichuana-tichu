@@ -13,7 +13,7 @@ public class AnnouncedTichuMsg extends Message {
 	private TichuType tichuType;
 
 	/**
-	 * 
+	 * @author Christian
 	 * @param players
 	 * @param tichuType
 	 */

@@ -6,7 +6,7 @@ public class ReceivedMsg extends Message {
 
 	private boolean status;
 	/**
-	 * 
+	 * @author Christian
 	 * @param status
 	 */
 	public ReceivedMsg(boolean status) {

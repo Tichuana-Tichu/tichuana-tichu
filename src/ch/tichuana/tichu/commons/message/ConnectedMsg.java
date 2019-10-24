@@ -11,7 +11,7 @@ public class ConnectedMsg extends Message {
 	}
 
 	/**
-	 * 
+	 * @author Christian
 	 * @param status
 	 */
 	public ConnectedMsg(boolean status) {

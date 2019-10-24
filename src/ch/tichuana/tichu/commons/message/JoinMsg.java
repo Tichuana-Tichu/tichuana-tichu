@@ -18,7 +18,7 @@ public class JoinMsg extends Message {
 	}
 
 	/**
-	 * 
+	 * @author Christian
 	 * @param playerName
 	 * @param password
 	 */

@@ -29,6 +29,7 @@ class MessageTest {
         assertEquals("player1", msg.getPlayerName());
         assertEquals("pw123", msg.getPassword());
         assertEquals(json.toJSONString(), msg.toString());
+        //System.out.println("joinmsg: "+msg);
     }
 
     @Test
@@ -42,6 +43,7 @@ class MessageTest {
         assertEquals("player1", msg.getPlayerName());
         assertEquals("pw123", msg.getPassword());
         assertEquals(json.toJSONString(), msg.toString());
+        //System.out.println("createplayermsg: "+msg);
     }
 
     @Test
@@ -53,6 +55,7 @@ class MessageTest {
         assertEquals(MessageType.ConnectedMsg, msg.getMsgType());
         assertEquals("true", Boolean.toString(msg.getStatus()));
         assertEquals(json.toJSONString(), msg.toString());
+        //System.out.println("connectedmsg: "+msg);
     }
 
     @Test
@@ -64,6 +67,7 @@ class MessageTest {
         assertEquals(MessageType.DemandSchupfenMsg, msg.getMsgType());
         assertEquals("player1", msg.getPlayerName());
         assertEquals(json.toJSONString(), msg.toString());
+        //System.out.println("demandschupfenmsg: "+msg);
     }
 
     @Test
@@ -77,6 +81,7 @@ class MessageTest {
         assertEquals("player1", msg.getPlayerName());
         assertEquals(TichuType.GrandTichu, msg.getTichuType());
         assertEquals(json.toJSONString(), msg.toString());
+        //System.out.println("tichumsg: "+msg);
     }
 
     @Test
@@ -88,6 +93,7 @@ class MessageTest {
         assertEquals(MessageType.ReceivedMsg, msg.getMsgType());
         assertEquals("true", Boolean.toString(msg.getStatus()));
         assertEquals(json.toJSONString(), msg.toString());
+        //System.out.println("receivedmsg: "+msg);
     }
 
     @Test
@@ -99,6 +105,7 @@ class MessageTest {
         assertEquals(MessageType.DemandTichuMsg, msg.getMsgType());
         assertEquals(TichuType.GrandTichu, msg.getTichuType());
         assertEquals(json.toJSONString(), msg.toString());
+        //System.out.println("demandtichumsg: "+msg);
     }
 
     @Test
@@ -115,6 +122,7 @@ class MessageTest {
         assertEquals(TichuType.GrandTichu, msg.getTichuType());
         assertEquals(true, msg.getPlayers().contains("Christian"));
         assertEquals(json.toJSONString(), msg.toString());
+        //System.out.println("announcedtichumsg: "+msg);
     }
 
     @Test
@@ -131,6 +139,7 @@ class MessageTest {
         assertEquals(MessageType.GameStartedMsg, msg.getMsgType());
         assertEquals("Dominik", msg.getTeamMate());
         assertEquals(json.toJSONString(), msg.toString());
+        //System.out.println("gamestartmsg: "+msg);
     }
 
     @Test
@@ -145,6 +154,7 @@ class MessageTest {
         assertEquals("player1", msg.getPlayerName());
         assertEquals(true, card.equals(msg.getCard()));
         assertEquals(json.toJSONString(), msg.toString());
+        //System.out.println("schupfenmsg: "+msg);
     }
 
     @Test
@@ -158,7 +168,6 @@ class MessageTest {
         array.add(c2.toJSON());
         json.put("msg", "DealMsg");
         json.put("cards", array);
-
         Message msg = Message.parseMessage(json);
         assertEquals(MessageType.DealMsg, msg.getMsgType());
         assertTrue(msg.getCards().contains(c1));
@@ -166,6 +175,7 @@ class MessageTest {
         assertTrue(msg.getCards().contains(c2));
         assertFalse(msg.getCards().contains(c3));
         assertEquals(json.toJSONString(), msg.toString());
+        //System.out.println("dealmsg: "+msg);
     }
 
     @Test
@@ -179,7 +189,6 @@ class MessageTest {
         array.add(c2.toJSON());
         json.put("msg", "PlayMsg");
         json.put("cards", array);
-
         Message msg = Message.parseMessage(json);
         assertEquals(MessageType.PlayMsg, msg.getMsgType());
         assertTrue(msg.getCards().contains(c1));
@@ -187,8 +196,30 @@ class MessageTest {
         assertTrue(msg.getCards().contains(c2));
         assertFalse(msg.getCards().contains(c3));
         assertEquals(json.toJSONString(), msg.toString());
+        //System.out.println("playmsg: "+msg);
+    }
 
-        System.out.println(msg);
+    @Test
+    public void testUpdateMsg(){
+        JSONObject json = new JSONObject();
+        JSONArray array = new JSONArray();
+        Card c1 = new Card(Suit.Jade, Rank.Ace);
+        Card c2 = new Card(Suit.Swords, Rank.Ace);
+        array.add(c1.toJSON());
+        array.add(c2.toJSON());
+        json.put("msg", "UpdateMsg");
+        json.put("playerName", "player1");
+        json.put("lastMove", array);
+        json.put("opponentScore", 1);
+        json.put("ownScore", 1);
+        Message msg = Message.parseMessage(json);
+        assertEquals(MessageType.UpdateMsg, msg.getMsgType());
+        assertTrue(msg.getLastMove().contains(c1));
+        assertTrue(msg.getLastMove().contains(c2));
+        assertEquals("player1", msg.getNextPlayer());
+        assertEquals(1,msg.getOpponentScore());
+        assertEquals(1,msg.getOwnScore());
+        //System.out.println("updatemsg: "+msg);
     }
 
 

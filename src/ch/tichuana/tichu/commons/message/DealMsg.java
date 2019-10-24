@@ -32,6 +32,7 @@ public class DealMsg extends Message {
 		return json.toJSONString();
 	}
 
+	@Override
 	public ArrayList<Card> getCards() {
 		return this.cards;
 	}

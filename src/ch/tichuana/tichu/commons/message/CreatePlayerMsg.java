@@ -7,17 +7,8 @@ public class CreatePlayerMsg extends Message {
 	private String playerName;
 	private String password;
 
-	@Override
-	public String getPlayerName() {
-		return this.playerName;
-	}
-	@Override
-	public String getPassword() {
-		return this.password;
-	}
-
 	/**
-	 * 
+	 * @author Christian
 	 * @param playerName
 	 * @param password
 	 */
@@ -34,5 +25,15 @@ public class CreatePlayerMsg extends Message {
 		json.put("playerName", this.playerName);
 		json.put("password", this.password);
 		return json.toJSONString();
+	}
+
+	@Override
+	public String getPlayerName() {
+		return this.playerName;
+	}
+
+	@Override
+	public String getPassword() {
+		return this.password;
 	}
 }

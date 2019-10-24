@@ -157,7 +157,18 @@ public abstract class Message {
 				}
 				newMessage = new PlayMsg(cards);
 				break;
+
 			case UpdateMsg:
+				cards= new ArrayList();
+				array = (JSONArray) json.get("lastMove");
+				Iterator iterator4 = array.iterator();
+				while (iterator4.hasNext()){
+					cards.add(Card.cardFactory((JSONObject) iterator4.next()));
+				}
+				int opponentScore = (Integer) json.get("opponentScore");
+				int ownScore = (Integer) json.get("ownScore");
+				playerName = (String) json.get("playerName");
+				newMessage = new UpdateMsg(playerName,cards,opponentScore,ownScore);
 				break;
 		}
 		return newMessage;
@@ -171,32 +182,24 @@ public abstract class Message {
 		this.msgType = msgType;
 	}
 
-	public String getPlayerName(){
+	// Methods only here to be overwritten
+	public String getPlayerName(){ return null; }
+	public String getPassword(){ return null; }
+	public boolean getStatus(){ return false; }
+	public TichuType getTichuType() { return null; }
+	public ArrayList getPlayers(){ return null; }
+	public String[] getOpponents(){ return null; }
+	public String getTeamMate(){ return null; }
+	public Card getCard() { return null; }
+	public ArrayList getCards(){return null; }
+	public String getNextPlayer() { return null; }
+	public ArrayList<Card> getLastMove() {
 		return null;
 	}
-	public String getPassword(){
-		return null;
+	public int getOpponentScore() {
+		return 0;
 	}
-	public boolean getStatus(){
-		return false;
+	public int getOwnScore() {
+		return 0;
 	}
-	public TichuType getTichuType() {
-		return null;
-	}
-	public ArrayList getPlayers(){
-		return null;
-	}
-	public String[] getOpponents(){
-		return null;
-	}
-	public String getTeamMate(){
-		return null;
-	}
-	public Card getCard() {
-		return null;
-	}
-	public ArrayList getCards(){
-		return null;
-	}
-
 }

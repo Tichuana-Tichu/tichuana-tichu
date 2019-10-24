@@ -12,7 +12,7 @@ public class PlayMsg extends Message {
 	private ArrayList<Card> cards;
 
 	/**
-	 * 
+	 * @author Christian
 	 * @param cards
 	 */
 	public PlayMsg(ArrayList<Card> cards) {

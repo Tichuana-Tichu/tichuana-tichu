@@ -8,7 +8,7 @@ public class TichuMsg extends Message {
 	private String playerName;
 	private TichuType tichuType;
 	/**
-	 * 
+	 * @author Christian
 	 * @param playerName
 	 * @param tichuType
 	 */
@@ -27,10 +27,12 @@ public class TichuMsg extends Message {
 		return json.toJSONString();
 	}
 
+	@Override
 	public String getPlayerName() {
 		return this.playerName;
 	}
 
+	@Override
 	public TichuType getTichuType() {
 		return this.tichuType;
 	}
