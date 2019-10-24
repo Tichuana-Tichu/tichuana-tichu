@@ -68,6 +68,9 @@ public abstract class Message {
 		String playerName, password, status;
 		TichuType tichuType;
 		ArrayList<String> players = new ArrayList();
+		JSONArray array;
+		ArrayList cards;
+
 
 		MessageType messageType = MessageType.valueOf((String) json.get("msg"));
 		Message newMessage = null;
@@ -76,8 +79,8 @@ public abstract class Message {
 
 			case AnnouncedTichuMsg:
 				tichuType = TichuType.valueOf((String) json.get("tichuType"));
-				JSONArray jsonPlayers = (JSONArray) json.get("players");
-				Iterator<String> iterator = jsonPlayers.iterator();
+				array = (JSONArray) json.get("players");
+				Iterator<String> iterator = array.iterator();
 				while (iterator.hasNext()){ players.add(iterator.next()); }
 				newMessage = new AnnouncedTichuMsg(players, tichuType);
 				break;
@@ -101,18 +104,17 @@ public abstract class Message {
 
 			case GameStartedMsg:
 				playerName = (String) json.get("teamMate");
-				JSONArray jsonOpponents = (JSONArray) json.get("opponents");
+				array = (JSONArray) json.get("opponents");
 				String[] opponents = new String[2];
-				opponents[0] = (String) jsonOpponents.get(0);
-				opponents[1] = (String) jsonOpponents.get(1);
+				opponents[0] = (String) array.get(0);
+				opponents[1] = (String) array.get(1);
 				newMessage = new GameStartedMsg(playerName, opponents);
 				break;
 
 			case DealMsg:
-				playerName = (String) json.get("playerName");
-				ArrayList cards= new ArrayList();
-				JSONArray jsonCards = (JSONArray) json.get("cards");
-				Iterator iterator2 = jsonCards.iterator();
+				cards= new ArrayList();
+				array = (JSONArray) json.get("cards");
+				Iterator iterator2 = array.iterator();
 				while (iterator2.hasNext()){
 					cards.add(Card.cardFactory((JSONObject) iterator2.next()));
 				}
@@ -147,6 +149,13 @@ public abstract class Message {
 				break;
 
 			case PlayMsg:
+				cards= new ArrayList();
+				array = (JSONArray) json.get("cards");
+				Iterator iterator3 = array.iterator();
+				while (iterator3.hasNext()){
+					cards.add(Card.cardFactory((JSONObject) iterator3.next()));
+				}
+				newMessage = new PlayMsg(cards);
 				break;
 			case UpdateMsg:
 				break;

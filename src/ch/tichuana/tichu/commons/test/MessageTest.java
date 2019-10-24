@@ -166,7 +166,29 @@ class MessageTest {
         assertTrue(msg.getCards().contains(c2));
         assertFalse(msg.getCards().contains(c3));
         assertEquals(json.toJSONString(), msg.toString());
+    }
 
+    @Test
+    public void testPlayMsg(){
+        JSONObject json = new JSONObject();
+        JSONArray array = new JSONArray();
+        Card c1 = new Card(Suit.Jade, Rank.Ace);
+        Card c2 = new Card(Suit.Swords, Rank.Ace);
+        Card c3 = new Card(Suit.Swords, Rank.five);
+        array.add(c1.toJSON());
+        array.add(c2.toJSON());
+        json.put("msg", "PlayMsg");
+        json.put("cards", array);
+
+        Message msg = Message.parseMessage(json);
+        assertEquals(MessageType.PlayMsg, msg.getMsgType());
+        assertTrue(msg.getCards().contains(c1));
+        assertTrue(msg.getCards().contains(c2));
+        assertTrue(msg.getCards().contains(c2));
+        assertFalse(msg.getCards().contains(c3));
+        assertEquals(json.toJSONString(), msg.toString());
+
+        System.out.println(msg);
     }
 
 
