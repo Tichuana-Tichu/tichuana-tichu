@@ -13,15 +13,19 @@ public class Team implements Comparable<Team> {
 	 * @param playerTwo
 	 */
 	public Team(Player playerOne, Player playerTwo) {
-		// TODO - implement Team.Team
+		this.teamID = 1;
+		players[0] = playerOne;
+		players[1] = playerTwo;
+		this.currentScore = 0;
+		this.finished = false;
 	}
 
 	/**
 	 * 
-	 * @param o
+	 * @param t
 	 */
 	@Override
-	public int compareTo(Team o) {
+	public int compareTo(Team t) {
 		return 0;
 	}
 

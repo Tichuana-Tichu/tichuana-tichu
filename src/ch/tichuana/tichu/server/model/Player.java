@@ -1,11 +1,15 @@
 package ch.tichuana.tichu.server.model;
 
+import ch.tichuana.tichu.commons.message.Message;
+
+import java.io.IOException;
 import java.net.Socket;
 
 public class Player {
 
 	private String playerName;
 	private Socket socket;
+	private ServerModel serverModel;
 	private boolean announcedTichu;
 	private boolean announcedGrandTichu;
 	private boolean hisTurn;
@@ -15,13 +19,33 @@ public class Player {
 	 * 
 	 * @param socket
 	 */
-	public Player(Socket socket) {
-		// TODO - implement Player.Player
+	public Player(ServerModel serverModel, Socket socket) {
+		this.serverModel = serverModel;
+		this.socket = socket;
+
+		Runnable r = new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					Message msg = Message.receive(socket);
+					//TODO - implement handling of incoming messages
+				}
+			}
+		};
+		Thread t = new Thread(r);
+		t.start();
 	}
 
-	public static Player getPlayerByName() {
-		// TODO - implement Player.getPlayerByName
-		return null;
+	public void stop() {
+		try {
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void send(Message msg) {
+		msg.send(socket);
 	}
 
 	//Getter & Setter

@@ -14,7 +14,8 @@ public class Game {
 	 * @param teamTwo
 	 */
 	public Game(Team teamOne, Team teamTwo) {
-		// TODO - implement Game.Game
+		teams[0] = teamOne;
+		teams[1] = teamTwo;
 	}
 
 	//Getter & Setter

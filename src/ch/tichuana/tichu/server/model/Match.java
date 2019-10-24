@@ -6,12 +6,7 @@ public class Match {
 	private int currentScore;
 	static int MIN_PLAYER = 2;
 
-	/**
-	 * 
-	 * @param teamOne
-	 * @param teamTwo
-	 */
-	public Match(Team teamOne, Team teamTwo) {
+	public Match() {
 		// TODO - implement Match.Match
 	}
 
