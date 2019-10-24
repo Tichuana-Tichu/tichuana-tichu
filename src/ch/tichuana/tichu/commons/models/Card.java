@@ -38,8 +38,7 @@ public class Card implements Comparable {
 
 	@Override
 	public String toString() {
-		// TODO - implement Card.toString
-		return null;
+		return this.toJSON().toJSONString();
 	}
 
 	/**
@@ -126,4 +125,6 @@ public class Card implements Comparable {
 		}
 		return false;
 	}
+
+
 }

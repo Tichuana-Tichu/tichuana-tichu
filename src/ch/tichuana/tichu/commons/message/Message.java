@@ -109,6 +109,14 @@ public abstract class Message {
 				break;
 
 			case DealMsg:
+				playerName = (String) json.get("playerName");
+				ArrayList cards= new ArrayList();
+				JSONArray jsonCards = (JSONArray) json.get("cards");
+				Iterator iterator2 = jsonCards.iterator();
+				while (iterator2.hasNext()){
+					cards.add(Card.cardFactory((JSONObject) iterator2.next()));
+				}
+				newMessage = new DealMsg(cards);
 				break;
 
 			case ReceivedMsg:
@@ -176,6 +184,9 @@ public abstract class Message {
 		return null;
 	}
 	public Card getCard() {
+		return null;
+	}
+	public ArrayList getCards(){
 		return null;
 	}
 

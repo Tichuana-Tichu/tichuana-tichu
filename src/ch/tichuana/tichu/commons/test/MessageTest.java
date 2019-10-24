@@ -1,5 +1,6 @@
 package ch.tichuana.tichu.commons.test;
 
+import ch.tichuana.tichu.commons.message.DealMsg;
 import ch.tichuana.tichu.commons.message.Message;
 import ch.tichuana.tichu.commons.message.MessageType;
 import ch.tichuana.tichu.commons.models.Card;
@@ -9,6 +10,8 @@ import ch.tichuana.tichu.commons.models.TichuType;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -142,6 +145,28 @@ class MessageTest {
         assertEquals("player1", msg.getPlayerName());
         assertEquals(true, card.equals(msg.getCard()));
         assertEquals(json.toJSONString(), msg.toString());
+    }
+
+    @Test
+    public void testDealMsg(){
+        JSONObject json = new JSONObject();
+        JSONArray array = new JSONArray();
+        Card c1 = new Card(Suit.Jade, Rank.Ace);
+        Card c2 = new Card(Suit.Swords, Rank.Ace);
+        Card c3 = new Card(Suit.Swords, Rank.five);
+        array.add(c1.toJSON());
+        array.add(c2.toJSON());
+        json.put("msg", "DealMsg");
+        json.put("cards", array);
+
+        Message msg = Message.parseMessage(json);
+        assertEquals(MessageType.DealMsg, msg.getMsgType());
+        assertTrue(msg.getCards().contains(c1));
+        assertTrue(msg.getCards().contains(c2));
+        assertTrue(msg.getCards().contains(c2));
+        assertFalse(msg.getCards().contains(c3));
+        assertEquals(json.toJSONString(), msg.toString());
+
     }
 
 
