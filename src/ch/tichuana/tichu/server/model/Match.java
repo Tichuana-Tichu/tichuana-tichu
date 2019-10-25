@@ -7,12 +7,17 @@ public class Match {
 	static int MIN_PLAYER = 2;
 
 	public Match() {
-		// TODO - implement Match.Match
+		this.matchID = getUniqueID();
+		this.currentScore = 0;
 	}
 
-	public Player getNextPlayer() {
-		// TODO - implement Match.getNextPlayer
-		return null;
+	/**
+	 *
+	 * @return uniqueID
+	 */
+	private synchronized int getUniqueID() {
+		int uniqueID = 0;
+		return uniqueID++;
 	}
 
 	//Getter & Setter

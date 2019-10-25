@@ -13,11 +13,20 @@ public class Team implements Comparable<Team> {
 	 * @param playerTwo
 	 */
 	public Team(Player playerOne, Player playerTwo) {
-		this.teamID = 1;
+		this.teamID = getUniqueID();
 		players[0] = playerOne;
 		players[1] = playerTwo;
 		this.currentScore = 0;
 		this.finished = false;
+	}
+
+	/**
+	 *
+	 * @return uniqueID
+	 */
+	private synchronized int getUniqueID() {
+		int uniqueID = 0;
+		return uniqueID++;
 	}
 
 	/**
@@ -26,7 +35,7 @@ public class Team implements Comparable<Team> {
 	 */
 	@Override
 	public int compareTo(Team t) {
-		return 0;
+		return this.currentScore - t.currentScore;
 	}
 
 	//Getter & Setter

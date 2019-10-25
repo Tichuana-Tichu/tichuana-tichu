@@ -14,8 +14,24 @@ public class Game {
 	 * @param teamTwo
 	 */
 	public Game(Team teamOne, Team teamTwo) {
+		this.gameID = getUniqueID();
+		this.currentScore = 0;
 		teams[0] = teamOne;
 		teams[1] = teamTwo;
+	}
+
+	public Player getNextPlayer() {
+		// TODO - implement Match.getNextPlayer
+		return null;
+	}
+
+	/**
+	 *
+	 * @return uniqueID
+	 */
+	private synchronized int getUniqueID() {
+		int uniqueID = 0;
+		return uniqueID++;
 	}
 
 	//Getter & Setter

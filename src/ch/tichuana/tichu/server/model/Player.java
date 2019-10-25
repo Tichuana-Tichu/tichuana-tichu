@@ -19,7 +19,8 @@ public class Player {
 	 * 
 	 * @param socket
 	 */
-	public Player(ServerModel serverModel, Socket socket) {
+	public Player(String playerName, ServerModel serverModel, Socket socket) {
+		this.playerName = playerName;
 		this.serverModel = serverModel;
 		this.socket = socket;
 
