@@ -2,10 +2,12 @@ package ch.tichuana.tichu.commons.message;
 
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.TichuType;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
@@ -22,12 +24,12 @@ public abstract class Message {
 	 * @param socket
 	 */
 	public void send(Socket socket) {
-		try{
-			OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
-			out.write(this.toString());
+		OutputStreamWriter out;
+		try {
+			out = new OutputStreamWriter(socket.getOutputStream());
+			out.write(this.toString()+"\n");
 			out.flush();
-			socket.shutdownOutput();
-		} catch (Exception e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -38,11 +40,12 @@ public abstract class Message {
 	 * @param socket
 	 */
 	public static Message receive(Socket socket) {
+		BufferedReader in;
 		String response = null;
-		try{
-			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		try {
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			response = in.readLine();
-		} catch (Exception e){
+		} catch (IOException e){
 			e.printStackTrace();
 		}
 		JSONParser parser = new JSONParser();

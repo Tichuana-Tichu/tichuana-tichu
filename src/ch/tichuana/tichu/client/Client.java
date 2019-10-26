@@ -17,6 +17,10 @@ import java.util.Properties;
 
 public class Client extends Application {
 
+	private ClientModel clientModel;
+	private GameView gameView;
+	private ClientController clientController;
+
 	/**
 	 * 
 	 * @param args
@@ -32,9 +36,17 @@ public class Client extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		initalize();
-		ClientModel clientModel = new ClientModel();
-		GameView gameView = new GameView(primaryStage, clientModel);
-		ClientController clientController = new ClientController(clientModel, gameView);
+		this.clientModel = new ClientModel();
+		this.gameView = new GameView(primaryStage, clientModel);
+		this.clientController = new ClientController(clientModel, gameView);
+
+		gameView.start();
+	}
+
+	@Override
+	public void stop() {
+		if (gameView != null)
+			gameView.stop();
 
 	}
 

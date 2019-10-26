@@ -1,21 +1,20 @@
 package ch.tichuana.tichu.server.model;
 
-import ch.tichuana.tichu.client.model.Hand;
 import ch.tichuana.tichu.commons.message.*;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.TichuType;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.logging.Logger;
 
 public class Player {
 
+	private Logger logger = Logger.getLogger("");
 	private String playerName;
 	private Socket socket;
+	private boolean closed;
 	private ServerModel serverModel;
 	private boolean announcedTichu;
 	private boolean announcedGrandTichu;
@@ -32,61 +31,51 @@ public class Player {
 	public Player(ServerModel serverModel, Socket socket) {
 		this.serverModel = serverModel;
 		this.socket = socket;
+		this.closed = false;
 
 		Runnable r = () -> {
-			while (true) {
+			while (!closed) {
+				Message msg = Message.receive(socket);
 
-				if (Message.receive(socket) != null) {
-					Message msg = Message.receive(socket);
+				if (msg instanceof JoinMsg) {
+					Player.this.playerName = ((JoinMsg) msg).getPlayerName();
+					sendMessage(MessageType.ConnectedMsg, "true");
+					logger.info("Player: "+msg.getPlayerName()+" logged in");
+				}
 
-					if (msg instanceof JoinMsg) {
-						Player.this.playerName = ((JoinMsg) msg).getPlayerName();
-						send(new ConnectedMsg(true));
-					}
-					/*
-					switch (msg.getMsgType()) {
+				else if (msg instanceof TichuMsg) {
+					logger.info("received tichuMsg");
+					switch (msg.getTichuType()) {
 
-						case JoinMsg:
-							Player.this.playerName = ((JoinMsg) msg).getPlayerName();
-							send(new ConnectedMsg(true));
+						case SmallTichu:
+							Player.this.announcedTichu = true;
 							break;
 
-						case TichuMsg:
-							switch (msg.getTichuType()) {
-
-								case SmallTichu:
-									Player.this.announcedTichu = true;
-									break;
-
-								case GrandTichu:
-									Player.this.announcedGrandTichu = true;
-									break;
-
-								case none:
-									Player.this.announcedTichu = false;
-									Player.this.announcedGrandTichu = false;
-									break;
-							}
+						case GrandTichu:
+							Player.this.announcedGrandTichu = true;
 							break;
 
-						case SchupfenMsg:
-							if (msg.getPlayerName().equals(Player.this.playerName))
-								this.hand.add(msg.getCard());
-							break;
-
-						case PlayMsg:
-							this.currentMove = msg.getCards();
-							break;
-
-						case UpdateMsg:
-
-							if (msg.getNextPlayer().equals(Player.this.playerName))
-								this.hisTurn = true;
-							else
-								this.hisTurn = false;
+						case none:
+							Player.this.announcedTichu = false;
+							Player.this.announcedGrandTichu = false;
 							break;
 					}
-					*/
+				}
+
+				else if (msg instanceof SchupfenMsg) {
+					if (msg.getPlayerName().equals(Player.this.playerName))
+						this.hand.add(msg.getCard());
+				}
+
+				else if (msg instanceof PlayMsg) {
+					this.currentMove = msg.getCards();
+				}
+
+				else if (msg instanceof UpdateMsg) {
+					if (msg.getNextPlayer().equals(Player.this.playerName))
+						this.hisTurn = true;
+					else
+						this.hisTurn = false;
 				}
 			}
 		};
@@ -95,6 +84,7 @@ public class Player {
 	}
 
 	public void stop() {
+		this.closed = true;
 		try {
 			socket.close();
 		} catch (IOException e) {
@@ -104,10 +94,43 @@ public class Player {
 
 	/**
 	 *
-	 * @param msg
+	 * @param messageType
 	 */
-	public void send(Message msg) {
-		msg.send(socket);
+	public void sendMessage(MessageType messageType, String identifier) {
+		Message message;
+
+		switch (messageType) {
+
+			case ConnectedMsg:
+				message = new ConnectedMsg(Boolean.parseBoolean(identifier));
+				message.send(socket);
+				break;
+
+			case CreatePlayerMsg:
+				message = new CreatePlayerMsg("name", "password");
+				message.send(socket);
+				break;
+
+			case ReceivedMsg:
+				message = new ReceivedMsg(true);
+				message.send(socket);
+				break;
+
+			case TichuMsg:
+				message = new TichuMsg(this.playerName, TichuType.GrandTichu);
+				message.send(socket);
+				break;
+
+			case SchupfenMsg:
+				message = new SchupfenMsg(this.playerName, new Card());
+				message.send(socket);
+				break;
+
+			case PlayMsg:
+				message = new PlayMsg(new ArrayList<Card>());
+				message.send(socket);
+				break;
+		}
 	}
 
 	//Getter & Setter
