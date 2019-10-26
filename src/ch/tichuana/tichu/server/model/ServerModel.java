@@ -1,6 +1,5 @@
 package ch.tichuana.tichu.server.model;
 
-import ch.tichuana.tichu.commons.message.JoinMsg;
 import ch.tichuana.tichu.commons.message.Message;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,6 +27,7 @@ public class ServerModel {
 						try {
 							Socket socket = listener.accept();
 							Player player = new Player(ServerModel.this, socket);
+							logger.info("created player object");
 							players.add(player);
 						} catch (IOException e) {
 							logger.info(e.toString());

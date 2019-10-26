@@ -29,10 +29,12 @@ public class Client extends Application {
 	 * 
 	 * @param primaryStage
 	 */
-
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		initalize();
+		ClientModel clientModel = new ClientModel();
+		GameView gameView = new GameView(primaryStage, clientModel);
+		ClientController clientController = new ClientController(clientModel, gameView);
 
 	}
 

@@ -1,10 +1,15 @@
 package ch.tichuana.tichu.server.model;
 
-import ch.tichuana.tichu.commons.message.JoinMsg;
-import ch.tichuana.tichu.commons.message.Message;
+import ch.tichuana.tichu.commons.message.*;
+import ch.tichuana.tichu.commons.models.Card;
+import ch.tichuana.tichu.commons.models.TichuType;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Player {
 
@@ -18,20 +23,58 @@ public class Player {
 
 	/**
 	 * 
+	 * @param serverModel
 	 * @param socket
 	 */
 	public Player(ServerModel serverModel, Socket socket) {
 		this.serverModel = serverModel;
 		this.socket = socket;
 
-		Runnable r = new Runnable() {
-			@Override
-			public void run() {
-				while (true) {
-					Message msg = Message.receive(socket);
-					if(msg instanceof JoinMsg) {
+		Runnable r = () -> {
+			while (true) {
+				Message msg = Message.receive(socket);
+
+				switch (msg.getMsgType()) {
+
+					case AnnouncedTichuMsg:
+						break;
+
+					case JoinMsg:
 						Player.this.playerName = ((JoinMsg) msg).getPlayerName();
-					}
+						break;
+
+					case CreatePlayerMsg:
+						break;
+
+					case ConnectedMsg:
+						break;
+
+					case GameStartedMsg:
+						break;
+
+					case DealMsg:
+						break;
+
+					case ReceivedMsg:
+						break;
+
+					case DemandTichuMsg:
+						break;
+
+					case TichuMsg:
+						break;
+
+					case DemandSchupfenMsg:
+						break;
+
+					case SchupfenMsg:
+						break;
+
+					case PlayMsg:
+						break;
+
+					case UpdateMsg:
+						break;
 				}
 			}
 		};
@@ -47,6 +90,10 @@ public class Player {
 		}
 	}
 
+	/**
+	 *
+	 * @param msg
+	 */
 	public void send(Message msg) {
 		msg.send(socket);
 	}

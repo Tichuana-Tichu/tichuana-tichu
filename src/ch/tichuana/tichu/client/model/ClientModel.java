@@ -15,6 +15,13 @@ public class ClientModel {
     private String password;
     private Logger logger = Logger.getLogger("");
 
+    /**
+     *
+     * @param ipAddress
+     * @param port
+     * @param playerName
+     * @param password
+     */
     public void connect(String ipAddress, int port, String playerName, String password) {
         logger.info("Connect");
         this.playerName = playerName;
@@ -54,6 +61,10 @@ public class ClientModel {
             }
     }
 
+    /**
+     *
+     * @param message
+     */
     public void sendMessage(String message) {
         logger.info("Send message");
         //Message msg = new Message(name, message);
