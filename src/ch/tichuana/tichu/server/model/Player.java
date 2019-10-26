@@ -1,5 +1,6 @@
 package ch.tichuana.tichu.server.model;
 
+import ch.tichuana.tichu.client.model.Hand;
 import ch.tichuana.tichu.commons.message.*;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.TichuType;
@@ -20,6 +21,8 @@ public class Player {
 	private boolean announcedGrandTichu;
 	private boolean hisTurn;
 	private boolean hasMahjong;
+	private ArrayList<Card> currentMove;
+	private ArrayList<Card> hand;
 
 	/**
 	 * 
@@ -32,49 +35,58 @@ public class Player {
 
 		Runnable r = () -> {
 			while (true) {
-				Message msg = Message.receive(socket);
 
-				switch (msg.getMsgType()) {
+				if (Message.receive(socket) != null) {
+					Message msg = Message.receive(socket);
 
-					case AnnouncedTichuMsg:
-						break;
-
-					case JoinMsg:
+					if (msg instanceof JoinMsg) {
 						Player.this.playerName = ((JoinMsg) msg).getPlayerName();
-						break;
+						send(new ConnectedMsg(true));
+					}
+					/*
+					switch (msg.getMsgType()) {
 
-					case CreatePlayerMsg:
-						break;
+						case JoinMsg:
+							Player.this.playerName = ((JoinMsg) msg).getPlayerName();
+							send(new ConnectedMsg(true));
+							break;
 
-					case ConnectedMsg:
-						break;
+						case TichuMsg:
+							switch (msg.getTichuType()) {
 
-					case GameStartedMsg:
-						break;
+								case SmallTichu:
+									Player.this.announcedTichu = true;
+									break;
 
-					case DealMsg:
-						break;
+								case GrandTichu:
+									Player.this.announcedGrandTichu = true;
+									break;
 
-					case ReceivedMsg:
-						break;
+								case none:
+									Player.this.announcedTichu = false;
+									Player.this.announcedGrandTichu = false;
+									break;
+							}
+							break;
 
-					case DemandTichuMsg:
-						break;
+						case SchupfenMsg:
+							if (msg.getPlayerName().equals(Player.this.playerName))
+								this.hand.add(msg.getCard());
+							break;
 
-					case TichuMsg:
-						break;
+						case PlayMsg:
+							this.currentMove = msg.getCards();
+							break;
 
-					case DemandSchupfenMsg:
-						break;
+						case UpdateMsg:
 
-					case SchupfenMsg:
-						break;
-
-					case PlayMsg:
-						break;
-
-					case UpdateMsg:
-						break;
+							if (msg.getNextPlayer().equals(Player.this.playerName))
+								this.hisTurn = true;
+							else
+								this.hisTurn = false;
+							break;
+					}
+					*/
 				}
 			}
 		};
@@ -128,5 +140,11 @@ public class Player {
 	}
 	public void setHasMahjong(boolean hasMahjong) {
 		this.hasMahjong = hasMahjong;
+	}
+	public ArrayList<Card> getCurrentMove() {
+		return currentMove;
+	}
+	public void setCurrentMove(ArrayList<Card> currentMove) {
+		this.currentMove = currentMove;
 	}
 }

@@ -47,15 +47,16 @@ public abstract class Message {
 		}
 		JSONParser parser = new JSONParser();
 		JSONObject message = null;
-		try {
-			message = (JSONObject) parser.parse(response.toString());
-		} catch (Exception e){
-			e.printStackTrace();
+
+		if (response != null) {
+			try {
+				message = (JSONObject) parser.parse(response.toString());
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+			return parseMessage(message);
 		}
-
-
-		return parseMessage(message);
-
+		return null;
 	}
 
 	/**

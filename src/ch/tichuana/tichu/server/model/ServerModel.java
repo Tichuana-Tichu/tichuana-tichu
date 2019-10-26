@@ -20,18 +20,14 @@ public class ServerModel {
 		logger.info("start server");
 		try {
 			listener = new ServerSocket(port, 10, null);
-			Runnable r = new Runnable() {
-				@Override
-				public void run() {
-					while (!stop) {
-						try {
-							Socket socket = listener.accept();
-							Player player = new Player(ServerModel.this, socket);
-							logger.info("created player object");
-							players.add(player);
-						} catch (IOException e) {
-							logger.info(e.toString());
-						}
+			Runnable r = () -> {
+				while (!stop) {
+					try {
+						Socket socket = listener.accept();
+						Player player = new Player(ServerModel.this, socket);
+						players.add(player);
+					} catch (IOException e) {
+						logger.info(e.toString());
 					}
 				}
 			};
