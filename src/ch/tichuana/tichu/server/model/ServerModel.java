@@ -1,5 +1,6 @@
 package ch.tichuana.tichu.server.model;
 
+import ch.tichuana.tichu.commons.message.JoinMsg;
 import ch.tichuana.tichu.commons.message.Message;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,6 +37,7 @@ public class ServerModel {
 			};
 			Thread t = new Thread(r, "ServerSocket");
 			t.start();
+
 		} catch (IOException e) {
 			logger.info(e.toString());
 		}

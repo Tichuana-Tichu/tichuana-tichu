@@ -1,5 +1,6 @@
 package ch.tichuana.tichu.server.model;
 
+import ch.tichuana.tichu.commons.message.JoinMsg;
 import ch.tichuana.tichu.commons.message.Message;
 
 import java.io.IOException;
@@ -19,8 +20,7 @@ public class Player {
 	 * 
 	 * @param socket
 	 */
-	public Player(String playerName, ServerModel serverModel, Socket socket) {
-		this.playerName = playerName;
+	public Player(ServerModel serverModel, Socket socket) {
 		this.serverModel = serverModel;
 		this.socket = socket;
 
@@ -29,7 +29,9 @@ public class Player {
 			public void run() {
 				while (true) {
 					Message msg = Message.receive(socket);
-					//TODO - implement handling of incoming messages
+					if(msg instanceof JoinMsg) {
+						Player.this.playerName = ((JoinMsg) msg).getPlayerName();
+					}
 				}
 			}
 		};
