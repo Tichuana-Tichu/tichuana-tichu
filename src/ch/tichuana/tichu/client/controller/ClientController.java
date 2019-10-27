@@ -4,6 +4,7 @@ import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.view.GameView;
 import ch.tichuana.tichu.commons.message.MessageType;
+import ch.tichuana.tichu.commons.models.TichuType;
 
 public class ClientController {
 
@@ -15,12 +16,8 @@ public class ClientController {
      */
 	public ClientController(ClientModel clientModel, GameView gameView) {
 
-		gameView.getStage().setOnCloseRequest(event -> clientModel.disconnect());
-
-		//TODO - connect Event-Handler as soon a the GUI is ready
-
-		gameView.getConnectBtn().setOnAction(event -> {
-			gameView.getConnectBtn().setDisable(true);
+		gameView.getSignInBtn().setOnAction(event -> {
+			gameView.getSignInBtn().setDisable(true);
 			int port = Integer.parseInt(ServiceLocator.getServiceLocator().getConfiguration().getProperty("port"));
 			String ipAddress =ServiceLocator.getServiceLocator().getConfiguration().getProperty("ipAddress");
 			String playerName = "Ruedi";
@@ -28,22 +25,23 @@ public class ClientController {
 			clientModel.connect(ipAddress, port, playerName, password);
 		});
 
-		gameView.getGrandTichu().setOnAction(event -> {
-			clientModel.sendMessage(MessageType.TichuMsg);
+		gameView.getGrandTichuBtn().setOnAction(event -> {
+			clientModel.sendMessage(TichuType.GrandTichu);
 		});
 
-		gameView.getSmallTichu().setOnAction(event -> {
-			clientModel.sendMessage(MessageType.TichuMsg);
+		gameView.getSmallTichuBtn().setOnAction(event -> {
+			clientModel.sendMessage(TichuType.SmallTichu);
 		});
 
-		gameView.getSchupfen().setOnAction(event -> {
-			clientModel.sendMessage(MessageType.SchupfenMsg);
+		gameView.getSchupfenBtn().setOnAction(event -> {
+			clientModel.sendMessage(MessageType.SchupfenMsg, "");
 		});
 
-		gameView.getPlay().setOnAction(event -> {
-			clientModel.sendMessage(MessageType.PlayMsg);
+		gameView.getPlayBtn().setOnAction(event -> {
+			clientModel.sendMessage(MessageType.PlayMsg, "");
 		});
 
+		gameView.getStage().setOnCloseRequest(event -> clientModel.disconnect());
 	}
 
 	private void checkValidCombination() {

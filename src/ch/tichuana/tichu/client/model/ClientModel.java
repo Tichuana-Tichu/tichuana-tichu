@@ -15,6 +15,8 @@ public class ClientModel {
     private Socket socket;
     private volatile boolean closed;
     private String playerName;
+    private String nextPlayerName;
+    private String playerToSchupfCard;
     private Logger logger = Logger.getLogger("");
 
     /**
@@ -38,7 +40,7 @@ public class ClientModel {
                     Message msg = Message.receive(socket);
 
                     if (msg instanceof AnnouncedTichuMsg) {
-                        logger.info("these players announced tichu");
+                        logger.info("this player"+msg.getPlayers().toString()+" announced tichu");
                     }
 
                     if (msg instanceof ConnectedMsg) {
@@ -46,17 +48,30 @@ public class ClientModel {
                     }
 
                     if (msg instanceof GameStartedMsg) {
+                        sendMessage(MessageType.ReceivedMsg, "true");
                         logger.info("you successfully entered a game");
                     }
 
                     if (msg instanceof DemandTichuMsg) {
                         logger.info("please announce tichu or pass");
                     }
+
                     if (msg instanceof DemandSchupfenMsg) {
-                        logger.info("please choose card for player: "+msg.getPlayerName());
+                        if (!this.playerName.equals(msg.getPlayerName())) {
+                            this.playerToSchupfCard = msg.getPlayerName();
+                            logger.info("please choose card for player: "+msg.getPlayerName());
+                        } else
+                            sendMessage(MessageType.ReceivedMsg, "true");
                     }
+
                     if (msg instanceof UpdateMsg) {
-                        logger.info("updating gui with newest information's");
+                        if (!this.playerName.equals(msg.getNextPlayer())) {
+                            this.nextPlayerName = msg.getNextPlayer();
+                            sendMessage(MessageType.ReceivedMsg, "true");
+                        } else {
+                            logger.info("it is your turn player: "+msg.getNextPlayer());
+                        }
+
                     }
                 }
             };
@@ -93,29 +108,19 @@ public class ClientModel {
      * @author Philipp
      * @param messageType from a specific type
      */
-    public void sendMessage(MessageType messageType) {
+    public void sendMessage(MessageType messageType, String identifier) {
         logger.info("Send message");
         Message msg;
 
         switch (messageType) {
 
-            case CreatePlayerMsg:
-                msg = new CreatePlayerMsg("name", "password");
-                msg.send(socket);
-                break;
-
             case ReceivedMsg:
-                msg = new ReceivedMsg(true);
-                msg.send(socket);
-                break;
-
-            case TichuMsg:
-                msg = new TichuMsg(this.playerName, TichuType.GrandTichu);
+                msg = new ReceivedMsg(Boolean.parseBoolean(identifier));
                 msg.send(socket);
                 break;
 
             case SchupfenMsg:
-                msg = new SchupfenMsg(this.playerName, new Card());
+                msg = new SchupfenMsg(this.nextPlayerName, new Card());
                 msg.send(socket);
                 break;
 
@@ -126,9 +131,26 @@ public class ClientModel {
         }
     }
 
+    /**
+     * Overloaded method
+     * called from controller to send TichuMsg to Player-Object (Server)
+     * @author Philipp
+     * @param tichuType from type Small- or GrandTichu
+     */
+    public void sendMessage(TichuType tichuType) {
+        logger.info("Send message");
+        Message msg = new TichuMsg(this.playerName, tichuType);
+        msg.send(this.socket);
+    }
+
     //TODO - needed for broadcasts or not?
     public String receiveMessage() {
         logger.info("Receive Message");
         return newestMessage.get();
+    }
+
+    //Getter
+    public String getPlayerToSchupfCard() {
+        return playerToSchupfCard;
     }
 }

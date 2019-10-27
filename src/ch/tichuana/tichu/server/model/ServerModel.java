@@ -1,11 +1,15 @@
 package ch.tichuana.tichu.server.model;
 
+import ch.tichuana.tichu.commons.message.AnnouncedTichuMsg;
+import ch.tichuana.tichu.commons.message.Message;
 import ch.tichuana.tichu.commons.message.MessageType;
+import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class ServerModel {
@@ -16,8 +20,7 @@ public class ServerModel {
 	private  volatile boolean stop = false;
 	private Team teamOne;
 	private Team teamTwo;
-	private final int MAX_GAMES = 1;
-	private Game[] games = new Game[MAX_GAMES];
+	private Game game;
 
 	/**
 	 * starts Server and listens for new clients to connect
@@ -40,7 +43,7 @@ public class ServerModel {
 						}
 						if (players.size() == 4) {
 							this.teamTwo = new Team(players.get(2), players.get(3));
-							this.games[0] = new Game(teamOne, teamTwo, socket);
+							this.game = new Game(teamOne, teamTwo, ServerModel.this);
 						}
 
 						players.add(player);
@@ -77,15 +80,24 @@ public class ServerModel {
 	}
 
 	/**
-	 * sends message to all clients
+	 * messages that need to be sent via broadcast to all clients
 	 * @author Philipp
 	 * @param messageType from a specific type
 	 * @param identifier and with additional information to create Message-Object
 	 */
 	public void broadcast(MessageType messageType, String identifier) {
 		logger.info("Broadcasting message to players");
+
 		for (Player p : players) {
-			p.sendMessage(MessageType.UpdateMsg, "");
+			p.sendMessage(messageType, identifier);
 		}
+	}
+
+	//Getter
+	public Game getGame() {
+		return game;
+	}
+	public ObservableList<Player> getPlayers() {
+		return players;
 	}
 }

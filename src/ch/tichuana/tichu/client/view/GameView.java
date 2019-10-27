@@ -16,13 +16,14 @@ public class GameView {
 	private Pane root;
 
 	//temporary Buttons
-	private Button play;
-	private Button schupfen;
-	private Button smallTichu;
-	private Button grandTichu;
-	private Button connectBtn;
+	private Button playBtn;
+	private Button schupfenBtn;
+	private Button smallTichuBtn;
+	private Button grandTichuBtn;
+	private Button signInBtn;
 
 	/**
+     * Buttons for testing reasons only, in case of a merging conflict: move lines into ControlArea.java
 	 * @author Philipp
 	 * @param stage testing
 	 * @param clientModel testing
@@ -32,12 +33,12 @@ public class GameView {
 		this.stage = stage;
 		this.clientModel = clientModel;
 		//temporary instantiation
-		this.play = new Button("play");
-		this.schupfen = new Button("schupfen");
-		this.smallTichu = new Button("small Tichu");
-		this.grandTichu = new Button("grand Tichu");
-		this.connectBtn = new Button("connect");
-		VBox root = new VBox(this.connectBtn, this.grandTichu, this.play, this.schupfen, this.smallTichu);
+		this.playBtn = new Button("play/pass");
+		this.schupfenBtn = new Button("schupfen");
+		this.smallTichuBtn = new Button("small Tichu");
+		this.grandTichuBtn = new Button("grand Tichu");
+		this.signInBtn = new Button("signIn");
+		VBox root = new VBox(this.signInBtn, this.grandTichuBtn, this.smallTichuBtn, this.schupfenBtn, this.playBtn);
 		// TODO - implement GameView.GameView
 
 		Scene scene = new Scene(root);
@@ -62,20 +63,20 @@ public class GameView {
 	}
 
 	//temporary Getters
-	public Button getPlay() {
-		return play;
+	public Button getPlayBtn() {
+		return playBtn;
 	}
-	public Button getSchupfen() {
-		return this.schupfen;
+	public Button getSchupfenBtn() {
+		return this.schupfenBtn;
 	}
-	public Button getSmallTichu() {
-		return this.smallTichu;
+	public Button getSmallTichuBtn() {
+		return this.smallTichuBtn;
 	}
-	public Button getGrandTichu() {
-		return this.grandTichu;
+	public Button getGrandTichuBtn() {
+		return this.grandTichuBtn;
 	}
-	public Button getConnectBtn(){
-		return this.connectBtn;
+	public Button getSignInBtn(){
+		return this.signInBtn;
 	}
 	public Stage getStage() {
 		return this.stage;
