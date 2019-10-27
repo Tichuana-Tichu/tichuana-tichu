@@ -100,4 +100,5 @@ public class ServerModel {
 	public ObservableList<Player> getPlayers() {
 		return players;
 	}
+	public Player getPlayer(int i) {return players.get(i); }
 }

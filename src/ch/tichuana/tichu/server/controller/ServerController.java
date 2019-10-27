@@ -22,13 +22,19 @@ public class ServerController {
 
 		this.serverModel.startServer(port);
 
+		/*
+		this.serverModel.getPlayer(0).getAnnouncedGrandTichuProperty().addListener((observable, oldValue, newValue) -> {
+			logger.info("sent message");
+			if(newValue)
+				this.serverModel.broadcast(MessageType.AnnouncedTichuMsg, "GrandTichu");
+		});
+
+		/*
 		if (!this.serverModel.getPlayers().isEmpty()) {
 			logger.info("sent message");
 
-			this.serverModel.getPlayers().get(0).getAnnouncedGrandTichuProperty().addListener((observable, oldValue, newValue) -> {
-				if(newValue)
-					this.serverModel.broadcast(MessageType.AnnouncedTichuMsg, "GrandTichu");
-			});
+
 		}
+		 */
 	}
 }

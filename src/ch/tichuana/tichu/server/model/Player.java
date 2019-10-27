@@ -53,13 +53,21 @@ public class Player {
 
 						case SmallTichu:
 							logger.info("Player: "+this.playerName+" announced SmallTichu");
-							Player.this.announcedTichu.set(true);
-							logger.info(this.getAnnouncedTichuProperty().toString());
+							this.announcedTichu.set(true);
+							this.announcedGrandTichu.set(false);
 							break;
 
 						case GrandTichu:
+							if (!this.serverModel.getPlayers().isEmpty()) {
+								this.announcedGrandTichu.addListener((observable, oldValue, newValue) -> {
+									if(newValue)
+										this.serverModel.broadcast(MessageType.AnnouncedTichuMsg, "GrandTichu");
+								});
+							}
+
 							logger.info("Player: "+this.playerName+" announced GrandTichu");
-							Player.this.announcedGrandTichu.set(true);
+							this.announcedGrandTichu.set(true);
+							this.announcedTichu.set(false);
 							break;
 					}
 				}
