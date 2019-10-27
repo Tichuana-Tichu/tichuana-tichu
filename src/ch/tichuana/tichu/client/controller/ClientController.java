@@ -7,18 +7,13 @@ import ch.tichuana.tichu.commons.message.MessageType;
 
 public class ClientController {
 
-	final private ClientModel clientModel;
-	final private GameView gameView;
-
-    /**
-     *
-     * @param clientModel
-     * @param gameView
+	/**
+	 * connects buttons and texField from GameView to model, to send messages
+	 * @author Philipp
+     * @param clientModel following MVC pattern
+     * @param gameView following MVC pattern
      */
 	public ClientController(ClientModel clientModel, GameView gameView) {
-
-		this.clientModel = clientModel;
-		this.gameView = gameView;
 
 		gameView.getStage().setOnCloseRequest(event -> clientModel.disconnect());
 
@@ -26,7 +21,7 @@ public class ClientController {
 
 		gameView.getConnectBtn().setOnAction(event -> {
 			gameView.getConnectBtn().setDisable(true);
-			Integer port = Integer.parseInt(ServiceLocator.getServiceLocator().getConfiguration().getProperty("port"));
+			int port = Integer.parseInt(ServiceLocator.getServiceLocator().getConfiguration().getProperty("port"));
 			String ipAddress =ServiceLocator.getServiceLocator().getConfiguration().getProperty("ipAddress");
 			String playerName = "Ruedi";
 			String password = "1234";

@@ -23,9 +23,9 @@ public class GameView {
 	private Button connectBtn;
 
 	/**
-	 * 
-	 * @param stage
-	 * @param clientModel
+	 * @author Philipp
+	 * @param stage testing
+	 * @param clientModel testing
 	 */
 	public GameView(Stage stage, ClientModel clientModel) {
 

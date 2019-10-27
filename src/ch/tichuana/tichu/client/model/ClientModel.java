@@ -13,22 +13,21 @@ public class ClientModel {
 
     private SimpleStringProperty newestMessage = new SimpleStringProperty();
     private Socket socket;
-    private boolean closed;
+    private volatile boolean closed;
     private String playerName;
-    private String password;
     private Logger logger = Logger.getLogger("");
 
     /**
-     *
-     * @param ipAddress ip 127.0.0.1
-     * @param port port number 8080
+     * connects client to server with JoinMsg and listens for incoming messages
+     * @author Philipp
+     * @param ipAddress ip 127.0.0.1 from config.properties
+     * @param port port number 8080 from config.properties
      * @param playerName receiving from GUI
      * @param password receiving from GUI
      */
     public void connect(String ipAddress, int port, String playerName, String password) {
         logger.info("Connect");
         this.playerName = playerName;
-        this.password = password;
         this.closed = false;
         try {
             socket = new Socket(ipAddress, port);
@@ -72,6 +71,10 @@ public class ClientModel {
         }
     }
 
+    /**
+     * stops listening and closes socket
+     * @author Philipp
+     */
     public void disconnect() {
         logger.info("Disconnect");
         this.closed = true;
@@ -80,14 +83,15 @@ public class ClientModel {
             try {
                 socket.close();
             } catch (IOException e) {
-                e.toString();
+                e.printStackTrace();
             }
         }
     }
 
     /**
-     * Method to be called from controller
-     * @param messageType
+     * called from controller to send messages to Player-Object (Server)
+     * @author Philipp
+     * @param messageType from a specific type
      */
     public void sendMessage(MessageType messageType) {
         logger.info("Send message");
@@ -116,12 +120,13 @@ public class ClientModel {
                 break;
 
             case PlayMsg:
-                msg = new PlayMsg(new ArrayList<Card>());
+                msg = new PlayMsg(new ArrayList<>());
                 msg.send(socket);
                 break;
         }
     }
 
+    //TODO - needed for broadcasts or not?
     public String receiveMessage() {
         logger.info("Receive Message");
         return newestMessage.get();

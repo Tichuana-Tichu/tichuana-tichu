@@ -14,19 +14,21 @@ public class Player {
 	private Logger logger = Logger.getLogger("");
 	private String playerName;
 	private Socket socket;
-	private boolean closed;
+	private volatile boolean closed;
 	private ServerModel serverModel;
 	private boolean announcedTichu;
 	private boolean announcedGrandTichu;
 	private boolean hisTurn;
 	private boolean hasMahjong;
-	private ArrayList<Card> currentMove;
+	private ArrayList currentMove;
 	private ArrayList<Card> hand;
 
 	/**
-	 * 
-	 * @param serverModel
-	 * @param socket
+	 * New Object when clients connects, has its own socket for communication
+	 * listens for Messages that can be answered from this instance
+	 * @author Philipp
+	 * @param serverModel object of the ServerModel
+	 * @param socket own socket for communication with clientModel
 	 */
 	public Player(ServerModel serverModel, Socket socket) {
 		this.serverModel = serverModel;
@@ -38,7 +40,7 @@ public class Player {
 				Message msg = Message.receive(socket);
 
 				if (msg instanceof JoinMsg) {
-					Player.this.playerName = ((JoinMsg) msg).getPlayerName();
+					Player.this.playerName = msg.getPlayerName();
 					sendMessage(MessageType.ConnectedMsg, "true");
 					logger.info("Player: "+msg.getPlayerName()+" logged in");
 				}
@@ -83,6 +85,10 @@ public class Player {
 		t.start();
 	}
 
+	/**
+	 * stops listening and closes socket
+	 * @author Philipp
+	 */
 	public void stop() {
 		this.closed = true;
 		try {
@@ -93,8 +99,10 @@ public class Player {
 	}
 
 	/**
-	 *
-	 * @param messageType
+	 *called from Game class to send messages to clientModel
+	 * @author Philipp
+	 * @param messageType from a specific type
+	 * @param identifier and with additional information to create Message-Object
 	 */
 	public void sendMessage(MessageType messageType, String identifier) {
 		Message message;
@@ -127,7 +135,7 @@ public class Player {
 				break;
 
 			case PlayMsg:
-				message = new PlayMsg(new ArrayList<Card>());
+				message = new PlayMsg(new ArrayList<>());
 				message.send(socket);
 				break;
 		}
