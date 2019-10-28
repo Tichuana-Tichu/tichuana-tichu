@@ -40,7 +40,7 @@ public class ClientModel {
                     Message msg = Message.receive(socket);
 
                     if (msg instanceof AnnouncedTichuMsg) {
-                        logger.info("this player"+msg.getPlayers().toString()+" announced tichu");
+                        logger.info(msg.getPlayers().toString()+" announced: "+msg.getTichuType());
                     }
 
                     if (msg instanceof ConnectedMsg) {

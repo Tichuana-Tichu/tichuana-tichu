@@ -1,11 +1,6 @@
 package ch.tichuana.tichu.server.model;
 
 import ch.tichuana.tichu.commons.message.*;
-import ch.tichuana.tichu.commons.models.Card;
-
-import java.io.IOException;
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class Game {

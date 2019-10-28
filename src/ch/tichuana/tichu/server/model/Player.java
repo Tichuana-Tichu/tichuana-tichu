@@ -18,10 +18,10 @@ public class Player {
 	private volatile boolean closed;
 	private ServerModel serverModel;
 	//SimpleBooleanProperties control the game flow
-	private SimpleBooleanProperty announcedTichu = new SimpleBooleanProperty(false);
-	private SimpleBooleanProperty announcedGrandTichu = new SimpleBooleanProperty(false);
-	private SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
-	private SimpleBooleanProperty hasMahjong = new SimpleBooleanProperty(false);
+	private volatile SimpleBooleanProperty announcedTichu = new SimpleBooleanProperty(false);
+	private volatile SimpleBooleanProperty announcedGrandTichu = new SimpleBooleanProperty(false);
+	private volatile SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
+	private volatile SimpleBooleanProperty hasMahjong = new SimpleBooleanProperty(false);
 	private ArrayList currentMove;
 	private ArrayList<Card> hand;
 
@@ -58,13 +58,6 @@ public class Player {
 							break;
 
 						case GrandTichu:
-							if (!this.serverModel.getPlayers().isEmpty()) {
-								this.announcedGrandTichu.addListener((observable, oldValue, newValue) -> {
-									if(newValue)
-										this.serverModel.broadcast(MessageType.AnnouncedTichuMsg, "GrandTichu");
-								});
-							}
-
 							logger.info("Player: "+this.playerName+" announced GrandTichu");
 							this.announcedGrandTichu.set(true);
 							this.announcedTichu.set(false);
@@ -152,13 +145,13 @@ public class Player {
 	public final void setAnnouncedGrandTichu(boolean announcedGrandTichu) {
 		this.announcedGrandTichu.set(announcedGrandTichu);
 	}
-	public SimpleBooleanProperty isHisTurn() {
+	public SimpleBooleanProperty getHisHisTurnProperty() {
 		return this.hisTurn;
 	}
 	public final void setHisTurn(boolean hisTurn) {
 		this.hisTurn.set(hisTurn);
 	}
-	public SimpleBooleanProperty hasMahjong() {
+	public SimpleBooleanProperty getHasMahjongProperty() {
 		return this.hasMahjong;
 	}
 	public final void setHasMahjong(boolean hasMahjong) {
