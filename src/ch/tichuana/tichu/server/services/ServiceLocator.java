@@ -3,6 +3,7 @@ package ch.tichuana.tichu.server.services;
 import ch.tichuana.tichu.client.services.Configuration;
 
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class ServiceLocator {
 
@@ -10,6 +11,7 @@ public class ServiceLocator {
 	private Configuration configuration;
 	private DatabaseConnector databaseConnector;
 	private PlayerRepository playerRepository;
+	private final Logger logger = Logger.getLogger("");
 
 	/**
 	 * ServiceLocator is a singleton. There's only one instance.
@@ -17,7 +19,7 @@ public class ServiceLocator {
 	 * @author Philipp
 	 */
 	private ServiceLocator() {
-		// needs to be private
+		//needs to stay here to be private
 	}
 
 	/**
@@ -25,7 +27,7 @@ public class ServiceLocator {
 	 * @return serviceLocator
 	 */
 	public static ServiceLocator getServiceLocator() {
-		if (serviceLocator == null){
+		if (serviceLocator == null) {
 			serviceLocator = new ServiceLocator();
 		}
 		return serviceLocator;

@@ -7,8 +7,6 @@ import ch.tichuana.tichu.server.services.DatabaseConnector;
 import ch.tichuana.tichu.server.services.PlayerRepository;
 import ch.tichuana.tichu.server.services.ServiceLocator;
 
-import java.util.Locale;
-
 public class Server {
 
 	/**
@@ -16,9 +14,9 @@ public class Server {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		initialize();
 		ServerModel serverModel = new ServerModel();
 		ServerController serverController = new ServerController(serverModel);
-		initialize();
 	}
 
 	public static void initialize(){
