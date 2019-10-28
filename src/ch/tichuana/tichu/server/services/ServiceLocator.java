@@ -1,19 +1,53 @@
 package ch.tichuana.tichu.server.services;
 
+import ch.tichuana.tichu.client.services.Configuration;
+
 import java.util.Properties;
 
 public class ServiceLocator {
 
 	private static ServiceLocator serviceLocator;
-	private Properties properties;
+	private Configuration configuration;
 	private DatabaseConnector databaseConnector;
+	private PlayerRepository playerRepository;
 
+	/**
+	 * ServiceLocator is a singleton. There's only one instance.
+	 * Private Constructor only used by factory method.
+	 * @author Philipp
+	 */
 	private ServiceLocator() {
-		// TODO - implement ServiceLocator.ServiceLocator
+		// needs to be private
 	}
 
-	private ServiceLocator getServiceLocator() {
-		return this.serviceLocator;
+	/**
+	 * Factory method returns ServiceLocator if it already exists. Will create it, if not.
+	 * @return serviceLocator
+	 */
+	public static ServiceLocator getServiceLocator() {
+		if (serviceLocator == null){
+			serviceLocator = new ServiceLocator();
+		}
+		return serviceLocator;
 	}
 
+	//Getter and Setter
+	public DatabaseConnector getDatabaseConnector() {
+		return databaseConnector;
+	}
+	public void setDatabaseConnector(DatabaseConnector databaseConnector) {
+		this.databaseConnector = databaseConnector;
+	}
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
+	public PlayerRepository getPlayerRepository() {
+		return playerRepository;
+	}
+	public void setPlayerRepository(PlayerRepository playerRepository) {
+		this.playerRepository = playerRepository;
+	}
 }

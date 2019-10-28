@@ -2,22 +2,27 @@ package ch.tichuana.tichu.client;
 
 import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.controller.*;
+import ch.tichuana.tichu.client.services.Configuration;
+import ch.tichuana.tichu.client.services.ServiceLocator;
+import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.client.view.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class Client extends Application {
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Locale;
+import java.util.Properties;
 
-	private ClientModel clientModel;
-	private ClientController clientController;
-	private GameView gameView;
+public class Client extends Application {
 
 	/**
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO - implement Client.main
+		launch(args);
 	}
 
 	/**
@@ -27,6 +32,19 @@ public class Client extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		initalize();
 
+	}
+
+	public static void initalize(){
+		ServiceLocator serviceLocator = ServiceLocator.getServiceLocator();
+
+		// initialize properites from file
+		Configuration configuration = new Configuration("src/ch/tichuana/tichu/client/resources/config.properties");
+		serviceLocator.setConfiguration(configuration);
+
+		// initialize Translator
+		Translator translator = new Translator(new Locale(configuration.getProperty("locale")));
+		serviceLocator.setTranslator(translator);
 	}
 }
