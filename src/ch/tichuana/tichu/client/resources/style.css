@@ -1,0 +1,13 @@
+.lobbyview{
+    -fx-padding:50px;
+    -fx-background-color: black;
+    -fx-background-image: url("../resources/images/background.jpg");
+    -fx-background-position: center center;
+    -fx-text-fill: white;
+}
+.label{
+    -fx-padding:50px;
+}
+#pw{
+    -fx-padding: 50px;
+}
