@@ -1,6 +1,8 @@
 package ch.tichuana.tichu.client.view;
 
 import ch.tichuana.tichu.client.model.ClientModel;
+import ch.tichuana.tichu.client.services.ServiceLocator;
+import ch.tichuana.tichu.client.services.Translator;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -32,6 +34,8 @@ public class GameView {
 
 		this.stage = stage;
 		this.clientModel = clientModel;
+		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
+
 		//temporary instantiation
 		this.playBtn = new Button("play/pass");
 		this.schupfenBtn = new Button("schupfen");
@@ -42,12 +46,13 @@ public class GameView {
 		// TODO - implement GameView.GameView
 
 		Scene scene = new Scene(root);
+		Scene lobby = new Scene(new LobbyView());
 		/*
 		scene.getStylesheets().add(
 				getClass().getResource("style.css").toExternalForm());
 		 */
-		stage.setScene(scene);
-		stage.setTitle("Tichu-Client");
+		stage.setScene(lobby);
+		stage.setTitle(translator.getString("application.name"));
 		stage.show();
 	}
 	public void start() {

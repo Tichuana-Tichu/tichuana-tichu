@@ -16,4 +16,8 @@ public class Card {
 		return this.cardView;
 	}
 
+	private String cardToFilename(){
+		
+	}
+
 }
