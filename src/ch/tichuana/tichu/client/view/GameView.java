@@ -6,15 +6,11 @@ import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GameView {
 
 	private Stage stage;
-	private ClientModel clientModel;
 	private PlayView playView;
 	private LobbyView lobbyView;
 	private Translator translator;
@@ -29,7 +25,6 @@ public class GameView {
 	public GameView(Stage stage, ClientModel clientModel) {
 
 		this.stage = stage;
-		this.clientModel = clientModel;
 		this.translator = ServiceLocator.getServiceLocator().getTranslator();
 		this.configuration = ServiceLocator.getServiceLocator().getConfiguration();
 
@@ -46,10 +41,12 @@ public class GameView {
 	}
 
 	public void start() {
+		stage.setMinWidth(1200);
+		stage.setMinHeight(850);
 		stage.show();
 		// Prevent resizing below initial size
-		stage.setMinWidth(stage.getWidth());
-		stage.setMinHeight(stage.getHeight());
+		//stage.setMinWidth(stage.getWidth());
+		//stage.setMinHeight(stage.getHeight());
 	}
 
 	public void stop() {

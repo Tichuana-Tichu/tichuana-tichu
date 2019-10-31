@@ -30,13 +30,13 @@ public class ClientController {
 		this.gameView.getLobbyView().getLoginBtn().setOnAction(event -> {
 			LobbyView lv = this.gameView.getLobbyView();
 
-			lv.getLoginBtn().setDisable(true);
 			int port = Integer.parseInt(ServiceLocator.getServiceLocator().getConfiguration().getProperty("port"));
 			String ipAddress =ServiceLocator.getServiceLocator().getConfiguration().getProperty("ipAddress");
-			String playerName = lv.getUserField().getText();
-			String password = lv.getPasswordField().getText();
-			this.clientModel.connect(ipAddress, port, playerName, password);
-
+			if (!lv.getUserField().getText().isEmpty() || !lv.getPasswordField().getText().isEmpty()) {
+                String playerName = lv.getUserField().getText();
+                String password = lv.getPasswordField().getText();
+                this.clientModel.connect(ipAddress, port, playerName, password);
+            }
 		});
 
 		this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setOnAction(event -> {

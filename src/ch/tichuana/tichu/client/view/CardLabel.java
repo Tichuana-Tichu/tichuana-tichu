@@ -9,19 +9,23 @@ import javafx.scene.image.ImageView;
 
 public class CardLabel extends Label {
 
-	private Image cardimg;
+	private Image cardImg;
 	private ImageView cardView;
 	private Card card;
 
-    public ImageView getCardView() {
-        return this.cardView;
-    }
-
-
-	public void setCard(Card card) {
-		this.card = card;
+	/**
+	 *
+	 */
+	public CardLabel() {
+		super();
+		this.getStyleClass().add("card");
 	}
 
+	/**
+	 *
+	 * @param card
+	 * @return
+	 */
 	public String cardToFilename(Card card){
 		String fileName = "";
 		Suit suit = card.getSuit();
@@ -31,5 +35,13 @@ public class CardLabel extends Label {
 		fileName += card.getRank().toString();
 		fileName += ".png";
 		return fileName;
+	}
+
+	//Getter & Setter
+    public ImageView getCardView() {
+        return this.cardView;
+    }
+	public void setCard(Card card) {
+		this.card = card;
 	}
 }

@@ -1,13 +1,53 @@
-.lobbyview{
-    -fx-padding:50px;
-    -fx-background-color: black;
-    -fx-background-image: url("../resources/images/background.jpg");
-    -fx-background-position: center center;
-    -fx-text-fill: white;
+* {
+    -fx-font-family: 'Matura MT Script Capitals', arial;
 }
-.label{
-    -fx-padding:50px;
+
+LobbyView {
+    -fx-background-image: url("../resources/images/Background_Login.jpg");
+    -fx-background-position: center bottom;
 }
-#pw{
-    -fx-padding: 50px;
+
+VBox {
+    -fx-alignment: center bottom;
+    -fx-padding: 20px;
+    -fx-spacing: 20px;
+}
+
+TextField {
+    -fx-padding: 5px;
+    -fx-max-width: 250px;
+}
+
+TextField:hover {
+    -fx-opacity: 0.8;
+}
+
+PasswordField {
+    -fx-padding: 5px;
+    -fx-max-width: 250px;
+}
+
+PasswordField:hover {
+    -fx-opacity: 0.8;
+}
+
+ToggleButton {
+    -fx-background-color: rgba(0, 0, 255, 0);
+    -fx-min-width: 300px;
+    -fx-min-height: 70px;
+    -fx-text-fill: #ffef69;
+    -fx-font-size: 22px;
+    -fx-background-image: url("../resources/images/Button.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 300px;
+    -fx-padding: 5px;
+}
+
+ToggleButton:hover {
+    -fx-opacity: 0.7;
+}
+
+ToggleButton:pressed {
+    -fx-opacity: 0.5;
 }

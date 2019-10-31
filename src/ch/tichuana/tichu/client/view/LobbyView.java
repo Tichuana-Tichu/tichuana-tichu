@@ -1,43 +1,43 @@
 package ch.tichuana.tichu.client.view;
 
+import ch.tichuana.tichu.client.services.Configuration;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-public class LobbyView extends VBox {
+public class LobbyView extends BorderPane {
 
-	private Image image;
-	private ImageView imageView;
 	private TextField userField;
 	private PasswordField passwordField;
-	private Button loginBtn;
-	private Translator translator;
-	private Label userLabel, passwordLabel;
+	private ToggleButton loginBtn;
+	private Settings settings;
 
 	public LobbyView() {
-		this.translator = ServiceLocator.getServiceLocator().getTranslator();
+		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
+		Configuration config = ServiceLocator.getServiceLocator().getConfiguration();
+		this.settings = new Settings();
+
 		this.userField = new TextField();
-		this.userLabel = new Label(translator.getString("lobbyview.username"));
+		this.userField.setPromptText(translator.getString("lobbyview.username"));
+		this.userField.setFocusTraversable(false);
+
 		this.passwordField = new PasswordField();
-		this.passwordLabel = new Label(translator.getString("lobbyview.password"));
-		this.loginBtn = new Button(translator.getString("lobbyview.login"));
-		Region spacer = new Region();
-		//spacer.setPrefHeight(40);
-		VBox.setVgrow(spacer, Priority.ALWAYS);
+		this.passwordField.setPromptText(translator.getString("lobbyview.password"));
+		this.passwordField.setFocusTraversable(false);
 
-		passwordField.setId("pw");
+		this.loginBtn = new ToggleButton(translator.getString("lobbyview.login"));
 
-		this.getStyleClass().add("lobbyview");
+		VBox controls = new VBox(userField, passwordField, loginBtn);
+		this.setBottom(controls);
+		this.setTop(settings);
 
-		this.getChildren().addAll(spacer, userLabel, userField, passwordLabel, passwordField, loginBtn);
+		Image tichuImg = new Image(config.getProperty("tichuImg"));
+		ImageView tichuView = new ImageView(tichuImg);
+		this.setCenter(tichuView);
 	}
 
 	//Getter
@@ -47,7 +47,10 @@ public class LobbyView extends VBox {
 	public PasswordField getPasswordField() {
 		return passwordField;
 	}
-	public Button getLoginBtn() {
+	public ToggleButton getLoginBtn() {
 		return loginBtn;
+	}
+	public Settings getSettings() {
+		return settings;
 	}
 }

@@ -8,12 +8,7 @@ import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.client.view.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Locale;
-import java.util.Properties;
 
 public class Client extends Application {
 
@@ -35,7 +30,7 @@ public class Client extends Application {
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		initalize();
+		initialize();
 		this.clientModel = new ClientModel();
 		this.gameView = new GameView(primaryStage, clientModel);
 		this.clientController = new ClientController(clientModel, gameView, primaryStage);
@@ -50,10 +45,10 @@ public class Client extends Application {
 
 	}
 
-	public static void initalize(){
+	public static void initialize(){
 		ServiceLocator serviceLocator = ServiceLocator.getServiceLocator();
 
-		// initialize properites from file
+		// initialize properties from file
 		Configuration configuration = new Configuration("src/ch/tichuana/tichu/client/resources/config.properties");
 		serviceLocator.setConfiguration(configuration);
 

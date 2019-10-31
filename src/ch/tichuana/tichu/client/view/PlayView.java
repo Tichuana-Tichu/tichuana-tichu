@@ -9,6 +9,7 @@ public class PlayView extends BorderPane {
 	private BottomView bottomView;
 	private PlayArea playArea;
 	private StatArea statArea;
+	private Settings settings;
 	private Translator translator;
 
 	public PlayView() {
@@ -18,10 +19,12 @@ public class PlayView extends BorderPane {
 		this.bottomView = new BottomView();
 		this.playArea = new PlayArea();
 		this.statArea = new StatArea();
+		this.settings = new Settings();
 
 		this.setBottom(this.bottomView);
 		this.setLeft(this.statArea);
 		this.setCenter(this.playArea);
+		this.setTop(this.settings);
 	}
 
 	//Getter
@@ -33,5 +36,8 @@ public class PlayView extends BorderPane {
 	}
 	public StatArea getStatArea() {
 		return statArea;
+	}
+	public Settings getSettings() {
+		return settings;
 	}
 }

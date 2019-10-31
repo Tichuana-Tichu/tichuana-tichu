@@ -1,16 +1,23 @@
 package ch.tichuana.tichu.client.view;
 
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
-import java.util.ArrayList;
+public class CardArea extends VBox {
 
-public class CardArea {
+	private HBox cardsLabels;
+	private TextArea console;
 
-	private HBox hBox;
-	private ArrayList cards;
+	public CardArea() {
+		this.cardsLabels = new HBox();
+		this.console = new TextArea();
 
-	public HBox getHBox() {
-		return this.hBox;
+		this.getChildren().addAll(this.console, this.cardsLabels);
 	}
 
+	//Getter
+	public HBox getCardsLabels() {
+		return this.cardsLabels;
+	}
 }
