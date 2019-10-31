@@ -2,10 +2,8 @@ package ch.tichuana.tichu.client.view;
 
 import javafx.scene.layout.VBox;
 
-public class StatArea {
-
-	private VBox vBox;
-
+public class StatArea extends VBox{
+	
 	public StatArea() {
 		// TODO - implement StatArea.StatArea
 	}

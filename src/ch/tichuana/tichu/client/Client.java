@@ -38,7 +38,7 @@ public class Client extends Application {
 		initalize();
 		this.clientModel = new ClientModel();
 		this.gameView = new GameView(primaryStage, clientModel);
-		this.clientController = new ClientController(clientModel, gameView);
+		this.clientController = new ClientController(clientModel, gameView, primaryStage);
 
 		gameView.start();
 	}

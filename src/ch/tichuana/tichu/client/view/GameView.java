@@ -13,19 +13,12 @@ import javafx.stage.Stage;
 
 public class GameView {
 
-	private Scene scene;
 	private Stage stage;
 	private ClientModel clientModel;
-	private Pane root;
+	private PlayView playView;
+	private LobbyView lobbyView;
 	private Translator translator;
 	private Configuration configuration;
-
-	//temporary Buttons
-	private Button playBtn;
-	private Button schupfenBtn;
-	private Button smallTichuBtn;
-	private Button grandTichuBtn;
-	private Button signInBtn;
 
 	/**
      * Buttons for testing reasons only, in case of a merging conflict: move lines into ControlArea.java
@@ -40,25 +33,18 @@ public class GameView {
 		this.translator = ServiceLocator.getServiceLocator().getTranslator();
 		this.configuration = ServiceLocator.getServiceLocator().getConfiguration();
 
-		//temporary instantiation
-		this.playBtn = new Button(translator.getString("controlarea.play"));
-		this.schupfenBtn = new Button(translator.getString("controlarea.schupfen"));
-		this.smallTichuBtn = new Button(translator.getString("controlarea.smalltichu"));
-		this.grandTichuBtn = new Button(translator.getString("controlarea.grandtichu"));
-		this.signInBtn = new Button("signIn");
-		VBox root = new VBox(this.signInBtn, this.grandTichuBtn, this.smallTichuBtn, this.schupfenBtn, this.playBtn);
-		// TODO - implement GameView.GameView
+		this.lobbyView = new LobbyView();
+		Scene lobby = new Scene(this.lobbyView);
 
-		Scene scene = new Scene(root);
-		Scene lobby = new Scene(new LobbyView());
+		this.playView = new PlayView();
 
-		scene.getStylesheets().add(
-				getClass().getResource(configuration.getProperty("stylesheet")).toExternalForm());
+		lobby.getStylesheets().add(
+				getClass().getResource(configuration.getProperty("lobbyStyle")).toExternalForm());
 
-		stage.setScene(lobby);
-		stage.setTitle(translator.getString("application.name"));
-		stage.show();
+		this.stage.setScene(lobby);
+		this.stage.setTitle(translator.getString("application.name"));
 	}
+
 	public void start() {
 		stage.show();
 		// Prevent resizing below initial size
@@ -71,23 +57,22 @@ public class GameView {
 		Platform.exit();
 	}
 
-	//temporary Getters
-	public Button getPlayBtn() {
-		return playBtn;
+	public void updateView() {
+		Scene game = new Scene(this.playView);
+		game.getStylesheets().add(
+				getClass().getResource(configuration.getProperty("playStyle")).toExternalForm());
+		stage.setScene(game);
+		stage.setTitle(translator.getString("application.name"));
 	}
-	public Button getSchupfenBtn() {
-		return this.schupfenBtn;
-	}
-	public Button getSmallTichuBtn() {
-		return this.smallTichuBtn;
-	}
-	public Button getGrandTichuBtn() {
-		return this.grandTichuBtn;
-	}
-	public Button getSignInBtn(){
-		return this.signInBtn;
-	}
+
+	//Getters
 	public Stage getStage() {
 		return this.stage;
+	}
+	public PlayView getPlayView() {
+		return playView;
+	}
+	public LobbyView getLobbyView() {
+		return lobbyView;
 	}
 }

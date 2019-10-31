@@ -2,14 +2,12 @@ package ch.tichuana.tichu.client.view;
 
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -21,7 +19,6 @@ public class LobbyView extends VBox {
 	private TextField userField;
 	private PasswordField passwordField;
 	private Button loginBtn;
-	private HBox root;
 	private Translator translator;
 	private Label userLabel, passwordLabel;
 
@@ -43,8 +40,14 @@ public class LobbyView extends VBox {
 		this.getChildren().addAll(spacer, userLabel, userField, passwordLabel, passwordField, loginBtn);
 	}
 
-	public HBox getRoot() {
-		return this.root;
+	//Getter
+	public TextField getUserField() {
+		return userField;
 	}
-
+	public PasswordField getPasswordField() {
+		return passwordField;
+	}
+	public Button getLoginBtn() {
+		return loginBtn;
+	}
 }

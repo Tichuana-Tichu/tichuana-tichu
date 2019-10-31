@@ -1,0 +1,11 @@
+ch.tichuana.tichu.client
+ch.tichuana.tichu.client.controller
+ch.tichuana.tichu.client.model
+ch.tichuana.tichu.client.services
+ch.tichuana.tichu.client.view
+ch.tichuana.tichu.commons.message
+ch.tichuana.tichu.commons.models
+ch.tichuana.tichu.server
+ch.tichuana.tichu.server.controller
+ch.tichuana.tichu.server.model
+ch.tichuana.tichu.server.services
