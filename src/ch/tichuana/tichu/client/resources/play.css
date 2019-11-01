@@ -10,9 +10,9 @@ PlayView {
 }
 
 BottomView {
-    -fx-padding: 20px;
-    -fx-spacing: 15px;
-    -fx-alignment: center center;
+    -fx-spacing: 10px;
+    -fx-padding: 0px 0px 10px 0px;
+    -fx-alignment: center bottom;
 }
 
 ToggleButton {
@@ -26,7 +26,7 @@ ToggleButton {
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-size: 250px;
-    -fx-padding: 5px;
+    -fx-padding: 0px;
 }
 
 ToggleButton:hover {
@@ -43,8 +43,8 @@ TextArea {
 }
 
 CardArea {
-    -fx-padding: 10px;
-    -fx-spacing: 30px;
+    -fx-spacing: 40px;
+    -fx-padding: 0px 0px -5px 0px;
 }
 
 CardLabel {
@@ -63,4 +63,14 @@ CardLabel:hover {
 CardLabel:focused {
     -fx-border-color: #B20000;
     -fx-effect: dropshadow(one-pass-box, rgb(178, 0, 0), 10, 0, 2, 2);
+}
+
+PlayArea Label {
+    -fx-font-size: 22px;
+    -fx-text-fill: FFEF69;
+    -fx-padding: 50px;
+}
+
+PlayArea {
+    -fx-alignment: center top;
 }

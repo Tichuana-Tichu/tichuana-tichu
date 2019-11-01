@@ -41,8 +41,8 @@ public class GameView {
 	}
 
 	public void start() {
-		stage.setMinWidth(1200);
-		stage.setMinHeight(850);
+		stage.setMinWidth(1700);
+		stage.setMinHeight(900);
 		stage.show();
 		// Prevent resizing below initial size
 		//stage.setMinWidth(stage.getWidth());
@@ -59,7 +59,9 @@ public class GameView {
 		game.getStylesheets().add(
 				getClass().getResource(configuration.getProperty("playStyle")).toExternalForm());
 		stage.setScene(game);
-		stage.setTitle(translator.getString("application.name"));
+		stage.setMinWidth(1700);
+		stage.setMinHeight(900);
+		stage.show();
 	}
 
 	//Getters

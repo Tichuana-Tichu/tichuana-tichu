@@ -38,6 +38,7 @@ public class ServerModel {
 						Socket socket = listener.accept();
 						Player player = new Player(ServerModel.this, socket);
 
+						/*
 						if (players.size() == 2) {
 							this.teamOne = new Team(players.get(0), players.get(1));
 						}
@@ -45,6 +46,7 @@ public class ServerModel {
 							this.teamTwo = new Team(players.get(2), players.get(3));
 							this.game = new Game(teamOne, teamTwo, ServerModel.this);
 						}
+						 */
 
 						players.add(player);
 					} catch (IOException e) {

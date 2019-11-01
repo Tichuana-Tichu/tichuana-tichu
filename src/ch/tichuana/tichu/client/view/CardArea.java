@@ -3,9 +3,9 @@ package ch.tichuana.tichu.client.view;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.Rank;
 import ch.tichuana.tichu.commons.models.Suit;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class CardArea extends VBox {
@@ -25,9 +25,10 @@ public class CardArea extends VBox {
 			//TODO - exchange after testing with real cards
 			cardLabel.setCard(new Card(Suit.Pagodas, Rank.Ace));
 			cardsLabels.getChildren().add(cardLabel);
-			cardsLabels.setSpacing(-20);
+			cardsLabels.setSpacing(-40);
 		}
 
+		//HBox.setHgrow(this.cardsLabels, Priority.ALWAYS);
 		this.getChildren().addAll(this.console, this.cardsLabels);
 	}
 
