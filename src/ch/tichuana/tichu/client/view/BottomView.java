@@ -5,19 +5,20 @@ import javafx.scene.layout.HBox;
 public class BottomView extends HBox {
 
 	private ControlArea controlArea;
-	private PlayArea playArea;
+	private CardArea cardArea;
 
 	public BottomView() {
 
 		this.controlArea = new ControlArea();
-		this.getChildren().add(this.controlArea);
+		this.cardArea = new CardArea();
+		this.getChildren().addAll(this.cardArea, this.controlArea);
 	}
 
 	//Getter
 	public ControlArea getControlArea() {
 		return controlArea;
 	}
-	public PlayArea getPlayArea() {
-		return playArea;
+	public CardArea getCardArea() {
+		return cardArea;
 	}
 }

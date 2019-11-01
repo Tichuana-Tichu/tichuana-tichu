@@ -42,11 +42,12 @@ public class ClientModel {
                     Message msg = Message.receive(socket);
 
                     if (msg instanceof AnnouncedTichuMsg) {
-                        logger.info(msg.getPlayers().toString()+" announced: "+msg.getTichuType());
+                        newestMessage.set("");
+                        newestMessage.set(msg.getPlayers().toString()+" announced: "+msg.getTichuType());
                     }
 
                     if (msg instanceof ConnectedMsg) {
-                        logger.info("successfully connected to Server");
+                        newestMessage.set("successfully connected to Server");
                         this.connected.set(true);
                     }
 
@@ -161,5 +162,8 @@ public class ClientModel {
     }
     public SimpleBooleanProperty getConnectedProperty() {
         return connected;
+    }
+    public SimpleStringProperty getNewestMessageProperty() {
+        return newestMessage;
     }
 }

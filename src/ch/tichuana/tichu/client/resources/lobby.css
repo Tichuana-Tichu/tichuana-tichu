@@ -24,8 +24,11 @@ VBox {
     -fx-opacity: 0.8;
 }
 .userPrompt:focused {
+    -fx-highlight-fill: #b20000;
+    /*
     -fx-border-color: #b20000;
-    -fx-border-width: 1px;
+     */
+    -fx-border-width: 2px;
     -fx-background-radius: 2px;
 }
 

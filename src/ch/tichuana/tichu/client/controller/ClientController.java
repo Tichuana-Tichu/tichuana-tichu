@@ -7,6 +7,7 @@ import ch.tichuana.tichu.client.view.LobbyView;
 import ch.tichuana.tichu.commons.message.MessageType;
 import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.stage.Stage;
 
 public class ClientController {
@@ -26,6 +27,8 @@ public class ClientController {
 		this.clientModel = clientModel;
 		this.gameView = gameView;
 		this.stage = stage;
+
+		this.clientModel.getNewestMessageProperty().addListener(this::prompt);
 
 		this.gameView.getLobbyView().getLoginBtn().setOnAction(event -> {
 			LobbyView lv = this.gameView.getLobbyView();
@@ -58,10 +61,18 @@ public class ClientController {
 		this.gameView.getStage().setOnCloseRequest(event -> this.clientModel.disconnect());
 
 		this.clientModel.getConnectedProperty().addListener(event -> {
-			Platform.runLater(() -> {
-				this.gameView.updateView();
-			});
+			Platform.runLater(() -> this.gameView.updateView());
 		});
+	}
+
+	/**
+	 *
+	 * @param observableValue
+	 * @param oldVal
+	 * @param newVal
+	 */
+	private void prompt(ObservableValue<? extends String> observableValue, String oldVal, String newVal) {
+		Platform.runLater(() -> this.gameView.getPlayView().getBottomView().getCardArea().setConsole(newVal));
 	}
 
 	private void checkValidCombination() {

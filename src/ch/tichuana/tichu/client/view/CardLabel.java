@@ -8,6 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.util.Objects;
+
 public class CardLabel extends Label {
 
 	private Image cardImg;
@@ -31,11 +33,13 @@ public class CardLabel extends Label {
 	public void setCard(Card card) {
 		if (card != null) {
 			String fileName = cardToFileName(card);
-			Image image = new Image(config.getProperty("cards"+fileName));
+			Image image = new Image(config.getProperty("cards")+fileName);
 			ImageView imv = new ImageView(image);
-			imv.fitWidthProperty().bind(this.widthProperty());
-			imv.fitHeightProperty().bind(this.heightProperty());
-			imv.setPreserveRatio(true);
+			imv.setFitWidth(130);
+			imv.setFitHeight(190);
+			//imv.fitWidthProperty().bind(this.widthProperty());
+			//imv.fitHeightProperty().bind(this.heightProperty());
+			//imv.setPreserveRatio(true);
 			this.setGraphic(imv);
 		} else {
 			this.setGraphic(null);
@@ -50,10 +54,10 @@ public class CardLabel extends Label {
 	private String cardToFileName(Card card){
 		String fileName = "";
 		Suit suit = card.getSuit();
-		if (suit != null) {
+		if (suit != null) { //for special cards
 			fileName += suit.toString()+"_";
 		}
-		fileName += card.getRank().toString();
+		fileName += card.getRank().toString().toLowerCase();
 		fileName += ".png";
 		return fileName;
 	}
