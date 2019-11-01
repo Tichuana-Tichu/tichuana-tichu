@@ -39,6 +39,8 @@ public class LobbyView extends BorderPane {
 
 		Image tichuImg = new Image(config.getProperty("tichuImg"));
 		ImageView tichuView = new ImageView(tichuImg);
+		tichuView.setFitHeight(500);
+		tichuView.setFitWidth(638);
 		this.setCenter(tichuView);
 	}
 

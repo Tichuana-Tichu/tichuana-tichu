@@ -9,6 +9,8 @@ LobbyView {
     -fx-background-size: cover;
 }
 
+
+
 VBox {
     -fx-alignment: center bottom;
     -fx-padding: 20px;
