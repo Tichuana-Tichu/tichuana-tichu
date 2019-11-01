@@ -5,6 +5,8 @@
 LobbyView {
     -fx-background-image: url("../resources/images/Background_Login.jpg");
     -fx-background-position: center bottom;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
 }
 
 VBox {
@@ -13,22 +15,18 @@ VBox {
     -fx-spacing: 20px;
 }
 
-TextField {
+.userPrompt {
     -fx-padding: 5px;
     -fx-max-width: 250px;
+    -fx-effect: dropshadow(three-pass-box, rgb(69, 69, 70), 10, 0, 2, 2);
 }
-
-TextField:hover {
+.userPrompt:hover {
     -fx-opacity: 0.8;
 }
-
-PasswordField {
-    -fx-padding: 5px;
-    -fx-max-width: 250px;
-}
-
-PasswordField:hover {
-    -fx-opacity: 0.8;
+.userPrompt:focused {
+    -fx-border-color: #b20000;
+    -fx-border-width: 1px;
+    -fx-background-radius: 2px;
 }
 
 ToggleButton {
@@ -43,11 +41,9 @@ ToggleButton {
     -fx-background-size: 300px;
     -fx-padding: 5px;
 }
-
 ToggleButton:hover {
     -fx-opacity: 0.7;
 }
-
 ToggleButton:pressed {
     -fx-opacity: 0.5;
 }

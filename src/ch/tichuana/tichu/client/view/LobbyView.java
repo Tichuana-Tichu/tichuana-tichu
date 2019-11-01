@@ -11,12 +11,12 @@ import javafx.scene.layout.VBox;
 
 public class LobbyView extends BorderPane {
 
+	private Settings settings;
 	private TextField userField;
 	private PasswordField passwordField;
 	private ToggleButton loginBtn;
-	private Settings settings;
 
-	public LobbyView() {
+	LobbyView() {
 		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
 		Configuration config = ServiceLocator.getServiceLocator().getConfiguration();
 		this.settings = new Settings();
@@ -24,10 +24,12 @@ public class LobbyView extends BorderPane {
 		this.userField = new TextField();
 		this.userField.setPromptText(translator.getString("lobbyview.username"));
 		this.userField.setFocusTraversable(false);
+		this.userField.getStyleClass().add("userPrompt");
 
 		this.passwordField = new PasswordField();
 		this.passwordField.setPromptText(translator.getString("lobbyview.password"));
 		this.passwordField.setFocusTraversable(false);
+		this.passwordField.getStyleClass().add("userPrompt");
 
 		this.loginBtn = new ToggleButton(translator.getString("lobbyview.login"));
 
