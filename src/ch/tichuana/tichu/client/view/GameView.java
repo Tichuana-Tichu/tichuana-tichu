@@ -5,7 +5,9 @@ import ch.tichuana.tichu.client.services.Configuration;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
 import javafx.application.Platform;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class GameView {
@@ -41,12 +43,18 @@ public class GameView {
 	}
 
 	public void start() {
-		stage.setMinWidth(1700);
-		stage.setMinHeight(900);
+
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+
+		//set Stage boundaries to visible bounds of the main screen
+		stage.setX(primaryScreenBounds.getMinX());
+		stage.setY(primaryScreenBounds.getMinY());
+		stage.setWidth(primaryScreenBounds.getWidth()-100);
+		stage.setHeight(primaryScreenBounds.getHeight()-80);
+
 		stage.show();
-		// Prevent resizing below initial size
-		//stage.setMinWidth(stage.getWidth());
-		//stage.setMinHeight(stage.getHeight());
+		stage.setMinWidth(stage.getWidth());
+		stage.setMinHeight(stage.getHeight());
 	}
 
 	public void stop() {
@@ -59,9 +67,6 @@ public class GameView {
 		game.getStylesheets().add(
 				getClass().getResource(configuration.getProperty("playStyle")).toExternalForm());
 		stage.setScene(game);
-		stage.setMinWidth(1700);
-		stage.setMinHeight(900);
-		stage.show();
 	}
 
 	//Getters

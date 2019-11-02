@@ -4,9 +4,11 @@ import ch.tichuana.tichu.client.services.Configuration;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.Suit;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Screen;
 
 import java.util.Objects;
 
@@ -31,15 +33,14 @@ public class CardLabel extends Label {
 	 * @param card
 	 */
 	public void setCard(Card card) {
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+
 		if (card != null) {
 			String fileName = cardToFileName(card);
 			Image image = new Image(config.getProperty("cards")+fileName);
 			ImageView imv = new ImageView(image);
-			imv.setFitWidth(130);
-			imv.setFitHeight(190);
-			//imv.fitWidthProperty().bind(this.widthProperty());
-			//imv.fitHeightProperty().bind(this.heightProperty());
-			//imv.setPreserveRatio(true);
+			imv.setFitWidth(primaryScreenBounds.getWidth()/13);
+			imv.setPreserveRatio(true);
 			this.setGraphic(imv);
 		} else {
 			this.setGraphic(null);

@@ -68,7 +68,7 @@ CardLabel:focused {
 PlayArea Label {
     -fx-font-size: 22px;
     -fx-text-fill: FFEF69;
-    -fx-padding: 50px;
+    -fx-padding: 20px;
 }
 
 PlayArea {

@@ -3,11 +3,13 @@ package ch.tichuana.tichu.client.view;
 import ch.tichuana.tichu.client.services.Configuration;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 
 public class LobbyView extends BorderPane {
 
@@ -39,8 +41,11 @@ public class LobbyView extends BorderPane {
 
 		Image tichuImg = new Image(config.getProperty("tichuImg"));
 		ImageView tichuView = new ImageView(tichuImg);
-		tichuView.setFitHeight(500);
-		tichuView.setFitWidth(638);
+
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+
+		tichuView.setFitHeight(primaryScreenBounds.getHeight()-400);
+		tichuView.setPreserveRatio(true);
 		this.setCenter(tichuView);
 	}
 

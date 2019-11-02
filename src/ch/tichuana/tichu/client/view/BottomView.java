@@ -1,8 +1,9 @@
 package ch.tichuana.tichu.client.view;
 
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 
-public class BottomView extends AnchorPane {
+public class BottomView extends BorderPane {
 
 	private ControlArea controlArea;
 	private CardArea cardArea;
@@ -12,10 +13,8 @@ public class BottomView extends AnchorPane {
 		this.controlArea = new ControlArea();
 		this.cardArea = new CardArea();
 
-		AnchorPane.setLeftAnchor(this.cardArea, 15.0);
-		AnchorPane.setRightAnchor(this.controlArea, 15.0);
-		//VBox.setVgrow(this.cardArea, Priority.ALWAYS);
-		this.getChildren().addAll(this.cardArea, this.controlArea);
+		this.setLeft(this.cardArea);
+		this.setRight(this.controlArea);
 	}
 
 	//Getter
