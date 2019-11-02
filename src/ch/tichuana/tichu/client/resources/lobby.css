@@ -1,13 +1,54 @@
-.lobbyview{
-    -fx-padding:50px;
-    -fx-background-color: black;
-    -fx-background-image: url("../resources/images/background.jpg");
-    -fx-background-position: center center;
-    -fx-text-fill: white;
+* {
+    -fx-font-family: 'Matura MT Script Capitals', arial;
 }
-.label{
-    -fx-padding:50px;
+
+LobbyView {
+    -fx-background-image: url("../resources/images/Background_Login.jpg");
+    -fx-background-position: center bottom;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
 }
-#pw{
-    -fx-padding: 50px;
+
+
+
+VBox {
+    -fx-alignment: center bottom;
+    -fx-padding: 20px;
+    -fx-spacing: 20px;
+}
+
+.userPrompt {
+    -fx-padding: 5px;
+    -fx-max-width: 250px;
+    -fx-effect: dropshadow(three-pass-box, rgb(69, 69, 70), 10, 0, 2, 2);
+}
+.userPrompt:hover {
+    -fx-opacity: 0.8;
+}
+.userPrompt:focused {
+    -fx-highlight-fill: #b20000;
+    /*
+    -fx-border-color: #b20000;
+     */
+    -fx-border-width: 2px;
+    -fx-background-radius: 2px;
+}
+
+ToggleButton {
+    -fx-background-color: rgba(0, 0, 255, 0);
+    -fx-min-width: 300px;
+    -fx-min-height: 70px;
+    -fx-text-fill: #ffef69;
+    -fx-font-size: 22px;
+    -fx-background-image: url("../resources/images/Button.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 300px;
+    -fx-padding: 5px;
+}
+ToggleButton:hover {
+    -fx-opacity: 0.7;
+}
+ToggleButton:pressed {
+    -fx-opacity: 0.5;
 }
