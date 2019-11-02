@@ -58,9 +58,7 @@ public class ClientController {
 		this.gameView.getStage().setOnCloseRequest(event -> this.clientModel.disconnect());
 
 		this.clientModel.getConnectedProperty().addListener(event -> {
-			Platform.runLater(() -> {
-				this.gameView.updateView();
-			});
+			Platform.runLater(() -> this.gameView.updateView());
 		});
 	}
 
