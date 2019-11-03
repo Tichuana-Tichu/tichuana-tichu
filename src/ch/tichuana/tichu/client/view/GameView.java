@@ -30,9 +30,8 @@ public class GameView {
 		this.translator = ServiceLocator.getServiceLocator().getTranslator();
 		this.configuration = ServiceLocator.getServiceLocator().getConfiguration();
 
-		this.lobbyView = new LobbyView();
+		this.lobbyView = new LobbyView(stage);
 		Scene lobby = new Scene(this.lobbyView);
-
 		this.playView = new PlayView();
 
 		lobby.getStylesheets().add(
@@ -49,12 +48,12 @@ public class GameView {
 		//set Stage boundaries to visible bounds of the main screen
 		stage.setX(primaryScreenBounds.getMinX());
 		stage.setY(primaryScreenBounds.getMinY());
-		stage.setWidth(primaryScreenBounds.getWidth()-100);
-		stage.setHeight(primaryScreenBounds.getHeight()-80);
+		stage.setWidth(primaryScreenBounds.getWidth()*0.9);
+		stage.setHeight(primaryScreenBounds.getHeight()*0.9);
+        stage.setMinWidth(stage.getWidth()/3);
+        stage.setMinHeight(stage.getHeight()*0.7);
 
 		stage.show();
-		stage.setMinWidth(stage.getWidth());
-		stage.setMinHeight(stage.getHeight());
 	}
 
 	public void stop() {

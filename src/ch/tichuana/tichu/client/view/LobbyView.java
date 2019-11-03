@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 public class LobbyView extends BorderPane {
 
@@ -17,8 +18,9 @@ public class LobbyView extends BorderPane {
 	private TextField userField;
 	private PasswordField passwordField;
 	private ToggleButton loginBtn;
+	private ImageView tichuView;
 
-	LobbyView() {
+	LobbyView(Stage stage) {
 		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
 		Configuration config = ServiceLocator.getServiceLocator().getConfiguration();
 		this.settings = new Settings();
@@ -40,11 +42,10 @@ public class LobbyView extends BorderPane {
 		this.setTop(settings);
 
 		Image tichuImg = new Image(config.getProperty("tichuImg"));
-		ImageView tichuView = new ImageView(tichuImg);
+		this.tichuView = new ImageView(tichuImg);
 
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-
-		tichuView.setFitHeight(primaryScreenBounds.getHeight()-400);
+		tichuView.setFitHeight(primaryScreenBounds.getHeight()*0.55);
 		tichuView.setPreserveRatio(true);
 		this.setCenter(tichuView);
 	}
@@ -61,5 +62,8 @@ public class LobbyView extends BorderPane {
 	}
 	public Settings getSettings() {
 		return settings;
+	}
+	public ImageView getTichuView() {
+		return tichuView;
 	}
 }

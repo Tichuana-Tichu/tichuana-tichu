@@ -7,6 +7,7 @@ import ch.tichuana.tichu.client.view.LobbyView;
 import ch.tichuana.tichu.commons.message.MessageType;
 import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.application.Platform;
+import javafx.beans.Observable;
 import javafx.beans.value.ObservableValue;
 import javafx.stage.Stage;
 
@@ -41,6 +42,12 @@ public class ClientController {
                 this.clientModel.connect(ipAddress, port, playerName, password);
             }
 		});
+
+		this.stage.heightProperty().addListener((observable, oldValue, newValue) ->
+				this.gameView.getLobbyView().getTichuView().setFitHeight(newValue.intValue()*0.55));
+
+		this.stage.widthProperty().addListener((observable, oldValue, newValue) ->
+				this.gameView.getLobbyView().getTichuView().setFitWidth(newValue.intValue()*0.55));
 
 		this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setOnAction(event -> {
 			this.clientModel.sendMessage(TichuType.GrandTichu);
