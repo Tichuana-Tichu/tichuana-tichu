@@ -44,10 +44,10 @@ public class ClientController {
 		});
 
 		this.stage.heightProperty().addListener((observable, oldValue, newValue) ->
-				this.gameView.getLobbyView().getTichuView().setFitHeight(newValue.intValue()*0.55));
+				this.gameView.getLobbyView().getTichuView().setFitHeight(newValue.intValue()*0.5));
 
 		this.stage.widthProperty().addListener((observable, oldValue, newValue) ->
-				this.gameView.getLobbyView().getTichuView().setFitWidth(newValue.intValue()*0.55));
+				this.gameView.getLobbyView().getTichuView().setFitWidth(newValue.intValue()*0.8));
 
 		this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setOnAction(event -> {
 			this.clientModel.sendMessage(TichuType.GrandTichu);

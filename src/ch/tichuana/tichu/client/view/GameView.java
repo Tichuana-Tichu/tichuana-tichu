@@ -51,7 +51,7 @@ public class GameView {
 		stage.setWidth(primaryScreenBounds.getWidth()*0.9);
 		stage.setHeight(primaryScreenBounds.getHeight()*0.9);
         stage.setMinWidth(stage.getWidth()/3);
-        stage.setMinHeight(stage.getHeight()*0.7);
+        stage.setMinHeight(stage.getHeight()*0.9);
 
 		stage.show();
 	}
