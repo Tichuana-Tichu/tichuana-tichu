@@ -13,6 +13,13 @@ BottomView {
     -fx-padding: 10px;
 }
 
+TextField {
+    -fx-spacing: 10px;
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffef69;
+    -fx-font-size: 16px;
+}
+
 ControlArea {
     -fx-spacing: 10px;
 }
@@ -41,12 +48,6 @@ ToggleButton:pressed {
 
 TextArea {
     -fx-max-height: 15px;
-    -fx-background-color: #560000;
-}
-
-CardArea {
-    -fx-spacing: 20px;
-
 }
 
 CardLabel {

@@ -12,32 +12,35 @@ import java.util.Locale;
 
 public class Client extends Application {
 
-	private ClientModel clientModel;
 	private GameView gameView;
-	private ClientController clientController;
 
 	/**
-	 * 
-	 * @param args
+	 * @author Philipp
+	 * @param args runtime arguments
 	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	/**
-	 * 
+	 * Starting the Game
+	 * @author Philipp
 	 * @param primaryStage
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		initialize();
-		this.clientModel = new ClientModel();
+
+		ClientModel clientModel = new ClientModel();
 		this.gameView = new GameView(primaryStage, clientModel);
-		this.clientController = new ClientController(clientModel, gameView, primaryStage);
+		LobbyController lobbyController = new LobbyController(clientModel, gameView, primaryStage);
 
 		gameView.start();
 	}
 
+	/**
+	 * @author Philipp
+	 */
 	@Override
 	public void stop() {
 		if (gameView != null)
@@ -45,7 +48,12 @@ public class Client extends Application {
 
 	}
 
-	public static void initialize(){
+	/**
+	 * initializes the ServiceLocator
+	 * sets Configuration and Translator as services
+	 * @author Christian
+	 */
+	private static void initialize(){
 		ServiceLocator serviceLocator = ServiceLocator.getServiceLocator();
 
 		// initialize properties from file

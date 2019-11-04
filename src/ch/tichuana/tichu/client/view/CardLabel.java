@@ -10,19 +10,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 
-import java.util.Objects;
-
 public class CardLabel extends Label {
 
-	private Image cardImg;
-	private ImageView cardView;
-	private Card card;
 	private Configuration config;
 
 	/**
 	 *
+	 * @author Philipp
 	 */
-	public CardLabel() {
+	CardLabel() {
 		super();
 		this.getStyleClass().add("card");
 		this.config = ServiceLocator.getServiceLocator().getConfiguration();
@@ -30,6 +26,7 @@ public class CardLabel extends Label {
 
 	/**
 	 *
+	 * @author Philipp
 	 * @param card
 	 */
 	public void setCard(Card card) {
@@ -49,6 +46,7 @@ public class CardLabel extends Label {
 
 	/**
 	 *
+	 * @author Christian
 	 * @param card
 	 * @return
 	 */
@@ -62,9 +60,4 @@ public class CardLabel extends Label {
 		fileName += ".png";
 		return fileName;
 	}
-
-	//Getter & Setter
-    public ImageView getCardView() {
-        return this.cardView;
-    }
 }

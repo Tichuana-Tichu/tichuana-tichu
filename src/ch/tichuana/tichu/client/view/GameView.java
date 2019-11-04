@@ -1,5 +1,6 @@
 package ch.tichuana.tichu.client.view;
 
+import ch.tichuana.tichu.client.controller.PlayController;
 import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.services.Configuration;
 import ch.tichuana.tichu.client.services.ServiceLocator;
@@ -17,6 +18,7 @@ public class GameView {
 	private LobbyView lobbyView;
 	private Translator translator;
 	private Configuration configuration;
+	private ClientModel clientModel;//testing reasons.. delete after!!
 
 	/**
      * Buttons for testing reasons only, in case of a merging conflict: move lines into ControlArea.java
@@ -27,12 +29,13 @@ public class GameView {
 	public GameView(Stage stage, ClientModel clientModel) {
 
 		this.stage = stage;
+		this.clientModel = clientModel;//testing reasons.. delete after!!
 		this.translator = ServiceLocator.getServiceLocator().getTranslator();
 		this.configuration = ServiceLocator.getServiceLocator().getConfiguration();
 
-		this.lobbyView = new LobbyView(stage);
+		this.lobbyView = new LobbyView();
 		Scene lobby = new Scene(this.lobbyView);
-		this.playView = new PlayView();
+
 
 		lobby.getStylesheets().add(
 				getClass().getResource(configuration.getProperty("lobbyStyle")).toExternalForm());
@@ -41,8 +44,11 @@ public class GameView {
 		this.stage.setTitle(translator.getString("application.name"));
 	}
 
+	/**
+	 * @author Philipp
+	 */
 	public void start() {
-
+		this.playView = new PlayView();
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 
 		//set Stage boundaries to visible bounds of the main screen
@@ -54,14 +60,22 @@ public class GameView {
         stage.setMinHeight(stage.getHeight()*0.9);
 
 		stage.show();
+		//testing reasons.. delete after!!
 		updateView();
+		PlayController playController = new PlayController(clientModel, this, this.stage);
 	}
 
+	/**
+	 * @author Philipp
+	 */
 	public void stop() {
 		stage.hide();
 		Platform.exit();
 	}
 
+	/**
+	 * @author Philipp
+	 */
 	public void updateView() {
 		Scene game = new Scene(this.playView);
 		game.getStylesheets().add(
@@ -70,7 +84,7 @@ public class GameView {
 		stage.setMinWidth(stage.getWidth()*0.85);
 		stage.setMinHeight(stage.getHeight());
 		stage.setScene(game);
-
+		stage.setWidth(stage.getWidth()-1); //for proper positioning right away
 	}
 
 	//Getters

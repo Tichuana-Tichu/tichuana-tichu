@@ -8,21 +8,26 @@ public class PlayView extends BorderPane {
 
 	private BottomView bottomView;
 	private PlayArea playArea;
-	private StatArea statArea;
+	//private StatArea statArea;
 	private Settings settings;
 	private Translator translator;
 
-	public PlayView() {
+    /**
+     * extends BorderPane including a BottomView in the bottom area,
+     * a MenuBar at the top and a PlayArea in the center
+	 * @author Philipp
+     */
+	PlayView() {
 
 		this.translator = ServiceLocator.getServiceLocator().getTranslator();
 
 		this.bottomView = new BottomView();
 		this.playArea = new PlayArea();
-		this.statArea = new StatArea();
+		//this.statArea = new StatArea();
 		this.settings = new Settings();
 
 		this.setBottom(this.bottomView);
-		this.setLeft(this.statArea);
+		//this.setLeft(this.statArea);
 		this.setCenter(this.playArea);
 		this.setTop(this.settings);
 	}
@@ -34,9 +39,11 @@ public class PlayView extends BorderPane {
 	public PlayArea getPlayArea() {
 		return playArea;
 	}
+	/*
 	public StatArea getStatArea() {
 		return statArea;
 	}
+	 */
 	public Settings getSettings() {
 		return settings;
 	}

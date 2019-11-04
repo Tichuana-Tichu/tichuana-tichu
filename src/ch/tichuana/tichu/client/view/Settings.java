@@ -11,7 +11,10 @@ public class Settings extends MenuBar {
     private Translator translator;
     private Menu langMenu;
 
-    public Settings() {
+    /**
+     * @author Philipp
+     */
+    Settings() {
 
         this.translator = ServiceLocator.getServiceLocator().getTranslator();
         this.langMenu = new Menu(translator.getString("settings.langMenu"));

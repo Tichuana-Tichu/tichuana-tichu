@@ -20,7 +20,10 @@ public class ControlArea extends VBox {
 	private ToggleButton smallTichuBtn;
 	private ToggleButton grandTichuBtn;
 
-	public ControlArea() {
+	/**
+	 * @author Philipp
+	 */
+	ControlArea() {
 
 		this.translator = ServiceLocator.getServiceLocator().getTranslator();
 		this.configuration = ServiceLocator.getServiceLocator().getConfiguration();

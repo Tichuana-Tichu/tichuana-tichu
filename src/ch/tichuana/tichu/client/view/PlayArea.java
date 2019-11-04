@@ -8,6 +8,10 @@ import javafx.scene.layout.Priority;
 
 class PlayArea extends GridPane {
 
+	/**
+	 * creates a table-like, resizeable grid for information about the game-flow
+	 * @author Philipp
+	 */
 	PlayArea() {
 
 		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
@@ -41,5 +45,4 @@ class PlayArea extends GridPane {
 		this.maxWidth(6000);
 		this.maxHeight(6000);
 	}
-
 }
