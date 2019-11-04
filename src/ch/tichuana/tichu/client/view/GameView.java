@@ -54,6 +54,7 @@ public class GameView {
         stage.setMinHeight(stage.getHeight()*0.9);
 
 		stage.show();
+		updateView();
 	}
 
 	public void stop() {
@@ -65,7 +66,10 @@ public class GameView {
 		Scene game = new Scene(this.playView);
 		game.getStylesheets().add(
 				getClass().getResource(configuration.getProperty("playStyle")).toExternalForm());
+
+		stage.setMinWidth(stage.getWidth()*0.67);
 		stage.setScene(game);
+
 	}
 
 	//Getters

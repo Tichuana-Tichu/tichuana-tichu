@@ -25,7 +25,7 @@ public class CardArea extends VBox {
 			//TODO - exchange after testing with real cards
 			cardLabel.setCard(new Card(Suit.Pagodas, Rank.Ace));
 			cardsLabels.getChildren().add(cardLabel);
-			cardsLabels.setSpacing(-40);
+			cardsLabels.setSpacing(-140);
 		}
 
 		//HBox.setHgrow(this.cardsLabels, Priority.ALWAYS);

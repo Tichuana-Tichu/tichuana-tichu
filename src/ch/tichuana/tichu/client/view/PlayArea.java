@@ -4,14 +4,13 @@ import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 
-public class PlayArea extends GridPane {
-
-	private Translator translator;
+class PlayArea extends GridPane {
 
 	PlayArea() {
 
-		this.translator = ServiceLocator.getServiceLocator().getTranslator();
+		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
 		Label[] headings = new Label[7];
 		headings[0] = new Label(translator.getString("name"));
 		headings[1] = new Label(translator.getString("team"));
@@ -23,6 +22,7 @@ public class PlayArea extends GridPane {
 
 		for (int i = 0; i < headings.length; i++)	{
 			this.add(headings[i], i+0, 0);
+			GridPane.setHgrow(headings[i], Priority.ALWAYS);
 		}
 
 		Label[] playerLbl = new Label[4];
@@ -32,8 +32,14 @@ public class PlayArea extends GridPane {
 		playerLbl[3] = new Label("Digi");
 
 		for (int i = 0; i < playerLbl.length; i++)	{
-			this.add(playerLbl[i], 0, i+1);
+			this.add(playerLbl[i], 0, i+1, 6, 1);
+			playerLbl[i].getStyleClass().add("playerLbl");
+			GridPane.setVgrow(playerLbl[i], Priority.ALWAYS);
 		}
+
+		this.setGridLinesVisible(true);
+		this.maxWidth(6000);
+		this.maxHeight(6000);
 	}
 
 }

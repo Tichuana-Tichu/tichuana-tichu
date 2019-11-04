@@ -39,7 +39,7 @@ public class CardLabel extends Label {
 			String fileName = cardToFileName(card);
 			Image image = new Image(config.getProperty("cards")+fileName);
 			ImageView imv = new ImageView(image);
-			imv.setFitWidth(primaryScreenBounds.getWidth()/13);
+			imv.setFitWidth(primaryScreenBounds.getWidth()/15);
 			imv.setPreserveRatio(true);
 			this.setGraphic(imv);
 		} else {
