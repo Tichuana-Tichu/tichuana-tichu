@@ -55,10 +55,12 @@ public class ClientController {
 			HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea().getCardsLabels();
 
 			if (oldValue.intValue() < newValue.intValue()) { //screen gets bigger
-				cardLabels.setSpacing(((stage.getWidth()-(newValue.floatValue()-stage.getWidth()))/15)-170);
+				cardLabels.setSpacing(((stage.getWidth()-(newValue.floatValue()-stage.getWidth()))/15)
+						-stage.getMinWidth()/9);
 			}
 			else { //screen get smaller
-				cardLabels.setSpacing(((stage.getWidth()-(stage.getWidth()-newValue.floatValue()))/15)-170);
+				cardLabels.setSpacing(((stage.getWidth()-(stage.getWidth()-newValue.floatValue()))/15)
+						-stage.getMinWidth()/9);
 			}
 		});
 

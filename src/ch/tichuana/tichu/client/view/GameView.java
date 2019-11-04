@@ -67,7 +67,8 @@ public class GameView {
 		game.getStylesheets().add(
 				getClass().getResource(configuration.getProperty("playStyle")).toExternalForm());
 
-		stage.setMinWidth(stage.getWidth()*0.67);
+		stage.setMinWidth(stage.getWidth()*0.85);
+		stage.setMinHeight(stage.getHeight());
 		stage.setScene(game);
 
 	}
