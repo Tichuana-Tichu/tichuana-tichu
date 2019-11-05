@@ -2,6 +2,7 @@ package ch.tichuana.tichu.client.view;
 
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 public class BottomView extends BorderPane {
 
@@ -22,9 +23,11 @@ public class BottomView extends BorderPane {
 		this.console.setEditable(false);
 		this.console.setFocusTraversable(false);
 
-		this.setLeft(this.cardArea);
+		VBox cardsNConsole = new VBox(this.cardArea, this.console);
+
+		//this.setLeft(this.cardArea);
 		this.setRight(this.controlArea);
-		this.setTop(this.console);
+		this.setCenter(cardsNConsole);
 	}
 
 	//Getter

@@ -18,7 +18,6 @@ public class GameView {
 	private LobbyView lobbyView;
 	private Translator translator;
 	private Configuration configuration;
-	private ClientModel clientModel;//testing reasons.. delete after!!
 
 	/**
      * Buttons for testing reasons only, in case of a merging conflict: move lines into ControlArea.java
@@ -29,7 +28,6 @@ public class GameView {
 	public GameView(Stage stage, ClientModel clientModel) {
 
 		this.stage = stage;
-		this.clientModel = clientModel;//testing reasons.. delete after!!
 		this.translator = ServiceLocator.getServiceLocator().getTranslator();
 		this.configuration = ServiceLocator.getServiceLocator().getConfiguration();
 
@@ -60,9 +58,6 @@ public class GameView {
         stage.setMinHeight(stage.getHeight()*0.9);
 
 		stage.show();
-		//testing reasons.. delete after!!
-		updateView();
-		PlayController playController = new PlayController(clientModel, this, this.stage);
 	}
 
 	/**
