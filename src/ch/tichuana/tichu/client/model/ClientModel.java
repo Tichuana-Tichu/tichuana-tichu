@@ -3,6 +3,7 @@ package ch.tichuana.tichu.client.model;
 import ch.tichuana.tichu.commons.message.*;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.TichuType;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import java.io.IOException;
 import java.net.Socket;
@@ -17,6 +18,7 @@ public class ClientModel {
     private String playerName;
     private String nextPlayerName;
     private String playerToSchupfCard;
+    private SimpleBooleanProperty connected = new SimpleBooleanProperty(false);
     private Logger logger = Logger.getLogger("");
 
     /**
@@ -40,11 +42,13 @@ public class ClientModel {
                     Message msg = Message.receive(socket);
 
                     if (msg instanceof AnnouncedTichuMsg) {
-                        logger.info(msg.getPlayers().toString()+" announced: "+msg.getTichuType());
+                        newestMessage.set("");
+                        newestMessage.set(msg.getPlayers().toString()+" announced: "+msg.getTichuType());
                     }
 
                     if (msg instanceof ConnectedMsg) {
-                        logger.info("successfully connected to Server");
+                        newestMessage.set("successfully connected to Server");
+                        this.connected.set(true);
                     }
 
                     if (msg instanceof GameStartedMsg) {
@@ -152,5 +156,14 @@ public class ClientModel {
     //Getter
     public String getPlayerToSchupfCard() {
         return playerToSchupfCard;
+    }
+    public boolean isConnected() {
+        return connected.get();
+    }
+    public SimpleBooleanProperty getConnectedProperty() {
+        return connected;
+    }
+    public SimpleStringProperty getNewestMessageProperty() {
+        return newestMessage;
     }
 }

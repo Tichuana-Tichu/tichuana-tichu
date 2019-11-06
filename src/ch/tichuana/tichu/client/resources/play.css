@@ -1,0 +1,79 @@
+* {
+    -fx-font-family: 'Matura MT Script Capitals', arial;
+}
+
+PlayView {
+    -fx-background-image: url("../resources/images/Background_Login.jpg");
+    -fx-background-position: center bottom;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
+
+BottomView {
+    -fx-padding: 10px;
+}
+
+TextField {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffef69;
+    -fx-font-size: 16px;
+}
+
+ControlArea {
+    -fx-spacing: 10px;
+}
+
+ToggleButton {
+    -fx-alignment: center;
+    -fx-background-color: rgba(0, 0, 255, 0);
+    -fx-min-width: 200px;
+    -fx-min-height: 40px;
+    -fx-text-fill: #ffef69;
+    -fx-font-size: 16px;
+    -fx-background-image: url("../resources/images/Button.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 200px;
+    -fx-padding: 0px;
+}
+
+ToggleButton:hover {
+    -fx-opacity: 0.7;
+}
+
+ToggleButton:pressed {
+    -fx-opacity: 0.5;
+}
+
+TextArea {
+    -fx-max-height: 15px;
+}
+
+CardLabel {
+    -fx-border-color: #ececee;
+    -fx-background-color: #ececee;
+    -fx-background-radius: 7px;
+    -fx-border-width: 3px;
+    -fx-border-radius: 7px;
+    -fx-effect: dropshadow(three-pass-box, rgb(69, 69, 70), 10, 0, 2, 2);
+}
+
+CardLabel:hover {
+    -fx-effect: dropshadow(three-pass-box, rgb(27, 27, 28), 15, 0, 2, 2);
+}
+/*
+CardLabel:focused {
+    -fx-border-color: #B20000;
+    -fx-effect: dropshadow(one-pass-box, rgb(178, 0, 0), 10, 0, 2, 2);
+}
+*/
+PlayArea Label {
+    -fx-font-size: 16px;
+    -fx-text-fill: FFEF69;
+    -fx-padding: 10px;
+}
+
+.playerLbl {
+    -fx-border-width: 2px;
+    -fx-border-color: #ffef69;
+}

@@ -8,41 +8,39 @@ import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.client.view.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Locale;
-import java.util.Properties;
 
 public class Client extends Application {
 
-	private ClientModel clientModel;
 	private GameView gameView;
-	private ClientController clientController;
 
 	/**
-	 * 
-	 * @param args
+	 * @author Philipp
+	 * @param args runtime arguments
 	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	/**
-	 * 
+	 * Starting the Game
+	 * @author Philipp
 	 * @param primaryStage
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		initalize();
-		this.clientModel = new ClientModel();
+		initialize();
+
+		ClientModel clientModel = new ClientModel();
 		this.gameView = new GameView(primaryStage, clientModel);
-		this.clientController = new ClientController(clientModel, gameView);
+		LobbyController lobbyController = new LobbyController(clientModel, gameView, primaryStage);
 
 		gameView.start();
 	}
 
+	/**
+	 * @author Philipp
+	 */
 	@Override
 	public void stop() {
 		if (gameView != null)
@@ -50,10 +48,15 @@ public class Client extends Application {
 
 	}
 
-	public static void initalize(){
+	/**
+	 * initializes the ServiceLocator
+	 * sets Configuration and Translator as services
+	 * @author Christian
+	 */
+	private static void initialize(){
 		ServiceLocator serviceLocator = ServiceLocator.getServiceLocator();
 
-		// initialize properites from file
+		// initialize properties from file
 		Configuration configuration = new Configuration("src/ch/tichuana/tichu/client/resources/config.properties");
 		serviceLocator.setConfiguration(configuration);
 
