@@ -46,7 +46,6 @@ public class ServerModel {
 							this.game = new Game(teamOne, teamTwo, ServerModel.this);
 						}
 
-						players.add(player);
 					} catch (IOException e) {
 						logger.info(e.toString());
 					}

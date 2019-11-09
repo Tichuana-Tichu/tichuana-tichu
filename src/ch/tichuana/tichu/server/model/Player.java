@@ -14,6 +14,7 @@ public class Player {
 
 	private Logger logger = Logger.getLogger("");
 	private String playerName;
+	private String password;
 	private Socket socket;
 	private volatile boolean closed;
 	private ServerModel serverModel;
@@ -44,8 +45,15 @@ public class Player {
 
 				if (msg instanceof JoinMsg) {
 					Player.this.playerName = msg.getPlayerName();
-					sendMessage(MessageType.ConnectedMsg, "true");
-					logger.info("Player: "+msg.getPlayerName()+" logged in");
+					this.password = msg.getPassword();
+
+					// check if password is correct
+					if (verifyPassword()){
+						serverModel.getPlayers().add(this);
+						sendMessage(MessageType.ConnectedMsg, "true");
+						logger.info("Player: "+msg.getPlayerName()+" logged in");
+					}
+
 				}
 
 				else if (msg instanceof TichuMsg) {
@@ -134,6 +142,18 @@ public class Player {
 	 */
 	public void sendMessage(Message message){
 		message.send(this.socket);
+	}
+
+	/**
+	 * Checks if password matches password in database belonging to player
+	 * @return boolean
+	 */
+	public boolean verifyPassword(){
+		// TODO: Check if password is correct
+		// this.password
+		// this.playerName
+		// get DatabaseConnection from ServiceLocator
+		return true;
 	}
 
 	//Getter & Setter
