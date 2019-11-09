@@ -12,7 +12,9 @@ public class Game {
 	private int matchesPlayed = 0;
 	private volatile boolean closed;
 	private boolean cardsDealed;
+	private Player[] playersInOrder;
 	private Team[] teams = new Team[2];
+	private DeckOfCards deck;
 
 	/**
 	 * Game will be started from ServerModel as soon as 4 player are connected to server
@@ -30,6 +32,32 @@ public class Game {
 		this.serverModel = serverModel;
 		this.closed = false;
 		this.cardsDealed = false;
+		this.deck = new DeckOfCards();
+	}
+
+	/**
+	 * Method that starts the game. It organizes the players of both teams in the order of play.
+	 * Sends a customized GameStartedMsg to every player. And then shuffles the deck
+	 * @author Christian
+	 */
+	public void start(){
+		GameStartedMsg msg;
+		this.playersInOrder = new Player[4];
+		Player[][] team = {teams[0].getPlayers(),teams[1].getPlayers()};
+		int counter = 0;
+		for (int x=0; x<2; x++){
+			for (int y=0; y<2; y++){
+				this.playersInOrder[counter] = team[y][x];
+				counter++;
+			}
+		}
+		for (int i=0; i<4; i++){
+			String mate = playersInOrder[(i+2)%4].getPlayerName();
+			String[] opponents = {playersInOrder[(i+1)%4].getPlayerName(), playersInOrder[(i+3)%4].getPlayerName()};
+			msg = new GameStartedMsg(mate,opponents);
+			playersInOrder[i].sendMessage(msg);
+		}
+		this.deck.shuffleDeck();
 	}
 
 	/**
