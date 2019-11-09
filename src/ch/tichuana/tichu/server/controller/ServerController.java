@@ -3,8 +3,10 @@ package ch.tichuana.tichu.server.controller;
 import ch.tichuana.tichu.commons.message.AnnouncedTichuMsg;
 import ch.tichuana.tichu.commons.message.MessageType;
 import ch.tichuana.tichu.commons.models.TichuType;
+import ch.tichuana.tichu.server.model.Player;
 import ch.tichuana.tichu.server.model.ServerModel;
 import ch.tichuana.tichu.server.model.SimpleMessageProperty;
+import ch.tichuana.tichu.server.model.Team;
 import ch.tichuana.tichu.server.services.ServiceLocator;
 import javafx.beans.Observable;
 import javafx.beans.value.ObservableValue;
@@ -34,17 +36,40 @@ public class ServerController {
 
 	/**
 	 * attaches listeners to all Properties of the new Player
-	 * @author philipp
+	 * @author philipp (revised by Christian)
 	 */
 	private void activatePlayer(Observable observable) {
-		this.serverModel.getPlayer(playerCount).getAnnouncedGrandTichuProperty().addListener(
-				e -> broadcastGrandTichu(serverModel.getPlayer(playerCount).getAnnouncedGrandTichuProperty()));
-		this.serverModel.getPlayer(playerCount).getAnnouncedTichuProperty().addListener(
-				e -> broadcastTichu(serverModel.getPlayer(playerCount).getAnnouncedTichuProperty()));
-		this.serverModel.getPlayer(playerCount).getHisHisTurnProperty().addListener(this::broadcastUpdate);
-		this.serverModel.getPlayer(playerCount).getHasMahjongProperty().addListener(this::broadcastUpdate);
-		this.playerCount++;
+		int size = serverModel.getPlayers().size();
+		Player player = serverModel.getPlayers().get(size-1);
+
+		player.getAnnouncedGrandTichuProperty().addListener(
+                e -> broadcastGrandTichu(player.getAnnouncedGrandTichuProperty()));
+        player.getAnnouncedTichuProperty().addListener(
+                e -> broadcastGrandTichu(player.getAnnouncedTichuProperty()));
+        player.getHisHisTurnProperty().addListener(this::broadcastUpdate);
+        player.getHasMahjongProperty().addListener(this::broadcastUpdate);
+
+        makeTeams(size);
 	}
+
+    /**
+     * creates Teams and creates the Game if all players have connected
+     * @author Christian
+     * @param size number of players (size of list)
+     */
+	private void makeTeams(int size){
+        // make teams
+        if (size == 2){
+            serverModel.setTeamOne(new Team(serverModel.getPlayer(0),serverModel.getPlayer(1)));
+            logger.info("Team 1 created");
+        }
+        if (size == 4){
+            serverModel.setTeamOne(new Team(serverModel.getPlayer(2),serverModel.getPlayer(3)));
+            logger.info("Team 2 created");
+            serverModel.createGame();
+            logger.info("Game created");
+        }
+    }
 
 	/**
 	 * informs all players about announcing GrandTichu

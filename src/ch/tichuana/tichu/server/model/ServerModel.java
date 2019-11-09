@@ -35,16 +35,9 @@ public class ServerModel {
 			Runnable r = () -> {
 				while (!stop) {
 					try {
+
 						Socket socket = listener.accept();
 						Player player = new Player(ServerModel.this, socket);
-
-						if (players.size() == 2) {
-							this.teamOne = new Team(players.get(0), players.get(1));
-						}
-						if (players.size() == 4) {
-							this.teamTwo = new Team(players.get(2), players.get(3));
-							this.game = new Game(teamOne, teamTwo, ServerModel.this);
-						}
 
 					} catch (IOException e) {
 						logger.info(e.toString());
@@ -104,7 +97,11 @@ public class ServerModel {
 		}
 	}
 
-	//Getter
+	public void createGame(){
+		this.game = new Game(teamOne, teamTwo, this);
+	}
+
+	// Getters and setters
 	public Game getGame() {
 		return game;
 	}
@@ -112,4 +109,13 @@ public class ServerModel {
 		return players;
 	}
 	public Player getPlayer(int i) {return players.get(i); }
+	public void setTeamOne(Team teamOne) {
+		this.teamOne = teamOne;
+	}
+	public void setTeamTwo(Team teamTwo) {
+		this.teamTwo = teamTwo;
+	}
+	public void setGame(Game game) {
+		this.game = game;
+	}
 }
