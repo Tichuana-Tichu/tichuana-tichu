@@ -19,9 +19,7 @@ public class Player {
 	private volatile boolean closed;
 	private ServerModel serverModel;
 	//SimpleBooleanProperties control the game flow
-	private volatile SimpleMessageProperty joinRequest = new SimpleMessageProperty(false);
 	private volatile SimpleMessageProperty announcedTichu = new SimpleMessageProperty(false);
-	private volatile SimpleMessageProperty announcedGrandTichu = new SimpleMessageProperty(false);
 	private volatile SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
 	private volatile SimpleBooleanProperty hasMahjong = new SimpleBooleanProperty(false);
 	private ArrayList currentMove;
@@ -60,21 +58,10 @@ public class Player {
 				}
 
 				else if (msg instanceof TichuMsg) {
-
-					switch (msg.getTichuType()) {
-
-						case SmallTichu:
-							logger.info("Player: "+this.playerName+" announced SmallTichu");
-							this.announcedTichu.set(true);
-							this.announcedGrandTichu.set(false);
-							break;
-
-						case GrandTichu:
-							logger.info("Player: "+this.playerName+" announced GrandTichu");
-							this.announcedGrandTichu.set(true);
-							this.announcedTichu.set(false);
-							break;
-					}
+					logger.info("Player: "+this.playerName+" announced SmallTichu");
+					this.announcedTichu.setMessage(msg);
+					this.announcedTichu.set(true);
+					break;
 				}
 
 				else if (msg instanceof SchupfenMsg) {
@@ -171,12 +158,6 @@ public class Player {
 	}
 	public final void setAnnouncedTichu(boolean announcedTichu) {
 		this.announcedTichu.set(announcedTichu);
-	}
-	public SimpleMessageProperty getAnnouncedGrandTichuProperty() {
-		return this.announcedGrandTichu;
-	}
-	public final void setAnnouncedGrandTichu(boolean announcedGrandTichu) {
-		this.announcedGrandTichu.set(announcedGrandTichu);
 	}
 	public SimpleBooleanProperty getHisHisTurnProperty() {
 		return this.hisTurn;

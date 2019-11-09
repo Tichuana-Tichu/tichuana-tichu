@@ -42,10 +42,8 @@ public class ServerController {
 		int size = serverModel.getPlayers().size();
 		Player player = serverModel.getPlayers().get(size-1);
 
-		player.getAnnouncedGrandTichuProperty().addListener(
-                e -> broadcastGrandTichu(player.getAnnouncedGrandTichuProperty()));
         player.getAnnouncedTichuProperty().addListener(
-                e -> broadcastGrandTichu(player.getAnnouncedTichuProperty()));
+                e -> broadcastTichu(player.getAnnouncedTichuProperty()));
         player.getHisHisTurnProperty().addListener(this::broadcastUpdate);
         player.getHasMahjongProperty().addListener(this::broadcastUpdate);
 
@@ -77,17 +75,6 @@ public class ServerController {
 	}
 
 	/**
-	 * informs all players about announcing GrandTichu
-	 * @author philipp (revised by Christian)
-	 * @param property if changed to true
-	 */
-	private void broadcastGrandTichu(SimpleMessageProperty property) {
-		if (property.getValue()) {
-			this.serverModel.broadcast(MessageType.AnnouncedTichuMsg, TichuType.GrandTichu.toString());
-		}
-	}
-
-	/**
 	 * informs all players about announcing Tichu
 	 * @author philipp (revised by Christian)
 	 * @param property changed to true
@@ -96,7 +83,7 @@ public class ServerController {
 		if (property.getValue()) {
 			AnnouncedTichuMsg msg = new AnnouncedTichuMsg(
 					property.getMessage().getPlayerName(), property.getMessage().getTichuType());
-			this.serverModel.broadcast(MessageType.AnnouncedTichuMsg, TichuType.SmallTichu.toString());
+			this.serverModel.broadcast(msg);
 		}
 	}
 
