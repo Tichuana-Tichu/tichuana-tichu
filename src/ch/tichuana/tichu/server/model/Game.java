@@ -82,6 +82,23 @@ public class Game {
 	}
 
 	/**
+	 * Deals the remaining six cards to every client by sending a custom DealMsg
+	 * @author Christian
+	 */
+	public void dealRemainingCards(){
+		ArrayList<Card> cards = (ArrayList) Arrays.asList(deck.getSecondHalf());
+		cards.addAll(Arrays.asList(deck.getSecondHalf()));
+		int rangeCounter = 0;
+		for (Player p : playersInOrder){
+			ArrayList<Card> hand = new ArrayList();
+			hand.addAll(cards.subList(rangeCounter,rangeCounter+6));
+			Message msg = new DealMsg(hand);
+			p.sendMessage(msg);
+			rangeCounter += 6;
+		}
+	}
+
+	/**
 	 * called from controller to send messages to ClientModel (Client)
 	 * @author Philipp
 	 * @param messageType from a specific type
