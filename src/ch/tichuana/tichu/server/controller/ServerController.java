@@ -64,12 +64,17 @@ public class ServerController {
             logger.info("Team 1 created");
         }
         if (size == 4){
-            serverModel.setTeamOne(new Team(serverModel.getPlayer(2),serverModel.getPlayer(3)));
+            serverModel.setTeamTwo(new Team(serverModel.getPlayer(2),serverModel.getPlayer(3)));
             logger.info("Team 2 created");
             serverModel.createGame();
             logger.info("Game created");
+            startGame();
         }
     }
+
+    private void startGame(){
+		serverModel.getGame().start();
+	}
 
 	/**
 	 * informs all players about announcing GrandTichu
