@@ -86,7 +86,7 @@ public class Game {
 	 * @author Christian
 	 */
 	public void dealRemainingCards(){
-		ArrayList<Card> cards = (ArrayList) Arrays.asList(deck.getSecondHalf());
+		ArrayList<Card> cards = new ArrayList<>();
 		cards.addAll(Arrays.asList(deck.getSecondHalf()));
 		int rangeCounter = 0;
 		for (Player p : playersInOrder){

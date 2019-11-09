@@ -21,6 +21,7 @@ public class ServerModel {
 	private Team teamOne;
 	private Team teamTwo;
 	private Game game;
+	private volatile int tichuResponses = 0;
 
 	/**
 	 * starts Server and listens for new clients to connect
@@ -97,9 +98,18 @@ public class ServerModel {
 		}
 	}
 
+	/**
+	 * creates a new game and assigns it to this instance
+	 * @author Christian
+	 */
 	public void createGame(){
 		this.game = new Game(teamOne, teamTwo, this);
 	}
+
+	public void increaseTichuResponses(){
+		this.tichuResponses++;
+	}
+
 
 	// Getters and setters
 	public Game getGame() {
@@ -117,5 +127,8 @@ public class ServerModel {
 	}
 	public void setGame(Game game) {
 		this.game = game;
+	}
+	public int getTichuResponses() {
+		return tichuResponses;
 	}
 }

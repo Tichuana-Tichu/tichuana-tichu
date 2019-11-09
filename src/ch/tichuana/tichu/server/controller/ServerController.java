@@ -72,7 +72,9 @@ public class ServerController {
 
     private void startGame(){
 		serverModel.getGame().start();
+		logger.info("Game started");
 		serverModel.getGame().dealFirstEightCards();
+		logger.info("First eight cards dealt");
 	}
 
 	/**
@@ -85,6 +87,15 @@ public class ServerController {
 			AnnouncedTichuMsg msg = new AnnouncedTichuMsg(
 					property.getMessage().getPlayerName(), property.getMessage().getTichuType());
 			this.serverModel.broadcast(msg);
+		}
+		// clients will always send a tichu response even if they don't announce it (-> tichuType=none)
+		serverModel.increaseTichuResponses();
+		if (serverModel.getTichuResponses() == 4){
+			serverModel.getGame().dealRemainingCards();
+		}
+		else if (serverModel.getTichuResponses() == 8) {
+			// TODO: start first round
+			// braucht es vieleicht gar nicht? Wir reagieren ja auf PlayMsg
 		}
 	}
 
