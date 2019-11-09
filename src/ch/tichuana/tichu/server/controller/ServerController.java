@@ -72,7 +72,7 @@ public class ServerController {
 
     private void startGame(){
 		serverModel.getGame().start();
-
+		serverModel.getGame().dealFirstEightCards();
 	}
 
 	/**
