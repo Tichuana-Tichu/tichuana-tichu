@@ -111,16 +111,13 @@ class MessageTest {
     @Test
     public void testAnnouncedTichuMsg(){
         JSONObject json = new JSONObject();
-        JSONArray array = new JSONArray();
-        array.add("Christian");
-        array.add("Philipp");
         json.put("msg", "AnnouncedTichuMsg");
         json.put("tichuType","GrandTichu");
-        json.put("players", array);
+        json.put("player", "Christian");
         Message msg = Message.parseMessage(json);
         assertEquals(MessageType.AnnouncedTichuMsg, msg.getMsgType());
         assertEquals(TichuType.GrandTichu, msg.getTichuType());
-        assertEquals(true, msg.getPlayers().contains("Christian"));
+        assertEquals("Christian", msg.getPlayerName());
         assertEquals(json.toJSONString(), msg.toString());
         //System.out.println("announcedtichumsg: "+msg);
     }

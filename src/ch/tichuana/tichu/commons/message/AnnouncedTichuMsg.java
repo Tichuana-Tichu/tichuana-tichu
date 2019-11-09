@@ -9,17 +9,17 @@ import java.util.ArrayList;
 
 public class AnnouncedTichuMsg extends Message {
 
-	private ArrayList<String> players;
+	private String playerName;
 	private TichuType tichuType;
 
 	/**
 	 * @author Christian
-	 * @param players
+	 * @param playerName
 	 * @param tichuType
 	 */
 
-	public AnnouncedTichuMsg(ArrayList<String> players, TichuType tichuType) {
-		this.players = players;
+	public AnnouncedTichuMsg(String playerName, TichuType tichuType) {
+		this.playerName = playerName;
 		this.tichuType = tichuType;
 		this.setMsgType(MessageType.AnnouncedTichuMsg);
 	}
@@ -29,17 +29,13 @@ public class AnnouncedTichuMsg extends Message {
 		JSONObject json = new JSONObject();
 		json.put("msg",this.getMsgType().toString());
 		json.put("tichuType", this.tichuType.toString());
-		JSONArray players = new JSONArray();
-		for (String player : this.players){
-			players.add(player);
-		}
-		json.put("players", players);
+		json.put("player", playerName);
 		return json.toJSONString();
 	}
 
 	@Override
-	public ArrayList<String> getPlayers() {
-		return this.players;
+	public String getPlayerName() {
+		return this.playerName;
 	}
 
 	@Override

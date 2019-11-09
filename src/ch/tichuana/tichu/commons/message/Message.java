@@ -83,10 +83,8 @@ public abstract class Message {
 
 			case AnnouncedTichuMsg:
 				tichuType = TichuType.valueOf((String) json.get("tichuType"));
-				array = (JSONArray) json.get("players");
-				Iterator<String> iterator = array.iterator();
-				while (iterator.hasNext()){ players.add(iterator.next()); }
-				newMessage = new AnnouncedTichuMsg(players, tichuType);
+				playerName = (String) json.get("player");
+				newMessage = new AnnouncedTichuMsg(playerName, tichuType);
 				break;
 
 			case JoinMsg:
