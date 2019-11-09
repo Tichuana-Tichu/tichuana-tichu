@@ -18,6 +18,7 @@ public class Player {
 	private volatile boolean closed;
 	private ServerModel serverModel;
 	//SimpleBooleanProperties control the game flow
+	private volatile SimpleMessageProperty joinRequest = new SimpleMessageProperty(false);
 	private volatile SimpleMessageProperty announcedTichu = new SimpleMessageProperty(false);
 	private volatile SimpleMessageProperty announcedGrandTichu = new SimpleMessageProperty(false);
 	private volatile SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
@@ -120,10 +121,19 @@ public class Player {
 				break;
 
 			case AnnouncedTichuMsg:
-				message = new AnnouncedTichuMsg(tichus, TichuType.valueOf(identifier));
-				message.send(socket);
+				//message = new AnnouncedTichuMsg(tichus, TichuType.valueOf(identifier));
+				//message.send(socket);
 				break;
 		}
+	}
+
+	/**
+	 * Simpler sendMessage Method. Used by controller to send an already created Message.
+	 * @author Christian
+	 * @param message
+	 */
+	public void sendMessage(Message message){
+		message.send(this.socket);
 	}
 
 	//Getter & Setter

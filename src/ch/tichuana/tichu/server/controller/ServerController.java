@@ -1,5 +1,6 @@
 package ch.tichuana.tichu.server.controller;
 
+import ch.tichuana.tichu.commons.message.AnnouncedTichuMsg;
 import ch.tichuana.tichu.commons.message.MessageType;
 import ch.tichuana.tichu.commons.models.TichuType;
 import ch.tichuana.tichu.server.model.ServerModel;
@@ -63,6 +64,8 @@ public class ServerController {
 	 */
 	private void broadcastTichu(SimpleMessageProperty property) {
 		if (property.getValue()) {
+			AnnouncedTichuMsg msg = new AnnouncedTichuMsg(
+					property.getMessage().getPlayerName(), property.getMessage().getTichuType());
 			this.serverModel.broadcast(MessageType.AnnouncedTichuMsg, TichuType.SmallTichu.toString());
 		}
 	}

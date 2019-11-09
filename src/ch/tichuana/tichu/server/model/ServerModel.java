@@ -93,6 +93,18 @@ public class ServerModel {
 		}
 	}
 
+	/**
+	 * broadcasts a given message to all players
+	 * @author Christian
+	 * @param message Message to be sent to all players
+	 */
+	public void broadcast(Message message) {
+		logger.info("Broadcasting message to players");
+		for (Player p : players) {
+			p.sendMessage(message);
+		}
+	}
+
 	//Getter
 	public Game getGame() {
 		return game;
