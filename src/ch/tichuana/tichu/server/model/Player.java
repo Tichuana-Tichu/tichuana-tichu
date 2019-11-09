@@ -18,8 +18,8 @@ public class Player {
 	private volatile boolean closed;
 	private ServerModel serverModel;
 	//SimpleBooleanProperties control the game flow
-	private volatile SimpleBooleanProperty announcedTichu = new SimpleBooleanProperty(false);
-	private volatile SimpleBooleanProperty announcedGrandTichu = new SimpleBooleanProperty(false);
+	private volatile SimpleMessageProperty announcedTichu = new SimpleMessageProperty(false);
+	private volatile SimpleMessageProperty announcedGrandTichu = new SimpleMessageProperty(false);
 	private volatile SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
 	private volatile SimpleBooleanProperty hasMahjong = new SimpleBooleanProperty(false);
 	private ArrayList currentMove;
@@ -133,13 +133,13 @@ public class Player {
 	public final void setPlayerName(String playerName) {
 		this.playerName = playerName;
 	}
-	public SimpleBooleanProperty getAnnouncedTichuProperty() {
+	public SimpleMessageProperty getAnnouncedTichuProperty() {
 		return this.announcedTichu;
 	}
 	public final void setAnnouncedTichu(boolean announcedTichu) {
 		this.announcedTichu.set(announcedTichu);
 	}
-	public SimpleBooleanProperty getAnnouncedGrandTichuProperty() {
+	public SimpleMessageProperty getAnnouncedGrandTichuProperty() {
 		return this.announcedGrandTichu;
 	}
 	public final void setAnnouncedGrandTichu(boolean announcedGrandTichu) {

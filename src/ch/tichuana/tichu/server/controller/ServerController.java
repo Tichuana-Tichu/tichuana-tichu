@@ -3,6 +3,7 @@ package ch.tichuana.tichu.server.controller;
 import ch.tichuana.tichu.commons.message.MessageType;
 import ch.tichuana.tichu.commons.models.TichuType;
 import ch.tichuana.tichu.server.model.ServerModel;
+import ch.tichuana.tichu.server.model.SimpleMessageProperty;
 import ch.tichuana.tichu.server.services.ServiceLocator;
 import javafx.beans.Observable;
 import javafx.beans.value.ObservableValue;
@@ -35,8 +36,10 @@ public class ServerController {
 	 * @author philipp
 	 */
 	private void activatePlayer(Observable observable) {
-		this.serverModel.getPlayer(playerCount).getAnnouncedGrandTichuProperty().addListener(this::broadcastGrandTichu);
-		this.serverModel.getPlayer(playerCount).getAnnouncedTichuProperty().addListener(this::broadcastTichu);
+		this.serverModel.getPlayer(playerCount).getAnnouncedGrandTichuProperty().addListener(
+				e -> broadcastGrandTichu(serverModel.getPlayer(playerCount).getAnnouncedGrandTichuProperty()));
+		this.serverModel.getPlayer(playerCount).getAnnouncedTichuProperty().addListener(
+				e -> broadcastTichu(serverModel.getPlayer(playerCount).getAnnouncedTichuProperty()));
 		this.serverModel.getPlayer(playerCount).getHisHisTurnProperty().addListener(this::broadcastUpdate);
 		this.serverModel.getPlayer(playerCount).getHasMahjongProperty().addListener(this::broadcastUpdate);
 		this.playerCount++;
@@ -44,22 +47,22 @@ public class ServerController {
 
 	/**
 	 * informs all players about announcing GrandTichu
-	 * @author philipp
-	 * @param newVal if changed to true
+	 * @author philipp (revised by Christian)
+	 * @param property if changed to true
 	 */
-	private void broadcastGrandTichu(ObservableValue<? extends Boolean> obs, Boolean oldVal, Boolean newVal) {
-		if (newVal) {
+	private void broadcastGrandTichu(SimpleMessageProperty property) {
+		if (property.getValue()) {
 			this.serverModel.broadcast(MessageType.AnnouncedTichuMsg, TichuType.GrandTichu.toString());
 		}
 	}
 
 	/**
 	 * informs all players about announcing Tichu
-	 * @author philipp
-	 * @param newVal if changed to true
+	 * @author philipp (revised by Christian)
+	 * @param property changed to true
 	 */
-	private void broadcastTichu(ObservableValue<? extends Boolean> obs, Boolean oldVal, Boolean newVal) {
-		if (newVal) {
+	private void broadcastTichu(SimpleMessageProperty property) {
+		if (property.getValue()) {
 			this.serverModel.broadcast(MessageType.AnnouncedTichuMsg, TichuType.SmallTichu.toString());
 		}
 	}
