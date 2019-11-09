@@ -1,6 +1,10 @@
 package ch.tichuana.tichu.server.model;
 
 import ch.tichuana.tichu.commons.message.*;
+import ch.tichuana.tichu.commons.models.Card;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 public class Game {
@@ -58,6 +62,23 @@ public class Game {
 			playersInOrder[i].sendMessage(msg);
 		}
 		this.deck.shuffleDeck();
+	}
+
+	/**
+	 * Deals eight cards to every client by sending a custom DealMsg
+	 * @author Christian
+	 */
+	public void dealFirstEightCards(){
+		ArrayList<Card> cards = new ArrayList<>();
+		cards.addAll(Arrays.asList(deck.getFirstHalf()));
+		int rangeCounter = 0;
+		for (Player p : playersInOrder){
+			ArrayList<Card> hand = new ArrayList();
+			hand.addAll(cards.subList(rangeCounter,rangeCounter+8));
+			Message msg = new DealMsg(hand);
+			p.sendMessage(msg);
+			rangeCounter += 8;
+		}
 	}
 
 	/**
