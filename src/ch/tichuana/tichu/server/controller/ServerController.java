@@ -1,6 +1,7 @@
 package ch.tichuana.tichu.server.controller;
 
 import ch.tichuana.tichu.commons.message.AnnouncedTichuMsg;
+import ch.tichuana.tichu.commons.message.DemandSchupfenMsg;
 import ch.tichuana.tichu.commons.message.MessageType;
 import ch.tichuana.tichu.commons.models.TichuType;
 import ch.tichuana.tichu.server.model.Player;
@@ -44,6 +45,8 @@ public class ServerController {
 
         player.getAnnouncedTichuProperty().addListener(
                 e -> broadcastTichu(player.getAnnouncedTichuProperty()));
+		player.getAnnouncedGrandTichuProperty().addListener(
+				e -> broadcastTichu(player.getAnnouncedGrandTichuProperty()));
         player.getHisHisTurnProperty().addListener(this::broadcastUpdate);
         player.getHasMahjongProperty().addListener(this::broadcastUpdate);
 
@@ -92,10 +95,21 @@ public class ServerController {
 		serverModel.increaseTichuResponses();
 		if (serverModel.getTichuResponses() == 4){
 			serverModel.getGame().dealRemainingCards();
+			logger.info("Remaining six cards dealt");
 		}
 		else if (serverModel.getTichuResponses() == 8) {
-			// TODO: schupfen
+			demandSchupfen();
 		}
+	}
+
+	/**
+	 * broadcasts a DemandSchupfenMsg with the name of the next player.
+	 * @author Chrisitan
+	 */
+	private void demandSchupfen(){
+		Player p = serverModel.getGame().getNextPlayer();
+		DemandSchupfenMsg msg = new DemandSchupfenMsg(p.getPlayerName());
+		serverModel.broadcast(msg);
 	}
 
 	/**

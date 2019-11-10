@@ -15,18 +15,27 @@ public class DummyClient {
 
             Scanner scan = new Scanner(System.in);
 
-            System.out.println("message:");
+            System.out.println("player number:");
             String input = scan.next();
-            out.write(input+"\n");
+            String join = "{\"msg\":\"JoinMsg\",\"password\":\"pw123\",\"playerName\":\"Player"+ input +"\"}";
+            System.out.println(join);
+            out.write(join+"\n");
             out.flush();
             System.out.println(in.readLine());
 
             while (true) {
-                System.out.println(in.readLine());
-                System.out.println("message:");
+                System.out.println("\ns: send, r: receive");
                 input = scan.next();
-                out.write(input+"\n");
-                out.flush();
+
+                if(input.equals("r")){
+                    System.out.println(in.readLine());
+                }
+                else {
+                    System.out.println("message:");
+                    input = scan.next();
+                    out.write(input+"\n");
+                    out.flush();
+                }
             }
 
         }catch (Exception e){

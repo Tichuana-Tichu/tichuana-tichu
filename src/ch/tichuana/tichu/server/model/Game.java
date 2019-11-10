@@ -38,7 +38,7 @@ public class Game {
 		this.closed = false;
 		this.cardsDealed = false;
 		this.deck = new DeckOfCards();
-		this.currentPlayer = 0;
+		this.currentPlayer = -1;
 	}
 
 	/**
@@ -100,6 +100,10 @@ public class Game {
 			p.sendMessage(msg);
 			rangeCounter += 6;
 		}
+	}
+
+	public void schupfen(){
+
 	}
 
 	/**

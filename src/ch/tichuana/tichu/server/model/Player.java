@@ -20,6 +20,8 @@ public class Player {
 	private ServerModel serverModel;
 	//SimpleBooleanProperties control the game flow
 	private volatile SimpleMessageProperty announcedTichu = new SimpleMessageProperty(false);
+	private volatile SimpleMessageProperty announcedGrandTichu = new SimpleMessageProperty(false);
+	private TichuType tichuType = TichuType.none;
 	private volatile SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
 	private volatile SimpleBooleanProperty hasMahjong = new SimpleBooleanProperty(false);
 	private boolean done;
@@ -57,14 +59,34 @@ public class Player {
 					else {
 						sendMessage(MessageType.ConnectedMsg, "false");
 					}
-
 				}
 
 				else if (msg instanceof TichuMsg) {
 					logger.info("Player: "+this.playerName+" announced SmallTichu");
-					this.announcedTichu.setMessage(msg);
-					this.announcedTichu.set(true);
-					break;
+					this.tichuType = msg.getTichuType();
+
+					// Important: The boolean value of SimpleMessagePropertys means that a player has already announced
+					// Grandtichu/none or smalltichu/none. NOT if he actually announced grand or small tichu.
+					// use getTichuType() to find out what the player has announced!
+					switch (tichuType){
+						case none:
+							if (announcedGrandTichu.getValue()){
+								announcedTichu.setMessage(msg);
+								announcedTichu.setValue(true);
+							} else {
+								announcedGrandTichu.setMessage(msg);
+								announcedGrandTichu.setValue(true);
+							}
+							break;
+						case GrandTichu:
+							announcedGrandTichu.setMessage(msg);
+							announcedGrandTichu.setValue(true);
+							break;
+						case SmallTichu:
+							announcedTichu.setMessage(msg);
+							announcedTichu.setValue(true);
+							break;
+					}
 				}
 
 				else if (msg instanceof SchupfenMsg) {
@@ -84,6 +106,7 @@ public class Player {
 					else
 						this.hisTurn.set(false);
 				}
+				//
 			}
 		};
 		Thread t = new Thread(r);
@@ -180,12 +203,17 @@ public class Player {
 	public void setCurrentMove(ArrayList<Card> currentMove) {
 		this.currentMove = currentMove;
 	}
-
 	public ArrayList<Card> getHand() {
 		return hand;
 	}
-
 	public boolean isDone() {
 		return done;
+	}
+	public SimpleMessageProperty getAnnouncedGrandTichuProperty(){
+		return announcedGrandTichu;
+	}
+
+	public TichuType getTichuType() {
+		return tichuType;
 	}
 }
