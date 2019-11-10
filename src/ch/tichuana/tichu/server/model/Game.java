@@ -17,6 +17,7 @@ public class Game {
 	private volatile boolean closed;
 	private boolean cardsDealed;
 	private Player[] playersInOrder;
+	private int currentPlayer;
 	private Team[] teams = new Team[2];
 	private DeckOfCards deck;
 
@@ -37,6 +38,7 @@ public class Game {
 		this.closed = false;
 		this.cardsDealed = false;
 		this.deck = new DeckOfCards();
+		this.currentPlayer = 0;
 	}
 
 	/**
@@ -75,6 +77,7 @@ public class Game {
 		for (Player p : playersInOrder){
 			ArrayList<Card> hand = new ArrayList();
 			hand.addAll(cards.subList(rangeCounter,rangeCounter+8));
+			p.getHand().addAll(hand);
 			Message msg = new DealMsg(hand);
 			p.sendMessage(msg);
 			rangeCounter += 8;
@@ -92,6 +95,7 @@ public class Game {
 		for (Player p : playersInOrder){
 			ArrayList<Card> hand = new ArrayList();
 			hand.addAll(cards.subList(rangeCounter,rangeCounter+6));
+			p.getHand().addAll(hand);
 			Message msg = new DealMsg(hand);
 			p.sendMessage(msg);
 			rangeCounter += 6;

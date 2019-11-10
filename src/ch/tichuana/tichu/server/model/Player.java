@@ -36,6 +36,7 @@ public class Player {
 		this.serverModel = serverModel;
 		this.socket = socket;
 		this.closed = false;
+		this.hand = new ArrayList<Card>();
 
 		Runnable r = () -> {
 			while (!closed) {
@@ -176,5 +177,9 @@ public class Player {
 	}
 	public void setCurrentMove(ArrayList<Card> currentMove) {
 		this.currentMove = currentMove;
+	}
+
+	public ArrayList<Card> getHand() {
+		return hand;
 	}
 }
