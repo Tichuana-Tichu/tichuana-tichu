@@ -94,8 +94,7 @@ public class ServerController {
 			serverModel.getGame().dealRemainingCards();
 		}
 		else if (serverModel.getTichuResponses() == 8) {
-			// TODO: start first round
-			// braucht es vieleicht gar nicht? Wir reagieren ja auf PlayMsg
+			// TODO: schupfen
 		}
 	}
 
