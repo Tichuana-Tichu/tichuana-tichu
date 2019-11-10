@@ -145,6 +145,26 @@ public class Game {
 	}
 
 	/**
+	 * removed the card from origin players hand and adds it to it's new owner
+	 * @author Christian
+	 * @param card
+	 * @param player target player
+	 */
+	public void schupfen(Card card, Player player){
+		Message msg= new SchupfenMsg("", card);
+		// origin player
+		for (Player p : playersInOrder){
+			if (p.getHand().contains(card)){
+				p.getHand().remove(card);
+				msg = new SchupfenMsg(p.getPlayerName(),card);
+			}
+		}
+		player.getHand().add(card);
+		player.sendMessage(msg);
+	}
+
+
+	/**
 	 * for identification
 	 * @author Philipp
 	 * @return uniqueID

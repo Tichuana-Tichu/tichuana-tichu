@@ -17,7 +17,7 @@ public class DummyClient {
 
             System.out.println("player number:");
             String input = scan.next();
-            String join = "{\"msg\":\"JoinMsg\",\"password\":\"pw123\",\"playerName\":\"Player"+ input +"\"}";
+            String join = "{\"msg\":\"JoinMsg\",\"password\":\"pw123\",\"playerName\":\"player"+ input +"\"}";
             System.out.println(join);
             out.write(join+"\n");
             out.flush();

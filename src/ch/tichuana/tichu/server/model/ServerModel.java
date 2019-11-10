@@ -3,6 +3,7 @@ package ch.tichuana.tichu.server.model;
 import ch.tichuana.tichu.commons.message.AnnouncedTichuMsg;
 import ch.tichuana.tichu.commons.message.Message;
 import ch.tichuana.tichu.commons.message.MessageType;
+import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,6 +23,7 @@ public class ServerModel {
 	private Team teamTwo;
 	private Game game;
 	private volatile int tichuResponses = 0;
+	private volatile int schupfenResponses = 0;
 
 	/**
 	 * starts Server and listens for new clients to connect
@@ -109,6 +111,9 @@ public class ServerModel {
 	public void increaseTichuResponses(){
 		this.tichuResponses++;
 	}
+	public void increaseSchupfenResponses(){
+		this.schupfenResponses++;
+	}
 
 
 	// Getters and setters
@@ -130,5 +135,8 @@ public class ServerModel {
 	}
 	public int getTichuResponses() {
 		return tichuResponses;
+	}
+	public int getSchupfenResponses() {
+		return schupfenResponses;
 	}
 }

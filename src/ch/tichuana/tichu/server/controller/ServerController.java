@@ -2,8 +2,7 @@ package ch.tichuana.tichu.server.controller;
 
 import ch.tichuana.tichu.commons.message.AnnouncedTichuMsg;
 import ch.tichuana.tichu.commons.message.DemandSchupfenMsg;
-import ch.tichuana.tichu.commons.message.MessageType;
-import ch.tichuana.tichu.commons.models.TichuType;
+import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.server.model.Player;
 import ch.tichuana.tichu.server.model.ServerModel;
 import ch.tichuana.tichu.server.model.SimpleMessageProperty;
@@ -47,6 +46,8 @@ public class ServerController {
                 e -> broadcastTichu(player.getAnnouncedTichuProperty()));
 		player.getAnnouncedGrandTichuProperty().addListener(
 				e -> broadcastTichu(player.getAnnouncedGrandTichuProperty()));
+		player.getSchupfenProperty().addListener(
+				e -> schupfen(player.getSchupfenProperty()));
         player.getHisHisTurnProperty().addListener(this::broadcastUpdate);
         player.getHasMahjongProperty().addListener(this::broadcastUpdate);
 
@@ -110,6 +111,18 @@ public class ServerController {
 		Player p = serverModel.getGame().getNextPlayer();
 		DemandSchupfenMsg msg = new DemandSchupfenMsg(p.getPlayerName());
 		serverModel.broadcast(msg);
+	}
+
+
+	private void schupfen(SimpleMessageProperty property){
+		if (property.getValue()){
+			Card card = property.getMessage().getCard();
+			Player player = serverModel.getGame().getPlayerByName(property.getMessage().getPlayerName());
+			serverModel.getGame().schupfen(card, player);
+			serverModel.increaseSchupfenResponses();
+			property.setValue(false);
+		}
+
 	}
 
 	/**

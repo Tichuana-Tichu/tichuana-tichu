@@ -21,6 +21,7 @@ public class Player {
 	//SimpleBooleanProperties control the game flow
 	private volatile SimpleMessageProperty announcedTichu = new SimpleMessageProperty(false);
 	private volatile SimpleMessageProperty announcedGrandTichu = new SimpleMessageProperty(false);
+	private volatile SimpleMessageProperty schupfenProperty = new SimpleMessageProperty(false);
 	private TichuType tichuType = TichuType.none;
 	private volatile SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
 	private volatile SimpleBooleanProperty hasMahjong = new SimpleBooleanProperty(false);
@@ -91,8 +92,8 @@ public class Player {
 
 				else if (msg instanceof SchupfenMsg) {
 					logger.info("Player: "+this.playerName+" schupfed card to"+msg.getPlayerName());
-					if (msg.getPlayerName().equals(Player.this.playerName))
-						this.hand.add(msg.getCard());
+					this.schupfenProperty.setMessage(msg);
+					this.schupfenProperty.setValue(true);
 				}
 
 				else if (msg instanceof PlayMsg) {
@@ -106,7 +107,6 @@ public class Player {
 					else
 						this.hisTurn.set(false);
 				}
-				//
 			}
 		};
 		Thread t = new Thread(r);
@@ -215,5 +215,8 @@ public class Player {
 
 	public TichuType getTichuType() {
 		return tichuType;
+	}
+	public SimpleMessageProperty getSchupfenProperty(){
+		return schupfenProperty;
 	}
 }
