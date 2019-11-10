@@ -131,6 +131,20 @@ public class Game {
 	}
 
 	/**
+	 * Returns Player who's name equals parameter
+	 * @param name wanted player's name
+	 * @return player
+	 */
+	public Player getPlayerByName(String name){
+		for (Player p : playersInOrder){
+			if (p.getPlayerName().equals(name)){
+				return p;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * for identification
 	 * @author Philipp
 	 * @return uniqueID
