@@ -112,12 +112,18 @@ public class Game {
 	}
 
 	/**
-	 * @author Philipp
-	 * @return Player of which isTurn is true
+	 * Returns the next player whos turn it is
+	 * @author Christian
+	 * @return Player
 	 */
 	public Player getNextPlayer() {
-		// TODO - implement Match.getNextPlayer
-		return null;
+		currentPlayer = (currentPlayer+1)&4;
+
+		// should handle if a player is already done
+		while (playersInOrder[currentPlayer].isDone()){
+			currentPlayer = (currentPlayer+1)&4;
+		}
+		return playersInOrder[currentPlayer];
 	}
 
 	/**

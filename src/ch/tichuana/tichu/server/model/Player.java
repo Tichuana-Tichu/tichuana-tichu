@@ -22,6 +22,7 @@ public class Player {
 	private volatile SimpleMessageProperty announcedTichu = new SimpleMessageProperty(false);
 	private volatile SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
 	private volatile SimpleBooleanProperty hasMahjong = new SimpleBooleanProperty(false);
+	private boolean done;
 	private ArrayList currentMove;
 	private ArrayList<Card> hand;
 
@@ -37,6 +38,7 @@ public class Player {
 		this.socket = socket;
 		this.closed = false;
 		this.hand = new ArrayList<Card>();
+		this.done = false;
 
 		Runnable r = () -> {
 			while (!closed) {
@@ -181,5 +183,9 @@ public class Player {
 
 	public ArrayList<Card> getHand() {
 		return hand;
+	}
+
+	public boolean isDone() {
+		return done;
 	}
 }
