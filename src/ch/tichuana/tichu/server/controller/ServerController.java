@@ -74,7 +74,11 @@ public class ServerController {
         }
     }
 
-    private void startGame(){
+	/**
+	 * starts the Game and deal first eight cards to each player
+	 * @author Christian
+	 */
+	private void startGame(){
 		serverModel.getGame().start();
 		logger.info("Game started");
 		serverModel.getGame().dealFirstEightCards();

@@ -2,7 +2,6 @@ package ch.tichuana.tichu.server.model;
 
 import ch.tichuana.tichu.commons.message.*;
 import ch.tichuana.tichu.commons.models.Card;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -100,10 +99,6 @@ public class Game {
 			p.sendMessage(msg);
 			rangeCounter += 6;
 		}
-	}
-
-	public void schupfen(){
-
 	}
 
 	/**
