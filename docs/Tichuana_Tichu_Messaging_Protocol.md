@@ -73,3 +73,24 @@ The server will broadcast every Tichu and upon receiving all answers will go on 
 ``` 
 
 ## Schupfen
+
+When all Tichu messages have been recieved, the server will broadcast a request to all clients prompting them to give one
+of their cards to the first Player in the row. 
+
+```json
+{"msg":"DemandSchupfenMsg","playerName":"player1"}
+```
+
+Each player will check if he is the player in question, if so the request can be ignored. Otherwise the player is to 
+choose of of his cards and send it back in a "schupfen message". Again specifying the player the card is meant for.
+
+```json
+{"msg":"SchupfenMsg","playerName":"player1","card":{"rank":"Queen","suit":"Pagodas"}}
+```
+
+When the server has received three messages he will sent the next "demand schupfen message", this time requesting a card
+for the next player in the order. This process is repeated until all players have been given their three cards.
+
+## Gameplay
+
+TODO
