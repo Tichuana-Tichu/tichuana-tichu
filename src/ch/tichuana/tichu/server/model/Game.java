@@ -14,7 +14,6 @@ public class Game {
 	private int currentScore;
 	private int matchesPlayed = 0;
 	private volatile boolean closed;
-	private boolean cardsDealed;
 	private Player[] playersInOrder;
 	private int currentPlayer;
 	private Team[] teams = new Team[2];
@@ -35,7 +34,6 @@ public class Game {
 		this.teams[1] = teamTwo;
 		this.serverModel = serverModel;
 		this.closed = false;
-		this.cardsDealed = false;
 		this.deck = new DeckOfCards();
 		this.currentPlayer = -1;
 	}
@@ -70,12 +68,10 @@ public class Game {
 	 * @author Christian
 	 */
 	public void dealFirstEightCards(){
-		ArrayList<Card> cards = new ArrayList<>();
-		cards.addAll(Arrays.asList(deck.getFirstHalf()));
+		ArrayList<Card> cards = new ArrayList<>(Arrays.asList(deck.getFirstHalf()));
 		int rangeCounter = 0;
 		for (Player p : playersInOrder){
-			ArrayList<Card> hand = new ArrayList();
-			hand.addAll(cards.subList(rangeCounter,rangeCounter+8));
+			ArrayList<Card> hand = new ArrayList<Card>(cards.subList(rangeCounter, rangeCounter + 8));
 			p.getHand().addAll(hand);
 			Message msg = new DealMsg(hand);
 			p.sendMessage(msg);
@@ -88,26 +84,15 @@ public class Game {
 	 * @author Christian
 	 */
 	public void dealRemainingCards(){
-		ArrayList<Card> cards = new ArrayList<>();
-		cards.addAll(Arrays.asList(deck.getSecondHalf()));
+		ArrayList<Card> cards = new ArrayList<>(Arrays.asList(deck.getSecondHalf()));
 		int rangeCounter = 0;
 		for (Player p : playersInOrder){
-			ArrayList<Card> hand = new ArrayList();
-			hand.addAll(cards.subList(rangeCounter,rangeCounter+6));
+			ArrayList<Card> hand = new ArrayList<Card>(cards.subList(rangeCounter, rangeCounter + 6));
 			p.getHand().addAll(hand);
 			Message msg = new DealMsg(hand);
 			p.sendMessage(msg);
 			rangeCounter += 6;
 		}
-	}
-
-	/**
-	 * called from controller to send messages to ClientModel (Client)
-	 * @author Philipp
-	 * @param messageType from a specific type
-	 */
-	private void sendMessage(MessageType messageType, String identifier) {
-		serverModel.broadcast(messageType, identifier);
 	}
 
 	/**

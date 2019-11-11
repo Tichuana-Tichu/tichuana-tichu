@@ -1,16 +1,11 @@
 package ch.tichuana.tichu.server.model;
 
-import ch.tichuana.tichu.commons.message.AnnouncedTichuMsg;
 import ch.tichuana.tichu.commons.message.Message;
-import ch.tichuana.tichu.commons.message.MessageType;
-import ch.tichuana.tichu.commons.models.Card;
-import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class ServerModel {
@@ -71,20 +66,6 @@ public class ServerModel {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
-	}
-
-	/**
-	 * messages that need to be sent via broadcast to all clients
-	 * @author Philipp
-	 * @param messageType from a specific type
-	 * @param identifier and with additional information to create Message-Object
-	 */
-	public void broadcast(MessageType messageType, String identifier) {
-		logger.info("Broadcasting message to players");
-
-		for (Player p : players) {
-			p.sendMessage(messageType, identifier);
 		}
 	}
 

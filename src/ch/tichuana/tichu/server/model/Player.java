@@ -53,12 +53,12 @@ public class Player {
 
 					// check if password is correct
 					if (verifyPassword()){
-						sendMessage(MessageType.ConnectedMsg, "true");
+						sendMessage(new ConnectedMsg(true));
 						serverModel.getPlayers().add(this);
 						logger.info("Player: "+msg.getPlayerName()+" logged in");
 					}
 					else {
-						sendMessage(MessageType.ConnectedMsg, "false");
+						sendMessage(new ConnectedMsg(false));
 					}
 				}
 
@@ -127,32 +127,7 @@ public class Player {
 	}
 
 	/**
-	 * messages that can be sent directly to clientModel
-	 * @author Philipp
-	 * @param messageType from a specific type
-	 * @param identifier and with additional information to create Message-Object
-	 */
-	public void sendMessage(MessageType messageType, String identifier) {
-		Message message;
-		ArrayList<String> tichus = new ArrayList<String>();
-		tichus.add(this.playerName);
-
-		switch (messageType) {
-
-			case ConnectedMsg:
-				message = new ConnectedMsg(Boolean.parseBoolean(identifier));
-				message.send(socket);
-				break;
-
-			case AnnouncedTichuMsg:
-				//message = new AnnouncedTichuMsg(tichus, TichuType.valueOf(identifier));
-				//message.send(socket);
-				break;
-		}
-	}
-
-	/**
-	 * Simpler sendMessage Method. Used by controller to send an already created Message.
+	 * Sends a given message to the client of this player instance.
 	 * @author Christian
 	 * @param message
 	 */
