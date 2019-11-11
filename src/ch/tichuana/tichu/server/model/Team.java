@@ -1,11 +1,14 @@
 package ch.tichuana.tichu.server.model;
 
+import java.util.logging.Logger;
+
 public class Team implements Comparable<Team> {
 
 	private int teamID;
 	private Player[] players;
 	private int currentScore;
 	private boolean finished;
+	private Logger logger;
 
 	/**
 	 * 
@@ -13,6 +16,8 @@ public class Team implements Comparable<Team> {
 	 * @param playerTwo
 	 */
 	public Team(Player playerOne, Player playerTwo) {
+		logger = Logger.getLogger("");
+		players = new Player[2];
 		this.teamID = getUniqueID();
 		players[0] = playerOne;
 		players[1] = playerTwo;

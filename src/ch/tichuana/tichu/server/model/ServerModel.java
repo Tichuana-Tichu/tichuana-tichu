@@ -1,15 +1,11 @@
 package ch.tichuana.tichu.server.model;
 
-import ch.tichuana.tichu.commons.message.AnnouncedTichuMsg;
 import ch.tichuana.tichu.commons.message.Message;
-import ch.tichuana.tichu.commons.message.MessageType;
-import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class ServerModel {
@@ -21,6 +17,8 @@ public class ServerModel {
 	private Team teamOne;
 	private Team teamTwo;
 	private Game game;
+	private volatile int tichuResponses = 0;
+	private volatile int schupfenResponses = 0;
 
 	/**
 	 * starts Server and listens for new clients to connect
@@ -35,18 +33,10 @@ public class ServerModel {
 			Runnable r = () -> {
 				while (!stop) {
 					try {
+
 						Socket socket = listener.accept();
 						Player player = new Player(ServerModel.this, socket);
 
-						if (players.size() == 2) {
-							this.teamOne = new Team(players.get(0), players.get(1));
-						}
-						if (players.size() == 4) {
-							this.teamTwo = new Team(players.get(2), players.get(3));
-							this.game = new Game(teamOne, teamTwo, ServerModel.this);
-						}
-
-						players.add(player);
 					} catch (IOException e) {
 						logger.info(e.toString());
 					}
@@ -80,20 +70,34 @@ public class ServerModel {
 	}
 
 	/**
-	 * messages that need to be sent via broadcast to all clients
-	 * @author Philipp
-	 * @param messageType from a specific type
-	 * @param identifier and with additional information to create Message-Object
+	 * broadcasts a given message to all players
+	 * @author Christian
+	 * @param message Message to be sent to all players
 	 */
-	public void broadcast(MessageType messageType, String identifier) {
+	public void broadcast(Message message) {
 		logger.info("Broadcasting message to players");
-
 		for (Player p : players) {
-			p.sendMessage(messageType, identifier);
+			p.sendMessage(message);
 		}
 	}
 
-	//Getter
+	/**
+	 * creates a new game and assigns it to this instance
+	 * @author Christian
+	 */
+	public void createGame(){
+		this.game = new Game(teamOne, teamTwo, this);
+	}
+
+	public void increaseTichuResponses(){
+		this.tichuResponses++;
+	}
+	public void increaseSchupfenResponses(){
+		this.schupfenResponses++;
+	}
+
+
+	// Getters and setters
 	public Game getGame() {
 		return game;
 	}
@@ -101,4 +105,19 @@ public class ServerModel {
 		return players;
 	}
 	public Player getPlayer(int i) {return players.get(i); }
+	public void setTeamOne(Team teamOne) {
+		this.teamOne = teamOne;
+	}
+	public void setTeamTwo(Team teamTwo) {
+		this.teamTwo = teamTwo;
+	}
+	public void setGame(Game game) {
+		this.game = game;
+	}
+	public int getTichuResponses() {
+		return tichuResponses;
+	}
+	public int getSchupfenResponses() {
+		return schupfenResponses;
+	}
 }

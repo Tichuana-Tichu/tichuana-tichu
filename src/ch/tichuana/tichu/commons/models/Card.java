@@ -49,7 +49,9 @@ public class Card implements Comparable {
 	public JSONObject toJSON() {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("rank", this.rank.toString());
-		jsonObject.put("suit", this.suit.toString());
+		if(this.suit != null){
+			jsonObject.put("suit", this.suit.toString());
+		}
 		return jsonObject;
 	}
 
@@ -60,8 +62,13 @@ public class Card implements Comparable {
 	 */
 	public static Card cardFactory(JSONObject jsonObject) {
 		Rank rank = Rank.valueOf((String) jsonObject.get("rank"));
-		Suit suit = Suit.valueOf((String) jsonObject.get("suit"));
-		return new Card(suit, rank);
+		String suitString = (String) jsonObject.get("suit");
+		if (suitString != null){
+			Suit suit = Suit.valueOf(suitString);
+			return new Card(suit, rank);
+		} else {
+			return new Card(rank);
+		}
 	}
 
 	/**
@@ -117,8 +124,19 @@ public class Card implements Comparable {
 	public boolean equals(Object o) {
 		try{
 			Card card = (Card) o;
-			if (card.getRank() == this.rank && card.getSuit() == this.getSuit()){
-				return true;
+
+			if (this.rank == card.getRank()){
+				if(this.suit == null && card.getSuit() == null) {
+					if (this.getRank() == card.getRank()) {
+						return true;
+					}
+				}
+				else if (this.suit == null || card.getSuit() ==null){
+					return false;
+				}
+				else if (card.getRank() == this.rank && card.getSuit() == this.getSuit()) {
+					return true;
+				}
 			}
 		} catch(Exception e){
 			e.printStackTrace();

@@ -1,6 +1,9 @@
 package ch.tichuana.tichu.server.model;
 
 import ch.tichuana.tichu.commons.message.*;
+import ch.tichuana.tichu.commons.models.Card;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 public class Game {
@@ -11,8 +14,10 @@ public class Game {
 	private int currentScore;
 	private int matchesPlayed = 0;
 	private volatile boolean closed;
-	private boolean cardsDealed;
+	private Player[] playersInOrder;
+	private int currentPlayer;
 	private Team[] teams = new Team[2];
+	private DeckOfCards deck;
 
 	/**
 	 * Game will be started from ServerModel as soon as 4 player are connected to server
@@ -29,26 +34,115 @@ public class Game {
 		this.teams[1] = teamTwo;
 		this.serverModel = serverModel;
 		this.closed = false;
-		this.cardsDealed = false;
+		this.deck = new DeckOfCards();
+		this.currentPlayer = -1;
 	}
 
 	/**
-	 * called from controller to send messages to ClientModel (Client)
-	 * @author Philipp
-	 * @param messageType from a specific type
+	 * Method that starts the game. It organizes the players of both teams in the order of play.
+	 * Sends a customized GameStartedMsg to every player. And then shuffles the deck
+	 * @author Christian
 	 */
-	private void sendMessage(MessageType messageType, String identifier) {
-		serverModel.broadcast(messageType, identifier);
+	public void start(){
+		GameStartedMsg msg;
+		this.playersInOrder = new Player[4];
+		Player[][] team = {teams[0].getPlayers(),teams[1].getPlayers()};
+		int counter = 0;
+		for (int x=0; x<2; x++){
+			for (int y=0; y<2; y++){
+				this.playersInOrder[counter] = team[y][x];
+				counter++;
+			}
+		}
+		for (int i=0; i<4; i++){
+			String mate = playersInOrder[(i+2)%4].getPlayerName();
+			String[] opponents = {playersInOrder[(i+1)%4].getPlayerName(), playersInOrder[(i+3)%4].getPlayerName()};
+			msg = new GameStartedMsg(mate,opponents);
+			playersInOrder[i].sendMessage(msg);
+		}
+		this.deck.shuffleDeck();
 	}
 
 	/**
-	 * @author Philipp
-	 * @return Player of which isTurn is true
+	 * Deals eight cards to every client by sending a custom DealMsg
+	 * @author Christian
+	 */
+	public void dealFirstEightCards(){
+		ArrayList<Card> cards = new ArrayList<>(Arrays.asList(deck.getFirstHalf()));
+		int rangeCounter = 0;
+		for (Player p : playersInOrder){
+			ArrayList<Card> hand = new ArrayList<Card>(cards.subList(rangeCounter, rangeCounter + 8));
+			p.getHand().addAll(hand);
+			Message msg = new DealMsg(hand);
+			p.sendMessage(msg);
+			rangeCounter += 8;
+		}
+	}
+
+	/**
+	 * Deals the remaining six cards to every client by sending a custom DealMsg
+	 * @author Christian
+	 */
+	public void dealRemainingCards(){
+		ArrayList<Card> cards = new ArrayList<>(Arrays.asList(deck.getSecondHalf()));
+		int rangeCounter = 0;
+		for (Player p : playersInOrder){
+			ArrayList<Card> hand = new ArrayList<Card>(cards.subList(rangeCounter, rangeCounter + 6));
+			p.getHand().addAll(hand);
+			Message msg = new DealMsg(hand);
+			p.sendMessage(msg);
+			rangeCounter += 6;
+		}
+	}
+
+	/**
+	 * Returns the next player whos turn it is
+	 * @author Christian
+	 * @return Player
 	 */
 	public Player getNextPlayer() {
-		// TODO - implement Match.getNextPlayer
+		currentPlayer = (currentPlayer+1)%4;
+
+		// should handle if a player is already done
+		while (playersInOrder[currentPlayer].isDone()){
+			currentPlayer = (currentPlayer+1)%4;
+		}
+		return playersInOrder[currentPlayer];
+	}
+
+	/**
+	 * Returns Player who's name equals parameter
+	 * @param name wanted player's name
+	 * @return player
+	 */
+	public Player getPlayerByName(String name){
+		for (Player p : playersInOrder){
+			if (p.getPlayerName().equals(name)){
+				return p;
+			}
+		}
 		return null;
 	}
+
+	/**
+	 * removed the card from origin players hand and adds it to it's new owner
+	 * @author Christian
+	 * @param card
+	 * @param player target player
+	 */
+	public void schupfen(Card card, Player player){
+		Message msg= new SchupfenMsg("", card);
+		// origin player
+		for (Player p : playersInOrder){
+			if (p.getHand().contains(card)){
+				p.getHand().remove(card);
+				msg = new SchupfenMsg(p.getPlayerName(),card);
+			}
+		}
+		player.getHand().add(card);
+		player.sendMessage(msg);
+	}
+
 
 	/**
 	 * for identification

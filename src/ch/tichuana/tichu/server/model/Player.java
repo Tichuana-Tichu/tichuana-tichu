@@ -14,14 +14,18 @@ public class Player {
 
 	private Logger logger = Logger.getLogger("");
 	private String playerName;
+	private String password;
 	private Socket socket;
 	private volatile boolean closed;
 	private ServerModel serverModel;
 	//SimpleBooleanProperties control the game flow
-	private volatile SimpleBooleanProperty announcedTichu = new SimpleBooleanProperty(false);
-	private volatile SimpleBooleanProperty announcedGrandTichu = new SimpleBooleanProperty(false);
+	private volatile SimpleMessageProperty announcedTichu = new SimpleMessageProperty(false);
+	private volatile SimpleMessageProperty announcedGrandTichu = new SimpleMessageProperty(false);
+	private volatile SimpleMessageProperty schupfenProperty = new SimpleMessageProperty(false);
+	private TichuType tichuType = TichuType.none;
 	private volatile SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
 	private volatile SimpleBooleanProperty hasMahjong = new SimpleBooleanProperty(false);
+	private boolean done;
 	private ArrayList currentMove;
 	private ArrayList<Card> hand;
 
@@ -36,6 +40,8 @@ public class Player {
 		this.serverModel = serverModel;
 		this.socket = socket;
 		this.closed = false;
+		this.hand = new ArrayList<Card>();
+		this.done = false;
 
 		Runnable r = () -> {
 			while (!closed) {
@@ -43,32 +49,51 @@ public class Player {
 
 				if (msg instanceof JoinMsg) {
 					Player.this.playerName = msg.getPlayerName();
-					sendMessage(MessageType.ConnectedMsg, "true");
-					logger.info("Player: "+msg.getPlayerName()+" logged in");
+					this.password = msg.getPassword();
+
+					// check if password is correct
+					if (verifyPassword()){
+						sendMessage(new ConnectedMsg(true));
+						serverModel.getPlayers().add(this);
+						logger.info("Player: "+msg.getPlayerName()+" logged in");
+					}
+					else {
+						sendMessage(new ConnectedMsg(false));
+					}
 				}
 
 				else if (msg instanceof TichuMsg) {
+					logger.info("Player: "+this.playerName+" announced SmallTichu");
+					this.tichuType = msg.getTichuType();
 
-					switch (msg.getTichuType()) {
-
-						case SmallTichu:
-							logger.info("Player: "+this.playerName+" announced SmallTichu");
-							this.announcedTichu.set(true);
-							this.announcedGrandTichu.set(false);
+					// Important: The boolean value of SimpleMessagePropertys means that a player has already announced
+					// Grandtichu/none or smalltichu/none. NOT if he actually announced grand or small tichu.
+					// use getTichuType() to find out what the player has announced!
+					switch (tichuType){
+						case none:
+							if (announcedGrandTichu.getValue()){
+								announcedTichu.setMessage(msg);
+								announcedTichu.setValue(true);
+							} else {
+								announcedGrandTichu.setMessage(msg);
+								announcedGrandTichu.setValue(true);
+							}
 							break;
-
 						case GrandTichu:
-							logger.info("Player: "+this.playerName+" announced GrandTichu");
-							this.announcedGrandTichu.set(true);
-							this.announcedTichu.set(false);
+							announcedGrandTichu.setMessage(msg);
+							announcedGrandTichu.setValue(true);
+							break;
+						case SmallTichu:
+							announcedTichu.setMessage(msg);
+							announcedTichu.setValue(true);
 							break;
 					}
 				}
 
 				else if (msg instanceof SchupfenMsg) {
 					logger.info("Player: "+this.playerName+" schupfed card to"+msg.getPlayerName());
-					if (msg.getPlayerName().equals(Player.this.playerName))
-						this.hand.add(msg.getCard());
+					this.schupfenProperty.setMessage(msg);
+					this.schupfenProperty.setValue(true);
 				}
 
 				else if (msg instanceof PlayMsg) {
@@ -102,28 +127,24 @@ public class Player {
 	}
 
 	/**
-	 * messages that can be sent directly to clientModel
-	 * @author Philipp
-	 * @param messageType from a specific type
-	 * @param identifier and with additional information to create Message-Object
+	 * Sends a given message to the client of this player instance.
+	 * @author Christian
+	 * @param message
 	 */
-	public void sendMessage(MessageType messageType, String identifier) {
-		Message message;
-		ArrayList<String> tichus = new ArrayList<String>();
-		tichus.add(this.playerName);
+	public void sendMessage(Message message){
+		message.send(this.socket);
+	}
 
-		switch (messageType) {
-
-			case ConnectedMsg:
-				message = new ConnectedMsg(Boolean.parseBoolean(identifier));
-				message.send(socket);
-				break;
-
-			case AnnouncedTichuMsg:
-				message = new AnnouncedTichuMsg(tichus, TichuType.valueOf(identifier));
-				message.send(socket);
-				break;
-		}
+	/**
+	 * Checks if password matches password in database belonging to player
+	 * @return boolean
+	 */
+	public boolean verifyPassword(){
+		// TODO: Check if password is correct
+		// this.password
+		// this.playerName
+		// get DatabaseConnection from ServiceLocator
+		return true;
 	}
 
 	//Getter & Setter
@@ -133,17 +154,11 @@ public class Player {
 	public final void setPlayerName(String playerName) {
 		this.playerName = playerName;
 	}
-	public SimpleBooleanProperty getAnnouncedTichuProperty() {
+	public SimpleMessageProperty getAnnouncedTichuProperty() {
 		return this.announcedTichu;
 	}
 	public final void setAnnouncedTichu(boolean announcedTichu) {
 		this.announcedTichu.set(announcedTichu);
-	}
-	public SimpleBooleanProperty getAnnouncedGrandTichuProperty() {
-		return this.announcedGrandTichu;
-	}
-	public final void setAnnouncedGrandTichu(boolean announcedGrandTichu) {
-		this.announcedGrandTichu.set(announcedGrandTichu);
 	}
 	public SimpleBooleanProperty getHisHisTurnProperty() {
 		return this.hisTurn;
@@ -162,5 +177,21 @@ public class Player {
 	}
 	public void setCurrentMove(ArrayList<Card> currentMove) {
 		this.currentMove = currentMove;
+	}
+	public ArrayList<Card> getHand() {
+		return hand;
+	}
+	public boolean isDone() {
+		return done;
+	}
+	public SimpleMessageProperty getAnnouncedGrandTichuProperty(){
+		return announcedGrandTichu;
+	}
+
+	public TichuType getTichuType() {
+		return tichuType;
+	}
+	public SimpleMessageProperty getSchupfenProperty(){
+		return schupfenProperty;
 	}
 }
