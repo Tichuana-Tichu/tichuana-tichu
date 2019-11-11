@@ -113,7 +113,11 @@ public class ServerController {
 		serverModel.broadcast(msg);
 	}
 
-
+	/**
+	 * will call schupfen method in game class and give it the card and the target player
+	 * @author Christian
+	 * @param property SimpleMessageProperty for SchupfenMessages
+	 */
 	private void schupfen(SimpleMessageProperty property){
 		if (property.getValue()){
 			Card card = property.getMessage().getCard();
@@ -121,6 +125,9 @@ public class ServerController {
 			serverModel.getGame().schupfen(card, player);
 			serverModel.increaseSchupfenResponses();
 			property.setValue(false);
+			if (serverModel.getSchupfenResponses()%3 == 0){
+				demandSchupfen();
+			}
 		}
 
 	}

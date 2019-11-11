@@ -121,11 +121,11 @@ public class Game {
 	 * @return Player
 	 */
 	public Player getNextPlayer() {
-		currentPlayer = (currentPlayer+1)&4;
+		currentPlayer = (currentPlayer+1)%4;
 
 		// should handle if a player is already done
 		while (playersInOrder[currentPlayer].isDone()){
-			currentPlayer = (currentPlayer+1)&4;
+			currentPlayer = (currentPlayer+1)%4;
 		}
 		return playersInOrder[currentPlayer];
 	}
