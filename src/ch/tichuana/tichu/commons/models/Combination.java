@@ -41,20 +41,7 @@ public enum Combination {
 	 * @return
 	 * @author dominik
 	 */
-	private static boolean containsPhoenix(ArrayList<Card> cards) {
-		return cards.contains(new Card(Rank.phoenix));
-
-	/*	boolean containsPhoenix = false;
-
-		for (int i = 0; i < cards.size() - 1; i++){
-			if(cards.get(i).getRank().ordinal() == 13){
-				containsPhoenix = true;
-			}
-		}
-		return containsPhoenix;
-	*/
-	}
-
+	private static boolean containsPhoenix(ArrayList<Card> cards) {return cards.contains(new Card(Rank.phoenix));}
 
 	/**
 	 * checks if cards contain dog
@@ -72,18 +59,14 @@ public enum Combination {
 	 * @param cards
 	 * @return
 	 */
-	private static boolean containsMahjong(ArrayList<Card> cards) {
-		return false;
-	}
+	private static boolean containsMahjong(ArrayList<Card> cards) {return cards.contains(new Card(Rank.majhong));}
 
 	/**
 	 *
 	 * @param cards
 	 * @return
 	 */
-	private static boolean containsDragon(ArrayList<Card> cards) {
-		return false;
-	}
+	private static boolean containsDragon(ArrayList<Card> cards) {return cards.contains(new Card(Rank.dragon));}
 
 	/**
 	 * checks if cards contain two cards of the same rank
@@ -121,34 +104,6 @@ public enum Combination {
 		} else
 			return false;
 	}
-		/*
-		boolean phoenix = Combination.containsPhoenix(cards);
-		boolean found = false;
-		// if two cards have the same rank and the third card is ordinal 13 --> phoenix, the combination is true.
-		if (phoenix == true) {
-			for (int i = 0; i < cards.size() - 2 && !found; i++) {
-				for (int j = i + 1; j < cards.size() - 1 && !found; j++) {
-					for (int k = j + 1; k < cards.size() && !found; k++) {
-						if (cards.get(i).getRank() == cards.get(j).getRank() && cards.get(k).getRank().ordinal() == 13
-						|| cards.get(i).getRank() == cards.get(k).getRank() && cards.get(j).getRank().ordinal() == 13
-						|| cards.get(k).getRank() == cards.get(j).getRank() && cards.get(i).getRank().ordinal() == 13)
-							found = true;
-					}
-				}
-			}
-		}else {
-					for (int i = 0; i < cards.size() - 2 && !found; i++) {
-						for (int j = i + 1; j < cards.size() - 1 && !found; j++) {
-							for (int k = j + 1; k < cards.size() && !found; k++) {
-								if (cards.get(i).getRank() == cards.get(j).getRank() &&
-										cards.get(j).getRank() == cards.get(k).getRank())
-									found = true;
-							}
-						}
-					}
-				}
-		return found;
-		 */
 
 	/**
 	 * Check if there are 4 or more cards in the array, if not return false. If there are, check if they are pairs and
@@ -197,48 +152,7 @@ public enum Combination {
 		return true;
 	}
 
-			/*
-		ArrayList<Card> clonedCards = (ArrayList<Card>) cards.clone();
 
-		boolean phoenix = Combination.containsPhoenix(cards);
-		boolean stepsFound = false;
-
-		if (phoenix){
-
-		} else {
-
-			switch (clonedCards.size()) {
-				case 1:
-					stepsFound = false;
-					break;
-				case 3:
-					if (clonedCards.get(1).getRank().ordinal() == clonedCards.get(2).getRank().ordinal() - 1
-							&& clonedCards.get(2).getRank() == clonedCards.get(3).getRank()) {
-						stepsFound = true;
-					}
-					break;
-				case 5:
-					if (clonedCards.get(1).getRank().ordinal() + 1 == clonedCards.get(2).getRank().ordinal()
-							&& clonedCards.get(2).getRank() == clonedCards.get(3).getRank() &&
-							clonedCards.get(3).getRank().ordinal() + 1 == clonedCards.get(4).getRank().ordinal()
-							&& clonedCards.get(4).getRank() == clonedCards.get(5).getRank()) {
-						stepsFound = true;
-					}
-					break;
-				case 7:
-					if (clonedCards.get(1).getRank().ordinal() + 1 == clonedCards.get(2).getRank().ordinal()
-							&& clonedCards.get(2).getRank() == clonedCards.get(3).getRank() &&
-							clonedCards.get(3).getRank().ordinal() + 1 == clonedCards.get(4).getRank().ordinal()
-							&& clonedCards.get(4).getRank() == clonedCards.get(5).getRank()
-							&& clonedCards.get(5).getRank().ordinal() + 1 == clonedCards.get(6).getRank().ordinal()
-							&& clonedCards.get(6).getRank() == clonedCards.get(7).getRank()) {
-						stepsFound = true;
-					}
-					break;
-			}
-		}
-		return stepsFound;
-		 */
 
 	/**
 	 * The first 3 cards and the second 2, or the first 2 and the following 3 cards need to be the same.
@@ -282,10 +196,25 @@ public enum Combination {
 		boolean found = true;
 		boolean phoenixUsed = false;
 
-		for(int i = 0; i < cards.size()-1 && found; i++) {
-			if(cards.get(i).compareTo(cards.get(i+1)) != -1)
-				found = false;
-		}
+		if(cards.size() > 4 && !containsMahjong(cards) && !containsDog(cards) && !containsDragon(cards)){
+			if(containsPhoenix(cards)){
+				for(int i = 0; i < cards.size() - 2 && found; i++){
+					if (cards.get(i).getRank().ordinal() != cards.get(i + 1).getRank().ordinal() -1){
+						if (phoenixUsed && cards.get(i + 1).getRank().ordinal() != 13){
+							return false;
+						}else {
+							phoenixUsed = true;
+						}
+					}
+				}
+			}else {
+				for (int i = 0; i < cards.size() - 2 && found; i++) {
+					if (cards.get(i).getRank().ordinal() != cards.get(i + 1).getRank().ordinal() -1)
+						found = false;
+				}
+			}
+		}else
+			return false;
 		return found;
 	}
 
@@ -296,13 +225,19 @@ public enum Combination {
 	 * @param cards
 	 */
 	public static boolean isFourOfAKindBomb(ArrayList<Card> cards) {
-		boolean found = false;
-		if(cards.get(0).getRank().ordinal() == cards.get(2).getRank().ordinal() ||
-				cards.get(3).getRank().ordinal() == cards.get(1).getRank().ordinal()) {
-			found = true;
 
+		if (cards.size() == 4 && !containsPhoenix(cards) && !containsDragon(cards) &&
+			!containsDog(cards) && !containsMahjong(cards)) {
+
+			if(cards.get(0).getRank().ordinal() == cards.get(3).getRank().ordinal()){
+				return true;
+			}else{
+				return false;
+			}
+
+		}else{
+			return false;
 		}
-		return found;
 	}
 
 	/**
@@ -313,16 +248,15 @@ public enum Combination {
 	 * @return
 	 */
 	public static boolean isFourOfAKindPhoenix(ArrayList<Card> cards) {
-		boolean found = false;
-		if ((((cards.get(0).getRank().ordinal() == cards.get(3).getRank().ordinal()) &&
-				(cards.get(0).getRank().ordinal() == 13)) || (cards.get(3).getRank().ordinal() == 13)) ||
-				((cards.get(4).getRank().ordinal() == cards.get(1).getRank().ordinal()) &&
-						(cards.get(4).getRank().ordinal() == 13) || (cards.get(1).getRank().ordinal() == 13))){
-			found = true;
-		}
-			return found;
 
+		if(cards.size() == 4 && containsPhoenix(cards) && !containsDog(cards) &&
+				!containsMahjong(cards) && !containsDragon(cards)) {
 
+			if (cards.get(0).getRank().ordinal() == cards.get(2).getRank().ordinal()){
+				return true;
+			}else
+				return false;
+		}return false;
 	}
 
 	/**
@@ -334,13 +268,17 @@ public enum Combination {
 	public static boolean isStraightFlushBomb(ArrayList<Card> cards) {
 		boolean straight = Combination.isStraight(cards);
 		boolean flush = true;
-		boolean straightFlushBomb = straight && flush;
 
-		Suit suitOfCard = cards.get(0).getSuit();
-		for(int i = 1; i < cards.size() && flush; i++) {
-			if(cards.get(i).getSuit() != suitOfCard)
-				flush = false;
+		if (containsPhoenix(cards)){
+			return false;
+		}else{
+			Suit suitOfCard = cards.get(0).getSuit();
+			for(int i = 1; i < cards.size() -1 && flush; i++) {
+				if(cards.get(i).getSuit() != suitOfCard)
+					flush = false;
+			}
 		}
-		return straightFlushBomb;
+
+		return (straight && flush);
 	}
 }
