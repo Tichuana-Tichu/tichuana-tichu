@@ -33,7 +33,7 @@ public class Client extends Application {
 
 		ClientModel clientModel = new ClientModel();
 		this.gameView = new GameView(primaryStage, clientModel);
-		LobbyController lobbyController = new LobbyController(clientModel, gameView, primaryStage);
+		new LobbyController(clientModel, gameView, primaryStage);
 
 		gameView.start();
 	}
