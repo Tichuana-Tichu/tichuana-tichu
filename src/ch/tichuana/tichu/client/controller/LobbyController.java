@@ -48,7 +48,7 @@ public class LobbyController {
 
 		this.clientModel.getConnectedProperty().addListener(event -> {
 			Platform.runLater(() -> this.gameView.updateView());
-			PlayController playController = new PlayController(this.clientModel, this.gameView, this.stage);
+			new PlayController(this.clientModel, this.gameView, this.stage);
 		});
 	}
 }
