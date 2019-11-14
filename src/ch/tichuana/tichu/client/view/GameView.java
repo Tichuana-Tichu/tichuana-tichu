@@ -1,5 +1,6 @@
 package ch.tichuana.tichu.client.view;
 
+import ch.tichuana.tichu.client.controller.PlayController;
 import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.services.Configuration;
 import ch.tichuana.tichu.client.services.ServiceLocator;
@@ -14,6 +15,7 @@ public class GameView {
 
 	private Stage stage;
 	private PlayView playView;
+	private ClientModel clientModel;//delete after testing
 	private LobbyView lobbyView;
 	private Translator translator;
 	private Configuration configuration;
@@ -21,7 +23,7 @@ public class GameView {
 	private double initialStageHeight;
 
 	/**
-     * initializes the scene with the LobbyView and adds associated stylesheet
+	 * initializes the scene with the LobbyView and adds associated stylesheet
 	 * instantiates translator and configuration objects and assign them to the service locator
 	 * assigns the scene to the stage
 	 * @author Philipp
@@ -30,13 +32,13 @@ public class GameView {
 	 */
 	public GameView(Stage stage, ClientModel clientModel) {
 
+		this.clientModel = clientModel;//delete after testing
 		this.stage = stage;
 		this.translator = ServiceLocator.getServiceLocator().getTranslator();
 		this.configuration = ServiceLocator.getServiceLocator().getConfiguration();
 
 		this.lobbyView = new LobbyView();
 		Scene lobby = new Scene(this.lobbyView);
-
 
 		lobby.getStylesheets().add(
 				getClass().getResource(configuration.getProperty("lobbyStyle")).toExternalForm());
@@ -63,8 +65,12 @@ public class GameView {
 		this.initialStageHeight = stage.getHeight();
 		//setting minWidth to 33 % of the initial width
 		//and height to 90 % of the initial height
-        stage.setMinWidth(stage.getWidth()/3);
-        stage.setMinHeight(stage.getHeight()*0.9);
+		stage.setMinWidth(stage.getWidth()/3);
+		stage.setMinHeight(stage.getHeight()*0.9);
+
+		//delete after testing
+		this.updateView();
+		new PlayController(this.clientModel, this, this.stage);
 
 		stage.show();
 	}
