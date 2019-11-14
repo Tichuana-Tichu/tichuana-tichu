@@ -59,10 +59,11 @@ public class GameView {
 		stage.setX(primaryScreenBounds.getMinX());
 		stage.setY(primaryScreenBounds.getMinY());
 		stage.setWidth(primaryScreenBounds.getWidth()*0.9);
+		stage.setHeight(primaryScreenBounds.getHeight()*0.9);
 		//remembers initial stage size for proper change to playView after resizing
 		this.initialStageWith = stage.getWidth();
 		this.initialStageHeight = stage.getHeight();
-		stage.setHeight(primaryScreenBounds.getHeight()*0.9);
+
         stage.setMinWidth(stage.getWidth()/3);
         stage.setMinHeight(stage.getHeight()*0.9);
 
@@ -88,7 +89,7 @@ public class GameView {
 				getClass().getResource(configuration.getProperty("playStyle")).toExternalForm());
 
 		stage.setMinWidth(this.initialStageWith*0.85);
-		stage.setMinHeight(this.initialStageHeight);
+		stage.setMinHeight(this.initialStageHeight*0.65);
 
 		stage.setScene(game);
 		//initial trigger of the event-handler to rearrange the cardLabels
