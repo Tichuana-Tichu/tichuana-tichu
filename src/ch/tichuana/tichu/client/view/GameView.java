@@ -55,15 +55,14 @@ public class GameView {
 		this.playView = new PlayView();
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 
-		//set Stage boundaries to visible bounds of the main screen
-		stage.setX(primaryScreenBounds.getMinX());
-		stage.setY(primaryScreenBounds.getMinY());
+		//stage is 90 % of both width an height in initial size
 		stage.setWidth(primaryScreenBounds.getWidth()*0.9);
 		stage.setHeight(primaryScreenBounds.getHeight()*0.9);
 		//remembers initial stage size for proper change to playView after resizing
 		this.initialStageWith = stage.getWidth();
 		this.initialStageHeight = stage.getHeight();
-
+		//setting minWidth to 33 % of the initial width
+		//and height to 90 % of the initial height
         stage.setMinWidth(stage.getWidth()/3);
         stage.setMinHeight(stage.getHeight()*0.9);
 
@@ -88,8 +87,11 @@ public class GameView {
 		game.getStylesheets().add(
 				getClass().getResource(configuration.getProperty("playStyle")).toExternalForm());
 
-		stage.setMinWidth(this.initialStageWith*0.85);
-		stage.setMinHeight(this.initialStageHeight*0.65);
+		stage.setWidth(this.initialStageWith);
+		stage.setHeight(this.initialStageHeight);
+
+		stage.setMinWidth(stage.getWidth()*0.85);
+		stage.setMinHeight(stage.getHeight()*0.9);
 
 		stage.setScene(game);
 		//initial trigger of the event-handler to rearrange the cardLabels
