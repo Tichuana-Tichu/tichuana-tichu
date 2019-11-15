@@ -67,13 +67,17 @@ CardLabel:focused {
     -fx-effect: dropshadow(one-pass-box, rgb(178, 0, 0), 10, 0, 2, 2);
 }
 */
+PlayArea {
+    -fx-padding: 5px;
+}
 PlayArea Label {
     -fx-font-size: 16px;
     -fx-text-fill: FFEF69;
+    /*
     -fx-padding: 10px;
+     */
 }
 
-.playerLbl {
-    -fx-border-width: 2px;
-    -fx-border-color: #ffef69;
+Separator {
+    -fx-background-color: #ffef69;
 }
