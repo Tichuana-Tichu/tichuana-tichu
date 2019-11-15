@@ -2,10 +2,6 @@ package ch.tichuana.tichu.client.view;
 
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
-import javafx.geometry.HPos;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.GridPane;
@@ -45,7 +41,6 @@ class PlayArea extends GridPane {
 		this.add(playerLbl[0], 0, 2, 1, 1);
 		GridPane.setVgrow(playerLbl[0], Priority.ALWAYS);
 		this.add(new Separator(), 0, 3, 5, 1);
-
 
 		this.add(playerLbl[1], 0, 4, 1, 1);
 		GridPane.setVgrow(playerLbl[1], Priority.ALWAYS);
