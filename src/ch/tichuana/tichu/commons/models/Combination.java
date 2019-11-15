@@ -36,7 +36,6 @@ public enum Combination {
 
 	/**
 	 * checks if cards contain phoenix
-	 *
 	 * @param cards
 	 * @return
 	 * @author dominik
@@ -45,7 +44,6 @@ public enum Combination {
 
 	/**
 	 * checks if cards contain dog
-	 *
 	 * @param cards
 	 * @return
 	 * @author dominik
@@ -55,14 +53,16 @@ public enum Combination {
 	}
 
 	/**
-	 *
+	 * check if cards contain majhong
+	 * @author dominik
 	 * @param cards
 	 * @return
 	 */
 	private static boolean containsMahjong(ArrayList<Card> cards) {return cards.contains(new Card(Rank.majhong));}
 
 	/**
-	 *
+	 * check if cards contain dragon
+	 * @author dominik
 	 * @param cards
 	 * @return
 	 */
@@ -71,7 +71,6 @@ public enum Combination {
 	/**
 	 * checks if cards contain two cards of the same rank
 	 * or a phoenix and a random second card
-	 *
 	 * @param cards
 	 * @return
 	 * @author dominik
@@ -87,14 +86,13 @@ public enum Combination {
 	/**
 	 * Check if three cards in the Array have the same rank.
 	 * Phoenix control implemented.
-	 *
 	 * @param cards
 	 * @return
 	 * @author dominik
 	 */
 	public static boolean isThreeOfAKind(ArrayList<Card> cards) {
 
-		if (cards.size() == 3 && !containsDog(cards)) {
+		if (cards.size() == 3 && !containsDog(cards) && !containsDragon(cards) && !containsMahjong(cards)) {
 			// 3 equal cards
 			return (cards.get(0).getRank() == cards.get(1).getRank() &&
 					cards.get(1).getRank() == cards.get(2).getRank()) ||
@@ -108,7 +106,6 @@ public enum Combination {
 	/**
 	 * Check if there are 4 or more cards in the array, if not return false. If there are, check if they are pairs and
 	 * the rank is one higher then the first pair.
-	 *
 	 * @param cards
 	 * @return
 	 * @author christian, dominik, philipp
@@ -116,7 +113,8 @@ public enum Combination {
 	public static boolean isSteps(ArrayList<Card> cards) {
 		boolean phoenixUsed = false;
 
-		if (cards.size() % 2 == 0 && cards.size() > 3) {
+		if ((cards.size() % 2 == 0 && cards.size() > 3) && (!containsDog(cards) ||
+			!containsDragon(cards) || !containsMahjong(cards))) {
 
 			//checks if a real step is given
 			for (int i = 0; i < cards.size()-1; i++) {
@@ -124,7 +122,7 @@ public enum Combination {
 					return false;
 			}
 
-			if (containsPhoenix(cards)) {//complex handling with phoenix
+			if (containsPhoenix(cards)) { //complex handling with phoenix
 
 				clonedCards = (ArrayList<Card>) cards.clone();
 				clonedCards.remove(clonedCards.get(clonedCards.size()-1));
@@ -151,7 +149,6 @@ public enum Combination {
 		}
 		return true;
 	}
-
 
 
 	/**
@@ -187,7 +184,8 @@ public enum Combination {
 	}
 
 	/**
-	 * Check if every following Card is one rank higher then the one before.
+	 * Check if every following Card is one rank higher then the one before. Also check if there are special cards
+	 * included.
 	 * @author dominik
 	 * @return
 	 * @param cards
@@ -219,8 +217,8 @@ public enum Combination {
 	}
 
 	/**
-	 * Check if all 4 Cards have same Rank.
-	 * @author
+	 * Check if all 4 Cards have same Rank and do not include any special card.
+	 * @author dominik
 	 * @return
 	 * @param cards
 	 */
@@ -243,7 +241,7 @@ public enum Combination {
 	/**
 	 * Same as method isFourOfAKindBomb, but with the phoenix it's not a bomb.
 	 * Phoenix control.
-	 * @author
+	 * @author dominik
 	 * @param cards
 	 * @return
 	 */
@@ -260,10 +258,11 @@ public enum Combination {
 	}
 
 	/**
-	 * Check first if it is a Straight, if true, check Suits of card.
-	 * @author
-	 * @return
+	 * Check first if it is a Straight,in method straight ist already checked if it contains
+	 * 	 * a special card. If method isStraight() is true, then check Suits of card.
+	 * @author dominik
 	 * @param cards
+	 * @return
 	 */
 	public static boolean isStraightFlushBomb(ArrayList<Card> cards) {
 		boolean straight = Combination.isStraight(cards);
