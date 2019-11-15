@@ -77,7 +77,7 @@ public enum Combination {
 	 */
 	public static boolean isOnePair(ArrayList<Card> cards) {
 
-		if (cards.size() == 2 && !containsDog(cards)) {
+		if (cards.size() == 2 && !containsDog(cards) && !containsMahjong(cards) && !containsDragon(cards)) {
 			return cards.get(0).getRank() == cards.get(1).getRank() || containsPhoenix(cards);
 		} else
 			return false;
