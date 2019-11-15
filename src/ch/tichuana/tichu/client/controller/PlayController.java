@@ -61,6 +61,12 @@ public class PlayController {
             this.clientModel.sendMessage(MessageType.PlayMsg, "");
         });
 
+        this.clientModel.getHisTurnProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                //this.gameView.getPlayView().getPlayArea().updatePlayedColumn();
+            }
+        });
+
         this.gameView.getStage().setOnCloseRequest(event -> this.clientModel.disconnect());
     }
 

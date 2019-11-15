@@ -44,6 +44,21 @@ public class CardLabel extends Label {
 		}
 	}
 
+	public void setThumbnail(Card card) {
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+
+		if (card != null) {
+			String fileName = cardToFileName(card);
+			Image image = new Image(config.getProperty("thumbnails")+fileName);
+			ImageView imv = new ImageView(image);
+			imv.setFitWidth(primaryScreenBounds.getWidth()/30);
+			imv.setPreserveRatio(true);
+			this.setGraphic(imv);
+		} else {
+			this.setGraphic(null);
+		}
+	}
+
 	/**
 	 *
 	 * @author Christian

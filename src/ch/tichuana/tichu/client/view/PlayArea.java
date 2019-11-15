@@ -13,7 +13,7 @@ class PlayArea extends GridPane {
 	 * creates a table-like, resizeable grid for information about the game-flow
 	 * @author Philipp
 	 */
-	PlayArea() {
+	public PlayArea() {
 
 		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
 		Label[] headings = new Label[7];
@@ -58,5 +58,9 @@ class PlayArea extends GridPane {
 		this.setGridLinesVisible(true);
 		this.maxWidth(6000);
 		this.maxHeight(6000);
+	}
+
+	public void updatePlayedColumn() {
+		System.out.println("dfv");
 	}
 }

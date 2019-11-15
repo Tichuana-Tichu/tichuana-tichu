@@ -19,6 +19,7 @@ public class ClientModel {
     private String nextPlayerName;
     private String playerToSchupfCard;
     private SimpleBooleanProperty connected = new SimpleBooleanProperty(false);
+    private SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
     private Logger logger = Logger.getLogger("");
 
     /**
@@ -70,9 +71,11 @@ public class ClientModel {
 
                     if (msg instanceof UpdateMsg) {
                         if (!this.playerName.equals(msg.getNextPlayer())) {
+                            this.hisTurn.set(false);
                             this.nextPlayerName = msg.getNextPlayer();
                             sendMessage(MessageType.ReceivedMsg, "true");
                         } else {
+                            this.hisTurn.set(true);
                             logger.info("it is your turn player: "+msg.getNextPlayer());
                         }
 
@@ -162,6 +165,9 @@ public class ClientModel {
     }
     public SimpleBooleanProperty getConnectedProperty() {
         return connected;
+    }
+    public SimpleBooleanProperty getHisTurnProperty() {
+        return hisTurn;
     }
     public SimpleStringProperty getNewestMessageProperty() {
         return newestMessage;
