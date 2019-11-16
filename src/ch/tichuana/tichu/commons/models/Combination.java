@@ -113,11 +113,14 @@ public enum Combination {
 	public static boolean isSteps(ArrayList<Card> cards) {
 		boolean phoenixUsed = false;
 
+		// At first we check if the size is dividable by 2 and larger than 3 -> else no step
+		// Also can't contain dog, Dragon or Mahjong
 		if ((cards.size() % 2 == 0 && cards.size() > 3) && (!containsDog(cards) ||
 			!containsDragon(cards) || !containsMahjong(cards))) {
 
-			//checks if a real step is given
-			for (int i = 0; i < cards.size()-1; i++) {
+			// in a step-combination every second card has a rank 1 higher than the previous card
+			// if a phoenix is used the system will still work since the phoenix is always the last card (ordered list)
+			for (int i = 0; i < cards.size()-2; i+=2) {
 				if (!(cards.get(i).getRank().ordinal()+1 == cards.get(i+2).getRank().ordinal()))
 					return false;
 			}
@@ -127,7 +130,9 @@ public enum Combination {
 				clonedCards = (ArrayList<Card>) cards.clone();
 				clonedCards.remove(clonedCards.get(clonedCards.size()-1));
 
-				for (int i = 1; i < cards.size()-1; i++) {
+				for (int i = 1; i < cards.size()-2; i++) {
+					// if the previous cards doesn't have a rank of n-1 AND the following card doesn't have a rank
+					// of n+1 this is where we use the phoenix. If it's already been used its no step and returns false
 					if (clonedCards.get(i).getRank() != clonedCards.get(i - 1).getRank() &&
 							clonedCards.get(i).getRank() != clonedCards.get(i + 1).getRank()) {
 						if (phoenixUsed) {
@@ -146,6 +151,9 @@ public enum Combination {
 					}
 				}
 			}
+		}
+		else{
+			return false;
 		}
 		return true;
 	}

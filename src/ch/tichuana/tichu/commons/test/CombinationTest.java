@@ -172,39 +172,88 @@ class CombinationTest {
     @Test
     void isSteps(){
         // Test with normal cards
-        Card c1 = new Card(Suit.Swords, Rank.two);
-        Card c2 = new Card(Suit.Pagodas,Rank.three);
-        Card c3 = new Card(Suit.Jade, Rank.four);
-        Card c4 = new Card(Suit.Swords, Rank.five);
-        Card c5 = new Card(Suit.Pagodas,Rank.six);
+        // 3 3 4 4 5 5
+        Card c1 = new Card(Suit.Pagodas,Rank.three);
+        Card c2 = new Card(Suit.Jade, Rank.three);
+        Card c3 = new Card(Suit.Swords, Rank.four);
+        Card c4 = new Card(Suit.Pagodas,Rank.four);
+        Card c5 = new Card(Suit.Pagodas,Rank.five);
+        Card c6 = new Card(Suit.Swords, Rank.five);
         ArrayList<Card> hand = new ArrayList<Card>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
         hand.add(c4);
         hand.add(c5);
+        hand.add(c6);
         assertTrue(Combination.isSteps(hand));
 
         // Test with normal cards
+        // 4 4 5 5
         c1 = new Card(Suit.Swords, Rank.four);
+        c2 = new Card(Suit.Pagodas,Rank.four);
+        c3 = new Card(Suit.Jade, Rank.five);
+        c4 = new Card(Suit.Swords, Rank.five);
+        hand = new ArrayList<Card>();
+        hand.add(c1);
+        hand.add(c2);
+        hand.add(c3);
+        hand.add(c4);
+        assertTrue(Combination.isSteps(hand));
+
+        // Test with normal cards and phoenix
+        // 2 2 3 P
+        c1 = new Card(Suit.Swords, Rank.two);
+        c2 = new Card(Suit.Pagodas,Rank.two);
+        c3 = new Card(Suit.Jade, Rank.three);
+        c4 = new Card(Rank.phoenix);
+        hand = new ArrayList<Card>();
+        hand.add(c1);
+        hand.add(c2);
+        hand.add(c3);
+        hand.add(c4);
+        assertTrue(Combination.isSteps(hand));
+
+        // Test with normal cards and phoenix
+        // 2 2 3 3 4 P
+        c1 = new Card(Suit.Swords, Rank.two);
+        c2 = new Card(Suit.Pagodas,Rank.two);
+        c3 = new Card(Suit.Jade, Rank.three);
+        c4 = new Card(Suit.Swords, Rank.three);
+        c5 = new Card(Suit.Swords, Rank.four);
+        c6 = new Card(Rank.phoenix);
+        hand = new ArrayList<Card>();
+        hand.add(c1);
+        hand.add(c2);
+        hand.add(c3);
+        hand.add(c4);
+        hand.add(c5);
+        hand.add(c6);
+        assertTrue(Combination.isSteps(hand));
+
+        // Test with normal cards and phoenix
+        // 2 2 3 4 4 P
+        c1 = new Card(Suit.Swords, Rank.two);
+        c2 = new Card(Suit.Pagodas,Rank.two);
+        c3 = new Card(Suit.Jade, Rank.three);
+        c4 = new Card(Suit.Swords, Rank.four);
+        c5 = new Card(Suit.Swords, Rank.four);
+        c6 = new Card(Rank.phoenix);
+        hand = new ArrayList<Card>();
+        hand.add(c1);
+        hand.add(c2);
+        hand.add(c3);
+        hand.add(c4);
+        hand.add(c5);
+        hand.add(c6);
+        assertTrue(Combination.isSteps(hand));
+
+        // Test with normal cards and phoenix, but a false card
+        // 5 5 6 7 P
+        c1 = new Card(Suit.Swords, Rank.five);
         c2 = new Card(Suit.Pagodas,Rank.five);
         c3 = new Card(Suit.Jade, Rank.six);
         c4 = new Card(Suit.Swords, Rank.seven);
-        c5 = new Card(Suit.Pagodas,Rank.eight);
-        hand = new ArrayList<Card>();
-        hand.add(c1);
-        hand.add(c2);
-        hand.add(c3);
-        hand.add(c4);
-        hand.add(c5);
-        assertTrue(Combination.isSteps(hand));
-
-
-        // Test with normal cards and phoenix
-        c1 = new Card(Suit.Swords, Rank.two);
-        c2 = new Card(Suit.Pagodas,Rank.three);
-        c3 = new Card(Suit.Jade, Rank.four);
-        c4 = new Card(Suit.Swords, Rank.five);
         c5 = new Card(Rank.phoenix);
         hand = new ArrayList<Card>();
         hand.add(c1);
@@ -212,42 +261,15 @@ class CombinationTest {
         hand.add(c3);
         hand.add(c4);
         hand.add(c5);
-        assertTrue(Combination.isSteps(hand));
-
-        // Test with normal cards and phoenix, but one missing.
-        c1 = new Card(Suit.Swords, Rank.two);
-        c2 = new Card(Suit.Pagodas,Rank.six);
-        c3 = new Card(Suit.Jade, Rank.four);
-        c4 = new Card(Suit.Swords, Rank.five);
-        c5 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
-        hand.add(c1);
-        hand.add(c2);
-        hand.add(c3);
-        hand.add(c4);
-        hand.add(c5);
-        assertTrue(Combination.isSteps(hand));
-
-        // Test with normal cards and phoenix, but one missing
-        c1 = new Card(Suit.Swords, Rank.five);
-        c2 = new Card(Suit.Pagodas,Rank.six);
-        c3 = new Card(Suit.Jade, Rank.eight);
-        c4 = new Card(Suit.Swords, Rank.nine);
-        c5 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
-        hand.add(c1);
-        hand.add(c2);
-        hand.add(c3);
-        hand.add(c4);
-        hand.add(c5);
-        assertTrue(Combination.isSteps(hand));
+        assertFalse(Combination.isSteps(hand));
 
         // Test with majhong and phoenix
         c1 = new Card(Rank.majhong);
         c2 = new Card(Suit.Pagodas,Rank.two);
-        c3 = new Card(Suit.Jade, Rank.three);
-        c4 = new Card(Suit.Swords, Rank.four);
-        c5 = new Card(Rank.phoenix);
+        c3 = new Card(Suit.Jade, Rank.two);
+        c4 = new Card(Suit.Swords, Rank.three);
+        c5 = new Card(Suit.Swords, Rank.three);
+        c6 = new Card(Rank.phoenix);
         hand = new ArrayList<Card>();
         hand.add(c1);
         hand.add(c2);
@@ -356,7 +378,7 @@ class CombinationTest {
         hand.add(c3);
         hand.add(c4);
         hand.add(c5);
-        assertFalse(Combination.isSteps(hand));
+        assertFalse(Combination.isFullHouse(hand));
 
         // Test with just four cards
         c2 = new Card(Suit.Pagodas, Rank.four);
@@ -368,7 +390,7 @@ class CombinationTest {
         hand.add(c3);
         hand.add(c4);
         hand.add(c5);
-        assertFalse(Combination.isSteps(hand));
+        assertFalse(Combination.isFullHouse(hand));
 
         // Test with four cards, phoenix included
         c1 = new Card(Suit.Pagodas, Rank.three);
@@ -380,7 +402,7 @@ class CombinationTest {
         hand.add(c2);
         hand.add(c3);
         hand.add(c5);
-        assertFalse(Combination.isSteps(hand));
+        assertFalse(Combination.isFullHouse(hand));
     }
 
     /**
