@@ -81,8 +81,6 @@ public class ServerController {
 	private void startGame(){
 		serverModel.getGame().start();
 		logger.info("Game started");
-		serverModel.getGame().dealFirstEightCards();
-		logger.info("First eight cards dealt");
 	}
 
 	/**
@@ -99,7 +97,7 @@ public class ServerController {
 		// clients will always send a tichu response even if they don't announce it (-> tichuType=none)
 		serverModel.increaseTichuResponses();
 		if (serverModel.getTichuResponses() == 4){
-			serverModel.getGame().dealRemainingCards();
+			serverModel.getGame().getCurrentMatch().dealRemainingCards();
 			logger.info("Remaining six cards dealt");
 		}
 		else if (serverModel.getTichuResponses() == 8) {
@@ -126,14 +124,19 @@ public class ServerController {
 		if (property.getValue()){
 			Card card = property.getMessage().getCard();
 			Player player = serverModel.getGame().getPlayerByName(property.getMessage().getPlayerName());
-			serverModel.getGame().schupfen(card, player);
+			serverModel.getGame().getCurrentMatch().schupfen(card, player);
 			serverModel.increaseSchupfenResponses();
 			property.setValue(false);
-			if (serverModel.getSchupfenResponses()%3 == 0){
-				demandSchupfen();
+
+			// When all Schupfen Responses have been received we can start the first match
+			if (serverModel.getSchupfenResponses() >= 12){
+				serverModel.getGame().startMatch();
+			} else {
+				if (serverModel.getSchupfenResponses()%3 == 0){
+					demandSchupfen();
+				}
 			}
 		}
-
 	}
 
 	/**

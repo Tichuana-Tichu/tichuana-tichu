@@ -18,6 +18,7 @@ public class Game {
 	private int currentPlayer;
 	private Team[] teams = new Team[2];
 	private DeckOfCards deck;
+	private Match currentMatch;
 
 	/**
 	 * Game will be started from ServerModel as soon as 4 player are connected to server
@@ -60,39 +61,7 @@ public class Game {
 			msg = new GameStartedMsg(mate,opponents);
 			playersInOrder[i].sendMessage(msg);
 		}
-		this.deck.shuffleDeck();
-	}
-
-	/**
-	 * Deals eight cards to every client by sending a custom DealMsg
-	 * @author Christian
-	 */
-	public void dealFirstEightCards(){
-		ArrayList<Card> cards = new ArrayList<>(Arrays.asList(deck.getFirstHalf()));
-		int rangeCounter = 0;
-		for (Player p : playersInOrder){
-			ArrayList<Card> hand = new ArrayList<Card>(cards.subList(rangeCounter, rangeCounter + 8));
-			p.getHand().addAll(hand);
-			Message msg = new DealMsg(hand);
-			p.sendMessage(msg);
-			rangeCounter += 8;
-		}
-	}
-
-	/**
-	 * Deals the remaining six cards to every client by sending a custom DealMsg
-	 * @author Christian
-	 */
-	public void dealRemainingCards(){
-		ArrayList<Card> cards = new ArrayList<>(Arrays.asList(deck.getSecondHalf()));
-		int rangeCounter = 0;
-		for (Player p : playersInOrder){
-			ArrayList<Card> hand = new ArrayList<Card>(cards.subList(rangeCounter, rangeCounter + 6));
-			p.getHand().addAll(hand);
-			Message msg = new DealMsg(hand);
-			p.sendMessage(msg);
-			rangeCounter += 6;
-		}
+		this.startMatch();
 	}
 
 	/**
@@ -124,23 +93,9 @@ public class Game {
 		return null;
 	}
 
-	/**
-	 * removed the card from origin players hand and adds it to it's new owner
-	 * @author Christian
-	 * @param card
-	 * @param player target player
-	 */
-	public void schupfen(Card card, Player player){
-		Message msg= new SchupfenMsg("", card);
-		// origin player
-		for (Player p : playersInOrder){
-			if (p.getHand().contains(card)){
-				p.getHand().remove(card);
-				msg = new SchupfenMsg(p.getPlayerName(),card);
-			}
-		}
-		player.getHand().add(card);
-		player.sendMessage(msg);
+	public void startMatch(){
+		this.currentMatch = new Match(serverModel);
+		currentMatch.start();
 	}
 
 
@@ -176,5 +131,15 @@ public class Game {
 	}
 	public Team[] getTeams() {
 		return this.teams;
+	}
+	public Player[] getPlayersInOrder() {
+		return playersInOrder;
+	}
+	public DeckOfCards getDeck() {
+		return deck;
+	}
+
+	public Match getCurrentMatch() {
+		return currentMatch;
 	}
 }
