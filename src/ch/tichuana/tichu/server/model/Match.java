@@ -96,6 +96,11 @@ public class Match {
 		player.sendMessage(msg);
 	}
 
+	/**
+	 * Tells the current Stich to update with new Move. Will add points to teams if the old is won and create new Stich
+	 * @atuhor Christian
+	 * @param messageProperty
+	 */
 	public void handleUpdate(SimpleMessageProperty messageProperty){
 		this.stich.update(messageProperty.getPlayer(),messageProperty.getMessage().getCards());
 		if (this.stich.isWon()){
