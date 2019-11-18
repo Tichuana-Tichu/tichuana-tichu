@@ -23,7 +23,7 @@ public class PlayView extends BorderPane {
 		this.clientModel = clientModel;
 		this.translator = ServiceLocator.getServiceLocator().getTranslator();
 
-		this.bottomView = new BottomView();
+		this.bottomView = new BottomView(clientModel);
 		this.playArea = new PlayArea(clientModel);
 		//this.statArea = new StatArea();
 		this.settings = new Settings();

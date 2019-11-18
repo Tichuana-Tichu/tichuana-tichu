@@ -1,14 +1,15 @@
 package ch.tichuana.tichu.client.view;
 
+import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.Rank;
-import ch.tichuana.tichu.commons.models.Suit;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class CardArea extends VBox {
 
 	private HBox cardsLabels;
+	private ClientModel clientModel;
 
 	public enum CardAreaType {Blank, Cards, Thumbnails;}
 
@@ -17,13 +18,13 @@ public class CardArea extends VBox {
      * instantiates HBox with all CardLabels in it
 	 * @author Philipp
      */
-	CardArea(CardAreaType cat, int cardCounter) {
+	CardArea(ClientModel clientModel, CardAreaType cat, int cardCounter) {
+		this.clientModel = clientModel;
 		this.cardsLabels = new HBox();
 
 		if (cat.equals(CardAreaType.Blank)) {
 			for (int i = 0; i < cardCounter; i++) {
 				CardLabel cardLabel = new CardLabel();
-				//TODO - exchange after testing with real cards from GameStartedMsg
 				cardLabel.setBlankCard();
 				cardsLabels.getChildren().add(cardLabel);
 				cardsLabels.setSpacing(-140);
@@ -35,12 +36,13 @@ public class CardArea extends VBox {
 
 			for (int i = 0; i < cardCounter; i++) {
 				CardLabel cardLabel = new CardLabel();
-				//TODO - exchange after testing with real cards from GameStartedMsg
-				cardLabel.setCard(new Card(Suit.Pagodas, Rank.Ace));
+
+				cardLabel.setCard(clientModel.getHand().getCards().get(i));
 				cardsLabels.getChildren().add(cardLabel);
 				cardsLabels.setSpacing(-140);
 			}
 			this.getChildren().add(this.cardsLabels);
+
 		} else {
 
 			for (int i = 0; i < cardCounter; i++) {

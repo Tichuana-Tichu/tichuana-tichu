@@ -84,7 +84,6 @@ public class CardLabel extends Label {
 		}
 		fileName += card.getRank().toString().toLowerCase();
 		fileName += ".png";
-
 		return fileName;
 	}
 }

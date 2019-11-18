@@ -97,7 +97,7 @@ public class PlayArea extends GridPane {
 	public void updatePlayedColumn() {
 		for (int i = 2; i < this.getColumnCount(); i+=2) {
 			//TODO - Change after GUI-Testing to be able to add the real cards from the msg
-			this.add(new CardArea(CardArea.CardAreaType.Thumbnails, 8), 4, i);
+			this.add(new CardArea(clientModel, CardArea.CardAreaType.Thumbnails, 8), 4, i);
 		}
 	}
 

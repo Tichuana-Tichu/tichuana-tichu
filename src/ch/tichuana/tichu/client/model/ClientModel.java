@@ -61,6 +61,7 @@ public class ClientModel {
                     }
 
                     if (msg instanceof DealMsg) {
+                        logger.info(msg.getCards().toString());
                         this.hand = new Hand(msg.getCards());
                         newestMessage.set("your first eight cards");
                     }
