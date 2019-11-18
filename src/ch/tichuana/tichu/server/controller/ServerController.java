@@ -9,8 +9,6 @@ import ch.tichuana.tichu.server.model.SimpleMessageProperty;
 import ch.tichuana.tichu.server.model.Team;
 import ch.tichuana.tichu.server.services.ServiceLocator;
 import javafx.beans.Observable;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
 
 import java.util.logging.Logger;
 
@@ -49,7 +47,7 @@ public class ServerController {
 				e -> broadcastTichu(player.getAnnouncedGrandTichuProperty()));
 		player.getSchupfenProperty().addListener(
 				e -> schupfen(player.getSchupfenProperty()));
-        player.getHisHisTurnProperty().addListener(e -> handleUpdate(player.getHisHisTurnProperty()));
+        player.getPlayProperty().addListener(e -> handleUpdate(player.getPlayProperty()));
         makeTeams(size);
 	}
 
@@ -138,9 +136,16 @@ public class ServerController {
 		}
 	}
 
-
-	private void handleUpdate(SimpleMessageProperty hisHisTurnProperty) {
-
+	/**
+	 * If the value of Property is true it will call the handleUpdate method in Match-class.
+	 * @author Christian
+	 */
+	private void handleUpdate(SimpleMessageProperty messageProperty) {
+		if (messageProperty.getValue() ==true){
+			this.serverModel.getGame().getCurrentMatch().handleUpdate(messageProperty);
+			// set value false. so next update can set it true again.
+			messageProperty.setValue(false);
+		}
 	}
 
 

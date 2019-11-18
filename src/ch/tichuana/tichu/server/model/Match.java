@@ -5,10 +5,7 @@ import ch.tichuana.tichu.commons.message.Message;
 import ch.tichuana.tichu.commons.message.SchupfenMsg;
 import ch.tichuana.tichu.commons.message.UpdateMsg;
 import ch.tichuana.tichu.commons.models.Card;
-import ch.tichuana.tichu.commons.models.Combination;
 import ch.tichuana.tichu.commons.models.Rank;
-import ch.tichuana.tichu.server.Server;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -21,6 +18,7 @@ public class Match {
 	static int MIN_PLAYER = 2;
 	private DeckOfCards deck;
 	private Logger logger = Logger.getLogger("");
+	private Stich stich = null;
 
 	public Match(ServerModel serverModel) {
 		this.serverModel = serverModel;
@@ -33,6 +31,7 @@ public class Match {
 	 * @atuhor Christian
 	 */
 	public void start(){
+		this.stich = new Stich(this.serverModel);
 		for (Player p : serverModel.getGame().getPlayersInOrder()){
 			if (p.getHand().contains(new Card(Rank.majhong))){
 				// the player with the mahjong card will begin the match. So we have to set currentPlayer in Game
@@ -95,6 +94,21 @@ public class Match {
 		}
 		player.getHand().add(card);
 		player.sendMessage(msg);
+	}
+
+	public void handleUpdate(SimpleMessageProperty messageProperty){
+		this.stich.update(messageProperty.getPlayer(),messageProperty.getMessage().getCards());
+		if (this.stich.isWon()){
+			// TODO: add points to team and set winner next player
+			// TODO: start new Stich
+		}
+
+		// TODO: send custom broadcast message to every player. Do we need to know who played the cards?
+		UpdateMsg msg = new UpdateMsg(
+				serverModel.getGame().getNextPlayer().getPlayerName(),
+				messageProperty.getMessage().getCards(),
+				0,0);
+
 	}
 
 	/**

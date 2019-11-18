@@ -1,9 +1,7 @@
 package ch.tichuana.tichu.server.model;
 
 import ch.tichuana.tichu.commons.message.*;
-import ch.tichuana.tichu.commons.models.Card;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 public class Game {
@@ -50,7 +48,7 @@ public class Game {
 		Player[][] team = {teams[0].getPlayers(),teams[1].getPlayers()};
 		int counter = 0;
 		for (int x=0; x<2; x++){
-			for (int y=0; y<2; y++){
+			for (int y=0; y<2; y++){ArrayList stich;
 				this.playersInOrder[counter] = team[y][x];
 				counter++;
 			}

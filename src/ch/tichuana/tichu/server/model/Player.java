@@ -3,8 +3,6 @@ package ch.tichuana.tichu.server.model;
 import ch.tichuana.tichu.commons.message.*;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.TichuType;
-import javafx.beans.property.SimpleBooleanProperty;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ public class Player {
 	private volatile SimpleMessageProperty announcedGrandTichu = new SimpleMessageProperty(false);
 	private volatile SimpleMessageProperty schupfenProperty = new SimpleMessageProperty(false);
 	private TichuType tichuType = TichuType.none;
-	private volatile SimpleMessageProperty hisTurn = new SimpleMessageProperty(false);
+	private volatile SimpleMessageProperty playProperty = new SimpleMessageProperty(false);
 	private boolean done;
 	private ArrayList currentMove;
 	private ArrayList<Card> hand;
@@ -96,16 +94,19 @@ public class Player {
 				}
 
 				else if (msg instanceof PlayMsg) {
-					logger.info("Player: "+this.playerName+" played cards");
-					this.currentMove = msg.getCards();
+					this.playProperty.setPlayer(this);
+					this.playProperty.setMessage(msg);
+					this.playProperty.setValue(true);
 				}
 
+
+				// Does the server ever receive an Update message?
 				else if (msg instanceof UpdateMsg) {
 					if (this.playerName.equals(msg.getNextPlayer())) {
-						this.hisTurn.setMessage(msg);
-						this.hisTurn.setValue(true);
+						this.playProperty.setMessage(msg);
+						this.playProperty.setValue(true);
 					} else {
-						this.hisTurn.setValue(false);
+						this.playProperty.setValue(false);
 					}
 				}
 			}
@@ -161,11 +162,11 @@ public class Player {
 	public final void setAnnouncedTichu(boolean announcedTichu) {
 		this.announcedTichu.set(announcedTichu);
 	}
-	public SimpleMessageProperty getHisHisTurnProperty() {
-		return this.hisTurn;
+	public SimpleMessageProperty getPlayProperty() {
+		return this.playProperty;
 	}
-	public final void setHisTurn(boolean hisTurn) {
-		this.hisTurn.set(hisTurn);
+	public final void setPlayProperty(boolean playProperty) {
+		this.playProperty.set(playProperty);
 	}
 	public ArrayList<Card> getCurrentMove() {
 		return currentMove;
