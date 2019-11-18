@@ -24,7 +24,7 @@ public class PlayController {
      * @param gameView following MVC pattern
      * @param stage following MVC pattern
      */
-    public PlayController(ClientModel clientModel, GameView gameView, Stage stage) {
+    PlayController(ClientModel clientModel, GameView gameView, Stage stage) {
         this.clientModel = clientModel;
         this.gameView = gameView;
         this.stage = stage;

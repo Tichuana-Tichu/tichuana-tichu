@@ -46,9 +46,14 @@ public class LobbyController {
             }
 		});
 
-		this.clientModel.getConnectedProperty().addListener(event -> {
-			new PlayController(this.clientModel, this.gameView, this.stage);
-			Platform.runLater(() -> this.gameView.updateView());
+		this.clientModel.getNewestMessageProperty().addListener((observable, oldValue, newValue) ->
+				Platform.runLater(() -> this.gameView.getLobbyView().setLoginStatus(newValue)));
+
+		this.clientModel.getConnectedProperty().addListener((obs, oldVal, newVal) -> {
+			if (newVal) {
+				new PlayController(this.clientModel, this.gameView, this.stage);
+				Platform.runLater(() -> this.gameView.updateView());
+			}
 		});
 	}
 }

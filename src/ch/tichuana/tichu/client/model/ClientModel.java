@@ -48,8 +48,11 @@ public class ClientModel {
                     }
 
                     if (msg instanceof ConnectedMsg) {
-                        this.connected.set(true);
-                        newestMessage.set("successfully connected to Server");
+                        if (msg.getStatus()) {
+                            this.connected.set(true);
+                            newestMessage.set("successfully connected to Server");
+                        } else
+                            newestMessage.set("connection failed: wrong password");
                     }
 
                     if (msg instanceof GameStartedMsg) {

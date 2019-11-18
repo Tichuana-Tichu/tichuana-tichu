@@ -50,3 +50,7 @@ ToggleButton:hover {
 ToggleButton:pressed {
     -fx-opacity: 0.5;
 }
+
+Label {
+    -fx-text-fill: red;
+}
