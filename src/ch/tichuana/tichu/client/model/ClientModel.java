@@ -22,6 +22,9 @@ public class ClientModel {
     private SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
     private Logger logger = Logger.getLogger("");
 
+    private String teamMate;
+    private String[] opponents;
+
     /**
      * connects client to server with JoinMsg and listens for incoming messages
      * @author Philipp
@@ -42,11 +45,6 @@ public class ClientModel {
 
                     Message msg = Message.receive(socket);
 
-                    if (msg instanceof AnnouncedTichuMsg) {
-                        newestMessage.set("");
-                        newestMessage.set(msg.getPlayers().toString()+" announced: "+msg.getTichuType());
-                    }
-
                     if (msg instanceof ConnectedMsg) {
                         if (msg.getStatus()) {
                             this.connected.set(true);
@@ -56,8 +54,14 @@ public class ClientModel {
                     }
 
                     if (msg instanceof GameStartedMsg) {
-                        sendMessage(MessageType.ReceivedMsg, "true");
-                        logger.info("you successfully entered a game");
+                        newestMessage.set("you successfully entered a game");
+                        this.teamMate = msg.getTeamMate();
+                        this.opponents = msg.getOpponents();
+                    }
+
+                    if (msg instanceof AnnouncedTichuMsg) {
+                        newestMessage.set("");
+                        newestMessage.set(msg.getPlayers().toString()+" announced: "+msg.getTichuType());
                     }
 
                     if (msg instanceof DemandTichuMsg) {
@@ -174,5 +178,14 @@ public class ClientModel {
     }
     public SimpleStringProperty getNewestMessageProperty() {
         return newestMessage;
+    }
+    public String getTeamMate() {
+        return teamMate;
+    }
+    public String getOpponent(int i) {
+        return opponents[i];
+    }
+    public String getPlayerName() {
+        return playerName;
     }
 }

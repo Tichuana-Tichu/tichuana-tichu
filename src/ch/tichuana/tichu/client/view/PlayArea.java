@@ -1,5 +1,6 @@
 package ch.tichuana.tichu.client.view;
 
+import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
 import javafx.scene.control.Label;
@@ -9,14 +10,19 @@ import javafx.scene.layout.Priority;
 
 public class PlayArea extends GridPane {
 
+	private Label[] playerLbl;
+	private Label[] headings;
+	private ClientModel clientModel;
+
 	/**
 	 * creates a table-like, resizeable grid for information about the game-flow
 	 * @author Philipp
 	 */
-	PlayArea() {
+	PlayArea(ClientModel clientModel) {
 
+		this.clientModel = clientModel;
 		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
-		Label[] headings = new Label[7];
+		this.headings = new Label[7];
 		headings[0] = new Label(translator.getString("name"));
 		headings[1] = new Label(translator.getString("team"));
 		headings[2] = new Label(translator.getString("hand"));
@@ -32,11 +38,10 @@ public class PlayArea extends GridPane {
 
 		this.add(new Separator(), 0, 1, 7, 1);
 
-		Label[] playerLbl = new Label[4];
-		playerLbl[0] = new Label("Philipp");
-		playerLbl[1] = new Label("Chrigi");
-		playerLbl[2] = new Label("Domi");
-		playerLbl[3] = new Label("Digi");
+		this.playerLbl = new Label[4];
+		for (int i = 0; i < playerLbl.length; i++) {
+			playerLbl[i] = new Label("Waiting for player...");
+		}
 
 		this.add(playerLbl[0], 0, 2, 1, 1);
 		GridPane.setVgrow(playerLbl[0], Priority.ALWAYS);
@@ -61,10 +66,14 @@ public class PlayArea extends GridPane {
 		this.setVgap(2);
 	}
 
+	public void updatePlayerName() {
+		this.playerLbl[0].setText(clientModel.getPlayerName());
+	}
+
 	public void updateNameColumn() {
-		for (int i = 2; i < this.getColumnCount(); i+=2) {
-			this.add(new Label(""), 0, i);
-		}
+		this.playerLbl[1].setText(clientModel.getTeamMate());
+		this.playerLbl[2].setText(clientModel.getOpponent(0));
+		this.playerLbl[3].setText(clientModel.getOpponent(1));
 	}
 
 	public void updateTeamColumn() {

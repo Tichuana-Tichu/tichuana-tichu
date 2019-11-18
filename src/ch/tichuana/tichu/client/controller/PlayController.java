@@ -42,12 +42,14 @@ public class PlayController {
             }
         });
 
-        this.clientModel.getNewestMessageProperty().addListener((observable, oldVal, newVal) ->
-                Platform.runLater(() -> this.gameView.getPlayView().getBottomView().setConsole(newVal)));
+        this.clientModel.getNewestMessageProperty().addListener((observable, oldVal, newVal) -> {
+            if (newVal.equals("you successfully entered a game"))
+                Platform.runLater(() -> this.gameView.getPlayView().getPlayArea().updateNameColumn());
+            Platform.runLater(() -> this.gameView.getPlayView().getBottomView().setConsole(newVal));
+        });
 
         this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setOnAction(event -> {
             this.clientModel.sendMessage(TichuType.GrandTichu);
-            this.clientModel.getHisTurnProperty().set(true);
         });
 
         this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setOnAction(event -> {
