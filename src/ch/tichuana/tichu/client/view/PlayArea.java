@@ -55,9 +55,10 @@ public class PlayArea extends GridPane {
 
 		this.add(new Separator(), 0, 9, 9, 1);
 
-		this.setGridLinesVisible(true);
 		this.maxWidth(6000);
 		this.maxHeight(6000);
+		this.setHgap(2);
+		this.setVgap(2);
 	}
 
 	public void updateNameColumn() {
@@ -77,7 +78,11 @@ public class PlayArea extends GridPane {
 	}
 
 	public void updatePlayedColumn() {
-
+		System.out.println(this.getColumnCount());
+		for (int i = 2; i < this.getColumnCount(); i+=2) {
+			//TODO - Change after GUI-Testing to be able to add the real cards from the msg
+			this.add(new CardArea(CardArea.CardAreaType.Thumbnails, 8), 4, i);
+		}
 	}
 
 	public void updateMatchPoints() {

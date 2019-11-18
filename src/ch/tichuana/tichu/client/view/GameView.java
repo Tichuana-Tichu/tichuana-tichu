@@ -68,10 +68,11 @@ public class GameView {
 		stage.setMinWidth(stage.getWidth()/3);
 		stage.setMinHeight(stage.getHeight()*0.9);
 
+		/*
 		//delete after testing
 		this.updateView();
 		new PlayController(this.clientModel, this, this.stage);
-
+		 */
 		stage.show();
 	}
 

@@ -61,6 +61,19 @@ CardLabel {
 CardLabel:hover {
     -fx-effect: dropshadow(three-pass-box, rgb(27, 27, 28), 15, 0, 2, 2);
 }
+
+.thumbnails {
+    -fx-border-color: #ececee;
+    -fx-background-color: #ececee;
+    -fx-background-radius: 2px;
+    -fx-border-width: 1px;
+    -fx-border-radius: 2px;
+    -fx-effect: dropshadow(three-pass-box, rgb(69, 69, 70), 2, 0, 2, 2);
+}
+
+.thumbnails:hover {
+    -fx-effect: dropshadow(three-pass-box, rgb(27, 27, 28), 5, 0, 2, 2);
+}
 /*
 CardLabel:focused {
     -fx-border-color: #B20000;
@@ -73,9 +86,6 @@ PlayArea {
 PlayArea Label {
     -fx-font-size: 16px;
     -fx-text-fill: FFEF69;
-    /*
-    -fx-padding: 10px;
-     */
 }
 
 Separator {

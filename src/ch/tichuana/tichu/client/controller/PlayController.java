@@ -47,6 +47,7 @@ public class PlayController {
 
         this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setOnAction(event -> {
             this.clientModel.sendMessage(TichuType.GrandTichu);
+            this.clientModel.getHisTurnProperty().set(true);
         });
 
         this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setOnAction(event -> {

@@ -21,7 +21,7 @@ public class DeckOfCards {
      * @author Christian
      */
     public void makeDeckOfCards(){
-        deck.add(new Card(Rank.majhong));
+        deck.add(new Card(Rank.mahjong));
         deck.add(new Card(Rank.dog));
         deck.add(new Card(Rank.dragon));
         deck.add(new Card(Rank.phoenix));
