@@ -62,23 +62,30 @@ public class PlayArea extends GridPane {
 	}
 
 	public void updateNameColumn() {
-
+		for (int i = 2; i < this.getColumnCount(); i+=2) {
+			this.add(new Label(""), 0, i);
+		}
 	}
 
 	public void updateTeamColumn() {
-
+		for (int i = 2; i < this.getColumnCount(); i+=2) {
+			this.add(new Label(""), 1, i);
+		}
 	}
 
 	public void updateHandColumn() {
-
+		for (int i = 2; i < this.getColumnCount(); i+=2) {
+			this.add(new Label(""), 2, i);
+		}
 	}
 
 	public void updateTichuColumn() {
-
+		for (int i = 2; i < this.getColumnCount(); i+=2) {
+			this.add(new Label(""), 3, i);
+		}
 	}
 
 	public void updatePlayedColumn() {
-		System.out.println(this.getColumnCount());
 		for (int i = 2; i < this.getColumnCount(); i+=2) {
 			//TODO - Change after GUI-Testing to be able to add the real cards from the msg
 			this.add(new CardArea(CardArea.CardAreaType.Thumbnails, 8), 4, i);
@@ -86,10 +93,14 @@ public class PlayArea extends GridPane {
 	}
 
 	public void updateMatchPoints() {
-
+		for (int i = 2; i < this.getColumnCount(); i+=2) {
+			this.add(new Label(""), 5, i);
+		}
 	}
 
 	public void updateTotalPoints() {
-
+		for (int i = 2; i < this.getColumnCount(); i+=2) {
+			this.add(new Label(""), 6, i);
+		}
 	}
 }
