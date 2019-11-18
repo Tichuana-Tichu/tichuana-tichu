@@ -43,7 +43,7 @@ class CombinationTest {
 
 
         // Test with special Card dog
-        c1 = new Card(Rank.majhong);
+        c1 = new Card(Rank.mahjong);
         c2 = new Card(Suit.Pagodas,Rank.two);
         hand = new ArrayList<Card>();
         hand.add(c1);
@@ -117,7 +117,7 @@ class CombinationTest {
         // Test with another special card majhong
         c1 = new Card(Suit.Jade, Rank.two);
         c2 = new Card(Suit.Swords, Rank.Ace);
-        c3 = new Card(Rank.majhong);
+        c3 = new Card(Rank.mahjong);
         hand = new ArrayList<Card>();
         hand.add(c1);
         hand.add(c2);
@@ -136,7 +136,7 @@ class CombinationTest {
 
         // Test with two special card dog & majhong
         c1 = new Card(Suit.Jade, Rank.two);
-        c2 = new Card(Rank.majhong);
+        c2 = new Card(Rank.mahjong);
         c3 = new Card(Rank.dog);
         hand = new ArrayList<Card>();
         hand.add(c1);
@@ -264,7 +264,7 @@ class CombinationTest {
         assertFalse(Combination.isSteps(hand));
 
         // Test with majhong and phoenix
-        c1 = new Card(Rank.majhong);
+        c1 = new Card(Rank.mahjong);
         c2 = new Card(Suit.Pagodas,Rank.two);
         c3 = new Card(Suit.Jade, Rank.two);
         c4 = new Card(Suit.Swords, Rank.three);
@@ -289,7 +289,7 @@ class CombinationTest {
         assertFalse(Combination.isSteps(hand));
 
         // Test with majhong and phoenix
-        c1 = new Card(Rank.majhong);
+        c1 = new Card(Rank.mahjong);
         c2 = new Card(Suit.Pagodas,Rank.two);
         c3 = new Card(Suit.Jade, Rank.three);
         c4 = new Card(Rank.dragon);
@@ -367,7 +367,7 @@ class CombinationTest {
         assertTrue(Combination.isSteps(hand));
 
         // Test with normal cards and phoenix and majhong
-        c1 = new Card(Rank.majhong);
+        c1 = new Card(Rank.mahjong);
         c2 = new Card(Suit.Pagodas, Rank.four);
         c3 = new Card(Suit.Jade, Rank.four);
         c4 = new Card(Suit.Swords, Rank.three);
@@ -441,7 +441,7 @@ class CombinationTest {
         assertTrue(Combination.isStraight(hand));
 
         // Test with normal cards and phoenix and majhong
-        c1 = new Card(Rank.majhong);
+        c1 = new Card(Rank.mahjong);
         c2 = new Card(Suit.Pagodas, Rank.two);
         c3 = new Card(Suit.Jade, Rank.three);
         c4 = new Card(Suit.Swords, Rank.four);
@@ -516,7 +516,7 @@ class CombinationTest {
         c1 = new Card(Suit.Swords, Rank.two);
         c2 = new Card(Suit.Pagodas,Rank.two);
         c3 = new Card(Suit.Jade, Rank.two);
-        c4 = new Card(Rank.majhong);
+        c4 = new Card(Rank.mahjong);
         hand = new ArrayList<Card>();
         hand.add(c1);
         hand.add(c2);
@@ -626,7 +626,7 @@ class CombinationTest {
         c2 = new Card(Suit.Stars,Rank.six);
         c3 = new Card(Suit.Stars, Rank.seven);
         c4 = new Card(Suit.Stars, Rank.eight);
-        c5 = new Card(Rank.majhong);
+        c5 = new Card(Rank.mahjong);
         hand = new ArrayList<Card>();
         hand.add(c1);
         hand.add(c2);
@@ -636,6 +636,4 @@ class CombinationTest {
 
         assertFalse(Combination.isStraightFlushBomb(hand));
     }
-
-
 }
