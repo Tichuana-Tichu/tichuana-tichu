@@ -94,6 +94,7 @@ public class Game {
 	}
 
 	public void startMatch(){
+		this.deck.shuffleDeck();
 		this.currentMatch = new Match(serverModel);
 		currentMatch.dealFirstEightCards();
 	}
