@@ -9,6 +9,7 @@ import ch.tichuana.tichu.server.model.SimpleMessageProperty;
 import ch.tichuana.tichu.server.model.Team;
 import ch.tichuana.tichu.server.services.ServiceLocator;
 import javafx.beans.Observable;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 
 import java.util.logging.Logger;
@@ -48,13 +49,11 @@ public class ServerController {
 				e -> broadcastTichu(player.getAnnouncedGrandTichuProperty()));
 		player.getSchupfenProperty().addListener(
 				e -> schupfen(player.getSchupfenProperty()));
-        player.getHisHisTurnProperty().addListener(this::broadcastUpdate);
-        player.getHasMahjongProperty().addListener(this::broadcastUpdate);
-
+        player.getHisHisTurnProperty().addListener(e -> handleUpdate(player.getHisHisTurnProperty()));
         makeTeams(size);
 	}
 
-    /**
+	/**
      * creates Teams and creates the Game if all players have connected
      * @author Christian
      * @param size number of players (size of list)
@@ -130,7 +129,7 @@ public class ServerController {
 
 			// When all Schupfen Responses have been received we can start the first match
 			if (serverModel.getSchupfenResponses() >= 12){
-				serverModel.getGame().startMatch();
+				serverModel.getGame().getCurrentMatch().start();
 			} else {
 				if (serverModel.getSchupfenResponses()%3 == 0){
 					demandSchupfen();
@@ -139,12 +138,10 @@ public class ServerController {
 		}
 	}
 
-	/**
-	 * informs all players
-	 * @author philipp
-	 * @param newVal if changed to true
-	 */
-	private void broadcastUpdate(ObservableValue<? extends Boolean> obs, Boolean oldVal, Boolean newVal) {
+
+	private void handleUpdate(SimpleMessageProperty hisHisTurnProperty) {
 
 	}
+
+
 }

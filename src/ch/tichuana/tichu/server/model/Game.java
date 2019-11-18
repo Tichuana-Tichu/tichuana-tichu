@@ -95,7 +95,7 @@ public class Game {
 
 	public void startMatch(){
 		this.currentMatch = new Match(serverModel);
-		currentMatch.start();
+		currentMatch.dealFirstEightCards();
 	}
 
 
@@ -141,5 +141,9 @@ public class Game {
 
 	public Match getCurrentMatch() {
 		return currentMatch;
+	}
+
+	public void setCurrentPlayer(int currentPlayer) {
+		this.currentPlayer = currentPlayer;
 	}
 }

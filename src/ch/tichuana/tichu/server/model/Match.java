@@ -3,7 +3,10 @@ package ch.tichuana.tichu.server.model;
 import ch.tichuana.tichu.commons.message.DealMsg;
 import ch.tichuana.tichu.commons.message.Message;
 import ch.tichuana.tichu.commons.message.SchupfenMsg;
+import ch.tichuana.tichu.commons.message.UpdateMsg;
 import ch.tichuana.tichu.commons.models.Card;
+import ch.tichuana.tichu.commons.models.Combination;
+import ch.tichuana.tichu.commons.models.Rank;
 import ch.tichuana.tichu.server.Server;
 
 import java.util.ArrayList;
@@ -25,9 +28,22 @@ public class Match {
 		this.currentScore = 0;
 	}
 
+	/**
+	 * Will start the actual game-play of a match. It is called after the schupfen-process is complete
+	 * @atuhor Christian
+	 */
 	public void start(){
-		dealFirstEightCards();
-		logger.info("First eight cards dealt");
+		for (Player p : serverModel.getGame().getPlayersInOrder()){
+			if (p.getHand().contains(new Card(Rank.majhong))){
+				// the player with the mahjong card will begin the match. So we have to set currentPlayer in Game
+				// to the players index-1. this way getNextPlayer will return him when called.
+				serverModel.getGame().setCurrentPlayer(
+						Arrays.asList(serverModel.getGame().getPlayersInOrder()).indexOf(p)-1);
+				UpdateMsg msg = new UpdateMsg(p.getPlayerName(), new ArrayList<Card>(),0,0);
+				serverModel.broadcast(msg);
+				break;
+			}
+		}
 	}
 
 	/**

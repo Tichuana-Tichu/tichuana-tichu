@@ -23,8 +23,7 @@ public class Player {
 	private volatile SimpleMessageProperty announcedGrandTichu = new SimpleMessageProperty(false);
 	private volatile SimpleMessageProperty schupfenProperty = new SimpleMessageProperty(false);
 	private TichuType tichuType = TichuType.none;
-	private volatile SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
-	private volatile SimpleBooleanProperty hasMahjong = new SimpleBooleanProperty(false);
+	private volatile SimpleMessageProperty hisTurn = new SimpleMessageProperty(false);
 	private boolean done;
 	private ArrayList currentMove;
 	private ArrayList<Card> hand;
@@ -102,10 +101,12 @@ public class Player {
 				}
 
 				else if (msg instanceof UpdateMsg) {
-					if (this.playerName.equals(msg.getNextPlayer()))
-						this.hisTurn.set(true);
-					else
-						this.hisTurn.set(false);
+					if (this.playerName.equals(msg.getNextPlayer())) {
+						this.hisTurn.setMessage(msg);
+						this.hisTurn.setValue(true);
+					} else {
+						this.hisTurn.setValue(false);
+					}
 				}
 			}
 		};
@@ -160,17 +161,11 @@ public class Player {
 	public final void setAnnouncedTichu(boolean announcedTichu) {
 		this.announcedTichu.set(announcedTichu);
 	}
-	public SimpleBooleanProperty getHisHisTurnProperty() {
+	public SimpleMessageProperty getHisHisTurnProperty() {
 		return this.hisTurn;
 	}
 	public final void setHisTurn(boolean hisTurn) {
 		this.hisTurn.set(hisTurn);
-	}
-	public SimpleBooleanProperty getHasMahjongProperty() {
-		return this.hasMahjong;
-	}
-	public final void setHasMahjong(boolean hasMahjong) {
-		this.hasMahjong.set(hasMahjong);
 	}
 	public ArrayList<Card> getCurrentMove() {
 		return currentMove;
