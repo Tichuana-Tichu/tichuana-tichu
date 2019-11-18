@@ -17,7 +17,7 @@ public class PlayView extends BorderPane {
      * a MenuBar at the top and a PlayArea in the center
 	 * @author Philipp
      */
-	public PlayView() {
+	PlayView() {
 
 		this.translator = ServiceLocator.getServiceLocator().getTranslator();
 

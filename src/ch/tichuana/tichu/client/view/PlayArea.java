@@ -7,13 +7,13 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
-class PlayArea extends GridPane {
+public class PlayArea extends GridPane {
 
 	/**
 	 * creates a table-like, resizeable grid for information about the game-flow
 	 * @author Philipp
 	 */
-	public PlayArea() {
+	PlayArea() {
 
 		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
 		Label[] headings = new Label[7];
@@ -60,7 +60,31 @@ class PlayArea extends GridPane {
 		this.maxHeight(6000);
 	}
 
+	public void updateNameColumn() {
+
+	}
+
+	public void updateTeamColumn() {
+
+	}
+
+	public void updateHandColumn() {
+
+	}
+
+	public void updateTichuColumn() {
+
+	}
+
 	public void updatePlayedColumn() {
-		System.out.println("dfv");
+
+	}
+
+	public void updateMatchPoints() {
+
+	}
+
+	public void updateTotalPoints() {
+
 	}
 }

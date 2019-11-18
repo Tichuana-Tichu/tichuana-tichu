@@ -63,7 +63,7 @@ public class PlayController {
 
         this.clientModel.getHisTurnProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                //this.gameView.getPlayView().getPlayArea().updatePlayedColumn();
+                this.gameView.getPlayView().getPlayArea().updatePlayedColumn();
             }
         });
 

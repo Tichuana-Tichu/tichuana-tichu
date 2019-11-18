@@ -76,7 +76,7 @@ public class ClientModel {
                             sendMessage(MessageType.ReceivedMsg, "true");
                         } else {
                             this.hisTurn.set(true);
-                            logger.info("it is your turn player: "+msg.getNextPlayer());
+                            logger.info("it is your turn "+msg.getNextPlayer());
                         }
 
                     }
