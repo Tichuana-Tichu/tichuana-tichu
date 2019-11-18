@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Stich {
 
     private ArrayList<Card> cards;
+    private ArrayList<Card> lastMove;
     private Combination combination;
     private Player currentWinner;
     private int passCounter;
@@ -35,10 +36,13 @@ public class Stich {
                 this.won = true;
             }
         } else {
-            // TODO check if valid move
-            cards.addAll(move);
-            passCounter = 0;
-            currentWinner = player;
+            if(Combination.isValidMove(lastMove,move)){
+                cards.addAll(move);
+                passCounter = 0;
+                currentWinner = player;
+            } else {
+                //TODO: handle if move isn't valid -> shouldn't happen since client checks as well
+            }
         }
     }
 

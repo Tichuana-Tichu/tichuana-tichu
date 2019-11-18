@@ -289,7 +289,7 @@ public enum Combination {
 		return (straight && flush);
 	}
 
-	public boolean isValidMove(ArrayList<Card> oldMove, ArrayList<Card> newMove){
+	public static boolean isValidMove(ArrayList<Card> oldMove, ArrayList<Card> newMove){
 		ArrayList<Card> oldClone = (ArrayList<Card>) oldMove.clone();
 		ArrayList<Card> newClone = (ArrayList<Card>) newMove.clone();
 		Collections.sort(oldClone);
