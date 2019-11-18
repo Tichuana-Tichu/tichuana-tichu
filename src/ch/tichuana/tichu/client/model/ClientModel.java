@@ -48,8 +48,8 @@ public class ClientModel {
                     }
 
                     if (msg instanceof ConnectedMsg) {
-                        newestMessage.set("successfully connected to Server");
                         this.connected.set(true);
+                        newestMessage.set("successfully connected to Server");
                     }
 
                     if (msg instanceof GameStartedMsg) {
