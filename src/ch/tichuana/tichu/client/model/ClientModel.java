@@ -24,6 +24,7 @@ public class ClientModel {
 
     private String teamMate;
     private String[] opponents;
+    private Hand hand;
 
     /**
      * connects client to server with JoinMsg and listens for incoming messages
@@ -57,6 +58,11 @@ public class ClientModel {
                         newestMessage.set("you successfully entered a game");
                         this.teamMate = msg.getTeamMate();
                         this.opponents = msg.getOpponents();
+                    }
+
+                    if (msg instanceof DealMsg) {
+                        this.hand = new Hand(msg.getCards());
+                        newestMessage.set("your first eight cards");
                     }
 
                     if (msg instanceof AnnouncedTichuMsg) {
@@ -187,5 +193,8 @@ public class ClientModel {
     }
     public String getPlayerName() {
         return playerName;
+    }
+    public Hand getHand() {
+        return hand;
     }
 }

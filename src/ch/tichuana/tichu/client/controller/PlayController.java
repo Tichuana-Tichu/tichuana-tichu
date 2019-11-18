@@ -45,6 +45,8 @@ public class PlayController {
         this.clientModel.getNewestMessageProperty().addListener((observable, oldVal, newVal) -> {
             if (newVal.equals("you successfully entered a game"))
                 Platform.runLater(() -> this.gameView.getPlayView().getPlayArea().updateNameColumn());
+            if (newVal.equals("your first eight cards"))
+                Platform.runLater(() -> this.gameView.getPlayView().getBottomView().getCardArea());
             Platform.runLater(() -> this.gameView.getPlayView().getBottomView().setConsole(newVal));
         });
 

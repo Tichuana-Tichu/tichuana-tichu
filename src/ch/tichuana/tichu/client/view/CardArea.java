@@ -10,7 +10,7 @@ public class CardArea extends VBox {
 
 	private HBox cardsLabels;
 
-	public enum CardAreaType {Cards, Thumbnails;}
+	public enum CardAreaType {Blank, Cards, Thumbnails;}
 
     /**
      * instantiates a new Card for each CardLabel
@@ -20,7 +20,18 @@ public class CardArea extends VBox {
 	CardArea(CardAreaType cat, int cardCounter) {
 		this.cardsLabels = new HBox();
 
-		if (cat.equals(CardAreaType.Cards)) {
+		if (cat.equals(CardAreaType.Blank)) {
+			for (int i = 0; i < cardCounter; i++) {
+				CardLabel cardLabel = new CardLabel();
+				//TODO - exchange after testing with real cards from GameStartedMsg
+				cardLabel.setBlankCard();
+				cardsLabels.getChildren().add(cardLabel);
+				cardsLabels.setSpacing(-140);
+			}
+			this.getChildren().add(this.cardsLabels);
+		}
+
+		else if (cat.equals(CardAreaType.Cards)) {
 
 			for (int i = 0; i < cardCounter; i++) {
 				CardLabel cardLabel = new CardLabel();

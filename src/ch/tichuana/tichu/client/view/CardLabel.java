@@ -44,6 +44,16 @@ public class CardLabel extends Label {
 		}
 	}
 
+	void setBlankCard() {
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+
+		Image image = new Image(config.getProperty("cards")+"Blank.png");
+		ImageView imv = new ImageView(image);
+		imv.setFitWidth(primaryScreenBounds.getWidth()/15);
+		imv.setPreserveRatio(true);
+		this.setGraphic(imv);
+	}
+
 	void setThumbnail(Card card) {
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 
@@ -62,11 +72,11 @@ public class CardLabel extends Label {
 
 	/**
 	 *
-	 * @author Christian
+	 * @author Christian (revised by Philipp)
 	 * @param card
 	 * @return
 	 */
-	private String cardToFileName(Card card){
+	private String cardToFileName(Card card) {
 		String fileName = "";
 		Suit suit = card.getSuit();
 		if (suit != null) { //for special cards
@@ -74,6 +84,7 @@ public class CardLabel extends Label {
 		}
 		fileName += card.getRank().toString().toLowerCase();
 		fileName += ".png";
+
 		return fileName;
 	}
 }
