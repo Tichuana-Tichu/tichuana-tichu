@@ -47,6 +47,7 @@ public class PlayController {
 
         this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setOnAction(event -> {
             this.clientModel.sendMessage(TichuType.GrandTichu);
+            this.clientModel.getHisTurnProperty().set(true);
         });
 
         this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setOnAction(event -> {
@@ -59,6 +60,12 @@ public class PlayController {
 
         this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setOnAction(event -> {
             this.clientModel.sendMessage(MessageType.PlayMsg, "");
+        });
+
+        this.clientModel.getHisTurnProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                this.gameView.getPlayView().getPlayArea().updatePlayedColumn();
+            }
         });
 
         this.gameView.getStage().setOnCloseRequest(event -> this.clientModel.disconnect());

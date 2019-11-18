@@ -20,7 +20,7 @@ public class CardLabel extends Label {
 	 */
 	CardLabel() {
 		super();
-		this.getStyleClass().add("card");
+		//this.getStyleClass().add("card");
 		this.config = ServiceLocator.getServiceLocator().getConfiguration();
 	}
 
@@ -39,6 +39,22 @@ public class CardLabel extends Label {
 			imv.setFitWidth(primaryScreenBounds.getWidth()/15);
 			imv.setPreserveRatio(true);
 			this.setGraphic(imv);
+		} else {
+			this.setGraphic(null);
+		}
+	}
+
+	void setThumbnail(Card card) {
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+
+		if (card != null) {
+			String fileName = cardToFileName(card);
+			Image image = new Image(config.getProperty("thumbnails")+fileName);
+			ImageView imv = new ImageView(image);
+			imv.setFitWidth(primaryScreenBounds.getWidth()/40);
+			imv.setPreserveRatio(true);
+			this.setGraphic(imv);
+			this.getStyleClass().add("thumbnails");
 		} else {
 			this.setGraphic(null);
 		}
