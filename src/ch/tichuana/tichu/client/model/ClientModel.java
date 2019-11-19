@@ -80,14 +80,14 @@ public class ClientModel {
                             this.playerToSchupfCard = msg.getPlayerName();
                             logger.info("please choose card for player: "+msg.getPlayerName());
                         } else
-                            sendMessage(MessageType.ReceivedMsg, "true");
+                            sendMessage(new ReceivedMsg(true));
                     }
 
                     if (msg instanceof UpdateMsg) {
                         if (!this.playerName.equals(msg.getNextPlayer())) {
                             this.hisTurn.set(false);
                             this.nextPlayerName = msg.getNextPlayer();
-                            sendMessage(MessageType.ReceivedMsg, "true");
+                            sendMessage(new ReceivedMsg(true));
                         } else {
                             this.hisTurn.set(true);
                             logger.info("it is your turn "+msg.getNextPlayer());
@@ -127,41 +127,10 @@ public class ClientModel {
     /**
      * called from controller to send messages to Player-Object (Server)
      * @author Philipp
-     * @param messageType from a specific type
+     * @param message from a specific type
      */
-    public void sendMessage(MessageType messageType, String identifier) {
-        logger.info("Send message");
-        Message msg;
-
-        switch (messageType) {
-
-            case ReceivedMsg:
-                msg = new ReceivedMsg(Boolean.parseBoolean(identifier));
-                msg.send(socket);
-                break;
-
-            case SchupfenMsg:
-                msg = new SchupfenMsg(this.nextPlayerName, new Card());
-                msg.send(socket);
-                break;
-
-            case PlayMsg:
-                msg = new PlayMsg(new ArrayList<>());
-                msg.send(socket);
-                break;
-        }
-    }
-
-    /**
-     * Overloaded method
-     * called from controller to send TichuMsg to Player-Object (Server)
-     * @author Philipp
-     * @param tichuType from type Small- or GrandTichu
-     */
-    public void sendMessage(TichuType tichuType) {
-        logger.info("Send message");
-        Message msg = new TichuMsg(this.playerName, tichuType);
-        msg.send(this.socket);
+    public void sendMessage(Message message) {
+        message.send(this.socket);
     }
 
     //TODO - needed for broadcasts or not?

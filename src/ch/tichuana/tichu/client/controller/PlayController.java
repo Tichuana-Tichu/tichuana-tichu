@@ -4,10 +4,17 @@ import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.view.CardArea;
 import ch.tichuana.tichu.client.view.GameView;
 import ch.tichuana.tichu.commons.message.MessageType;
+import ch.tichuana.tichu.commons.message.PlayMsg;
+import ch.tichuana.tichu.commons.message.SchupfenMsg;
+import ch.tichuana.tichu.commons.message.TichuMsg;
+import ch.tichuana.tichu.commons.models.Card;
+import ch.tichuana.tichu.commons.models.Rank;
 import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.application.Platform;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 public class PlayController {
 
@@ -58,19 +65,21 @@ public class PlayController {
         });
 
         this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setOnAction(event -> {
-            this.clientModel.sendMessage(TichuType.GrandTichu);
+            this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu));
         });
 
         this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setOnAction(event -> {
-            this.clientModel.sendMessage(TichuType.SmallTichu);
+            this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.SmallTichu));
         });
 
         this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setOnAction(event -> {
-            this.clientModel.sendMessage(MessageType.SchupfenMsg, "");
+            //TODO - change to the real card from the game flow!
+            this.clientModel.sendMessage(new SchupfenMsg(clientModel.getPlayerName(), new Card(Rank.dog)));
         });
 
         this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setOnAction(event -> {
-            this.clientModel.sendMessage(MessageType.PlayMsg, "");
+            //TODO - change to the real cards from the game flow!
+            this.clientModel.sendMessage(new PlayMsg(new ArrayList<Card>()));
         });
 
         this.clientModel.getHisTurnProperty().addListener((observable, oldValue, newValue) -> {
