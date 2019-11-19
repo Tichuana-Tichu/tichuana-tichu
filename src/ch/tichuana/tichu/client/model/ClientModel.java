@@ -17,8 +17,6 @@ public class ClientModel {
     private String playerName;
     private String nextPlayerName;
     private String playerToSchupfCard;
-    //private SimpleBooleanProperty connected = new SimpleBooleanProperty(false);
-    //private SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
     private Logger logger = Logger.getLogger("");
 
     private String teamMate;
@@ -141,29 +139,16 @@ public class ClientModel {
         return newestMessage.get();
     }
 
-    //Getter
+    //Getter & Setter
     public String getPlayerToSchupfCard() {
         return playerToSchupfCard;
     }
-    /*
-    public boolean isConnected() {
-        return connected.get();
-    }
-     */
     public int getMsgCode() {
         return msgCode.get();
     }
     public SimpleIntegerProperty msgCodeProperty() {
         return msgCode;
     }
-    /*
-    public SimpleBooleanProperty getConnectedProperty() {
-        return connected;
-    }
-    public SimpleBooleanProperty getHisTurnProperty() {
-        return hisTurn;
-    }
-     */
     public SimpleStringProperty getNewestMessageProperty() {
         return newestMessage;
     }

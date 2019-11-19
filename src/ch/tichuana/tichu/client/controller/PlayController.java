@@ -74,14 +74,6 @@ public class PlayController {
             this.clientModel.sendMessage(new PlayMsg(new ArrayList<Card>()));
         });
 
-        /*
-        this.clientModel.getHisTurnProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                this.gameView.getPlayView().getPlayArea().updatePlayedColumn();
-            }
-        });
-         */
-
         this.gameView.getStage().setOnCloseRequest(event -> this.clientModel.disconnect());
     }
 
