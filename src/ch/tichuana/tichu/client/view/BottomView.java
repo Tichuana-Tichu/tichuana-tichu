@@ -31,7 +31,7 @@ public class BottomView extends BorderPane {
 		this.setCenter(cardsNConsole);
 	}
 
-	//Getter
+	//Getter & Setter
 	public ControlArea getControlArea() {
 		return controlArea;
 	}

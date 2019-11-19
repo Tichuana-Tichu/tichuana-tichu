@@ -39,18 +39,23 @@ public class LobbyController {
 
 			int port = Integer.parseInt(ServiceLocator.getServiceLocator().getConfiguration().getProperty("port"));
 			String ipAddress =ServiceLocator.getServiceLocator().getConfiguration().getProperty("ipAddress");
-			if (!lv.getUserField().getText().isEmpty() || !lv.getPasswordField().getText().isEmpty()) {
-                String playerName = lv.getUserField().getText();
-                String password = lv.getPasswordField().getText();
-                this.clientModel.connect(ipAddress, port, playerName, password);
-            }
+
+			if (lv.getUserField().getText().isEmpty()) {
+				this.clientModel.setNewestMessage("user name field must not be empty");
+			} else if (lv.getPasswordField().getText().isEmpty()) {
+				this.clientModel.setNewestMessage("password field must not be empty");
+			} else {
+				String playerName = lv.getUserField().getText();
+				String password = lv.getPasswordField().getText();
+				this.clientModel.connect(ipAddress, port, playerName, password);
+			}
 		});
 
 		this.clientModel.getNewestMessageProperty().addListener((observable, oldValue, newValue) ->
 				Platform.runLater(() -> this.gameView.getLobbyView().setLoginStatus(newValue)));
 
-		this.clientModel.getConnectedProperty().addListener((obs, oldVal, newVal) -> {
-			if (newVal) {
+		this.clientModel.msgCodeProperty().addListener((obs, oldVal, newVal) -> {
+			if (newVal.intValue() == 1) {
 				new PlayController(this.clientModel, this.gameView, this.stage);
 				Platform.runLater(() -> this.gameView.updateView());
 			}

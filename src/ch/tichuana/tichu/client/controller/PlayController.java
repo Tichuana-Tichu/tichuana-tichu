@@ -51,19 +51,8 @@ public class PlayController {
             }
         });
 
-        this.clientModel.getNewestMessageProperty().addListener((observable, oldVal, newVal) -> {
-
-            if (newVal.equals("you successfully entered a game"))
-                Platform.runLater(() -> this.gameView.getPlayView().getPlayArea().updateNameColumn());
-
-            if (newVal.equals("your first eight cards"))
-                Platform.runLater(() -> {
-                        this.gameView.getPlayView().getBottomView().setCardArea(CardArea.CardAreaType.Cards, 8);
-                        this.stage.setWidth(stage.getWidth()-1);
-                });
-
-            Platform.runLater(() -> this.gameView.getPlayView().getBottomView().setConsole(newVal));
-        });
+        this.clientModel.getNewestMessageProperty().addListener((observable, oldVal, newVal) ->
+                Platform.runLater(() -> this.gameView.getPlayView().getBottomView().setConsole(newVal)));
 
         this.clientModel.msgCodeProperty().addListener(this::handleMsg);
 
@@ -85,17 +74,44 @@ public class PlayController {
             this.clientModel.sendMessage(new PlayMsg(new ArrayList<Card>()));
         });
 
+        /*
         this.clientModel.getHisTurnProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 this.gameView.getPlayView().getPlayArea().updatePlayedColumn();
             }
         });
+         */
 
         this.gameView.getStage().setOnCloseRequest(event -> this.clientModel.disconnect());
     }
 
-    private void handleMsg(ObservableValue<? extends Number> observableValue, Number object, Number object1) {
+    private void handleMsg(ObservableValue<? extends Number> obs, Number oldVal, Number newVal) {
 
+        switch (newVal.intValue()) {
+
+            case 2:
+                Platform.runLater(() -> this.gameView.getPlayView().getPlayArea().updateNameColumn());
+                break;
+
+            case 3:
+                Platform.runLater(() -> {
+                    this.gameView.getPlayView().getBottomView().setCardArea(CardArea.CardAreaType.Cards, 8);
+                    this.stage.setWidth(stage.getWidth()-1);
+                });
+                break;
+
+            case 4:
+
+                break;
+
+            case 5:
+
+                break;
+
+            case 6:
+
+                break;
+        }
     }
 
     private void checkValidCombination() {

@@ -17,8 +17,8 @@ public class ClientModel {
     private String playerName;
     private String nextPlayerName;
     private String playerToSchupfCard;
-    private SimpleBooleanProperty connected = new SimpleBooleanProperty(false);
-    private SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
+    //private SimpleBooleanProperty connected = new SimpleBooleanProperty(false);
+    //private SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
     private Logger logger = Logger.getLogger("");
 
     private String teamMate;
@@ -47,21 +47,24 @@ public class ClientModel {
 
                     if (msg instanceof ConnectedMsg) {
                         if (msg.getStatus()) {
-                            this.connected.set(true);
+                            this.msgCode.set(1);
+                            //this.connected.set(true);
                             newestMessage.set("successfully connected to Server");
                         } else
+                            //this.msgCode.set(2);
                             newestMessage.set("connection failed: wrong password");
                     }
 
                     if (msg instanceof GameStartedMsg) {
-                        newestMessage.set("you successfully entered a game");
                         this.teamMate = msg.getTeamMate();
                         this.opponents = msg.getOpponents();
+                        this.msgCode.set(2);
+                        newestMessage.set("you successfully entered a game");
                     }
 
                     if (msg instanceof DealMsg) {
-                        logger.info(msg.getCards().toString());
                         this.hand = new Hand(msg.getCards());
+                        this.msgCode.set(3);
                         newestMessage.set("your first eight cards");
                     }
 
@@ -84,11 +87,11 @@ public class ClientModel {
 
                     if (msg instanceof UpdateMsg) {
                         if (!this.playerName.equals(msg.getNextPlayer())) {
-                            this.hisTurn.set(false);
+                            //this.hisTurn.set(false);
                             this.nextPlayerName = msg.getNextPlayer();
                             sendMessage(new ReceivedMsg(true));
                         } else {
-                            this.hisTurn.set(true);
+                            //this.hisTurn.set(true);
                             logger.info("it is your turn "+msg.getNextPlayer());
                         }
 
@@ -142,23 +145,30 @@ public class ClientModel {
     public String getPlayerToSchupfCard() {
         return playerToSchupfCard;
     }
+    /*
     public boolean isConnected() {
         return connected.get();
     }
+     */
     public int getMsgCode() {
         return msgCode.get();
     }
     public SimpleIntegerProperty msgCodeProperty() {
         return msgCode;
     }
+    /*
     public SimpleBooleanProperty getConnectedProperty() {
         return connected;
     }
     public SimpleBooleanProperty getHisTurnProperty() {
         return hisTurn;
     }
+     */
     public SimpleStringProperty getNewestMessageProperty() {
         return newestMessage;
+    }
+    public void setNewestMessage(String message) {
+        this.newestMessage.set(message);
     }
     public String getTeamMate() {
         return teamMate;
