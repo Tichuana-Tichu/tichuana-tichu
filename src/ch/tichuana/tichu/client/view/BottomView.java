@@ -25,7 +25,7 @@ public class BottomView extends BorderPane {
 		this.console = new TextField();
 		this.console.setEditable(false);
 		this.console.setFocusTraversable(false);
-		this.cardsNConsole = new VBox(new CardArea(clientModel, CardArea.CardAreaType.Blank, 8), this.console);
+		this.cardsNConsole = new VBox(this.cardArea, this.console);
 
 		this.setRight(this.controlArea);
 		this.setCenter(cardsNConsole);
