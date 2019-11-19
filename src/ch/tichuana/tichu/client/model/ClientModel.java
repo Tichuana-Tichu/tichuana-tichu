@@ -46,10 +46,8 @@ public class ClientModel {
                     if (msg instanceof ConnectedMsg) {
                         if (msg.getStatus()) {
                             this.msgCode.set(1);
-                            //this.connected.set(true);
                             newestMessage.set("successfully connected to Server");
                         } else
-                            //this.msgCode.set(2);
                             newestMessage.set("connection failed: wrong password");
                     }
 
@@ -63,12 +61,12 @@ public class ClientModel {
                     if (msg instanceof DealMsg) {
                         this.hand = new Hand(msg.getCards());
                         this.msgCode.set(3);
-                        newestMessage.set("your first eight cards");
+                        newestMessage.set("your first eight cards, please announce grand tichu");
                     }
 
                     if (msg instanceof AnnouncedTichuMsg) {
-                        newestMessage.set("");
-                        newestMessage.set(msg.getPlayers().toString()+" announced: "+msg.getTichuType());
+                        this.msgCode.set(4);
+                        newestMessage.set(msg.getPlayerName()+" announced: "+msg.getTichuType());
                     }
 
                     if (msg instanceof DemandTichuMsg) {

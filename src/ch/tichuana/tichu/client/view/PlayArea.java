@@ -3,6 +3,7 @@ package ch.tichuana.tichu.client.view;
 import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
+import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.GridPane;
@@ -11,6 +12,7 @@ import javafx.scene.layout.Priority;
 public class PlayArea extends GridPane {
 
 	private Label[] playerLbl;
+	private Label[] tichuLbl;
 	private Label[] headings;
 	private ClientModel clientModel;
 
@@ -42,6 +44,15 @@ public class PlayArea extends GridPane {
 		for (int i = 0; i < playerLbl.length; i++) {
 			playerLbl[i] = new Label("Waiting for player...");
 		}
+
+		this.tichuLbl = new Label[4];
+		for (int i = 0; i < tichuLbl.length; i++) {
+			tichuLbl[i] = new Label("");
+		}
+		this.add(tichuLbl[0], 3, 2, 1, 1);
+		this.add(playerLbl[1], 3, 4, 1, 1);
+		this.add(playerLbl[2], 3, 6, 1, 1);
+		this.add(playerLbl[3], 3, 8, 1, 1);
 
 		this.add(playerLbl[0], 0, 2, 1, 1);
 		GridPane.setVgrow(playerLbl[0], Priority.ALWAYS);
@@ -88,9 +99,11 @@ public class PlayArea extends GridPane {
 		}
 	}
 
-	public void updateTichuColumn() {
-		for (int i = 2; i < this.getColumnCount(); i+=2) {
-			this.add(new Label(""), 3, i);
+	public void updateTichuColumn(TichuType tichuType) {
+		for (int i = 0; i < this.tichuLbl.length; i++) {
+			if (TichuType.GrandTichu.equals(tichuType))
+
+				this.add(new Label("Grand"), 3, i);
 		}
 	}
 

@@ -16,6 +16,8 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class PlayController {
 
@@ -57,7 +59,8 @@ public class PlayController {
         this.clientModel.msgCodeProperty().addListener(this::handleMsg);
 
         this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setOnAction(event -> {
-            this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu));
+            if (this.clientModel.getMsgCode() == 3)
+                this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu));
         });
 
         this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setOnAction(event -> {
@@ -70,8 +73,13 @@ public class PlayController {
         });
 
         this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setOnAction(event -> {
-            //TODO - change to the real cards from the game flow!
-            this.clientModel.sendMessage(new PlayMsg(new ArrayList<Card>()));
+
+            if (this.clientModel.getMsgCode() == 3) {
+                this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.none));
+            } else {
+                //TODO - change to the real cards from the game flow!
+                this.clientModel.sendMessage(new PlayMsg(new ArrayList<Card>()));
+            }
         });
 
         this.gameView.getStage().setOnCloseRequest(event -> this.clientModel.disconnect());
@@ -93,7 +101,7 @@ public class PlayController {
                 break;
 
             case 4:
-
+                this.gameView.getPlayView().getPlayArea().updateTichuColumn(TichuType.GrandTichu);
                 break;
 
             case 5:
