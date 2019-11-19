@@ -1,18 +1,17 @@
 package ch.tichuana.tichu.client.model;
 
 import ch.tichuana.tichu.commons.message.*;
-import ch.tichuana.tichu.commons.models.Card;
-import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class ClientModel {
 
     private SimpleStringProperty newestMessage = new SimpleStringProperty();
+    private SimpleIntegerProperty msgCode = new SimpleIntegerProperty();
     private Socket socket;
     private volatile boolean closed;
     private String playerName;
@@ -145,6 +144,12 @@ public class ClientModel {
     }
     public boolean isConnected() {
         return connected.get();
+    }
+    public int getMsgCode() {
+        return msgCode.get();
+    }
+    public SimpleIntegerProperty msgCodeProperty() {
+        return msgCode;
     }
     public SimpleBooleanProperty getConnectedProperty() {
         return connected;

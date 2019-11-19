@@ -11,6 +11,7 @@ import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.Rank;
 import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -64,6 +65,8 @@ public class PlayController {
             Platform.runLater(() -> this.gameView.getPlayView().getBottomView().setConsole(newVal));
         });
 
+        this.clientModel.msgCodeProperty().addListener(this::handleMsg);
+
         this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setOnAction(event -> {
             this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu));
         });
@@ -89,6 +92,10 @@ public class PlayController {
         });
 
         this.gameView.getStage().setOnCloseRequest(event -> this.clientModel.disconnect());
+    }
+
+    private void handleMsg(ObservableValue<? extends Number> observableValue, Number object, Number object1) {
+
     }
 
     private void checkValidCombination() {
