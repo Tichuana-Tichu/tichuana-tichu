@@ -149,6 +149,7 @@ public class ClientModel {
     public SimpleStringProperty getNewestMessageProperty() {
         return newestMessage;
     }
+    public String getNewestMessage() { return this.newestMessage.get(); }
     public void setNewestMessage(String message) {
         this.newestMessage.set(message);
     }

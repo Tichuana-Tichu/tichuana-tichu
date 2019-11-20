@@ -101,7 +101,9 @@ public class PlayController {
                 break;
 
             case 4:
-                this.gameView.getPlayView().getPlayArea().updateTichuColumn(TichuType.GrandTichu);
+                String playerName = this.clientModel.getNewestMessage();
+                Platform.runLater(() ->
+                    this.gameView.getPlayView().getPlayArea().updateTichuColumn(TichuType.GrandTichu));
                 break;
 
             case 5:
