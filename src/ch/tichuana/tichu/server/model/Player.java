@@ -60,7 +60,7 @@ public class Player {
 				}
 
 				else if (msg instanceof TichuMsg) {
-					logger.info("Player: "+this.playerName+" announced SmallTichu");
+					logger.info("Player: "+this.playerName+" announced Tichu: " + msg.getTichuType());
 					this.tichuType = msg.getTichuType();
 
 					// Important: The boolean value of SimpleMessagePropertys means that a player has already announced
