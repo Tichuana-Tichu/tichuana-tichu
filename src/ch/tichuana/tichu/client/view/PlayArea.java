@@ -50,9 +50,9 @@ public class PlayArea extends GridPane {
 			tichuLbl[i] = new Label("");
 		}
 		this.add(tichuLbl[0], 3, 2, 1, 1);
-		this.add(playerLbl[1], 3, 4, 1, 1);
-		this.add(playerLbl[2], 3, 6, 1, 1);
-		this.add(playerLbl[3], 3, 8, 1, 1);
+		this.add(tichuLbl[1], 3, 4, 1, 1);
+		this.add(tichuLbl[2], 3, 6, 1, 1);
+		this.add(tichuLbl[3], 3, 8, 1, 1);
 
 		this.add(playerLbl[0], 0, 2, 1, 1);
 		GridPane.setVgrow(playerLbl[0], Priority.ALWAYS);
@@ -99,12 +99,24 @@ public class PlayArea extends GridPane {
 		}
 	}
 
-	public void updateTichuColumn(TichuType tichuType) {
-		for (int i = 0; i < this.tichuLbl.length; i++) {
-			if (TichuType.GrandTichu.equals(tichuType))
+	public void updateTichuColumn(String playerName, TichuType tichuType) {
 
-				this.add(new Label("Grand"), 3, i);
+	}
+
+	private Label getPlayerLabelByRowIndex() {
+		return null;
+	}
+	/**
+	 * searches the player and returns his rowIndex
+	 * @param playerName
+	 * @return
+	 */
+	private int getPlayerRow(String playerName) {
+		for (Label label : this.playerLbl) {
+			if (label.getText().equals(playerName))
+				return GridPane.getRowIndex(label);
 		}
+		return 0;
 	}
 
 	public void updatePlayedColumn() {

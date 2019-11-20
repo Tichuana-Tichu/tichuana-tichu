@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 public class ClientModel {
 
     private SimpleStringProperty newestMessage = new SimpleStringProperty();
-    private SimpleIntegerProperty msgCode = new SimpleIntegerProperty();
+    private SimpleMessageProperty msgCode = new SimpleMessageProperty();
     private Socket socket;
     private volatile boolean closed;
     private String playerName;
@@ -58,21 +58,29 @@ public class ClientModel {
                     }
 
                     if (msg instanceof DealMsg) {
-                        this.hand = new Hand(msg.getCards());
-                        this.msgCode.set(3);
-                        newestMessage.set("your first eight cards, please announce grand tichu");
+                        if (msg.getCards().size() == 8) {
+                            logger.info("received 8 cards");
+                            this.hand = new Hand(msg.getCards());
+                            logger.info("setted hand in model");
+                            this.msgCode.set(3);
+                            logger.info("handed over to controller");
+                            newestMessage.set("your first eight cards, please announce grand tichu");
+                        } else {
+                            this.hand.getCards().addAll(msg.getCards());
+                            this.msgCode.set(5);
+                            newestMessage.set("your remaining six cards, please announce small tichu");
+                        }
+
                     }
 
                     if (msg instanceof AnnouncedTichuMsg) {
+                        this.msgCode.setMessage(msg);
                         this.msgCode.set(4);
                         newestMessage.set(msg.getPlayerName()+" announced: "+msg.getTichuType());
                     }
 
-                    if (msg instanceof DemandTichuMsg) {
-                        logger.info("please announce tichu or pass");
-                    }
-
                     if (msg instanceof DemandSchupfenMsg) {
+                        this.msgCode.set(6);
                         if (!this.playerName.equals(msg.getPlayerName())) {
                             this.playerToSchupfCard = msg.getPlayerName();
                             logger.info("please choose card for player: "+msg.getPlayerName());
@@ -81,12 +89,11 @@ public class ClientModel {
                     }
 
                     if (msg instanceof UpdateMsg) {
+                        this.msgCode.set(7);
                         if (!this.playerName.equals(msg.getNextPlayer())) {
-                            //this.hisTurn.set(false);
                             this.nextPlayerName = msg.getNextPlayer();
                             sendMessage(new ReceivedMsg(true));
                         } else {
-                            //this.hisTurn.set(true);
                             logger.info("it is your turn "+msg.getNextPlayer());
                         }
 
@@ -143,7 +150,10 @@ public class ClientModel {
     public int getMsgCode() {
         return msgCode.get();
     }
-    public SimpleIntegerProperty msgCodeProperty() {
+    public void setMsgCode(int code) {
+        this.msgCode.set(code);
+    }
+    public SimpleMessageProperty getMsgCodeProperty() {
         return msgCode;
     }
     public SimpleStringProperty getNewestMessageProperty() {

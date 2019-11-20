@@ -59,6 +59,16 @@ public class CardArea extends VBox {
 		}
 	}
 
+	void appendCards(int hand) {
+		for (int i = 8; i < hand; i++) {
+			CardLabel cardLabel = new CardLabel();
+			cardLabel.setCard(clientModel.getHand().getCards().get(i));
+			cardsLabels.getChildren().add(cardLabel);
+			cardsLabels.setSpacing(-140);
+		}
+		this.getChildren().add(this.cardsLabels);
+	}
+
 	//Getter
 	public HBox getCardsLabels() {
 		return this.cardsLabels;

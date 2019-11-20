@@ -54,7 +54,7 @@ public class LobbyController {
 		this.clientModel.getNewestMessageProperty().addListener((observable, oldValue, newValue) ->
 				Platform.runLater(() -> this.gameView.getLobbyView().setLoginStatus(newValue)));
 
-		this.clientModel.msgCodeProperty().addListener((obs, oldVal, newVal) -> {
+		this.clientModel.getMsgCodeProperty().addListener((obs, oldVal, newVal) -> {
 			if (newVal.intValue() == 1) {
 				new PlayController(this.clientModel, this.gameView, this.stage);
 				Platform.runLater(() -> this.gameView.updateView());
