@@ -289,6 +289,14 @@ public enum Combination {
 		return (straight && flush);
 	}
 
+
+	/**
+	 * Will compare the previous move to the current one and evaluate if the new move is not only valid,
+	 * but also beats the previous.
+	 * @param oldMove
+	 * @param newMove
+	 * @return isValidMove
+	 */
 	public static boolean isValidMove(ArrayList<Card> oldMove, ArrayList<Card> newMove){
 		ArrayList<Card> oldClone = (ArrayList<Card>) oldMove.clone();
 		ArrayList<Card> newClone = (ArrayList<Card>) newMove.clone();
@@ -296,11 +304,18 @@ public enum Combination {
 		Collections.sort(newClone);
 		// all evaluations are based on what the previous move was
 		switch (evaluateCombination(oldClone)){
+
 			case HighCard:
 				// newMove has to be HighCard as well and have a higher rank, else -> false
 				if(evaluateCombination(newClone) == HighCard &&
 				oldClone.get(0).compareTo(newClone.get(0)) < 0){
-					return true;
+
+					// a dog can not be played on a mahjong and vise versa, everything else can
+					if(containsMahjong(newMove)){
+						return false;
+					} else {
+						return true;
+					}
 				} else {
 					return false;
 				}
