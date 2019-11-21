@@ -21,6 +21,7 @@ public class PlayArea extends GridPane {
 	/**
 	 * creates a table-like, resizeable grid for information about the game-flow
 	 * @author Philipp
+	 * @param clientModel
 	 */
 	PlayArea(ClientModel clientModel) {
 
@@ -79,30 +80,25 @@ public class PlayArea extends GridPane {
 		this.setVgap(2);
 	}
 
+	/**
+	 * @author Philipp
+	 */
 	void updatePlayerName() {
 		this.playerLbl[0].setText(clientModel.getPlayerName());
 	}
 
+	/**
+	 * @author Philipp
+	 */
 	public void updateNameColumn() {
 		this.playerLbl[1].setText(clientModel.getTeamMate());
 		this.playerLbl[2].setText(clientModel.getOpponent(0));
 		this.playerLbl[3].setText(clientModel.getOpponent(1));
 	}
 
-	public void updateTeamColumn() {
-		for (int i = 2; i < this.getColumnCount(); i+=2) {
-			this.add(new Label(""), 1, i);
-		}
-	}
-
-	public void updateHandColumn() {
-		for (int i = 2; i < this.getColumnCount(); i+=2) {
-			this.add(new Label(""), 2, i);
-		}
-	}
-
 	/**
 	 *
+	 * @author Philipp
 	 * @param playerName
 	 * @param tichuType
 	 */
@@ -114,6 +110,7 @@ public class PlayArea extends GridPane {
 
 	/**
 	 *
+	 * @author Philipp
 	 * @param playerName
 	 * @return
 	 */
@@ -133,6 +130,7 @@ public class PlayArea extends GridPane {
 	 * returns a node at a given position inside the GridPane
 	 * got method structure from:
 	 * https://stackoverflow.com/questions/20825935/javafx-get-node-by-row-and-column
+	 * @author Philipp
 	 * @param row index of a given node
 	 * @param column index of a given node
 	 * @return node at a given row & column index
@@ -148,6 +146,18 @@ public class PlayArea extends GridPane {
 			}
 		}
 		return result;
+	}
+
+	public void updateTeamColumn() {
+		for (int i = 2; i < this.getColumnCount(); i+=2) {
+			this.add(new Label(""), 1, i);
+		}
+	}
+
+	public void updateHandColumn() {
+		for (int i = 2; i < this.getColumnCount(); i+=2) {
+			this.add(new Label(""), 2, i);
+		}
 	}
 
 	public void updatePlayedColumn() {
