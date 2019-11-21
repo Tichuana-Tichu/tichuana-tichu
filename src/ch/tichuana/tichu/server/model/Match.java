@@ -59,6 +59,7 @@ public class Match {
 			p.sendMessage(msg);
 			rangeCounter += 8;
 		}
+		logger.info("first eight cards dealt");
 	}
 
 	/**
@@ -75,6 +76,7 @@ public class Match {
 			p.sendMessage(msg);
 			rangeCounter += 6;
 		}
+		logger.info("remaining cards dealt");
 	}
 
 	/**

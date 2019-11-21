@@ -95,7 +95,6 @@ public class ServerController {
 		serverModel.increaseTichuResponses();
 		if (serverModel.getTichuResponses() == 4){
 			serverModel.getGame().getCurrentMatch().dealRemainingCards();
-			logger.info("Remaining six cards dealt");
 		}
 		else if (serverModel.getTichuResponses() == 8) {
 			demandSchupfen();
