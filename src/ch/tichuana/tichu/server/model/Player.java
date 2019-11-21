@@ -51,8 +51,8 @@ public class Player {
 					// check if password is correct
 					if (verifyPassword()){
 						sendMessage(new ConnectedMsg(true));
-						serverModel.getPlayers().add(this);
 						logger.info("Player: "+msg.getPlayerName()+" logged in");
+						serverModel.getPlayers().add(this);
 					}
 					else {
 						sendMessage(new ConnectedMsg(false));
