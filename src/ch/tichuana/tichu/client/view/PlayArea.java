@@ -101,26 +101,22 @@ public class PlayArea extends GridPane {
 		}
 	}
 
+	/**
+	 *
+	 * @param playerName
+	 * @param tichuType
+	 */
 	public void updateTichuColumn(String playerName, TichuType tichuType) {
 
-		int row = getPlayerRow(playerName);
-		int column = 3;
-
-		Label tichuLabel = (Label) getNodeByRowColumnIndex(row, column);
+		Label tichuLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), 3);
 		tichuLabel.setText(tichuType.toString());
-
-		/*
-		int arrayIndex = 0;
-		for (int i = 0; i < playerLbl.length; i++) {
-			if (playerLbl[i].getText().equals(playerName))
-				System.out.println(playerLbl[i].getText()+" "+playerName);
-				arrayIndex = i;
-		}
-		this.tichuLbl[arrayIndex].setText(tichuType.toString());
-		 */
 	}
 
-
+	/**
+	 *
+	 * @param playerName
+	 * @return
+	 */
 	private int getPlayerRow(String playerName) {
 		for (Label label : this.playerLbl) {
 			if (label.getText().equals(playerName))
@@ -129,12 +125,19 @@ public class PlayArea extends GridPane {
 		return 0;
 	}
 
-
+	/**
+	 * returns a node at a given position inside the GridPane
+	 * got method structure from:
+	 * https://stackoverflow.com/questions/20825935/javafx-get-node-by-row-and-column
+	 * @param row index of a given node
+	 * @param column index of a given node
+	 * @return node at a given row & column index
+	 */
 	private Node getNodeByRowColumnIndex (final int row, final int column) {
 		Node result = null;
-		ObservableList<Node> childrens = this.getChildren();
+		ObservableList<Node> children = this.getChildren();
 
-		for (Node node : childrens) {
+		for (Node node : children) {
 			if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
 				result = node;
 				break;
