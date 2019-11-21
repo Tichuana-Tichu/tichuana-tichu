@@ -59,7 +59,6 @@ public class ClientModel {
                     }
 
                     if (msg instanceof DealMsg) {
-                        logger.info("received 8 cards");
                         if (msg.getCards().size() == 8) {
                             this.hand = new Hand(msg.getCards());
                             this.msgCode.set(3);
@@ -82,7 +81,7 @@ public class ClientModel {
                         this.msgCode.set(6);
                         if (!this.playerName.equals(msg.getPlayerName())) {
                             this.playerToSchupfCard = msg.getPlayerName();
-                            logger.info("please choose card for player: "+msg.getPlayerName());
+                            this.newestMessage.set("please choose card for player: "+msg.getPlayerName());
                         } else
                             sendMessage(new ReceivedMsg(true));
                     }
