@@ -34,15 +34,12 @@ public class CardArea extends VBox {
 
 		else if (cat.equals(CardAreaType.Cards)) {
 
-			//made thread safe so that all clients get their cards
-			synchronized (Integer.valueOf(cardCounter)) {
-				for (int i = 0; i < cardCounter; i++) {
-					CardLabel cardLabel = new CardLabel();
+			for (int i = 0; i < cardCounter; i++) {
+				CardLabel cardLabel = new CardLabel();
 
-					cardLabel.setCard(clientModel.getHand().getCards().get(i));
-					cardsLabels.getChildren().add(cardLabel);
-					cardsLabels.setSpacing(-140);
-				}
+				cardLabel.setCard(clientModel.getHand().getCards().get(i));
+				cardsLabels.getChildren().add(cardLabel);
+				cardsLabels.setSpacing(-140);
 			}
 			this.getChildren().add(this.cardsLabels);
 

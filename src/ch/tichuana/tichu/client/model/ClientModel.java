@@ -1,6 +1,7 @@
 package ch.tichuana.tichu.client.model;
 
 import ch.tichuana.tichu.commons.message.*;
+import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.beans.property.SimpleStringProperty;
 import java.io.IOException;
 import java.net.Socket;
@@ -52,6 +53,7 @@ public class ClientModel {
                     }
 
                     if (msg instanceof GameStartedMsg) {
+
                         this.teamMate = msg.getTeamMate();
                         this.opponents = msg.getOpponents();
                         this.msgCode.set(2);
@@ -71,6 +73,13 @@ public class ClientModel {
                     }
 
                     if (msg instanceof AnnouncedTichuMsg) {
+
+                        if (msg.getPlayerName().equals(this.playerName))
+                            if (msg.getTichuType().equals(TichuType.GrandTichu))
+                                this.grandTichu = true;
+                            if (msg.getTichuType().equals(TichuType.SmallTichu))
+                                this.smallTichu = true;
+
                         this.msgCode.setMessage(msg);
                         this.msgCode.set(4);
                         newestMessage.set(msg.getPlayerName()+" announced: "+msg.getTichuType());
