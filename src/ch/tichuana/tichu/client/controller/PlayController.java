@@ -85,6 +85,12 @@ class PlayController {
         this.gameView.getStage().setOnCloseRequest(event -> this.clientModel.disconnect());
     }
 
+    /**
+     *
+     * @param obs
+     * @param oldVal
+     * @param newVal
+     */
     private void handleMsg(ObservableValue<? extends Number> obs, Number oldVal, Number newVal) {
 
         switch (newVal.intValue()) {

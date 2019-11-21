@@ -145,11 +145,12 @@ public class ClientModel {
     public String getPlayerToSchupfCard() {
         return playerToSchupfCard;
     }
-    public int getMsgCode() {
-        return msgCode.get();
-    }
     public void setMsgCode(int code) {
         this.msgCode.set(code);
+    }
+    public String getNewestMessage() { return this.newestMessage.get(); }
+    public int getMsgCode() {
+        return msgCode.get();
     }
     public SimpleMessageProperty getMsgCodeProperty() {
         return msgCode;
@@ -157,7 +158,6 @@ public class ClientModel {
     public SimpleStringProperty getNewestMessageProperty() {
         return newestMessage;
     }
-    public String getNewestMessage() { return this.newestMessage.get(); }
     public void setNewestMessage(String message) {
         this.newestMessage.set(message);
     }
