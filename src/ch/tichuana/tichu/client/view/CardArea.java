@@ -66,7 +66,6 @@ public class CardArea extends VBox {
 			cardsLabels.getChildren().add(cardLabel);
 			cardsLabels.setSpacing(-140);
 		}
-		this.getChildren().add(this.cardsLabels);
 	}
 
 	//Getter

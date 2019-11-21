@@ -101,11 +101,15 @@ public class PlayArea extends GridPane {
 
 	public void updateTichuColumn(String playerName, TichuType tichuType) {
 
+		int arrayIndex = 0;
+		for (int i = 0; i < playerLbl.length; i++) {
+			if (playerLbl[i].getText().equals(playerName))
+				arrayIndex = i;
+		}
+
+		this.tichuLbl[arrayIndex].setText(tichuType.toString());
 	}
 
-	private Label getPlayerLabelByRowIndex() {
-		return null;
-	}
 	/**
 	 * searches the player and returns his rowIndex
 	 * @param playerName
