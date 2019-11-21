@@ -3,8 +3,6 @@ package ch.tichuana.tichu.client.controller;
 import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.view.CardArea;
 import ch.tichuana.tichu.client.view.GameView;
-import ch.tichuana.tichu.commons.message.MessageType;
-import ch.tichuana.tichu.commons.message.PlayMsg;
 import ch.tichuana.tichu.commons.message.SchupfenMsg;
 import ch.tichuana.tichu.commons.message.TichuMsg;
 import ch.tichuana.tichu.commons.models.Card;
@@ -15,11 +13,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
-public class PlayController {
+class PlayController {
 
     private ClientModel clientModel;
     private GameView gameView;

@@ -79,7 +79,7 @@ public class PlayArea extends GridPane {
 		this.setVgap(2);
 	}
 
-	public void updatePlayerName() {
+	void updatePlayerName() {
 		this.playerLbl[0].setText(clientModel.getPlayerName());
 	}
 
@@ -118,11 +118,15 @@ public class PlayArea extends GridPane {
 	 * @return
 	 */
 	private int getPlayerRow(String playerName) {
+		int result = 0;
+
 		for (Label label : this.playerLbl) {
-			if (label.getText().equals(playerName))
-				return GridPane.getRowIndex(label);
+			if (label.getText().equals(playerName)) {
+				result = GridPane.getRowIndex(label);
+				break;
+			}
 		}
-		return 0;
+		return result;
 	}
 
 	/**
