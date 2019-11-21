@@ -302,6 +302,16 @@ public enum Combination {
 		ArrayList<Card> newClone = (ArrayList<Card>) newMove.clone();
 		Collections.sort(oldClone);
 		Collections.sort(newClone);
+
+		// When the first move of a "Stich" is played, oldMove is empty. If evaluateCombination returns anything but
+		// a HighCard it is a valid move. If its a high card we need to check if it actually is a single card.
+		if (oldMove.isEmpty()){
+			if (evaluateCombination(newMove) == HighCard && newMove.size() == 1){
+				return true;
+			} else {
+				return false;
+			}
+		}
 		// all evaluations are based on what the previous move was
 		switch (evaluateCombination(oldClone)){
 
