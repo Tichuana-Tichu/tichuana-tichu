@@ -56,7 +56,7 @@ public class SchupfenTestClient {
             System.out.println("received: " + in.readLine()); // tichu
 
             while (true){
-                System.out.println("\ns: send, r: receive");
+                System.out.print("s: send, r: receive:   ");
                 input = scan.next();
 
                 if(input.equals("r")){
