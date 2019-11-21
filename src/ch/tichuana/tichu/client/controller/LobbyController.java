@@ -5,6 +5,7 @@ import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.view.GameView;
 import ch.tichuana.tichu.client.view.LobbyView;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
 public class LobbyController {
@@ -15,7 +16,7 @@ public class LobbyController {
 
 	/**
 	 * attaches listener to the stage-size to make the Logo responsive
-	 * sets Login-Button on Action, reads user input and connects to server, with credential from config.properties
+	 * calls login method on some events, updates LoginStatus with StringProperty
 	 * changes to PlayView and instantiates PlayController, after this client connected successfully to the server
 	 * @author Philipp
      * @param clientModel following MVC pattern
@@ -34,22 +35,9 @@ public class LobbyController {
 		this.stage.widthProperty().addListener((observable, oldValue, newValue) ->
 				this.gameView.getLobbyView().getTichuView().setFitWidth(newValue.intValue()*0.8));
 
-		this.gameView.getLobbyView().getLoginBtn().setOnAction(event -> {
-			LobbyView lv = this.gameView.getLobbyView();
+		this.gameView.getLobbyView().getPasswordField().setOnAction(this::login);
 
-			int port = Integer.parseInt(ServiceLocator.getServiceLocator().getConfiguration().getProperty("port"));
-			String ipAddress =ServiceLocator.getServiceLocator().getConfiguration().getProperty("ipAddress");
-
-			if (lv.getUserField().getText().isEmpty()) {
-				this.clientModel.setNewestMessage("user name field must not be empty");
-			} else if (lv.getPasswordField().getText().isEmpty()) {
-				this.clientModel.setNewestMessage("password field must not be empty");
-			} else {
-				String playerName = lv.getUserField().getText();
-				String password = lv.getPasswordField().getText();
-				this.clientModel.connect(ipAddress, port, playerName, password);
-			}
-		});
+		this.gameView.getLobbyView().getLoginBtn().setOnAction(this::login);
 
 		this.clientModel.getNewestMessageProperty().addListener((observable, oldValue, newValue) ->
 				Platform.runLater(() -> this.gameView.getLobbyView().setLoginStatus(newValue)));
@@ -60,5 +48,27 @@ public class LobbyController {
 				Platform.runLater(() -> this.gameView.updateView());
 			}
 		});
+	}
+
+	/**
+	 * sets Login-Button & PasswordField on Action, reads user input and connects to server,
+	 * with credential from config.properties
+	 * @param actionEvent button press or enter in passwordField
+	 */
+	private void login(ActionEvent actionEvent) {
+		LobbyView lv = this.gameView.getLobbyView();
+
+		int port = Integer.parseInt(ServiceLocator.getServiceLocator().getConfiguration().getProperty("port"));
+		String ipAddress =ServiceLocator.getServiceLocator().getConfiguration().getProperty("ipAddress");
+
+		if (lv.getUserField().getText().isEmpty()) {
+			this.clientModel.setNewestMessage("user name field must not be empty");
+		} else if (lv.getPasswordField().getText().isEmpty()) {
+			this.clientModel.setNewestMessage("password field must not be empty");
+		} else {
+			String playerName = lv.getUserField().getText();
+			String password = lv.getPasswordField().getText();
+			this.clientModel.connect(ipAddress, port, playerName, password);
+		}
 	}
 }

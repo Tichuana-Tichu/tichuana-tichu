@@ -33,12 +33,12 @@ public class LobbyView extends BorderPane {
 		this.loginStatus = new Label("");
 		this.userField = new TextField();
 		this.userField.setPromptText(translator.getString("lobbyview.username"));
-		this.userField.setFocusTraversable(false);
+		//this.userField.setFocusTraversable(false);
 		this.userField.getStyleClass().add("userPrompt");
 
 		this.passwordField = new PasswordField();
 		this.passwordField.setPromptText(translator.getString("lobbyview.password"));
-		this.passwordField.setFocusTraversable(false);
+		//this.passwordField.setFocusTraversable(false);
 		this.passwordField.getStyleClass().add("userPrompt");
 
 		this.loginBtn = new ToggleButton(translator.getString("lobbyview.login"));
