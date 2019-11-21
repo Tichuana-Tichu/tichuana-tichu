@@ -11,6 +11,8 @@ public class ClientModel {
 
     private SimpleStringProperty newestMessage = new SimpleStringProperty();
     private SimpleMessageProperty msgCode = new SimpleMessageProperty();
+    private boolean grandTichu = false;
+    private boolean smallTichu = false;
     private Socket socket;
     private volatile boolean closed;
     private String playerName;
@@ -58,25 +60,23 @@ public class ClientModel {
                     }
 
                     if (msg instanceof DealMsg) {
+                        logger.info("received 8 cards");
                         if (msg.getCards().size() == 8) {
-                            logger.info("received 8 cards");
                             this.hand = new Hand(msg.getCards());
-                            logger.info("setted hand in model");
                             this.msgCode.set(3);
-                            logger.info("handed over to controller");
                             newestMessage.set("your first eight cards, please announce grand tichu");
                         } else {
                             this.hand.getCards().addAll(msg.getCards());
                             this.msgCode.set(5);
                             newestMessage.set("your remaining six cards, please announce small tichu");
                         }
-
                     }
 
                     if (msg instanceof AnnouncedTichuMsg) {
                         this.msgCode.setMessage(msg);
                         this.msgCode.set(4);
                         newestMessage.set(msg.getPlayerName()+" announced: "+msg.getTichuType());
+                        this.msgCode.set(10);
                     }
 
                     if (msg instanceof DemandSchupfenMsg) {
@@ -96,7 +96,6 @@ public class ClientModel {
                         } else {
                             logger.info("it is your turn "+msg.getNextPlayer());
                         }
-
                     }
                 }
             };
@@ -174,5 +173,17 @@ public class ClientModel {
     }
     public Hand getHand() {
         return hand;
+    }
+    public boolean announcedGrandTichu() {
+        return grandTichu;
+    }
+    public void setGrandTichu(boolean grandTichu) {
+        this.grandTichu = grandTichu;
+    }
+    public boolean announcedSmallTichu() {
+        return smallTichu;
+    }
+    public void setSmallTichu(boolean smallTichu) {
+        this.smallTichu = smallTichu;
     }
 }

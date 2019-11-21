@@ -4,6 +4,8 @@ import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.commons.models.TichuType;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.GridPane;
@@ -101,26 +103,44 @@ public class PlayArea extends GridPane {
 
 	public void updateTichuColumn(String playerName, TichuType tichuType) {
 
+		int row = getPlayerRow(playerName);
+		int column = 3;
+
+		Label tichuLabel = (Label) getNodeByRowColumnIndex(row, column);
+		tichuLabel.setText(tichuType.toString());
+
+		/*
 		int arrayIndex = 0;
 		for (int i = 0; i < playerLbl.length; i++) {
 			if (playerLbl[i].getText().equals(playerName))
+				System.out.println(playerLbl[i].getText()+" "+playerName);
 				arrayIndex = i;
 		}
-
 		this.tichuLbl[arrayIndex].setText(tichuType.toString());
+		 */
 	}
 
-	/**
-	 * searches the player and returns his rowIndex
-	 * @param playerName
-	 * @return
-	 */
+
 	private int getPlayerRow(String playerName) {
 		for (Label label : this.playerLbl) {
 			if (label.getText().equals(playerName))
 				return GridPane.getRowIndex(label);
 		}
 		return 0;
+	}
+
+
+	private Node getNodeByRowColumnIndex (final int row, final int column) {
+		Node result = null;
+		ObservableList<Node> childrens = this.getChildren();
+
+		for (Node node : childrens) {
+			if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+				result = node;
+				break;
+			}
+		}
+		return result;
 	}
 
 	public void updatePlayedColumn() {

@@ -59,13 +59,17 @@ public class PlayController {
         this.clientModel.getMsgCodeProperty().addListener(this::handleMsg);
 
         this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setOnAction(event -> {
-            if (this.clientModel.getMsgCode() == 3)
+            if (!this.clientModel.announcedGrandTichu()) {
+                this.clientModel.setGrandTichu(true);
                 this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu));
+            }
         });
 
         this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setOnAction(event -> {
-            if (this.clientModel.getMsgCode() == 5)
+            if (!this.clientModel.announcedSmallTichu()) {
+                this.clientModel.setSmallTichu(true);
                 this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.SmallTichu));
+            }
         });
 
         this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setOnAction(event -> {
@@ -76,12 +80,12 @@ public class PlayController {
 
         this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setOnAction(event -> {
 
-            if (this.clientModel.getMsgCode() == 3 || this.clientModel.getMsgCode() == 4) {
+            //if (this.clientModel.getMsgCode() == 3 || this.clientModel.getMsgCode() == 4) {
                 this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.none));
-            } else {
+            //} else {
                 //TODO - change to the real cards from the game flow!
-                this.clientModel.sendMessage(new PlayMsg(new ArrayList<Card>()));
-            }
+               // this.clientModel.sendMessage(new PlayMsg(new ArrayList<Card>()));
+            //}
         });
 
         this.gameView.getStage().setOnCloseRequest(event -> this.clientModel.disconnect());
@@ -91,34 +95,32 @@ public class PlayController {
 
         switch (newVal.intValue()) {
 
-            case 2:
+            case 2://GameStartedMsg
                 Platform.runLater(() -> this.gameView.getPlayView().getPlayArea().updateNameColumn());
                 break;
 
-            case 3:
-                System.out.println("im controller angekommen");
+            case 3://DealMsg (first 8 cards)
                 Platform.runLater(() -> {
                     this.gameView.getPlayView().getBottomView().setCardArea(CardArea.CardAreaType.Cards, 8);
                     this.stage.setWidth(stage.getWidth()-1);
                 });
                 break;
 
-            case 4:
+            case 4://AnnouncedTichuMsg
                 String playerName = this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
                 TichuType tichuType = this.clientModel.getMsgCodeProperty().getMessage().getTichuType();
                 Platform.runLater(() ->
                     this.gameView.getPlayView().getPlayArea().updateTichuColumn(playerName, tichuType));
                 break;
 
-            case 5:
-                this.clientModel.setMsgCode(4);
+            case 5://DealMsg (remaining 6 cards)
+                //this.clientModel.setMsgCode(4);
                 Platform.runLater(() -> {
                     this.gameView.getPlayView().getBottomView().setRemainingCards(this.clientModel.getHand().getCards().size());
                     this.stage.setWidth(stage.getWidth()-1);
                 });
-                break;
 
-            case 6:
+            case 6://DemandSchupfenMsg
 
                 break;
         }
