@@ -180,7 +180,10 @@ public class Player {
 	public boolean isDone() {
 		return done;
 	}
-	public SimpleMessageProperty getAnnouncedGrandTichuProperty(){
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+    public SimpleMessageProperty getAnnouncedGrandTichuProperty(){
 		return announcedGrandTichu;
 	}
 

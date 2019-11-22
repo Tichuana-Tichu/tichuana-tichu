@@ -8,7 +8,6 @@ import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.Rank;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Logger;
 
 public class Match {
@@ -100,12 +99,26 @@ public class Match {
 	}
 
 	/**
-	 * Tells the current Stich to update with new Move. Will add points to teams if the old is won and create new Stich
+	 * Tells the current Stich to update with new move. Will add points to teams if the old is won and create new Stich
 	 * @atuhor Christian
 	 * @param messageProperty
 	 */
 	public void handleUpdate(SimpleMessageProperty messageProperty){
-		this.stich.update(messageProperty.getPlayer(),messageProperty.getMessage().getCards());
+		Player player = messageProperty.getPlayer();
+		this.stich.update(player,messageProperty.getMessage().getCards());
+
+		// if the player has no more cards, he is done for this match
+		if(player.getHand().isEmpty()){
+			player.setDone(true);
+		}
+
+		// if both players of a team are done this match is done
+		for (Team t : serverModel.getGame().getTeams()){
+			Player[] players = t.getPlayers();
+			if (players[0].isDone() && players[1].isDone()){
+				//TODO: 1 Team is done. How do I handle it? Is the rest of this method in the else clause?
+			}
+		}
 
 		if (this.stich.isWon()){
 			Team team  =serverModel.getGame().getTeamByMember(this.stich.getCurrentWinner());
@@ -119,11 +132,16 @@ public class Match {
 		}
 
 		Team[] teams = serverModel.getGame().getTeams();
-		String nextPlayerName = serverModel.getGame().getNextPlayer().getPlayerName();
+		Player nextPlayer = serverModel.getGame().getNextPlayer();
+
+		// if the Player is already done, get the next one
+		while (nextPlayer.isDone()){
+			nextPlayer = serverModel.getGame().getNextPlayer();
+		}
 		// send all members of each team an UpdateMessage
 		for (int i=0; i<teams.length; i++){
 			UpdateMsg msg = new UpdateMsg(
-					nextPlayerName,
+					nextPlayer.getPlayerName(),
 					this.stich.getLastMove(),
 					teams[(i+1)%2].getCurrentScore(),teams[i].getCurrentScore());
 			for (Player p : teams[i].getPlayers()){
