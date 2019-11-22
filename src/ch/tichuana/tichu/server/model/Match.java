@@ -105,9 +105,12 @@ public class Match {
 	 */
 	public void handleUpdate(SimpleMessageProperty messageProperty){
 		this.stich.update(messageProperty.getPlayer(),messageProperty.getMessage().getCards());
+
 		if (this.stich.isWon()){
-			// TODO: add points to team and set winner next player
-			// TODO: start new Stich
+			serverModel.getGame().getTeamByMember(this.stich.getCurrentWinner()).addPoints(
+					this.stich.getScore());
+
+			this.stich = new Stich(serverModel);
 		}
 
 		// TODO: send custom broadcast message to every player. Do we need to know who played the cards?

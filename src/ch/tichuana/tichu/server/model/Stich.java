@@ -22,7 +22,6 @@ public class Stich {
         this.serverModel = serverModel;
         passCounter = 0;
         won = false;
-
     }
 
     /**
@@ -66,5 +65,9 @@ public class Stich {
 
     public boolean addMove(){
         return true;
+    }
+
+    public Player getCurrentWinner() {
+        return currentWinner;
     }
 }
