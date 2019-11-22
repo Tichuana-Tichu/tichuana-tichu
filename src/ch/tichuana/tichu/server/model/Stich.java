@@ -41,6 +41,10 @@ public class Stich {
                 cards.addAll(move);
                 passCounter = 0;
                 currentWinner = player;
+
+                for (Card c : move){
+                    player.getHand().remove(c);
+                }
                 // replace last move with current move
                 lastMove.clear();
                 lastMove.addAll(move);

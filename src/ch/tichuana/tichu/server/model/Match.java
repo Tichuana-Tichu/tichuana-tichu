@@ -8,6 +8,7 @@ import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.Rank;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class Match {
@@ -107,8 +108,12 @@ public class Match {
 		this.stich.update(messageProperty.getPlayer(),messageProperty.getMessage().getCards());
 
 		if (this.stich.isWon()){
-			serverModel.getGame().getTeamByMember(this.stich.getCurrentWinner()).addPoints(
-					this.stich.getScore());
+			Team team  =serverModel.getGame().getTeamByMember(this.stich.getCurrentWinner());
+			team.addPoints(this.stich.getScore());
+
+			// set currentPlayer to the index of this player-1, so getNextPlayer() will return this player
+			int index = Arrays.asList(serverModel.getGame().getPlayersInOrder()).indexOf(stich.getCurrentWinner());
+			serverModel.getGame().setCurrentPlayer(index-1);
 
 			this.stich = new Stich(serverModel);
 		}
