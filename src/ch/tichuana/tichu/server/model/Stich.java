@@ -73,4 +73,8 @@ public class Stich {
     public Player getCurrentWinner() {
         return currentWinner;
     }
+
+    public ArrayList<Card> getLastMove() {
+        return lastMove;
+    }
 }
