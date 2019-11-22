@@ -66,6 +66,7 @@ public class ClientModel {
                             this.msgCode.set(3);
                             newestMessage.set("your first eight cards, please announce grand tichu");
                         } else {
+                            logger.info("got remaining 6 cards");
                             this.hand.getCards().addAll(msg.getCards());
                             this.msgCode.set(5);
                             newestMessage.set("your remaining six cards, please announce small tichu");

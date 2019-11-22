@@ -141,6 +141,7 @@ class PlayController {
                 String playerName = this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
                 TichuType tichuType = this.clientModel.getMsgCodeProperty().getMessage().getTichuType();
 
+                /*
                 if (this.clientModel.getPlayerName().equals(playerName)) {
                     Platform.runLater(() -> {
                         this.gameView.getPlayView().getPlayArea().updateTichuColumn(playerName, tichuType);
@@ -149,10 +150,12 @@ class PlayController {
                         this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(true);
                     });
                 } else {
+
+                 */
                     Platform.runLater(() -> {
                         this.gameView.getPlayView().getPlayArea().updateTichuColumn(playerName, tichuType);
                     });
-                }
+                //}
                 break;
 
             case 5://DealMsg (remaining 6 cards)
@@ -162,10 +165,14 @@ class PlayController {
                 Platform.runLater(() -> {
                     this.gameView.getPlayView().getBottomView().setRemainingCards(size);
                     this.stage.setWidth(stage.getWidth()-1);
+
+                    this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setDisable(false);
+                    this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(false);
                 });
 
+                /*
                 //automatically sends GrandTichu msg
-                if (!this.clientModel.announcedGrandTichu()) {
+                if (this.clientModel.announcedGrandTichu()) {
                     this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu));
                 } else {//or lets the user choose between SmallTichu and none
                     Platform.runLater(() -> {
@@ -173,6 +180,7 @@ class PlayController {
                         this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(false);
                     });
                 }
+                 */
                 break;
 
             case 6://DemandSchupfenMsg

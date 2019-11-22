@@ -75,6 +75,7 @@ public class Game {
 			p.getHand().addAll(hand);
 			Message msg = new DealMsg(hand);
 			p.sendMessage(msg);
+			System.out.println(msg.getPlayerName()+" "+msg.getCards());
 			rangeCounter += 8;
 		}
 	}
