@@ -41,6 +41,9 @@ public class Stich {
                 cards.addAll(move);
                 passCounter = 0;
                 currentWinner = player;
+                // replace last move with current move
+                lastMove.clear();
+                lastMove.addAll(move);
             } else {
                 //TODO: handle if move isn't valid -> shouldn't happen since client checks as well
             }
