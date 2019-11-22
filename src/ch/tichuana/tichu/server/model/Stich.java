@@ -17,6 +17,7 @@ public class Stich {
     private ServerModel serverModel;
 
     public Stich(ServerModel serverModel){
+        this.cards =  new ArrayList<Card>();
         this.lastMove = new ArrayList<Card>();
         this.serverModel = serverModel;
         passCounter = 0;
