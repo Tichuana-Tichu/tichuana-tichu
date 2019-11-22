@@ -2,6 +2,7 @@ package ch.tichuana.tichu.server.model;
 
 import ch.tichuana.tichu.commons.message.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 public class Game {
@@ -95,6 +96,20 @@ public class Game {
 		this.deck.shuffleDeck();
 		this.currentMatch = new Match(serverModel);
 		currentMatch.dealFirstEightCards();
+	}
+
+	/**
+	 * Returns the Team a given Player is in
+	 * @param player
+	 * @return
+	 */
+	public Team getTeamByMember(Player player){
+		for (Team t : teams){
+			if (Arrays.asList(t.getPlayers()).contains(player)) {
+				return t;
+			}
+		}
+		return null;
 	}
 
 
