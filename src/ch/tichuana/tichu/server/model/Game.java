@@ -49,7 +49,7 @@ public class Game {
 		Player[][] team = {teams[0].getPlayers(),teams[1].getPlayers()};
 		int counter = 0;
 		for (int x=0; x<2; x++){
-			for (int y=0; y<2; y++){ArrayList stich;
+			for (int y=0; y<2; y++){
 				this.playersInOrder[counter] = team[y][x];
 				counter++;
 			}
