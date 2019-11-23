@@ -142,45 +142,49 @@ class PlayController {
                 TichuType tichuType = this.clientModel.getMsgCodeProperty().getMessage().getTichuType();
 
                 /*
-                if (this.clientModel.getPlayerName().equals(playerName)) {
+                if (this.clientModel.announcedGrandTichu() && this.clientModel.getPlayerName().equals(playerName)) {
+                    Platform.runLater(() -> {
+                        this.gameView.getPlayView().getPlayArea().updateTichuColumn(playerName, TichuType.GrandTichu);
+                    });
+                }
+                 */
+
+                if (this.clientModel.getPlayerName().equals(playerName) ) {
                     Platform.runLater(() -> {
                         this.gameView.getPlayView().getPlayArea().updateTichuColumn(playerName, tichuType);
                         this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setDisable(true);
                         this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setDisable(true);
                         this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(true);
                     });
-                } else {
 
-                 */
+                } else {
                     Platform.runLater(() -> {
                         this.gameView.getPlayView().getPlayArea().updateTichuColumn(playerName, tichuType);
                     });
-                //}
+                }
                 break;
 
             case 5://DealMsg (remaining 6 cards)
+                int count = 1;
 
                 int size = this.clientModel.getHand().getCards().size();
                 //sets the remaining 6 cards
                 Platform.runLater(() -> {
                     this.gameView.getPlayView().getBottomView().setRemainingCards(size);
                     this.stage.setWidth(stage.getWidth()-1);
-
-                    this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setDisable(false);
-                    this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(false);
                 });
 
-                /*
                 //automatically sends GrandTichu msg
-                if (this.clientModel.announcedGrandTichu()) {
+                if (this.clientModel.announcedGrandTichu() && count == 1) {
+                    count++;
                     this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu));
+
                 } else {//or lets the user choose between SmallTichu and none
                     Platform.runLater(() -> {
                         this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setDisable(false);
                         this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(false);
                     });
                 }
-                 */
                 break;
 
             case 6://DemandSchupfenMsg

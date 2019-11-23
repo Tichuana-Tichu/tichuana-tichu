@@ -11,8 +11,8 @@ public class ClientModel {
 
     private SimpleStringProperty newestMessage = new SimpleStringProperty();
     private SimpleMessageProperty msgCode = new SimpleMessageProperty();
-    private boolean grandTichu = false;
-    private boolean smallTichu = false;
+    private volatile boolean grandTichu = false;
+    //private boolean smallTichu = false;
     private Socket socket;
     private volatile boolean closed;
     private String playerName;
@@ -66,7 +66,6 @@ public class ClientModel {
                             this.msgCode.set(3);
                             newestMessage.set("your first eight cards, please announce grand tichu");
                         } else {
-                            logger.info("got remaining 6 cards");
                             this.hand.getCards().addAll(msg.getCards());
                             this.msgCode.set(5);
                             newestMessage.set("your remaining six cards, please announce small tichu");
@@ -75,11 +74,10 @@ public class ClientModel {
 
                     if (msg instanceof AnnouncedTichuMsg) {
 
-                        if (msg.getPlayerName().equals(this.playerName))
+                        if (msg.getPlayerName().equals(this.playerName)) {
                             if (msg.getTichuType().equals(TichuType.GrandTichu))
                                 this.grandTichu = true;
-                            if (msg.getTichuType().equals(TichuType.SmallTichu))
-                                this.smallTichu = true;
+                        }
 
                         this.msgCode.setMessage(msg);
                         this.msgCode.set(4);
@@ -188,10 +186,13 @@ public class ClientModel {
     public void setGrandTichu(boolean grandTichu) {
         this.grandTichu = grandTichu;
     }
+        /*
     public boolean announcedSmallTichu() {
         return smallTichu;
     }
+
     public void setSmallTichu(boolean smallTichu) {
         this.smallTichu = smallTichu;
     }
+     */
 }
