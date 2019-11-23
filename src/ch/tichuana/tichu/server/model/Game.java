@@ -92,6 +92,10 @@ public class Game {
 		return null;
 	}
 
+	/**
+	 * starts a new Match in a game
+	 * @author Christian
+	 */
 	public void startMatch(){
 		this.deck.shuffleDeck();
 		this.currentMatch = new Match(serverModel);

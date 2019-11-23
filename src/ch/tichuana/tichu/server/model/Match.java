@@ -43,6 +43,7 @@ public class Match {
 				break;
 			}
 		}
+		logger.info("Match "+matchID+" started");
 	}
 
 	/**
@@ -103,49 +104,57 @@ public class Match {
 	 * @atuhor Christian
 	 * @param messageProperty
 	 */
-	public void handleUpdate(SimpleMessageProperty messageProperty){
+	public void handleUpdate(SimpleMessageProperty messageProperty) {
 		Player player = messageProperty.getPlayer();
-		this.stich.update(player,messageProperty.getMessage().getCards());
+		this.stich.update(player, messageProperty.getMessage().getCards());
 
 		// if the player has no more cards, he is done for this match
-		if(player.getHand().isEmpty()){
+		if (player.getHand().isEmpty()) {
 			player.setDone(true);
 		}
 
-		// if both players of a team are done this match is done
-		for (Team t : serverModel.getGame().getTeams()){
+		// check if both players of a team are done (terminal condition for match)
+		boolean teamDone = false;
+		for (Team t : serverModel.getGame().getTeams()) {
 			Player[] players = t.getPlayers();
-			if (players[0].isDone() && players[1].isDone()){
-				//TODO: 1 Team is done. How do I handle it? Is the rest of this method in the else clause?
+			if (players[0].isDone() && players[1].isDone()) {
+				teamDone = true;
 			}
 		}
 
-		if (this.stich.isWon()){
-			Team team  =serverModel.getGame().getTeamByMember(this.stich.getCurrentWinner());
-			team.addPoints(this.stich.getScore());
+		// if a team is done we start a new match
+		if (teamDone) {
+			//TODO: What to do with the played cards on the table?
+			//TODO: Deal with cards still in loosing players hand
+			serverModel.getGame().startMatch();
+		} else {
+			if (this.stich.isWon()) {
+				Team team = serverModel.getGame().getTeamByMember(this.stich.getCurrentWinner());
+				team.addPoints(this.stich.getScore());
 
-			// set currentPlayer to the index of this player-1, so getNextPlayer() will return this player
-			int index = Arrays.asList(serverModel.getGame().getPlayersInOrder()).indexOf(stich.getCurrentWinner());
-			serverModel.getGame().setCurrentPlayer(index-1);
+				// set currentPlayer to the index of this player-1, so getNextPlayer() will return this player
+				int index = Arrays.asList(serverModel.getGame().getPlayersInOrder()).indexOf(stich.getCurrentWinner());
+				serverModel.getGame().setCurrentPlayer(index - 1);
 
-			this.stich = new Stich(serverModel);
-		}
+				this.stich = new Stich(serverModel);
+			}
 
-		Team[] teams = serverModel.getGame().getTeams();
-		Player nextPlayer = serverModel.getGame().getNextPlayer();
+			Team[] teams = serverModel.getGame().getTeams();
+			Player nextPlayer = serverModel.getGame().getNextPlayer();
 
-		// if the Player is already done, get the next one
-		while (nextPlayer.isDone()){
-			nextPlayer = serverModel.getGame().getNextPlayer();
-		}
-		// send all members of each team an UpdateMessage
-		for (int i=0; i<teams.length; i++){
-			UpdateMsg msg = new UpdateMsg(
-					nextPlayer.getPlayerName(),
-					this.stich.getLastMove(),
-					teams[(i+1)%2].getCurrentScore(),teams[i].getCurrentScore());
-			for (Player p : teams[i].getPlayers()){
-				p.sendMessage(msg);
+			// if the Player is already done, get the next one
+			while (nextPlayer.isDone()) {
+				nextPlayer = serverModel.getGame().getNextPlayer();
+			}
+			// send all members of each team an UpdateMessage
+			for (int i = 0; i < teams.length; i++) {
+				UpdateMsg msg = new UpdateMsg(
+						nextPlayer.getPlayerName(),
+						this.stich.getLastMove(),
+						teams[(i + 1) % 2].getCurrentScore(), teams[i].getCurrentScore());
+				for (Player p : teams[i].getPlayers()) {
+					p.sendMessage(msg);
+				}
 			}
 		}
 	}
