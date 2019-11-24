@@ -12,7 +12,6 @@ public class ClientModel {
     private SimpleStringProperty newestMessage = new SimpleStringProperty();
     private SimpleMessageProperty msgCode = new SimpleMessageProperty();
     private volatile boolean grandTichu = false;
-    //private boolean smallTichu = false;
     private Socket socket;
     private volatile boolean closed;
     private String playerName;
@@ -67,18 +66,15 @@ public class ClientModel {
                             newestMessage.set("your first eight cards, please announce grand tichu");
                         } else {
                             this.hand.getCards().addAll(msg.getCards());
+                            if (this.grandTichu)
+                                newestMessage.set("you already announced, wait till schupfen");
+                            else
+                                newestMessage.set("your remaining six cards, please announce small tichu");
                             this.msgCode.set(5);
-                            newestMessage.set("your remaining six cards, please announce small tichu");
                         }
                     }
 
                     if (msg instanceof AnnouncedTichuMsg) {
-
-                        if (msg.getPlayerName().equals(this.playerName)) {
-                            if (msg.getTichuType().equals(TichuType.GrandTichu))
-                                this.grandTichu = true;
-                        }
-
                         this.msgCode.setMessage(msg);
                         this.msgCode.set(4);
                         newestMessage.set(msg.getPlayerName()+" announced: "+msg.getTichuType());
@@ -138,9 +134,7 @@ public class ClientModel {
      * @author Philipp
      * @param message from a specific type
      */
-    public void sendMessage(Message message) {
-        message.send(this.socket);
-    }
+    public void sendMessage(Message message) { message.send(this.socket); }
 
     //TODO - needed for broadcasts or not?
     public String receiveMessage() {
@@ -186,13 +180,4 @@ public class ClientModel {
     public void setGrandTichu(boolean grandTichu) {
         this.grandTichu = grandTichu;
     }
-        /*
-    public boolean announcedSmallTichu() {
-        return smallTichu;
-    }
-
-    public void setSmallTichu(boolean smallTichu) {
-        this.smallTichu = smallTichu;
-    }
-     */
 }

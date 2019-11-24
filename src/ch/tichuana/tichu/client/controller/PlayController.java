@@ -122,11 +122,13 @@ class PlayController {
 
             case 2://GameStartedMsg
 
+                //sets the playerNames of the teamMate and the opponents
                 Platform.runLater(() -> this.gameView.getPlayView().getPlayArea().updateNameColumn());
                 break;
 
             case 3://DealMsg (first 8 cards)
 
+                //sets 8 cards and enables Buttons to be able to announce tichu
                 Platform.runLater(() -> {
                     this.gameView.getPlayView().getBottomView().setCardArea(CardArea.CardAreaType.Cards, 8);
                     this.stage.setWidth(stage.getWidth()-1);
@@ -138,26 +140,26 @@ class PlayController {
 
             case 4://AnnouncedTichuMsg
 
+                //gets the playerName and the tichuType of the current message
                 String playerName = this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
                 TichuType tichuType = this.clientModel.getMsgCodeProperty().getMessage().getTichuType();
 
-                /*
-                if (this.clientModel.announcedGrandTichu() && this.clientModel.getPlayerName().equals(playerName)) {
-                    Platform.runLater(() -> {
-                        this.gameView.getPlayView().getPlayArea().updateTichuColumn(playerName, TichuType.GrandTichu);
-                    });
-                }
-                 */
-
+                //if i have announced Tichu myself
                 if (this.clientModel.getPlayerName().equals(playerName) ) {
+                    //if i have announced GrandTichu myself
+                    if (tichuType.equals(TichuType.GrandTichu)) {
+                        this.clientModel.setGrandTichu(true);
+                    }
+                    //update TichuColumn and disable buttons again
                     Platform.runLater(() -> {
                         this.gameView.getPlayView().getPlayArea().updateTichuColumn(playerName, tichuType);
                         this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setDisable(true);
                         this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setDisable(true);
                         this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(true);
                     });
-
+                //if someone else announced Tichu
                 } else {
+                    //just altering the TichuColumn
                     Platform.runLater(() -> {
                         this.gameView.getPlayView().getPlayArea().updateTichuColumn(playerName, tichuType);
                     });
@@ -165,7 +167,6 @@ class PlayController {
                 break;
 
             case 5://DealMsg (remaining 6 cards)
-                int count = 1;
 
                 int size = this.clientModel.getHand().getCards().size();
                 //sets the remaining 6 cards
@@ -173,17 +174,17 @@ class PlayController {
                     this.gameView.getPlayView().getBottomView().setRemainingCards(size);
                     this.stage.setWidth(stage.getWidth()-1);
                 });
-
-                //automatically sends GrandTichu msg
-                if (this.clientModel.announcedGrandTichu() && count == 1) {
-                    count++;
-                    this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu));
-
-                } else {//or lets the user choose between SmallTichu and none
+                //enables Buttons again to announce SmallTichu or none
+                if (!this.clientModel.announcedGrandTichu()) {
                     Platform.runLater(() -> {
                         this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setDisable(false);
                         this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(false);
                     });
+                //automatically sends GrandTichu msg
+                } else {
+                    try {
+                        Thread.sleep(500); } catch (InterruptedException e) { e.printStackTrace(); }
+                        this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu));
                 }
                 break;
 
