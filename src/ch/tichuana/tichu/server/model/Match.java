@@ -113,21 +113,13 @@ public class Match {
 			player.setDone(true);
 		}
 
-		// check if both players of a team are done (terminal condition for match)
-		boolean teamDone = false;
-		for (Team t : serverModel.getGame().getTeams()) {
-			Player[] players = t.getPlayers();
-			if (players[0].isDone() && players[1].isDone()) {
-				teamDone = true;
-			}
-		}
-
 		// if a team is done we start a new match
-		if (teamDone) {
+		if (isTeamDone()) {
 			//TODO: What to do with the played cards on the table?
 			evaluateFinalMove();
 			serverModel.getGame().startMatch();
 		} else {
+
 			if (this.stich.isWon()) {
 				Team team = serverModel.getGame().getTeamByMember(this.stich.getCurrentWinner());
 				team.addPoints(this.stich.getScore());
@@ -176,6 +168,22 @@ public class Match {
 				serverModel.getGame().getOpposingTeam(loosingTeam).addPoints(score);
 			}
 		}
+	}
+
+	/**
+	 * checks if there is a team of which both members are done
+	 * @return
+	 */
+	public boolean isTeamDone(){
+		// check if both players of a team are done (terminal condition for match)
+		boolean teamDone = false;
+		for (Team t : serverModel.getGame().getTeams()) {
+			Player[] players = t.getPlayers();
+			if (players[0].isDone() && players[1].isDone()) {
+				teamDone = true;
+			}
+		}
+		return teamDone;
 	}
 
 	/**
