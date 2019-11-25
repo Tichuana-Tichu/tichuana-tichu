@@ -1,7 +1,6 @@
 package ch.tichuana.tichu.server.model;
 
 import ch.tichuana.tichu.commons.message.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
@@ -18,6 +17,7 @@ public class Game {
 	private Team[] teams = new Team[2];
 	private DeckOfCards deck;
 	private Match currentMatch;
+	private final int MAX_SCORE = 1000;
 
 	/**
 	 * Game will be started from ServerModel as soon as 4 player are connected to server
@@ -111,9 +111,13 @@ public class Game {
 	 * @author Christian
 	 */
 	public void startMatch(){
-		this.deck.shuffleDeck();
-		this.currentMatch = new Match(serverModel);
-		currentMatch.dealFirstEightCards();
+		if(isGameDone()){
+			//TODO: handle if game is done
+		} else {
+			this.deck.shuffleDeck();
+			this.currentMatch = new Match(serverModel);
+			currentMatch.dealFirstEightCards();
+		}
 	}
 
 	/**
@@ -128,6 +132,20 @@ public class Game {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * checks if a a team has already reached a total of 1000 points
+	 * @author Christian
+	 * @return
+	 */
+	public boolean isGameDone(){
+		for (Team t : teams){
+			if (t.getCurrentScore() >= MAX_SCORE){
+				return true;
+			}
+		}
+		return false;
 	}
 
 
@@ -146,7 +164,6 @@ public class Game {
 		return this.gameID;
 	}
 	public int getMAX_SCORE() {
-		int MAX_SCORE = 1000;
 		return MAX_SCORE;
 	}
 	public int getCurrentScore() {

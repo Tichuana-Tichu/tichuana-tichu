@@ -16,7 +16,6 @@ public class Match {
 	private int currentScore;
 	private ServerModel serverModel;
 	static int MIN_PLAYER = 2;
-	private DeckOfCards deck;
 	private Logger logger = Logger.getLogger("");
 	private Stich stich = null;
 
