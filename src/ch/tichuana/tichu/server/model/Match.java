@@ -125,7 +125,7 @@ public class Match {
 		// if a team is done we start a new match
 		if (teamDone) {
 			//TODO: What to do with the played cards on the table?
-			//TODO: Deal with cards still in loosing players hand
+			evaluateFinalMove();
 			serverModel.getGame().startMatch();
 		} else {
 			if (this.stich.isWon()) {
@@ -155,6 +155,25 @@ public class Match {
 				for (Player p : teams[i].getPlayers()) {
 					p.sendMessage(msg);
 				}
+			}
+		}
+	}
+
+	/**
+	 * Will add the loosers hands score value to score of winning team
+	 * @author Christian
+	 */
+	public void evaluateFinalMove(){
+		Team loosingTeam = null;
+		for (Player p : serverModel.getGame().getPlayersInOrder()) {
+			// when the players hand isn't empty, his cards points will be given to the opposing team
+			if (!p.getHand().isEmpty()){
+				loosingTeam = serverModel.getGame().getTeamByMember(p);
+				int score = 0;
+				for (Card c : p.getHand()) {
+					score += c.getScoreValue();
+				}
+				serverModel.getGame().getOpposingTeam(loosingTeam).addPoints(score);
 			}
 		}
 	}

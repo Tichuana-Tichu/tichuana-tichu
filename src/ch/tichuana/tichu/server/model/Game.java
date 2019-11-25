@@ -93,6 +93,20 @@ public class Game {
 	}
 
 	/**
+	 * returns a teams opponent
+	 * @param team
+	 * @return
+	 */
+	public Team getOpposingTeam(Team team){
+		if(team == teams[0]){
+			return teams[1];
+		}
+		else {
+			return teams[0];
+		}
+	}
+
+	/**
 	 * starts a new Match in a game
 	 * @author Christian
 	 */
