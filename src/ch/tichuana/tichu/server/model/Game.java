@@ -68,6 +68,7 @@ public class Game {
 	 * @author Christian
 	 */
 	public void dealFirstEightCards(){
+		try { Thread.sleep(300); } catch (InterruptedException e) { e.printStackTrace(); }
 		ArrayList<Card> cards = new ArrayList<>(Arrays.asList(deck.getFirstHalf()));
 		int rangeCounter = 0;
 		for (Player p : playersInOrder){

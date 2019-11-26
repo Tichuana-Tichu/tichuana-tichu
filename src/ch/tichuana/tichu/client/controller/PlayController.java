@@ -65,20 +65,14 @@ class PlayController {
         event-handler of the GrandTichu Button
          */
         this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setOnAction(event -> {
-            //if (!this.clientModel.announcedSmallTichu() || !this.clientModel.announcedGrandTichu()) {
-            //    this.clientModel.setGrandTichu(true);
-                this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu));
-            //}
+            this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu));
         });
 
         /*
         event-handler of the SmallTichu Button
          */
         this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setOnAction(event -> {
-            //if (!this.clientModel.announcedSmallTichu() || !this.clientModel.announcedGrandTichu()) {
-            //    this.clientModel.setSmallTichu(true);
-                this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.SmallTichu));
-            //}
+            this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.SmallTichu));
         });
 
         /*
@@ -86,22 +80,14 @@ class PlayController {
          */
         this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setOnAction(event -> {
             //TODO - change to the real card from the game flow!
-            //if (this.clientModel.getMsgCode() == 6)
-                this.clientModel.sendMessage(new SchupfenMsg(clientModel.getPlayerName(), new Card(Rank.dog)));
+            this.clientModel.sendMessage(new SchupfenMsg(clientModel.getPlayerName(), new Card(Rank.dog)));
         });
 
         /*
         event-handler of the Play Button
          */
         this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setOnAction(event -> {
-
-            //if (this.clientModel.getMsgCode() == 3 || this.clientModel.getMsgCode() == 4) {
-            //if (!this.clientModel.announcedSmallTichu() || !this.clientModel.announcedGrandTichu())
-                this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.none));
-            //} else {
-                //TODO - change to the real cards from the game flow!
-               // this.clientModel.sendMessage(new PlayMsg(new ArrayList<Card>()));
-            //}
+            this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.none));
         });
 
         /*
