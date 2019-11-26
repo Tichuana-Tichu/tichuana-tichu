@@ -1,32 +1,33 @@
 package ch.tichuana.tichu.client.model;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import ch.tichuana.tichu.commons.models.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Hand {
 
-	private ArrayList<Card> cards;
-	private SimpleIntegerProperty cardsRemaining;
-
-
+	protected final ObservableList<Card> cards;
 
 	Hand(ArrayList<Card> cards) {
-		this.cards = cards;
+		this.cards = FXCollections.observableArrayList();
+		this.cards.addAll(cards);
+		Collections.sort(this.cards);
 	}
 
 	public void playCards() {
 		// TODO - implement Hand.playCards
 	}
-	//Getters
-	public ArrayList<Card> getCards() {
+
+	void addCards(ArrayList<Card> cards) {
+		this.cards.addAll(cards);
+		Collections.sort(this.cards);
+	}
+
+	//Getter
+	public ObservableList<Card> getCards() {
 		return this.cards;
-	}
-	public void setCards(ArrayList<Card> cards) {
-		this.cards = cards;
-	}
-	public SimpleIntegerProperty getCardsRemaining() {
-		return this.cardsRemaining;
 	}
 }

@@ -65,7 +65,7 @@ public class ClientModel {
                             this.msgCode.set(3);
                             newestMessage.set("your first eight cards, please announce grand tichu");
                         } else {
-                            this.hand.getCards().addAll(msg.getCards());
+                            this.hand.addCards(msg.getCards());
                             if (this.grandTichu)
                                 newestMessage.set("you already announced, wait till schupfen");
                             else
