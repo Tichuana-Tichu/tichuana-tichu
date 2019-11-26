@@ -74,12 +74,11 @@ CardLabel:hover {
 .thumbnails:hover {
     -fx-effect: dropshadow(three-pass-box, rgb(27, 27, 28), 5, 0, 2, 2);
 }
-/*
-CardLabel:focused {
+
+.clickedLabel {
     -fx-border-color: #B20000;
-    -fx-effect: dropshadow(one-pass-box, rgb(178, 0, 0), 10, 0, 2, 2);
 }
-*/
+
 PlayArea {
     -fx-padding: 5px;
 }

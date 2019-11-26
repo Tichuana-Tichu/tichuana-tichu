@@ -2,6 +2,7 @@ package ch.tichuana.tichu.client.controller;
 
 import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.view.CardArea;
+import ch.tichuana.tichu.client.view.CardLabel;
 import ch.tichuana.tichu.client.view.GameView;
 import ch.tichuana.tichu.commons.message.SchupfenMsg;
 import ch.tichuana.tichu.commons.message.TichuMsg;
@@ -10,8 +11,12 @@ import ch.tichuana.tichu.commons.models.Rank;
 import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+
+import java.awt.*;
+import java.util.function.Predicate;
 
 class PlayController {
 
@@ -160,6 +165,8 @@ class PlayController {
                     this.gameView.getPlayView().getBottomView().setRemainingCards(size);
                     this.stage.setWidth(stage.getWidth()-1);
                 });
+
+
                 //enables Buttons again to announce SmallTichu or none
                 if (!this.clientModel.announcedGrandTichu()) {
                     Platform.runLater(() -> {
@@ -175,9 +182,40 @@ class PlayController {
                 break;
 
             case 6://DemandSchupfenMsg
-
+                makeCardsClickable();
                 this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(false);
                 break;
+        }
+    }
+
+    /**
+     *
+     * @author Philipp
+     * inspired by https://www.w3resource.com/java-tutorial/arraylist/arraylist_removeif.php
+     */
+    private void makeCardsClickable() {
+
+        class SamplePredicate<T> implements Predicate<T> {
+            private T condition;
+            public boolean test(T cond){
+                return condition.equals(cond);
+            }
+        }
+
+        SamplePredicate<Object> filter = new SamplePredicate<>();
+        filter.condition = "clickedLabel";
+
+        HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea().getCardsLabels();
+
+        for (Node cl : cardLabels.getChildren()) {
+
+            cl.setOnMouseClicked(event -> {
+                CardLabel clickedLabel = (CardLabel) event.getSource();
+                if (clickedLabel.getStyleClass().removeIf(filter))
+                    clickedLabel.getStyleClass().remove("clickedLabel");
+                else
+                    clickedLabel.getStyleClass().add("clickedLabel");
+            });
         }
     }
 
