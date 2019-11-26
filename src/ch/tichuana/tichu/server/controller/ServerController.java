@@ -99,6 +99,7 @@ public class ServerController {
 		// clients will always send a tichu response even if they don't announce it (-> tichuType=none)
 		serverModel.increaseTichuResponses();
 		if (serverModel.getTichuResponses() == 4){
+			try { Thread.sleep(200); } catch (InterruptedException e) { e.printStackTrace(); }
 			serverModel.getGame().dealRemainingCards();
 			logger.info("Remaining six cards dealt");
 		}
