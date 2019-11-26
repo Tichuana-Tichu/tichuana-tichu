@@ -77,7 +77,7 @@ public class ClientModel {
                     if (msg instanceof AnnouncedTichuMsg) {
                         this.msgCode.setMessage(msg);
                         this.msgCode.set(4);
-                        newestMessage.set(msg.getPlayerName()+" announced: "+msg.getTichuType());
+                        this.newestMessage.set(msg.getPlayerName()+" announced: "+msg.getTichuType());
                         this.msgCode.set(10);
                     }
 
