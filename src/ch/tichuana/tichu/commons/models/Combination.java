@@ -303,7 +303,7 @@ public enum Combination {
 		Collections.sort(oldClone);
 		Collections.sort(newClone);
 
-		// When the first move of a "Stich" is played, oldMove is empty. If evaluateCombination returns anything but
+		// When the first move of a trick is played, oldMove is empty. If evaluateCombination returns anything but
 		// a HighCard it is a valid move. If its a high card we need to check if it actually is a single card.
 		if (oldMove.isEmpty()){
 			if (evaluateCombination(newMove) == HighCard && newMove.size() == 1){

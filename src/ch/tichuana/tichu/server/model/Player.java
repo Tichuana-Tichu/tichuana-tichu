@@ -25,6 +25,7 @@ public class Player {
 	private boolean done;
 	private ArrayList currentMove;
 	private ArrayList<Card> hand;
+	private ArrayList<Trick> tricksWon;
 
 	/**
 	 * New Object when clients connects, has its own socket for communication
@@ -38,6 +39,7 @@ public class Player {
 		this.socket = socket;
 		this.closed = false;
 		this.hand = new ArrayList<Card>();
+		this.tricksWon = new ArrayList<Trick>();
 		this.done = false;
 
 		Runnable r = () -> {
@@ -149,6 +151,15 @@ public class Player {
 		return true;
 	}
 
+	/**
+	 * adds a won trick to this player
+	 * @author Christian
+	 * @param trick
+	 */
+	public void addTrick(Trick trick){
+		this.tricksWon.add(trick);
+	}
+
 	//Getter & Setter
 	public String getPlayerName() {
 		return this.playerName;
@@ -192,5 +203,9 @@ public class Player {
 	}
 	public SimpleMessageProperty getSchupfenProperty(){
 		return schupfenProperty;
+	}
+
+	public ArrayList<Trick> getTricksWon() {
+		return tricksWon;
 	}
 }
