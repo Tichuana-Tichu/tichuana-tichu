@@ -61,9 +61,20 @@ class PlayController {
                 Platform.runLater(() -> this.gameView.getPlayView().getBottomView().setConsole(newVal)));
 
         /*
-        handling of all messageTypes via handleMsg
+        handling of all messageTypes via specific handleMsg method
          */
-        this.clientModel.getMsgCodeProperty().addListener(this::handleMsg);
+        this.clientModel.getMsgCodeProperty().addListener((obs, oldVal, newVal) -> {
+
+            switch (newVal.intValue()) {
+                case 2: handleGameStartedMsg(); break;
+                case 3: handleFirstDealMsg(); break;
+                case 4: handleAnnouncedTichuMsg(); break;
+                case 5: handleSecondDealMsg(); break;
+                case 6: handleDemandSchupfenMsg(); break;
+                case 7: handleSchupfenMsg(); break;
+                case 8: handleUpdateMsg(); break;
+            }
+        });
 
         /*
         event-handler of the GrandTichu Button
@@ -104,102 +115,120 @@ class PlayController {
 
     /**
      *
-     * @param obs
-     * @param oldVal
-     * @param newVal
+     * @author Philipp
      */
-    private void handleMsg(ObservableValue<? extends Number> obs, Number oldVal, Number newVal) {
+    private void handleUpdateMsg() {
+    }
 
-        switch (newVal.intValue()) {
+    /**
+     *
+     * @author Philipp
+     */
+    private void handleSchupfenMsg() {
+        receivedCards.add(this.clientModel.getMsgCodeProperty().getMessage().getCard());
 
-            case 2://GameStartedMsg
+        if (receivedCards.size() == 3)
+            clientModel.getHand().addCards(receivedCards);
+    }
 
-                //sets the playerNames of the teamMate and the opponents
-                Platform.runLater(() -> this.gameView.getPlayView().getPlayArea().updateNameColumn());
-                break;
+    /**
+     *
+     * @author Philipp
+     */
+    private void handleDemandSchupfenMsg() {
+        String playerName = this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
+        if (this.clientModel.getPlayerName().equals(playerName))
+            this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(true);
+        this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(false);
+    }
 
-            case 3://DealMsg (first 8 cards)
-
-                this.clientModel.getHand().getCards().addListener(this::activateHand);
-
-                //sets 8 cards and enables Buttons to be able to announce tichu
-                Platform.runLater(() -> {
-                    this.gameView.getPlayView().getBottomView().setCardArea(CardArea.CardAreaType.Cards, 8);
-                    this.stage.setWidth(stage.getWidth()-1);
-                    this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setText("Passen");
-                    this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setDisable(false);
-                    this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(false);
-                });
-                break;
-
-            case 4://AnnouncedTichuMsg
-
-                //gets the playerName and the tichuType of the current message
-                String playerName = this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
-                TichuType tichuType = this.clientModel.getMsgCodeProperty().getMessage().getTichuType();
-
-                //if i have announced Tichu myself
-                if (this.clientModel.getPlayerName().equals(playerName) ) {
-                    //if i have announced GrandTichu myself
-                    if (tichuType.equals(TichuType.GrandTichu)) {
-                        this.clientModel.setGrandTichu(true);
-                    }
-                    //update TichuColumn and disable buttons again
-                    Platform.runLater(() -> {
-                        this.gameView.getPlayView().getPlayArea().updateTichuColumn(playerName, tichuType);
-                        this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setDisable(true);
-                        this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setDisable(true);
-                        this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(true);
-                    });
-                //if someone else announced Tichu
-                } else {
-                    //just altering the TichuColumn
-                    Platform.runLater(() -> {
-                        this.gameView.getPlayView().getPlayArea().updateTichuColumn(playerName, tichuType);
-                    });
-                }
-                break;
-
-            case 5://DealMsg (remaining 6 cards)
-
-                int size = this.clientModel.getHand().getCards().size();
-                //sets the remaining 6 cards
-                Platform.runLater(() -> {
-                    //this.gameView.getPlayView().getBottomView().setRemainingCards(size);
-                    this.stage.setWidth(stage.getWidth()-1);
-                });
-
-                //enables Buttons again to announce SmallTichu or none
-                if (!this.clientModel.announcedGrandTichu()) {
-                    Platform.runLater(() -> {
-                        this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setDisable(false);
-                        this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(false);
-                    });
-                //automatically sends GrandTichu msg
-                } else {
-                    try {
-                        Thread.sleep(500); } catch (InterruptedException e) { e.printStackTrace(); }
-                        this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu));
-                }
-                break;
-
-            case 6://DemandSchupfenMsg
-                this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(false);
-                break;
-
-            case 7://SchupfenMsg
-                receivedCards.add(this.clientModel.getMsgCodeProperty().getMessage().getCard());
-
-                if (receivedCards.size() == 3)
-                    clientModel.getHand().addCards(receivedCards);
-                break;
-
-            case 8://UpdateMsg
-
-                break;
+    /**
+     *
+     * @author Philipp
+     */
+    private void handleSecondDealMsg() {
+        /*
+        int size = this.clientModel.getHand().getCards().size();
+        //sets the remaining 6 cards
+        Platform.runLater(() -> {
+            this.stage.setWidth(stage.getWidth()-1);
+        });
+         */
+        //enables Buttons again to announce SmallTichu or none
+        if (!this.clientModel.announcedGrandTichu()) {
+            Platform.runLater(() -> {
+                this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setDisable(false);
+                this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(false);
+            });
+            //automatically sends GrandTichu msg
+        } else {
+            try {
+                Thread.sleep(500); } catch (InterruptedException e) { e.printStackTrace(); }
+            this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu));
         }
     }
 
+    /**
+     *
+     * @author Philipp
+     */
+    private void handleAnnouncedTichuMsg() {
+        //gets the playerName and the tichuType of the current message
+        String playerName = this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
+        TichuType tichuType = this.clientModel.getMsgCodeProperty().getMessage().getTichuType();
+
+        //if i have announced Tichu myself
+        if (this.clientModel.getPlayerName().equals(playerName) ) {
+            //if i have announced GrandTichu myself
+            if (tichuType.equals(TichuType.GrandTichu)) {
+                this.clientModel.setGrandTichu(true);
+            }
+            //update TichuColumn and disable buttons again
+            Platform.runLater(() -> {
+                this.gameView.getPlayView().getPlayArea().updateTichuColumn(playerName, tichuType);
+                this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setDisable(true);
+                this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setDisable(true);
+                this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(true);
+            });
+            //if someone else announced Tichu
+        } else {
+            //just altering the TichuColumn
+            Platform.runLater(() -> {
+                this.gameView.getPlayView().getPlayArea().updateTichuColumn(playerName, tichuType);
+            });
+        }
+    }
+
+    /**
+     *
+     * @author Philipp
+     */
+    private void handleFirstDealMsg() {
+        this.clientModel.getHand().getCards().addListener(this::activateHand);
+
+        //sets 8 cards and enables Buttons to be able to announce tichu
+        Platform.runLater(() -> {
+            this.gameView.getPlayView().getBottomView().setCardArea(CardArea.CardAreaType.Cards, 8);
+            this.stage.setWidth(stage.getWidth()-1);
+            this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setText("Passen");
+            this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setDisable(false);
+            this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(false);
+        });
+    }
+
+    /**
+     * sets the playerNames of the teamMate and the opponents
+     * @author Philipp
+     */
+    private void handleGameStartedMsg() {
+        Platform.runLater(() -> this.gameView.getPlayView().getPlayArea().updateNameColumn());
+    }
+
+    /**
+     *
+     * @author Philipp
+     * @param observable
+     */
     private void activateHand(Observable observable) {
         Platform.runLater(() -> {
             this.gameView.getPlayView().getBottomView().getCardArea().updateCardLabels();
@@ -232,6 +261,7 @@ class PlayController {
 
     /**
      *
+     * @author Philipp
      * @return
      */
     private ArrayList<Card> getSelectedCards() {
@@ -247,8 +277,5 @@ class PlayController {
         }
         return selectedCards;
     }
-
-    private void checkValidCombination() {
-        // TODO - implement ClientController.checkValidCombination
-    }
 }
+

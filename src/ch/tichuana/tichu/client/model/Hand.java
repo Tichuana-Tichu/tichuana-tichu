@@ -10,19 +10,27 @@ public class Hand {
 
 	protected final ObservableList<Card> cards;
 
+    /**
+     * @author Philipp
+     * @param cards
+     */
 	Hand(ArrayList<Card> cards) {
 		this.cards = FXCollections.observableArrayList();
 		this.cards.addAll(cards);
 	}
 
-	public void playCards() {
-		// TODO - implement Hand.playCards
-	}
-
+    /**
+     * @author Philipp
+     * @param cards
+     */
 	public void addCards(ArrayList<Card> cards) {
 		this.cards.addAll(cards);
 	}
 
+    /**
+     * @author Philipp
+     * @param c
+     */
 	public void remove(Card c) {
 		this.cards.remove(c);
 	}
