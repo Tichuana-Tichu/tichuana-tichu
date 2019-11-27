@@ -10,23 +10,37 @@ public class CardArea extends VBox {
 
 	private HBox cardsLabels;
 
+	public enum CardAreaType {Cards, Thumbnails;}
+
     /**
      * instantiates a new Card for each CardLabel
      * instantiates HBox with all CardLabels in it
 	 * @author Philipp
      */
-	CardArea() {
-
+	CardArea(CardAreaType cat, int cardCounter) {
 		this.cardsLabels = new HBox();
 
-		for (int i = 0; i < 14; i++) {
-			CardLabel cardLabel = new CardLabel();
-			//TODO - exchange after testing with real cards from GameStartedMsg
-			cardLabel.setCard(new Card(Suit.Pagodas, Rank.Ace));
-			cardsLabels.getChildren().add(cardLabel);
-			cardsLabels.setSpacing(-140);
+		if (cat.equals(CardAreaType.Cards)) {
+
+			for (int i = 0; i < cardCounter; i++) {
+				CardLabel cardLabel = new CardLabel();
+				//TODO - exchange after testing with real cards from GameStartedMsg
+				cardLabel.setCard(new Card(Suit.Pagodas, Rank.Ace));
+				cardsLabels.getChildren().add(cardLabel);
+				cardsLabels.setSpacing(-140);
+			}
+			this.getChildren().add(this.cardsLabels);
+		} else {
+
+			for (int i = 0; i < cardCounter; i++) {
+				CardLabel cardLabel = new CardLabel();
+				//TODO - exchange after testing with real cards from GameStartedMsg
+				cardLabel.setThumbnail(new Card(Rank.mahjong));
+				cardsLabels.getChildren().add(cardLabel);
+				cardsLabels.setSpacing(-10);
+			}
+			this.getChildren().add(this.cardsLabels);
 		}
-		this.getChildren().add(this.cardsLabels);
 	}
 
 	//Getter

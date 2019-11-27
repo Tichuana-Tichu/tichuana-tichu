@@ -636,6 +636,4 @@ class CombinationTest {
 
         assertFalse(Combination.isStraightFlushBomb(hand));
     }
-
-
 }
