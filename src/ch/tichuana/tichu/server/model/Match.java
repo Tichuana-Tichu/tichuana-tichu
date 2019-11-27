@@ -32,7 +32,7 @@ public class Match {
 	public void start(){
 		this.stich = new Stich(this.serverModel);
 		for (Player p : serverModel.getGame().getPlayersInOrder()){
-			if (p.getHand().contains(new Card(Rank.majhong))){
+			if (p.getHand().contains(new Card(Rank.mahjong))){
 				// the player with the mahjong card will begin the match. So we have to set currentPlayer in Game
 				// to the players index-1. this way getNextPlayer will return him when called.
 				serverModel.getGame().setCurrentPlayer(
@@ -50,6 +50,7 @@ public class Match {
 	 * @author Christian
 	 */
 	public void dealFirstEightCards(){
+		try{Thread.sleep(300);}catch (Exception e){e.printStackTrace();};
 		ArrayList<Card> cards = new ArrayList<>(Arrays.asList(serverModel.getGame().getDeck().getFirstHalf()));
 		int rangeCounter = 0;
 		for (Player p : serverModel.getGame().getPlayersInOrder()){
@@ -67,6 +68,7 @@ public class Match {
 	 * @author Christian
 	 */
 	public void dealRemainingCards(){
+		try{Thread.sleep(300);}catch (Exception e){e.printStackTrace();};
 		ArrayList<Card> cards = new ArrayList<>(Arrays.asList(serverModel.getGame().getDeck().getSecondHalf()));
 		int rangeCounter = 0;
 		for (Player p : serverModel.getGame().getPlayersInOrder()){
@@ -155,7 +157,7 @@ public class Match {
 	 * @author Christian
 	 */
 	public void evaluateFinalMove(){
-		Team loosingTeam = null;
+		Team loosingTeam;
 		for (Player p : serverModel.getGame().getPlayersInOrder()) {
 			// when the players hand isn't empty, his cards points will be given to the opposing team
 			if (!p.getHand().isEmpty()){

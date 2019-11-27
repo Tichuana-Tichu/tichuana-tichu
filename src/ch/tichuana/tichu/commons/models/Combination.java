@@ -58,7 +58,7 @@ public enum Combination {
 	 * @param cards
 	 * @return
 	 */
-	private static boolean containsMahjong(ArrayList<Card> cards) {return cards.contains(new Card(Rank.majhong));}
+	private static boolean containsMahjong(ArrayList<Card> cards) {return cards.contains(new Card(Rank.mahjong));}
 
 	/**
 	 * check if cards contain dragon

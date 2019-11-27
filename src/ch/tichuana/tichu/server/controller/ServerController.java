@@ -90,14 +90,14 @@ public class ServerController {
 			AnnouncedTichuMsg msg = new AnnouncedTichuMsg(
 					property.getMessage().getPlayerName(), property.getMessage().getTichuType());
 			this.serverModel.broadcast(msg);
-		}
-		// clients will always send a tichu response even if they don't announce it (-> tichuType=none)
-		serverModel.increaseTichuResponses();
-		if (serverModel.getTichuResponses() == 4){
-			serverModel.getGame().getCurrentMatch().dealRemainingCards();
-		}
-		else if (serverModel.getTichuResponses() == 8) {
-			demandSchupfen();
+			// clients will always send a tichu response even if they don't announce it (-> tichuType=none)
+			serverModel.increaseTichuResponses();
+			if (serverModel.getTichuResponses() == 4) {
+				serverModel.getGame().getCurrentMatch().dealRemainingCards();
+			} else if (serverModel.getTichuResponses() == 8) {
+				demandSchupfen();
+			}
+			property.setValue(false);
 		}
 	}
 

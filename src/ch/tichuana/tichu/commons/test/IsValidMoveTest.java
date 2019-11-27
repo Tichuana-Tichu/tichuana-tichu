@@ -22,7 +22,7 @@ class IsValidMoveTest {
     public static void makeCards(){
         // create all cards
         cards.add(new Card(Rank.dog));
-        cards.add(new Card(Rank.majhong));
+        cards.add(new Card(Rank.mahjong));
         for (int i = 2; i<15; i++){
             cards.add(new Card(Suit.Pagodas, rank[i]));
         }

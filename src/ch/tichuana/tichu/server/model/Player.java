@@ -88,7 +88,7 @@ public class Player {
 				}
 
 				else if (msg instanceof SchupfenMsg) {
-					logger.info("Player: "+this.playerName+" schupfed card to"+msg.getPlayerName());
+					logger.info("Player: "+this.playerName+" pushed card to "+msg.getPlayerName());
 					this.schupfenProperty.setMessage(msg);
 					this.schupfenProperty.setValue(true);
 				}
