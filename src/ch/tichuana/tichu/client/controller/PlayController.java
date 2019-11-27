@@ -71,8 +71,11 @@ class PlayController {
                 case 4: handleAnnouncedTichuMsg(); break;
                 case 5: handleSecondDealMsg(); break;
                 case 6: handleDemandSchupfenMsg(); break;
-                case 7: handleSchupfenMsg(); break;
-                case 8: handleUpdateMsg(); break;
+                case 7: Platform.runLater(() ->
+                        this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(true));
+                        break;
+                case 8: handleSchupfenMsg(); break;
+                case 9: handleUpdateMsg(); break;
             }
         });
 
@@ -136,10 +139,8 @@ class PlayController {
      * @author Philipp
      */
     private void handleDemandSchupfenMsg() {
-        String playerName = this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
-        if (this.clientModel.getPlayerName().equals(playerName))
-            this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(true);
-        this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(false);
+        Platform.runLater(() ->
+                this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(false));
     }
 
     /**
@@ -147,13 +148,6 @@ class PlayController {
      * @author Philipp
      */
     private void handleSecondDealMsg() {
-        /*
-        int size = this.clientModel.getHand().getCards().size();
-        //sets the remaining 6 cards
-        Platform.runLater(() -> {
-            this.stage.setWidth(stage.getWidth()-1);
-        });
-         */
         //enables Buttons again to announce SmallTichu or none
         if (!this.clientModel.announcedGrandTichu()) {
             Platform.runLater(() -> {

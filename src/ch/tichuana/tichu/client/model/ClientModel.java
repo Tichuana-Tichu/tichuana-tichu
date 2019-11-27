@@ -81,24 +81,27 @@ public class ClientModel {
                     }
 
                     if (msg instanceof DemandSchupfenMsg) {
-                        this.msgCode.set(6);
                         this.msgCode.setMessage(msg);
                         if (!this.playerName.equals(msg.getPlayerName())) {
+                            this.msgCode.set(6);
                             this.playerToSchupfCard = msg.getPlayerName();
                             this.newestMessage.set("please choose card for player: "+msg.getPlayerName());
-                        } else
+                        } else {
                             sendMessage(new ReceivedMsg(true));
+                            this.msgCode.set(7);
+                            this.newestMessage.set("other players are now schupfing for you");
+                        }
                     }
 
                     if (msg instanceof SchupfenMsg) {
                         this.msgCode.setMessage(msg);
-                        this.msgCode.set(7);
-                        this.newestMessage.set("your card from the other players");
+                        this.msgCode.set(8);
+                        this.newestMessage.set("received card from: "+msg.getPlayerName());
                     }
 
                     if (msg instanceof UpdateMsg) {
                         /*
-                        this.msgCode.set(8);
+                        this.msgCode.set(9);
                         if (!this.playerName.equals(msg.getNextPlayer())) {
                             this.nextPlayerName = msg.getNextPlayer();
                             sendMessage(new ReceivedMsg(true));
