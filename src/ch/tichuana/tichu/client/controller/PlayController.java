@@ -166,7 +166,6 @@ class PlayController {
                     this.stage.setWidth(stage.getWidth()-1);
                 });
 
-
                 //enables Buttons again to announce SmallTichu or none
                 if (!this.clientModel.announcedGrandTichu()) {
                     Platform.runLater(() -> {
@@ -184,6 +183,14 @@ class PlayController {
             case 6://DemandSchupfenMsg
                 makeCardsClickable();
                 this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(false);
+                break;
+
+            case 7://SchupfenMsg
+
+                break;
+
+            case 8://UpdateMsg
+
                 break;
         }
     }

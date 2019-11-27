@@ -90,8 +90,12 @@ public class ClientModel {
                             sendMessage(new ReceivedMsg(true));
                     }
 
-                    if (msg instanceof UpdateMsg) {
+                    if (msg instanceof SchupfenMsg) {
                         this.msgCode.set(7);
+                    }
+
+                    if (msg instanceof UpdateMsg) {
+                        this.msgCode.set(8);
                         if (!this.playerName.equals(msg.getNextPlayer())) {
                             this.nextPlayerName = msg.getNextPlayer();
                             sendMessage(new ReceivedMsg(true));

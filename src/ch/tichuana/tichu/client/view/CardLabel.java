@@ -13,6 +13,7 @@ import javafx.stage.Screen;
 public class CardLabel extends Label {
 
 	private Configuration config;
+	private boolean isSelected;
 
 	/**
 	 *
@@ -20,7 +21,7 @@ public class CardLabel extends Label {
 	 */
 	CardLabel() {
 		super();
-		//this.getStyleClass().add("card");
+		this.isSelected = false;
 		this.config = ServiceLocator.getServiceLocator().getConfiguration();
 	}
 
@@ -85,5 +86,13 @@ public class CardLabel extends Label {
 		fileName += card.getRank().toString().toLowerCase();
 		fileName += ".png";
 		return fileName;
+	}
+
+	//Getter & Setter
+	public boolean isSelected() {
+		return isSelected;
+	}
+	public void setSelected(boolean selected) {
+		isSelected = selected;
 	}
 }

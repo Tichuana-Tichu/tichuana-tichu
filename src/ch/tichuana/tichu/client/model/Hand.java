@@ -14,7 +14,6 @@ public class Hand {
 	Hand(ArrayList<Card> cards) {
 		this.cards = FXCollections.observableArrayList();
 		this.cards.addAll(cards);
-		Collections.sort(this.cards);
 	}
 
 	public void playCards() {
@@ -23,7 +22,6 @@ public class Hand {
 
 	void addCards(ArrayList<Card> cards) {
 		this.cards.addAll(cards);
-		Collections.sort(this.cards);
 	}
 
 	//Getter
