@@ -7,22 +7,21 @@ import ch.tichuana.tichu.client.view.GameView;
 import ch.tichuana.tichu.commons.message.SchupfenMsg;
 import ch.tichuana.tichu.commons.message.TichuMsg;
 import ch.tichuana.tichu.commons.models.Card;
-import ch.tichuana.tichu.commons.models.Rank;
 import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.application.Platform;
+import javafx.beans.Observable;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
-import java.awt.*;
-import java.util.function.Predicate;
+import java.util.ArrayList;
 
 class PlayController {
 
     private ClientModel clientModel;
     private GameView gameView;
     private Stage stage;
+    private ArrayList<Card> receivedCards = new ArrayList<>();
 
     /**
      * attaches listener to the stage-width to make the CardArea responsive
@@ -84,8 +83,10 @@ class PlayController {
         event-handler of the Schupfen Button
          */
         this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setOnAction(event -> {
-            //TODO - change to the real card from the game flow!
-            this.clientModel.sendMessage(new SchupfenMsg(clientModel.getPlayerName(), new Card(Rank.dog)));
+            ArrayList<Card> cards = getSelectedCards();
+            String player = this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
+            this.clientModel.sendMessage(new SchupfenMsg(player, cards.get(0)));
+            this.clientModel.getHand().remove(cards.get(0));
         });
 
         /*
@@ -118,6 +119,8 @@ class PlayController {
                 break;
 
             case 3://DealMsg (first 8 cards)
+
+                this.clientModel.getHand().getCards().addListener(this::activateHand);
 
                 //sets 8 cards and enables Buttons to be able to announce tichu
                 Platform.runLater(() -> {
@@ -162,7 +165,7 @@ class PlayController {
                 int size = this.clientModel.getHand().getCards().size();
                 //sets the remaining 6 cards
                 Platform.runLater(() -> {
-                    this.gameView.getPlayView().getBottomView().setRemainingCards(size);
+                    //this.gameView.getPlayView().getBottomView().setRemainingCards(size);
                     this.stage.setWidth(stage.getWidth()-1);
                 });
 
@@ -181,18 +184,28 @@ class PlayController {
                 break;
 
             case 6://DemandSchupfenMsg
-                makeCardsClickable();
                 this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(false);
                 break;
 
             case 7://SchupfenMsg
+                receivedCards.add(this.clientModel.getMsgCodeProperty().getMessage().getCard());
 
+                if (receivedCards.size() == 3)
+                    clientModel.getHand().addCards(receivedCards);
                 break;
 
             case 8://UpdateMsg
 
                 break;
         }
+    }
+
+    private void activateHand(Observable observable) {
+        Platform.runLater(() -> {
+            this.gameView.getPlayView().getBottomView().getCardArea().updateCardLabels();
+            this.stage.setWidth(this.stage.getWidth()-1);
+            makeCardsClickable();
+        });
     }
 
     /**
@@ -209,10 +222,30 @@ class PlayController {
                 CardLabel clickedLabel = (CardLabel) event.getSource();
                 if (clickedLabel.getStyleClass().removeIf(s -> s.equals("clickedLabel")))
                     clickedLabel.getStyleClass().remove("clickedLabel");
+
                 else
                     clickedLabel.getStyleClass().add("clickedLabel");
+                clickedLabel.setSelected(!clickedLabel.isSelected());
             });
         }
+    }
+
+    /**
+     *
+     * @return
+     */
+    private ArrayList<Card> getSelectedCards() {
+        HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea().getCardsLabels();
+        ArrayList<Card> selectedCards = new ArrayList<Card>();
+
+        for (Node cl : cardLabels.getChildren()) {
+            CardLabel label = (CardLabel) cl;
+
+            if (label.isSelected()) {
+                selectedCards.add(label.getCard());
+            }
+        }
+        return selectedCards;
     }
 
     private void checkValidCombination() {

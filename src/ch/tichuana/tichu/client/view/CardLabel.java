@@ -13,6 +13,7 @@ import javafx.stage.Screen;
 public class CardLabel extends Label {
 
 	private Configuration config;
+	private Card card;
 	private boolean isSelected;
 
 	/**
@@ -34,6 +35,7 @@ public class CardLabel extends Label {
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 
 		if (card != null) {
+			this.card = card;
 			String fileName = cardToFileName(card);
 			Image image = new Image(config.getProperty("cards")+fileName);
 			ImageView imv = new ImageView(image);
@@ -94,5 +96,8 @@ public class CardLabel extends Label {
 	}
 	public void setSelected(boolean selected) {
 		isSelected = selected;
+	}
+	public Card getCard() {
+		return this.card;
 	}
 }

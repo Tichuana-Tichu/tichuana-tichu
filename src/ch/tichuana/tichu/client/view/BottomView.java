@@ -45,7 +45,4 @@ public class BottomView extends BorderPane {
 		this.cardArea = new CardArea(clientModel, cardAreaType, i);
 		this.cardsNConsole.getChildren().set(0, this.cardArea);
 	}
-	public void setRemainingCards(int i) {
-		this.cardArea.appendCards(i);
-	}
 }

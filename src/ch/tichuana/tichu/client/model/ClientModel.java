@@ -1,7 +1,6 @@
 package ch.tichuana.tichu.client.model;
 
 import ch.tichuana.tichu.commons.message.*;
-import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.beans.property.SimpleStringProperty;
 import java.io.IOException;
 import java.net.Socket;
@@ -83,6 +82,7 @@ public class ClientModel {
 
                     if (msg instanceof DemandSchupfenMsg) {
                         this.msgCode.set(6);
+                        this.msgCode.setMessage(msg);
                         if (!this.playerName.equals(msg.getPlayerName())) {
                             this.playerToSchupfCard = msg.getPlayerName();
                             this.newestMessage.set("please choose card for player: "+msg.getPlayerName());
@@ -91,10 +91,13 @@ public class ClientModel {
                     }
 
                     if (msg instanceof SchupfenMsg) {
+                        this.msgCode.setMessage(msg);
                         this.msgCode.set(7);
+                        this.newestMessage.set("your card from the other players");
                     }
 
                     if (msg instanceof UpdateMsg) {
+                        /*
                         this.msgCode.set(8);
                         if (!this.playerName.equals(msg.getNextPlayer())) {
                             this.nextPlayerName = msg.getNextPlayer();
@@ -102,6 +105,8 @@ public class ClientModel {
                         } else {
                             logger.info("it is your turn "+msg.getNextPlayer());
                         }
+
+                         */
                     }
                 }
             };

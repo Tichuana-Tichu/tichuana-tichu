@@ -5,7 +5,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Hand {
 
@@ -20,8 +19,12 @@ public class Hand {
 		// TODO - implement Hand.playCards
 	}
 
-	void addCards(ArrayList<Card> cards) {
+	public void addCards(ArrayList<Card> cards) {
 		this.cards.addAll(cards);
+	}
+
+	public void remove(Card c) {
+		this.cards.remove(c);
 	}
 
 	//Getter
