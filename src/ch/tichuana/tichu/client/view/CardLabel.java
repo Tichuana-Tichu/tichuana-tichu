@@ -13,6 +13,8 @@ import javafx.stage.Screen;
 public class CardLabel extends Label {
 
 	private Configuration config;
+	private Card card;
+	private boolean isSelected;
 
 	/**
 	 *
@@ -20,7 +22,7 @@ public class CardLabel extends Label {
 	 */
 	CardLabel() {
 		super();
-		//this.getStyleClass().add("card");
+		this.isSelected = false;
 		this.config = ServiceLocator.getServiceLocator().getConfiguration();
 	}
 
@@ -33,6 +35,7 @@ public class CardLabel extends Label {
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 
 		if (card != null) {
+			this.card = card;
 			String fileName = cardToFileName(card);
 			Image image = new Image(config.getProperty("cards")+fileName);
 			ImageView imv = new ImageView(image);
@@ -42,6 +45,16 @@ public class CardLabel extends Label {
 		} else {
 			this.setGraphic(null);
 		}
+	}
+
+	void setBlankCard() {
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+
+		Image image = new Image(config.getProperty("cards")+"Blank.png");
+		ImageView imv = new ImageView(image);
+		imv.setFitWidth(primaryScreenBounds.getWidth()/15);
+		imv.setPreserveRatio(true);
+		this.setGraphic(imv);
 	}
 
 	void setThumbnail(Card card) {
@@ -62,11 +75,11 @@ public class CardLabel extends Label {
 
 	/**
 	 *
-	 * @author Christian
+	 * @author Christian (revised by Philipp)
 	 * @param card
 	 * @return
 	 */
-	private String cardToFileName(Card card){
+	private String cardToFileName(Card card) {
 		String fileName = "";
 		Suit suit = card.getSuit();
 		if (suit != null) { //for special cards
@@ -75,5 +88,16 @@ public class CardLabel extends Label {
 		fileName += card.getRank().toString().toLowerCase();
 		fileName += ".png";
 		return fileName;
+	}
+
+	//Getter & Setter
+	public boolean isSelected() {
+		return isSelected;
+	}
+	public void setSelected(boolean selected) {
+		isSelected = selected;
+	}
+	public Card getCard() {
+		return this.card;
 	}
 }

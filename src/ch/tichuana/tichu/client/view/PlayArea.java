@@ -1,7 +1,11 @@
 package ch.tichuana.tichu.client.view;
 
+import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
+import ch.tichuana.tichu.commons.models.TichuType;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.GridPane;
@@ -9,14 +13,21 @@ import javafx.scene.layout.Priority;
 
 public class PlayArea extends GridPane {
 
+	private Label[] playerLbl;
+	private Label[] tichuLbl;
+	private Label[] headings;
+	private ClientModel clientModel;
+
 	/**
 	 * creates a table-like, resizeable grid for information about the game-flow
 	 * @author Philipp
+	 * @param clientModel
 	 */
-	PlayArea() {
+	PlayArea(ClientModel clientModel) {
 
+		this.clientModel = clientModel;
 		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
-		Label[] headings = new Label[7];
+		this.headings = new Label[7];
 		headings[0] = new Label(translator.getString("name"));
 		headings[1] = new Label(translator.getString("team"));
 		headings[2] = new Label(translator.getString("hand"));
@@ -32,11 +43,19 @@ public class PlayArea extends GridPane {
 
 		this.add(new Separator(), 0, 1, 7, 1);
 
-		Label[] playerLbl = new Label[4];
-		playerLbl[0] = new Label("Philipp");
-		playerLbl[1] = new Label("Chrigi");
-		playerLbl[2] = new Label("Domi");
-		playerLbl[3] = new Label("Digi");
+		this.playerLbl = new Label[4];
+		for (int i = 0; i < playerLbl.length; i++) {
+			playerLbl[i] = new Label("Waiting for player...");
+		}
+
+		this.tichuLbl = new Label[4];
+		for (int i = 0; i < tichuLbl.length; i++) {
+			tichuLbl[i] = new Label("");
+		}
+		this.add(tichuLbl[0], 3, 2, 1, 1);
+		this.add(tichuLbl[1], 3, 4, 1, 1);
+		this.add(tichuLbl[2], 3, 6, 1, 1);
+		this.add(tichuLbl[3], 3, 8, 1, 1);
 
 		this.add(playerLbl[0], 0, 2, 1, 1);
 		GridPane.setVgrow(playerLbl[0], Priority.ALWAYS);
@@ -61,35 +80,102 @@ public class PlayArea extends GridPane {
 		this.setVgap(2);
 	}
 
-	public void updateNameColumn() {
+	/**
+	 * @author Philipp
+	 */
+	void updatePlayerName() {
+		this.playerLbl[0].setText(clientModel.getPlayerName());
+	}
 
+	/**
+	 * @author Philipp
+	 */
+	public void updateNameColumn() {
+		this.playerLbl[1].setText(clientModel.getTeamMate());
+		this.playerLbl[2].setText(clientModel.getOpponent(0));
+		this.playerLbl[3].setText(clientModel.getOpponent(1));
+	}
+
+	/**
+	 *
+	 * @author Philipp
+	 * @param playerName
+	 * @param tichuType
+	 */
+	public void updateTichuColumn(String playerName, TichuType tichuType) {
+
+		Label tichuLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), 3);
+		tichuLabel.setText(tichuType.toString());
+	}
+
+	/**
+	 *
+	 * @author Philipp
+	 * @param playerName
+	 * @return
+	 */
+	private int getPlayerRow(String playerName) {
+		int result = 0;
+
+		for (Label label : this.playerLbl) {
+			if (label.getText().equals(playerName)) {
+				result = GridPane.getRowIndex(label);
+				break;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * returns a node at a given position inside the GridPane
+	 * got method structure from:
+	 * https://stackoverflow.com/questions/20825935/javafx-get-node-by-row-and-column
+	 * @author Philipp
+	 * @param row index of a given node
+	 * @param column index of a given node
+	 * @return node at a given row & column index
+	 */
+	private Node getNodeByRowColumnIndex (final int row, final int column) {
+		Node result = null;
+		ObservableList<Node> children = this.getChildren();
+
+		for (Node node : children) {
+			if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+				result = node;
+				break;
+			}
+		}
+		return result;
 	}
 
 	public void updateTeamColumn() {
-
+		for (int i = 2; i < this.getColumnCount(); i+=2) {
+			this.add(new Label(""), 1, i);
+		}
 	}
 
 	public void updateHandColumn() {
-
-	}
-
-	public void updateTichuColumn() {
-
+		for (int i = 2; i < this.getColumnCount(); i+=2) {
+			this.add(new Label(""), 2, i);
+		}
 	}
 
 	public void updatePlayedColumn() {
-		System.out.println(this.getColumnCount());
 		for (int i = 2; i < this.getColumnCount(); i+=2) {
 			//TODO - Change after GUI-Testing to be able to add the real cards from the msg
-			this.add(new CardArea(CardArea.CardAreaType.Thumbnails, 8), 4, i);
+			this.add(new CardArea(clientModel, CardArea.CardAreaType.Thumbnails, 8), 4, i);
 		}
 	}
 
 	public void updateMatchPoints() {
-
+		for (int i = 2; i < this.getColumnCount(); i+=2) {
+			this.add(new Label(""), 5, i);
+		}
 	}
 
 	public void updateTotalPoints() {
-
+		for (int i = 2; i < this.getColumnCount(); i+=2) {
+			this.add(new Label(""), 6, i);
+		}
 	}
 }
