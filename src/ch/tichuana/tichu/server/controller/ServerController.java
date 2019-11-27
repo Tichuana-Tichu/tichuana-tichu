@@ -9,7 +9,6 @@ import ch.tichuana.tichu.server.model.SimpleMessageProperty;
 import ch.tichuana.tichu.server.model.Team;
 import ch.tichuana.tichu.server.services.ServiceLocator;
 import javafx.beans.Observable;
-import javafx.beans.value.ObservableValue;
 
 import java.util.logging.Logger;
 
@@ -48,13 +47,11 @@ public class ServerController {
 				e -> broadcastTichu(player.getAnnouncedGrandTichuProperty()));
 		player.getSchupfenProperty().addListener(
 				e -> schupfen(player.getSchupfenProperty()));
-        player.getHisHisTurnProperty().addListener(this::broadcastUpdate);
-        player.getHasMahjongProperty().addListener(this::broadcastUpdate);
-
+        player.getPlayProperty().addListener(e -> handleUpdate(player.getPlayProperty()));
         makeTeams(size);
 	}
 
-    /**
+	/**
      * creates Teams and creates the Game if all players have connected
      * @author Christian
      * @param size number of players (size of list)
@@ -81,8 +78,6 @@ public class ServerController {
 	private void startGame(){
 		serverModel.getGame().start();
 		logger.info("Game started");
-		serverModel.getGame().dealFirstEightCards();
-		logger.info("First eight cards dealt");
 	}
 
 	/**
@@ -95,15 +90,14 @@ public class ServerController {
 			AnnouncedTichuMsg msg = new AnnouncedTichuMsg(
 					property.getMessage().getPlayerName(), property.getMessage().getTichuType());
 			this.serverModel.broadcast(msg);
-		}
-		// clients will always send a tichu response even if they don't announce it (-> tichuType=none)
-		serverModel.increaseTichuResponses();
-		if (serverModel.getTichuResponses() == 4){
-			serverModel.getGame().dealRemainingCards();
-			logger.info("Remaining six cards dealt");
-		}
-		else if (serverModel.getTichuResponses() == 8) {
-			demandSchupfen();
+			// clients will always send a tichu response even if they don't announce it (-> tichuType=none)
+			serverModel.increaseTichuResponses();
+			if (serverModel.getTichuResponses() == 4) {
+				serverModel.getGame().getCurrentMatch().dealRemainingCards();
+			} else if (serverModel.getTichuResponses() == 8) {
+				demandSchupfen();
+			}
+			property.setValue(false);
 		}
 	}
 
@@ -126,22 +120,32 @@ public class ServerController {
 		if (property.getValue()){
 			Card card = property.getMessage().getCard();
 			Player player = serverModel.getGame().getPlayerByName(property.getMessage().getPlayerName());
-			serverModel.getGame().schupfen(card, player);
+			serverModel.getGame().getCurrentMatch().schupfen(card, player);
 			serverModel.increaseSchupfenResponses();
 			property.setValue(false);
-			if (serverModel.getSchupfenResponses()%3 == 0){
-				demandSchupfen();
+
+			// When all Schupfen Responses have been received we can start the first match
+			if (serverModel.getSchupfenResponses() >= 12){
+				serverModel.getGame().getCurrentMatch().start();
+			} else {
+				if (serverModel.getSchupfenResponses()%3 == 0){
+					demandSchupfen();
+				}
 			}
 		}
-
 	}
 
 	/**
-	 * informs all players
-	 * @author philipp
-	 * @param newVal if changed to true
+	 * If the value of Property is true it will call the handleUpdate method in Match-class.
+	 * @author Christian
 	 */
-	private void broadcastUpdate(ObservableValue<? extends Boolean> obs, Boolean oldVal, Boolean newVal) {
-
+	private void handleUpdate(SimpleMessageProperty messageProperty) {
+		if (messageProperty.getValue() ==true){
+			this.serverModel.getGame().getCurrentMatch().handleUpdate(messageProperty);
+			// set value false. so next update can set it true again.
+			messageProperty.setValue(false);
+		}
 	}
+
+
 }

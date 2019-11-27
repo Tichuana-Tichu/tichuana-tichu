@@ -93,4 +93,21 @@ for the next player in the order. This process is repeated until all players hav
 
 ## Gameplay
 
-TODO
+When the server has received all "schupfen messages" it will decide who gets to play first (player with the mahjong card).
+It will then send the first UpdateMsg. Since no move has been made yet, it will only tell whose turn it is.
+
+```json
+{"msg":"UpdateMsg","ownScore":0,"nextPlayer":"player1","lastMove":[],"opponentScore":0}
+```
+
+The player in question chooses the card(s) he wants to play and answers with a play message containing those cards.
+
+```json
+{"msg":"PlayMsg","cards":[{"rank":"Ace","suit":"Jade"},{"rank":"Ace","suit":"Swords"}]}
+```
+
+The Server will evaluate the move and broadcast the update to all clients, also telling them whose turn it is.
+
+```json
+{"msg":"UpdateMsg","ownScore":0,"nextPlayer":"player1","lastMove":[{"rank":"Ace","suit":"Jade"},{"rank":"Ace","suit":"Swords"}],"opponentScore":0}
+```

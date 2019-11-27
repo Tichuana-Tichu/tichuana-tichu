@@ -26,6 +26,15 @@ public class Team implements Comparable<Team> {
 	}
 
 	/**
+	 * adds points to current score
+	 * @author Christian
+	 * @param points
+	 */
+	public void addPoints(int points){
+		this.currentScore += points;
+	}
+
+	/**
 	 *
 	 * @return uniqueID
 	 */

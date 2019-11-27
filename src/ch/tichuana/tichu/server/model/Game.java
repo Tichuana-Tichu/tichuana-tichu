@@ -1,8 +1,6 @@
 package ch.tichuana.tichu.server.model;
 
 import ch.tichuana.tichu.commons.message.*;
-import ch.tichuana.tichu.commons.models.Card;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
@@ -18,6 +16,8 @@ public class Game {
 	private int currentPlayer;
 	private Team[] teams = new Team[2];
 	private DeckOfCards deck;
+	private Match currentMatch;
+	private final int MAX_SCORE = 1000;
 
 	/**
 	 * Game will be started from ServerModel as soon as 4 player are connected to server
@@ -60,39 +60,7 @@ public class Game {
 			msg = new GameStartedMsg(mate,opponents);
 			playersInOrder[i].sendMessage(msg);
 		}
-		this.deck.shuffleDeck();
-	}
-
-	/**
-	 * Deals eight cards to every client by sending a custom DealMsg
-	 * @author Christian
-	 */
-	public void dealFirstEightCards(){
-		ArrayList<Card> cards = new ArrayList<>(Arrays.asList(deck.getFirstHalf()));
-		int rangeCounter = 0;
-		for (Player p : playersInOrder){
-			ArrayList<Card> hand = new ArrayList<Card>(cards.subList(rangeCounter, rangeCounter + 8));
-			p.getHand().addAll(hand);
-			Message msg = new DealMsg(hand);
-			p.sendMessage(msg);
-			rangeCounter += 8;
-		}
-	}
-
-	/**
-	 * Deals the remaining six cards to every client by sending a custom DealMsg
-	 * @author Christian
-	 */
-	public void dealRemainingCards(){
-		ArrayList<Card> cards = new ArrayList<>(Arrays.asList(deck.getSecondHalf()));
-		int rangeCounter = 0;
-		for (Player p : playersInOrder){
-			ArrayList<Card> hand = new ArrayList<Card>(cards.subList(rangeCounter, rangeCounter + 6));
-			p.getHand().addAll(hand);
-			Message msg = new DealMsg(hand);
-			p.sendMessage(msg);
-			rangeCounter += 6;
-		}
+		this.startMatch();
 	}
 
 	/**
@@ -125,22 +93,59 @@ public class Game {
 	}
 
 	/**
-	 * removed the card from origin players hand and adds it to it's new owner
-	 * @author Christian
-	 * @param card
-	 * @param player target player
+	 * returns a teams opponent
+	 * @param team
+	 * @return
 	 */
-	public void schupfen(Card card, Player player){
-		Message msg= new SchupfenMsg("", card);
-		// origin player
-		for (Player p : playersInOrder){
-			if (p.getHand().contains(card)){
-				p.getHand().remove(card);
-				msg = new SchupfenMsg(p.getPlayerName(),card);
+	public Team getOpposingTeam(Team team){
+		if(team == teams[0]){
+			return teams[1];
+		}
+		else {
+			return teams[0];
+		}
+	}
+
+	/**
+	 * starts a new Match in a game
+	 * @author Christian
+	 */
+	public void startMatch(){
+		if(isGameDone()){
+			//TODO: handle if game is done
+		} else {
+			this.deck.shuffleDeck();
+			this.currentMatch = new Match(serverModel);
+			currentMatch.dealFirstEightCards();
+		}
+	}
+
+	/**
+	 * Returns the Team a given Player is in
+	 * @param player
+	 * @return
+	 */
+	public Team getTeamByMember(Player player){
+		for (Team t : teams){
+			if (Arrays.asList(t.getPlayers()).contains(player)) {
+				return t;
 			}
 		}
-		player.getHand().add(card);
-		player.sendMessage(msg);
+		return null;
+	}
+
+	/**
+	 * checks if a a team has already reached a total of 1000 points
+	 * @author Christian
+	 * @return
+	 */
+	public boolean isGameDone(){
+		for (Team t : teams){
+			if (t.getCurrentScore() >= MAX_SCORE){
+				return true;
+			}
+		}
+		return false;
 	}
 
 
@@ -159,7 +164,6 @@ public class Game {
 		return this.gameID;
 	}
 	public int getMAX_SCORE() {
-		int MAX_SCORE = 1000;
 		return MAX_SCORE;
 	}
 	public int getCurrentScore() {
@@ -176,5 +180,19 @@ public class Game {
 	}
 	public Team[] getTeams() {
 		return this.teams;
+	}
+	public Player[] getPlayersInOrder() {
+		return playersInOrder;
+	}
+	public DeckOfCards getDeck() {
+		return deck;
+	}
+
+	public Match getCurrentMatch() {
+		return currentMatch;
+	}
+
+	public void setCurrentPlayer(int currentPlayer) {
+		this.currentPlayer = currentPlayer;
 	}
 }
