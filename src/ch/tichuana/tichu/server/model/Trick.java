@@ -6,7 +6,7 @@ import ch.tichuana.tichu.server.Server;
 
 import java.util.ArrayList;
 
-public class Stich {
+public class Trick {
 
     private ArrayList<Card> cards;
     private ArrayList<Card> lastMove;
@@ -16,7 +16,7 @@ public class Stich {
     private boolean won;
     private ServerModel serverModel;
 
-    public Stich(ServerModel serverModel){
+    public Trick(ServerModel serverModel){
         this.cards =  new ArrayList<Card>();
         this.lastMove = new ArrayList<Card>();
         this.serverModel = serverModel;
@@ -25,8 +25,8 @@ public class Stich {
     }
 
     /**
-     * If the players move is empty, he passed. When all players have passed the "Stich" is won. If the player has
-     * played a move we check if it valid and if so we add the cards to the Stich.
+     * If the players move is empty, he passed. When all players have passed the trick is won. If the player has
+     * played a move we check if it valid and if so we add the cards to the trick.
      * @param player
      * @param move
      */
@@ -55,7 +55,7 @@ public class Stich {
     }
 
     /**
-     * Returns the total score of this "Stich", ergo sum of score-value of all cards played
+     * Returns the total score of this trick, ergo sum of score-value of all cards played
      * @return score
      */
     public int getScore(){
