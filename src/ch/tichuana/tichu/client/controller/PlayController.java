@@ -191,19 +191,8 @@ class PlayController {
     /**
      *
      * @author Philipp
-     * inspired by https://www.w3resource.com/java-tutorial/arraylist/arraylist_removeif.php
      */
     private void makeCardsClickable() {
-
-        class SamplePredicate<T> implements Predicate<T> {
-            private T condition;
-            public boolean test(T cond){
-                return condition.equals(cond);
-            }
-        }
-
-        SamplePredicate<Object> filter = new SamplePredicate<>();
-        filter.condition = "clickedLabel";
 
         HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea().getCardsLabels();
 
@@ -211,7 +200,7 @@ class PlayController {
 
             cl.setOnMouseClicked(event -> {
                 CardLabel clickedLabel = (CardLabel) event.getSource();
-                if (clickedLabel.getStyleClass().removeIf(filter))
+                if (clickedLabel.getStyleClass().removeIf(s -> s.equals("clickedLabel")))
                     clickedLabel.getStyleClass().remove("clickedLabel");
                 else
                     clickedLabel.getStyleClass().add("clickedLabel");
