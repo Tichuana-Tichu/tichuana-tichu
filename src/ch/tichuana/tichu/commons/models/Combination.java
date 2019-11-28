@@ -371,7 +371,22 @@ public enum Combination {
 				}
 
 			case FullHouse:
-				break;
+
+				if(evaluateCombination(newMove) ==  FullHouse){
+
+					// higher triplet wins. Middle card will always be part of triplet:
+					if (newMove.get(2).getRank().ordinal() > oldMove.get(2).getRank().ordinal()){
+						return true;
+					} else if (newMove.get(2).getRank().ordinal() == oldMove.get(2).getRank().ordinal()){
+						//TODO: compare the pair
+						return true;
+					} else { // lower full house
+						return false;
+					}
+				} else { // no full house
+					return false;
+				}
+
 			case Straight:
 				break;
 
