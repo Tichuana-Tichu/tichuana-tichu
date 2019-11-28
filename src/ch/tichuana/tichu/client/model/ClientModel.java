@@ -97,6 +97,7 @@ public class ClientModel {
                         this.msgCode.setMessage(msg);
                         this.msgCode.set(8);
                         this.newestMessage.set("received card from: "+msg.getPlayerName());
+                        this.msgCode.set(10);
                     }
 
                     if (msg instanceof UpdateMsg) {
