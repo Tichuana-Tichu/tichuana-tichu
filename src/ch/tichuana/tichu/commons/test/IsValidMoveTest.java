@@ -55,6 +55,7 @@ class IsValidMoveTest {
         oldMove.clear(); newMove.clear();
 
         // Check if Dragon beats Phoenix
+        Combination.beforePhoenix = cards.get(10);
         oldMove.add(cards.get(15));
         newMove.add(cards.get(16));
         assertTrue(Combination.isValidMove(oldMove,newMove));
@@ -79,6 +80,23 @@ class IsValidMoveTest {
         oldMove.add(cards.get(0));
         newMove.add(cards.get(1));
         assertFalse(Combination.isValidMove(oldMove,newMove));
+
+        oldMove.clear(); newMove.clear();
+
+        // test phoenix beats ace
+        Combination.beforePhoenix = cards.get(10);
+        newMove.add(cards.get(15));
+        oldMove.add(cards.get(14));
+        assertTrue(Combination.isValidMove(oldMove,newMove));
+
+        oldMove.clear(); newMove.clear();
+
+        // test phoenix can still be beaten
+        Combination.beforePhoenix = cards.get(10);
+        oldMove.add(cards.get(15));
+        newMove.add(cards.get(14));
+        assertTrue(Combination.isValidMove(oldMove,newMove));
+
     }
 
     @Test

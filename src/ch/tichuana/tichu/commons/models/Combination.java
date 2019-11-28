@@ -8,6 +8,7 @@ public enum Combination {
 	FourOfAKindBomb, FourOfAKindPhoenix, StraightFlushBomb;
 
 	public static ArrayList<Card> clonedCards;
+	public static Card beforePhoenix = null;
 
 	/**
 	 * All Combinations are going to be checked and returned by currentEval.
@@ -317,11 +318,28 @@ public enum Combination {
 		switch (evaluateCombination(oldClone)){
 
 			case HighCard:
+
+				// special case if single phoenix was played
+				if (evaluateCombination(newClone) == HighCard &&
+						containsPhoenix(oldMove)){
+					if (beforePhoenix != null && beforePhoenix.compareTo(newMove.get(0)) < 0){
+						return true;
+					} else {
+						return false;
+					}
+				}
+
 				// newMove has to be HighCard as well and have a higher rank, else -> false
 				if(evaluateCombination(newClone) == HighCard &&
-				oldClone.get(0).compareTo(newClone.get(0)) < 0){
+						oldClone.get(0).compareTo(newClone.get(0)) < 0){
+
+					// if new move is single phoenix, we need to memorize previous card
+					if (containsPhoenix(newMove)){
+						beforePhoenix = oldMove.get(0);
+					}
 
 					// a dog can not be played on a mahjong and vise versa, everything else can
+					// only need to check mahjong because dog has a lower ordinal anyway
 					if(containsMahjong(newMove)){
 						return false;
 					} else {
