@@ -293,6 +293,7 @@ public enum Combination {
 	/**
 	 * Will compare the previous move to the current one and evaluate if the new move is not only valid,
 	 * but also beats the previous.
+	 * @author Christian
 	 * @param oldMove
 	 * @param newMove
 	 * @return isValidMove
@@ -388,7 +389,35 @@ public enum Combination {
 				}
 
 			case Straight:
-				break;
+				if (evaluateCombination(newMove) == Straight){
+
+					// longer straight wins
+					if (newMove.size() > oldMove.size()){
+						return true;
+
+					} else if (newMove.size() > oldMove.size()){
+						Card lastCardNew = newMove.get(newMove.size()-1);
+						Card lastCardOld = oldMove.get(oldMove.size()-1);
+
+						// ban phoenixes from joining the party
+						if (lastCardNew.getRank() == Rank.phoenix){
+							lastCardNew = newMove.get(newMove.size()-2);
+						} else if (lastCardOld.getRank() == Rank.phoenix){
+							lastCardOld = oldMove.get(oldMove.size()-2);
+						}
+
+						if (lastCardNew.getRank().ordinal() > lastCardOld.getRank().ordinal()){
+							return true;
+						} else{ // last card isn't higher
+							return false;
+						}
+
+					} else { // shorter straight
+						return false;
+					}
+				} else { // no straight
+					return false;
+				}
 
 			case FourOfAKindBomb:
 				// bomb will beat anything exept higher bomb (and straightFlushBomb)
@@ -397,7 +426,7 @@ public enum Combination {
 				if (comb == StraightFlushBomb){
 					return true;
 				}
-				if(comb == FourOfAKindBomb){
+				if (comb == FourOfAKindBomb){
 					// check if this bomb is higher than previous bomb
 					if (oldClone.get(0).compareTo(newClone.get(0))<0){
 						return true;
@@ -411,7 +440,9 @@ public enum Combination {
 			case FourOfAKindPhoenix:
 				// TODO: Not sure about rules
 				break;
+
 			case StraightFlushBomb:
+				// TODO: Not sure about the rules
 				break;
 		}
 		return false;
