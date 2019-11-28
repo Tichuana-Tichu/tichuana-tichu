@@ -101,8 +101,9 @@ public class ClientModel {
                     }
 
                     if (msg instanceof UpdateMsg) {
-                        /*
                         this.msgCode.set(9);
+                        /*
+                        this.msgCode.set(10);
                         if (!this.playerName.equals(msg.getNextPlayer())) {
                             this.nextPlayerName = msg.getNextPlayer();
                             sendMessage(new ReceivedMsg(true));

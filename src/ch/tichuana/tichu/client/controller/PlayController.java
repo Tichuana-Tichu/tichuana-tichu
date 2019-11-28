@@ -74,8 +74,9 @@ class PlayController {
                 case 7: Platform.runLater(() ->
                         this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(true));
                         break;
-                case 8: handleSchupfenMsg(); break;
-                case 9: handleUpdateMsg(); break;
+                case 8: handleSchupfenMsg(false); break;
+                case 9: handleSchupfenMsg(true); break;
+                case 10: handleUpdateMsg(); break;
             }
         });
 
@@ -127,10 +128,10 @@ class PlayController {
      *
      * @author Philipp
      */
-    private void handleSchupfenMsg() {
+    private void handleSchupfenMsg(boolean finished) {
         receivedCards.add(this.clientModel.getMsgCodeProperty().getMessage().getCard());
 
-        if (receivedCards.size() == 3)
+        if (finished)
             clientModel.getHand().addCards(receivedCards);
     }
 
