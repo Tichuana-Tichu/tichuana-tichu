@@ -306,10 +306,10 @@ public enum Combination {
 		// When the first move of a trick is played, oldMove is empty. If evaluateCombination returns anything but
 		// a HighCard it is a valid move. If its a high card we need to check if it actually is a single card.
 		if (oldMove.isEmpty()){
-			if (evaluateCombination(newMove) == HighCard && newMove.size() == 1){
-				return true;
+			if (evaluateCombination(newMove) == HighCard){
+				return (newMove.size() == 1); // if the high card has a size other than 1 its not a valid move
 			} else {
-				return false;
+				return true;
 			}
 		}
 		// all evaluations are based on what the previous move was
@@ -349,7 +349,27 @@ public enum Combination {
 				}
 
 			case Steps:
-				break;
+				// if new move is a step too, it must contain mor pairs (bigger size)
+				// if their the same, higher pairs win
+				if (evaluateCombination(newClone) == Steps){
+					if (newClone.size() > oldClone.size()){
+						return true;
+					} else if (newClone.size() == oldClone.size()){
+
+						// compare the ranks of the second to last card of each move, since last card might be phoenix
+						if (newMove.get(newMove.size()-2).getRank().ordinal() >
+								oldMove.get(oldMove.size()-2).getRank().ordinal()){
+							return true;
+						} else { // weaker pair
+							return false;
+						}
+					} else { // smaller step
+						return false;
+					}
+				} else { // no Step
+					return false;
+				}
+
 			case FullHouse:
 				break;
 			case Straight:
