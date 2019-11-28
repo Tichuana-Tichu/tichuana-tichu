@@ -116,7 +116,6 @@ public class Match {
 
 		// if a team is done we start a new match
 		if (isTeamDone()) {
-			//TODO: What to do with the played cards on the table?
 			evaluateFinalMove();
 			serverModel.getGame().startMatch();
 		} else {
@@ -158,6 +157,10 @@ public class Match {
 	 */
 	public void evaluateFinalMove(){
 		Team loosingTeam;
+
+        // this last trick is now over. all of its points will be given to the winners team
+        this.trick.getCurrentWinner().addTrick(this.trick);
+
 		for (Player p : serverModel.getGame().getPlayersInOrder()) {
 
 			// when the players hand isn't empty, his cards points will be given to the opposing team
