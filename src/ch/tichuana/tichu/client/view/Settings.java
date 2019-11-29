@@ -17,6 +17,7 @@ public class Settings extends MenuBar {
 
     private Translator translator;
     private Menu langMenu;
+    private MenuItem lang1, lang2;
 
     /**
      * @author Philipp
@@ -26,29 +27,27 @@ public class Settings extends MenuBar {
         this.translator = ServiceLocator.getServiceLocator().getTranslator();
         this.langMenu = new Menu(translator.getString("settings.langMenu"));
 
-        MenuItem m1 = new MenuItem(translator.getString("langMenu.german"));
-        MenuItem m2 = new MenuItem(translator.getString("langMenu.english"));
+        lang1 = new MenuItem(translator.getString("langMenu.german"));
+        lang2 = new MenuItem(translator.getString("langMenu.english"));
 
-        this.langMenu.getItems().addAll(m1,m2);
+        this.langMenu.getItems().addAll(lang1,lang2);
 
-               // new MenuItem(translator.getString("langMenu.german")),
-                 //                       new MenuItem(translator.getString("langMenu.english")));
         this.getMenus().add(this.langMenu);
+    }
 
-
-        for(MenuItem m : this.langMenu.getItems()){
-            m.setOnAction(event -> LobbyController.changeTranslator(event));
-
-        }
-
-
-
-
+    /**
+     * Updates the menu with terms from the new translator
+     * @author Christian
+     */
+    public void update(){
+        this.translator = ServiceLocator.getServiceLocator().getTranslator();
+        langMenu.setText(translator.getString("settings.langMenu"));
+        lang1.setText(translator.getString("langMenu.german"));
+        lang2.setText(translator.getString("langMenu.english"));
     }
 
     //Getter
     public Menu getLangMenu() {
         return langMenu;
     }
-
 }

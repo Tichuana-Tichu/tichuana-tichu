@@ -57,13 +57,19 @@ public class LobbyController {
 			Platform.runLater(() -> this.gameView.updateView());
 			new PlayController(this.clientModel, this.gameView, this.stage);
 		});
+
+		// moved Dominik's code here
+		// add listener to every language menu item
+		for(MenuItem m : this.gameView.getLobbyView().getSettings().getLangMenu().getItems()){
+			m.setOnAction(event -> changeTranslator(event));
+		}
 	}
 
 	/**
 	 * initialize new Translator for language change.
 	 * @author dominik
 	 */
-	public static void changeTranslator(Event event){
+	public void changeTranslator(Event event){
 		MenuItem m = (MenuItem) event.getSource();
 
 		Translator translator = serviceLocator.getTranslator();
@@ -78,5 +84,8 @@ public class LobbyController {
 			Translator en = new Translator("en");
 			ServiceLocator.getServiceLocator().setTranslator(en);
 		}
+
+		gameView.getLobbyView().getSettings().update();
 	}
+
 }
