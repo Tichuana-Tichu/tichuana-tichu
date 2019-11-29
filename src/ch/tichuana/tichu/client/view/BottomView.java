@@ -10,8 +10,6 @@ public class BottomView extends BorderPane {
 	private ControlArea controlArea;
 	private CardArea cardArea;
 	private TextField console;
-	private VBox cardsNConsole;
-	private ClientModel clientModel;
 
 	/**
 	 * extends BorderPane including a console in the top area
@@ -19,13 +17,12 @@ public class BottomView extends BorderPane {
 	 * @author Philipp
 	 */
 	BottomView(ClientModel clientModel) {
-		this.clientModel = clientModel;
 		this.controlArea = new ControlArea();
 		this.cardArea = new CardArea(clientModel, CardArea.CardAreaType.Blank, 8);
 		this.console = new TextField();
 		this.console.setEditable(false);
 		this.console.setFocusTraversable(false);
-		this.cardsNConsole = new VBox(this.cardArea, this.console);
+		VBox cardsNConsole = new VBox(this.cardArea, this.console);
 
 		this.setRight(this.controlArea);
 		this.setCenter(cardsNConsole);
@@ -40,9 +37,5 @@ public class BottomView extends BorderPane {
 	}
 	public void setConsole(String newestMessage) {
 		this.console.setText(newestMessage);
-	}
-	public void setCardArea(CardArea.CardAreaType cardAreaType, int i) {
-		this.cardArea = new CardArea(clientModel, cardAreaType, i);
-		this.cardsNConsole.getChildren().set(0, this.cardArea);
 	}
 }

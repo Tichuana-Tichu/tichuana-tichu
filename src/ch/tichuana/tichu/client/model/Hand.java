@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Hand {
 
@@ -33,6 +34,10 @@ public class Hand {
      */
 	public void remove(Card c) {
 		this.cards.remove(c);
+	}
+
+	public void sort() {
+		Collections.sort(this.cards);
 	}
 
 	//Getter

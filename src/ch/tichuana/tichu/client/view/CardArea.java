@@ -23,24 +23,12 @@ public class CardArea extends VBox {
 		this.cardsLabels = new HBox();
 
 		if (cat.equals(CardAreaType.Blank)) {
-			for (int i = 0; i < cardCounter; i++) {
+			for (int i = 0; i < 8; i++) {
 				CardLabel cardLabel = new CardLabel();
 				cardLabel.setBlankCard();
 				cardsLabels.getChildren().add(cardLabel);
 				cardsLabels.setSpacing(-140);
 			}
-			this.getChildren().add(this.cardsLabels);
-		}
-
-		else if (cat.equals(CardAreaType.Cards)) {
-
-			for (int i = 0; i < cardCounter; i++) {
-				CardLabel cardLabel = new CardLabel();
-				cardLabel.setCard(clientModel.getHand().getCards().get(i));
-				cardsLabels.getChildren().add(cardLabel);
-				cardsLabels.setSpacing(-140);
-			}
-			this.getChildren().add(this.cardsLabels);
 
 		} else {
 
@@ -51,8 +39,8 @@ public class CardArea extends VBox {
 				cardsLabels.getChildren().add(cardLabel);
 				cardsLabels.setSpacing(-10);
 			}
-			this.getChildren().add(this.cardsLabels);
 		}
+		this.getChildren().add(this.cardsLabels);
 	}
 
 	public void updateCardLabels() {

@@ -1,7 +1,6 @@
 package ch.tichuana.tichu.client.controller;
 
 import ch.tichuana.tichu.client.model.ClientModel;
-import ch.tichuana.tichu.client.view.CardArea;
 import ch.tichuana.tichu.client.view.CardLabel;
 import ch.tichuana.tichu.client.view.GameView;
 import ch.tichuana.tichu.commons.message.SchupfenMsg;
@@ -10,7 +9,6 @@ import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.application.Platform;
 import javafx.beans.Observable;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -103,6 +101,7 @@ class PlayController {
             String player = this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
             this.clientModel.sendMessage(new SchupfenMsg(player, cards.get(0)));
             this.clientModel.getHand().remove(cards.get(0));
+            this.clientModel.getHand().sort();
         });
 
         /*
@@ -137,6 +136,7 @@ class PlayController {
         else {
             try { Thread.sleep(300); } catch (InterruptedException e) { e.printStackTrace(); }
             clientModel.getHand().addCards(receivedCards);
+            clientModel.getHand().sort();
         }
     }
 
@@ -155,6 +155,7 @@ class PlayController {
      */
     private void handleSecondDealMsg() {
         //enables Buttons again to announce SmallTichu or none
+        clientModel.getHand().sort();
         if (!this.clientModel.announcedGrandTichu()) {
             Platform.runLater(() -> {
                 this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setDisable(false);
@@ -207,8 +208,8 @@ class PlayController {
         this.clientModel.getHand().getCards().addListener(this::activateHand);
 
         //sets 8 cards and enables Buttons to be able to announce tichu
+        this.clientModel.getHand().sort();
         Platform.runLater(() -> {
-            this.gameView.getPlayView().getBottomView().setCardArea(CardArea.CardAreaType.Cards, 8);
             this.stage.setWidth(stage.getWidth()-1);
             this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setText("Passen");
             this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setDisable(false);
@@ -278,4 +279,3 @@ class PlayController {
         return selectedCards;
     }
 }
-
