@@ -37,9 +37,8 @@ public class Settings extends MenuBar {
 
 
         for(MenuItem m : this.langMenu.getItems()){
-            m.setOnAction(event -> {
-                LobbyController.changeTranslator(event);
-            });
+            m.setOnAction(event -> LobbyController.changeTranslator(event));
+
         }
 
 

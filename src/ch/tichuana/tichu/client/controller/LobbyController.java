@@ -1,6 +1,7 @@
 package ch.tichuana.tichu.client.controller;
 
 import ch.tichuana.tichu.client.model.ClientModel;
+import ch.tichuana.tichu.client.services.Configuration;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.client.view.GameView;
@@ -16,7 +17,7 @@ public class LobbyController {
 	private ClientModel clientModel;
 	private GameView gameView;
 	private Stage stage;
-	private ServiceLocator serviceLocator;
+	private static ServiceLocator serviceLocator;
 
 	/**
 	 * attaches listener to the stage-size to make the Logo responsive
@@ -29,7 +30,7 @@ public class LobbyController {
      */
 	public LobbyController(ClientModel clientModel, GameView gameView, Stage stage) {
 
-		this.serviceLocator = ServiceLocator.getServiceLocator();
+		serviceLocator = ServiceLocator.getServiceLocator();
 		this.clientModel = clientModel;
 		this.gameView = gameView;
 		this.stage = stage;
@@ -65,14 +66,16 @@ public class LobbyController {
 	public static void changeTranslator(Event event){
 		MenuItem m = (MenuItem) event.getSource();
 
-		if (m.getText() == "langMenu.german"){
+		Translator translator = serviceLocator.getTranslator();
+
+		if (m.getText() == translator.getString("langMenu.german")){
 
 			Translator de = new Translator("de");
 			ServiceLocator.getServiceLocator().setTranslator(de);
 
-		}else if (m.getText() == "langMenu.english"){
+		} else if (m.getText() == translator.getString("langMenu.english")){
 
-			Translator en = new Translator("de");
+			Translator en = new Translator("en");
 			ServiceLocator.getServiceLocator().setTranslator(en);
 		}
 	}
