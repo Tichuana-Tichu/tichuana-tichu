@@ -98,6 +98,7 @@ class PlayController {
         event-handler of the Schupfen Button
          */
         this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setOnAction(event -> {
+
             ArrayList<Card> cards = getSelectedCards();
             String player = this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
             this.clientModel.sendMessage(new SchupfenMsg(player, cards.get(0)));
@@ -129,10 +130,14 @@ class PlayController {
      * @author Philipp
      */
     private void handleSchupfenMsg(boolean finished) {
-        receivedCards.add(this.clientModel.getMsgCodeProperty().getMessage().getCard());
 
-        if (finished)
+        if (!finished)
+            receivedCards.add(this.clientModel.getMsgCodeProperty().getMessage().getCard());
+
+        else {
+            try { Thread.sleep(300); } catch (InterruptedException e) { e.printStackTrace(); }
             clientModel.getHand().addCards(receivedCards);
+        }
     }
 
     /**
