@@ -217,4 +217,7 @@ public abstract class Message {
 	public int getOwnScore() {
 		return 0;
 	}
+	public int getRemainingCardsByPlayerName(String name){
+		return 0;
+	}
 }

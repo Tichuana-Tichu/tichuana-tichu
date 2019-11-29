@@ -7,6 +7,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class UpdateMsg extends Message {
 
@@ -59,6 +60,12 @@ public class UpdateMsg extends Message {
 		json.put("remainingCards", jsonPlayers);
 
 		return json.toJSONString();
+	}
+
+	@Override
+	public int getRemainingCardsByPlayerName(String name) {
+		int pos = Arrays.asList(this.players).indexOf(name);
+		return remainingCards[pos];
 	}
 
 	@Override

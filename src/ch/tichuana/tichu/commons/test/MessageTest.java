@@ -211,11 +211,12 @@ class MessageTest {
         json.put("opponentScore", 1);
         json.put("ownScore", 1);
 
-        JSONObject player = new JSONObject();
+        JSONObject player;
 
         for (int i=0; i<4; i++){
-            player.put("name", "player1");
-            player.put("number", 8);
+            player = new JSONObject();
+            player.put("name", "player"+i);
+            player.put("number", 1+i);
             playerArray.add(player);
         }
 
@@ -228,7 +229,8 @@ class MessageTest {
         assertEquals("player1", msg.getNextPlayer());
         assertEquals(1,msg.getOpponentScore());
         assertEquals(1,msg.getOwnScore());
-
+        assertEquals(2,msg.getRemainingCardsByPlayerName("player1"));
+        assertEquals(3,msg.getRemainingCardsByPlayerName("player2"));
         //System.out.println("updatemsg: "+msg);
     }
 
