@@ -1,10 +1,14 @@
 package ch.tichuana.tichu.client.controller;
 
 import ch.tichuana.tichu.client.model.ClientModel;
+import ch.tichuana.tichu.client.services.ServiceLocator;
+import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.client.view.CardLabel;
 import ch.tichuana.tichu.client.view.GameView;
+import ch.tichuana.tichu.commons.message.DealMsg;
 import ch.tichuana.tichu.commons.message.SchupfenMsg;
 import ch.tichuana.tichu.commons.message.TichuMsg;
+import ch.tichuana.tichu.commons.message.UpdateMsg;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.application.Platform;
@@ -20,6 +24,7 @@ class PlayController {
     private GameView gameView;
     private Stage stage;
     private ArrayList<Card> receivedCards = new ArrayList<>();
+    private Translator translator;
 
     /**
      * attaches listener to the stage-width to make the CardArea responsive
@@ -32,6 +37,7 @@ class PlayController {
      * @param stage following MVC pattern
      */
     PlayController(ClientModel clientModel, GameView gameView, Stage stage) {
+        this.translator = ServiceLocator.getServiceLocator().getTranslator();
         this.clientModel = clientModel;
         this.gameView = gameView;
         this.stage = stage;
@@ -105,10 +111,18 @@ class PlayController {
         });
 
         /*
-        event-handler of the Play Button
+        event-handler of the multi-used Play/Pass Button
          */
         this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setOnAction(event -> {
-            this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.none));
+
+            if (this.clientModel.getMsgCode() == 3 || this.clientModel.getMsgCode() == 5)
+                this.clientModel.sendMessage(new TichuMsg(this.clientModel.getPlayerName(), TichuType.none));
+
+            else {
+                ArrayList<Card> cards = getSelectedCards();
+                this.clientModel.sendMessage(new DealMsg(cards));
+                this.clientModel.getHand().sort();
+            }
         });
 
         /*
@@ -122,6 +136,13 @@ class PlayController {
      * @author Philipp
      */
     private void handleUpdateMsg() {
+        if (this.clientModel.isMyTurn()) {
+            Platform.runLater(() ->
+                this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(false));
+        } else {
+            Platform.runLater(() ->
+                    this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(true));
+        }
     }
 
     /**
@@ -137,6 +158,9 @@ class PlayController {
             try { Thread.sleep(300); } catch (InterruptedException e) { e.printStackTrace(); }
             clientModel.getHand().addCards(receivedCards);
             clientModel.getHand().sort();
+            Platform.runLater(() ->
+                this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(true));
+
         }
     }
 
@@ -145,8 +169,11 @@ class PlayController {
      * @author Philipp
      */
     private void handleDemandSchupfenMsg() {
-        Platform.runLater(() ->
-                this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(false));
+        Platform.runLater(() -> {
+            this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(false);
+            this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn()
+                    .setText(this.translator.getString("controlarea.play"));
+        });
     }
 
     /**
@@ -211,7 +238,8 @@ class PlayController {
         this.clientModel.getHand().sort();
         Platform.runLater(() -> {
             this.stage.setWidth(stage.getWidth()-1);
-            this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setText("Passen");
+            this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn()
+                    .setText(translator.getString("controlarea.pass"));
             this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setDisable(false);
             this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(false);
         });

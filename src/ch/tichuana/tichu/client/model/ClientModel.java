@@ -11,6 +11,7 @@ public class ClientModel {
     private SimpleStringProperty newestMessage = new SimpleStringProperty();
     private SimpleMessageProperty msgCode = new SimpleMessageProperty();
     private volatile boolean grandTichu = false;
+    private boolean myTurn = false;
     private Socket socket;
     private volatile boolean closed;
     private String playerName;
@@ -19,7 +20,9 @@ public class ClientModel {
     private Logger logger = Logger.getLogger("");
 
     private String teamMate;
+    private int ownScore;
     private String[] opponents;
+    private int opponentScore;
     private Hand hand;
 
     /**
@@ -77,7 +80,7 @@ public class ClientModel {
                         this.msgCode.setMessage(msg);
                         this.msgCode.set(4);
                         this.newestMessage.set(msg.getPlayerName()+" announced: "+msg.getTichuType());
-                        this.msgCode.set(10);
+                        this.msgCode.set(20);
                     }
 
                     if (msg instanceof DemandSchupfenMsg) {
@@ -97,21 +100,24 @@ public class ClientModel {
                         this.msgCode.setMessage(msg);
                         this.msgCode.set(8);
                         this.newestMessage.set("received card from: "+msg.getPlayerName());
-                        this.msgCode.set(10);
+                        this.msgCode.set(20);
                     }
 
                     if (msg instanceof UpdateMsg) {
-                        this.msgCode.set(9);
-                        /*
+                        this.msgCode.set(9);//handing out all cards from pushing to clients
+
+                        this.msgCode.setMessage(msg);
+                        this.ownScore = msg.getOwnScore();
+                        this.opponentScore = msg.getOpponentScore();
+
                         this.msgCode.set(10);
                         if (!this.playerName.equals(msg.getNextPlayer())) {
                             this.nextPlayerName = msg.getNextPlayer();
                             sendMessage(new ReceivedMsg(true));
                         } else {
+                            this.myTurn = true;
                             logger.info("it is your turn "+msg.getNextPlayer());
                         }
-
-                         */
                     }
                 }
             };
@@ -193,5 +199,14 @@ public class ClientModel {
     }
     public void setGrandTichu(boolean grandTichu) {
         this.grandTichu = grandTichu;
+    }
+    public boolean isMyTurn() {
+        return myTurn;
+    }
+    public int getOwnScore() {
+        return ownScore;
+    }
+    public int getOpponentScore() {
+        return opponentScore;
     }
 }
