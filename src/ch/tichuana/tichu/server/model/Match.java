@@ -37,7 +37,8 @@ public class Match {
 				// to the players index-1. this way getNextPlayer will return him when called.
 				serverModel.getGame().setCurrentPlayer(
 						Arrays.asList(serverModel.getGame().getPlayersInOrder()).indexOf(p));
-				UpdateMsg msg = new UpdateMsg(p.getPlayerName(), new ArrayList<Card>(),0,0);
+				UpdateMsg msg = new UpdateMsg(p.getPlayerName(), new ArrayList<Card>(),0,0,
+						getPlayerNames(), getRemainingCards());
 				serverModel.broadcast(msg);
 				break;
 			}
@@ -143,7 +144,8 @@ public class Match {
 				UpdateMsg msg = new UpdateMsg(
 						nextPlayer.getPlayerName(),
 						this.trick.getLastMove(),
-						teams[(i + 1) % 2].getCurrentScore(), teams[i].getCurrentScore());
+						teams[(i + 1) % 2].getCurrentScore(), teams[i].getCurrentScore(),
+						getPlayerNames(),getRemainingCards());
 				for (Player p : teams[i].getPlayers()) {
 					p.sendMessage(msg);
 				}
@@ -214,6 +216,22 @@ public class Match {
 	private synchronized int getUniqueID() {
 		int uniqueID = 0;
 		return uniqueID++;
+	}
+
+	public String[] getPlayerNames(){
+		String[] names = new String[4];
+		for(int i = 0; i < serverModel.getGame().getPlayersInOrder().length; i++){
+			names[i] = serverModel.getGame().getPlayersInOrder()[i].getPlayerName();
+		}
+		return names;
+	}
+
+	public int[] getRemainingCards(){
+		int[] remainingCards = new int[4];
+		for(int i = 0; i < serverModel.getGame().getPlayersInOrder().length; i++){
+			remainingCards[i] = serverModel.getGame().getPlayersInOrder()[i].getHand().size();
+		}
+		return remainingCards;
 	}
 
 	//Getter & Setter

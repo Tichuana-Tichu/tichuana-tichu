@@ -200,6 +200,7 @@ class MessageTest {
     public void testUpdateMsg(){
         JSONObject json = new JSONObject();
         JSONArray array = new JSONArray();
+        JSONArray playerArray = new JSONArray();
         Card c1 = new Card(Suit.Jade, Rank.Ace);
         Card c2 = new Card(Suit.Swords, Rank.Ace);
         array.add(c1.toJSON());
@@ -209,6 +210,17 @@ class MessageTest {
         json.put("lastMove", array);
         json.put("opponentScore", 1);
         json.put("ownScore", 1);
+
+        JSONObject player = new JSONObject();
+
+        for (int i=0; i<4; i++){
+            player.put("name", "player1");
+            player.put("number", 8);
+            playerArray.add(player);
+        }
+
+        json.put("remainingCards",playerArray);
+
         Message msg = Message.parseMessage(json);
         assertEquals(MessageType.UpdateMsg, msg.getMsgType());
         assertTrue(msg.getLastMove().contains(c1));
@@ -216,6 +228,7 @@ class MessageTest {
         assertEquals("player1", msg.getNextPlayer());
         assertEquals(1,msg.getOpponentScore());
         assertEquals(1,msg.getOwnScore());
+
         //System.out.println("updatemsg: "+msg);
     }
 
