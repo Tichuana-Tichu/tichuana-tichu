@@ -1,5 +1,7 @@
 package ch.tichuana.tichu.client.model;
 
+import ch.tichuana.tichu.client.services.ServiceLocator;
+import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.commons.message.*;
 import javafx.beans.property.SimpleStringProperty;
 import java.io.IOException;
@@ -8,21 +10,21 @@ import java.util.logging.Logger;
 
 public class ClientModel {
 
+    //variables for communication
     private SimpleStringProperty newestMessage = new SimpleStringProperty();
     private SimpleMessageProperty msgCode = new SimpleMessageProperty();
-    private volatile boolean grandTichu = false;
-    private boolean myTurn = false;
-    private Socket socket;
-    private volatile boolean closed;
-    private String playerName;
-    private String nextPlayerName;
-    private String playerToSchupfCard;
     private Logger logger = Logger.getLogger("");
-
-    private String teamMate;
-    private int ownScore;
+    private Translator translator;
+    private volatile boolean closed;
+    private Socket socket;
+    //variables for game-flow
+    private boolean grandTichu = false;
+    private boolean myTurn = false;
     private String[] opponents;
+    private String playerName;
+    private String teamMate;
     private int opponentScore;
+    private int ownScore;
     private Hand hand;
 
     /**
@@ -34,6 +36,7 @@ public class ClientModel {
      * @param password receiving from GUI
      */
     public void connect(String ipAddress, int port, String playerName, String password) {
+        this.translator = ServiceLocator.getServiceLocator().getTranslator();
         logger.info("Connect");
         this.playerName = playerName;
         this.closed = false;
@@ -87,7 +90,6 @@ public class ClientModel {
                         this.msgCode.setMessage(msg);
                         if (!this.playerName.equals(msg.getPlayerName())) {
                             this.msgCode.set(6);
-                            this.playerToSchupfCard = msg.getPlayerName();
                             this.newestMessage.set("please choose card for player: "+msg.getPlayerName());
                         } else {
                             sendMessage(new ReceivedMsg(true));
@@ -104,15 +106,15 @@ public class ClientModel {
                     }
 
                     if (msg instanceof UpdateMsg) {
-                        this.msgCode.set(9);//handing out all cards from pushing to clients
+                        //handing out all cards from pushing to other Players
+                        this.msgCode.set(9);
 
                         this.msgCode.setMessage(msg);
                         this.ownScore = msg.getOwnScore();
                         this.opponentScore = msg.getOpponentScore();
-
                         this.msgCode.set(10);
                         if (!this.playerName.equals(msg.getNextPlayer())) {
-                            this.nextPlayerName = msg.getNextPlayer();
+                            //this.nextPlayerName = msg.getNextPlayer();
                             sendMessage(new ReceivedMsg(true));
                         } else {
                             this.myTurn = true;
@@ -156,20 +158,7 @@ public class ClientModel {
      */
     public void sendMessage(Message message) { message.send(this.socket); }
 
-    //TODO - needed for broadcasts or not?
-    public String receiveMessage() {
-        logger.info("Receive Message");
-        return newestMessage.get();
-    }
-
     //Getter & Setter
-    public String getPlayerToSchupfCard() {
-        return playerToSchupfCard;
-    }
-    public void setMsgCode(int code) {
-        this.msgCode.set(code);
-    }
-    public String getNewestMessage() { return this.newestMessage.get(); }
     public int getMsgCode() {
         return msgCode.get();
     }
