@@ -25,6 +25,7 @@ class PlayController {
     private Stage stage;
     private ArrayList<Card> receivedCards = new ArrayList<>();
     private Translator translator;
+    private int pushCounter = 1;
 
     /**
      * attaches listener to the stage-width to make the CardArea responsive
@@ -86,8 +87,10 @@ class PlayController {
         this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setOnAction(event ->
             this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.SmallTichu)));
 
-        /* sends SchupfenMsg to the server and removes card out of hand*/
+        /* sends SchupfenMsg to the server and removes card out of hand and disables button*/
         this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setOnAction(event -> {
+            Platform.runLater(() ->
+                    this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(true));
             ArrayList<Card> cards = getSelectedCards();
             this.clientModel.sendMessage(new SchupfenMsg(getPlayerName(), cards.get(0)));
             this.clientModel.getHand().remove(cards.get(0));
@@ -138,9 +141,6 @@ class PlayController {
             try { Thread.sleep(300); } catch (InterruptedException e) { e.printStackTrace(); }
             clientModel.getHand().addCards(receivedCards);
             clientModel.getHand().sort();
-            Platform.runLater(() ->
-                this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(true));
-
         }
     }
 
@@ -149,11 +149,13 @@ class PlayController {
      * @author Philipp
      */
     private void handleDemandSchupfenMsg() {
-        Platform.runLater(() -> {
-            this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(false);
-            this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn()
-                    .setText(this.translator.getString("controlarea.play"));
-        });
+        if (this.pushCounter == 1)
+            Platform.runLater(() -> this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn()
+                    .setText(this.translator.getString("controlarea.play")));
+        this.pushCounter++;
+
+        Platform.runLater(() ->
+            this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(false));
     }
 
     /**
@@ -181,11 +183,11 @@ class PlayController {
      * @author Philipp
      */
     private void handleAnnouncedTichuMsg() {
-        //gets the playerName and the tichuType of the current message
+        //gets the tichuType of the current message
         TichuType tichuType = this.clientModel.getMsgCodeProperty().getMessage().getTichuType();
 
         //if i have announced Tichu myself
-        if (this.clientModel.getPlayerName().equals(getPlayerName()) ) {
+        if (this.clientModel.getPlayerName().equals(getPlayerName())) {
             //if i have announced GrandTichu myself
             if (tichuType.equals(TichuType.GrandTichu)) {
                 this.clientModel.setGrandTichu(true);

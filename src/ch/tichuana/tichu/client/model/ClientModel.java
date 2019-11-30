@@ -89,6 +89,7 @@ public class ClientModel {
                         if (!this.playerName.equals(msg.getPlayerName())) {
                             this.msg.set(6);
                             this.msg.setNewestMsg(translator.getString("demandPush1")+msg.getPlayerName());
+                            this.msg.set(20);
                         } else {
                             sendMessage(new ReceivedMsg(true));
                             this.msg.set(7);
