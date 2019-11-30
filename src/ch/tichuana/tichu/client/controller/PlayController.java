@@ -42,9 +42,7 @@ class PlayController {
         this.gameView = gameView;
         this.stage = stage;
 
-        /*
-        computation of the negative spacing related to the stage size
-         */
+        /* computation of the negative spacing related to the stage size */
         this.stage.widthProperty().addListener((observable, oldVal, newVal) -> {
 
             HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea().getCardsLabels();
@@ -58,15 +56,11 @@ class PlayController {
             }
         });
 
-        /*
-        event-handler of the StringProperty to show the latest message on the console
-         */
+        /* event-handler of the StringProperty to show the latest message on the console */
         this.clientModel.getMsgCodeProperty().newestMsgProperty().addListener((observable, oldVal, newVal) ->
                 Platform.runLater(() -> this.gameView.getPlayView().getBottomView().setConsole(newVal)));
 
-        /*
-        handling of all messageTypes via specific handleMsg method
-         */
+        /* handling of all messageTypes via specific handleMsg method */
         this.clientModel.getMsgCodeProperty().addListener((obs, oldVal, newVal) -> {
 
             switch (newVal.intValue()) {
@@ -84,35 +78,23 @@ class PlayController {
             }
         });
 
-        /*
-        event-handler of the GrandTichu Button
-         */
-        this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setOnAction(event -> {
-            this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu));
-        });
+        /* sends GrandTichuMsg to the server */
+        this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setOnAction(event ->
+            this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu)));
 
-        /*
-        event-handler of the SmallTichu Button
-         */
-        this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setOnAction(event -> {
-            this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.SmallTichu));
-        });
+        /* sends SmallTichuMsg to the server */
+        this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setOnAction(event ->
+            this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.SmallTichu)));
 
-        /*
-        event-handler of the Schupfen Button
-         */
+        /* sends SchupfenMsg to the server and removes card out of hand*/
         this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setOnAction(event -> {
-
             ArrayList<Card> cards = getSelectedCards();
-            String player = this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
-            this.clientModel.sendMessage(new SchupfenMsg(player, cards.get(0)));
+            this.clientModel.sendMessage(new SchupfenMsg(getPlayerName(), cards.get(0)));
             this.clientModel.getHand().remove(cards.get(0));
             this.clientModel.getHand().sort();
         });
 
-        /*
-        event-handler of the multi-used Play/Pass Button
-         */
+        /* sends Tichu or DealMsg depending on MsgCode */
         this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setOnAction(event -> {
 
             int code = this.clientModel.getMsgCode();
@@ -125,9 +107,7 @@ class PlayController {
             }
         });
 
-        /*
-        disconnects client if stage is closed
-         */
+        /* disconnects client if stage is closed */
         this.gameView.getStage().setOnCloseRequest(event -> this.clientModel.disconnect());
     }
 
@@ -202,18 +182,17 @@ class PlayController {
      */
     private void handleAnnouncedTichuMsg() {
         //gets the playerName and the tichuType of the current message
-        String playerName = this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
         TichuType tichuType = this.clientModel.getMsgCodeProperty().getMessage().getTichuType();
 
         //if i have announced Tichu myself
-        if (this.clientModel.getPlayerName().equals(playerName) ) {
+        if (this.clientModel.getPlayerName().equals(getPlayerName()) ) {
             //if i have announced GrandTichu myself
             if (tichuType.equals(TichuType.GrandTichu)) {
                 this.clientModel.setGrandTichu(true);
             }
             //update TichuColumn and disable buttons again
             Platform.runLater(() -> {
-                this.gameView.getPlayView().getPlayArea().updateTichuColumn(playerName, tichuType);
+                this.gameView.getPlayView().getPlayArea().updateTichuColumn(getPlayerName(), tichuType);
                 this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setDisable(true);
                 this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setDisable(true);
                 this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(true);
@@ -222,7 +201,7 @@ class PlayController {
         } else {
             //just altering the TichuColumn
             Platform.runLater(() -> {
-                this.gameView.getPlayView().getPlayArea().updateTichuColumn(playerName, tichuType);
+                this.gameView.getPlayView().getPlayArea().updateTichuColumn(getPlayerName(), tichuType);
             });
         }
     }
@@ -295,7 +274,7 @@ class PlayController {
      */
     private ArrayList<Card> getSelectedCards() {
         HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea().getCardsLabels();
-        ArrayList<Card> selectedCards = new ArrayList<Card>();
+        ArrayList<Card> selectedCards = new ArrayList<>();
 
         for (Node cl : cardLabels.getChildren()) {
             CardLabel label = (CardLabel) cl;
@@ -305,5 +284,9 @@ class PlayController {
             }
         }
         return selectedCards;
+    }
+
+    private String getPlayerName() {
+        return this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
     }
 }
