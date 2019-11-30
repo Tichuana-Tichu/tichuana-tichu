@@ -104,12 +104,12 @@ public class PlayArea extends GridPane {
 	public void updateTichuColumn(String playerName, TichuType tichuType) {
 
 		Label tichuLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), 3);
-		if (tichuType.equals(TichuType.GrandTichu))
-			tichuLabel.setText(t.getString("GrandTichu"));
-		if (tichuType.equals(TichuType.SmallTichu))
-			tichuLabel.setText(t.getString("SmallTichu"));
-		else
-			tichuLabel.setText(t.getString("noTichu"));
+
+		switch (tichuType) {
+			case GrandTichu: tichuLabel.setText(t.getString("GrandTichu")); break;
+			case SmallTichu: tichuLabel.setText(t.getString("SmallTichu")); break;
+			case none: tichuLabel.setText(t.getString("noTichu")); break;
+		}
 	}
 
 	/**
