@@ -13,10 +13,10 @@ import javafx.scene.layout.Priority;
 
 public class PlayArea extends GridPane {
 
+	private ClientModel clientModel;
 	private Label[] playerLbl;
 	private Label[] tichuLbl;
 	private Label[] headings;
-	private ClientModel clientModel;
 
 	/**
 	 * creates a table-like, resizeable grid for information about the game-flow
@@ -45,7 +45,7 @@ public class PlayArea extends GridPane {
 
 		this.playerLbl = new Label[4];
 		for (int i = 0; i < playerLbl.length; i++) {
-			playerLbl[i] = new Label("Waiting for player...");
+			playerLbl[i] = new Label(translator.getString("initPlayerColumn"));
 		}
 
 		this.tichuLbl = new Label[4];

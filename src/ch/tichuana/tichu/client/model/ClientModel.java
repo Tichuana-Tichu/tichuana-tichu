@@ -36,7 +36,7 @@ public class ClientModel {
      */
     public void connect(String ipAddress, int port, String playerName, String password) {
         this.translator = ServiceLocator.getServiceLocator().getTranslator();
-        logger.info("Connect");
+        logger.info(playerName+" connecting...");
         this.playerName = playerName;
         this.closed = false;
         try {
@@ -50,9 +50,9 @@ public class ClientModel {
                     if (msg instanceof ConnectedMsg) {
                         if (msg.getStatus()) {
                             this.msg.set(1);
-                            this.msg.setNewestMsg("successfully connected to Server");
+                            this.msg.setNewestMsg(translator.getString("connection"));
                         } else
-                            this.msg.setNewestMsg("connection failed: wrong password");
+                            this.msg.setNewestMsg(translator.getString("connectionFailed"));
                     }
 
                     if (msg instanceof GameStartedMsg) {
@@ -60,20 +60,20 @@ public class ClientModel {
                         this.teamMate = msg.getTeamMate();
                         this.opponents = msg.getOpponents();
                         this.msg.set(2);
-                        this.msg.setNewestMsg("you successfully entered a game");
+                        this.msg.setNewestMsg(translator.getString("gameStarted"));
                     }
 
                     if (msg instanceof DealMsg) {
                         if (msg.getCards().size() == 8) {
                             this.hand = new Hand(msg.getCards());
                             this.msg.set(3);
-                            this.msg.setNewestMsg("your first eight cards, please announce grand tichu");
+                            this.msg.setNewestMsg(translator.getString("firstEightCards"));
                         } else {
                             this.hand.addCards(msg.getCards());
                             if (this.grandTichu)
-                                this.msg.setNewestMsg("you already announced, wait till schupfen");
+                                this.msg.setNewestMsg(translator.getString("grandTichuAnnounced"));
                             else
-                                this.msg.setNewestMsg("your remaining six cards, please announce small tichu");
+                                this.msg.setNewestMsg(translator.getString("lastSixCards"));
                             this.msg.set(5);
                         }
                     }
@@ -81,7 +81,6 @@ public class ClientModel {
                     if (msg instanceof AnnouncedTichuMsg) {
                         this.msg.setMessage(msg);
                         this.msg.set(4);
-                        this.msg.setNewestMsg(msg.getPlayerName()+" announced: "+msg.getTichuType());
                         this.msg.set(20);
                     }
 
@@ -89,18 +88,17 @@ public class ClientModel {
                         this.msg.setMessage(msg);
                         if (!this.playerName.equals(msg.getPlayerName())) {
                             this.msg.set(6);
-                            this.msg.setNewestMsg("please choose card for player: "+msg.getPlayerName());
+                            this.msg.setNewestMsg(translator.getString("demandPush1")+msg.getPlayerName());
                         } else {
                             sendMessage(new ReceivedMsg(true));
                             this.msg.set(7);
-                            this.msg.setNewestMsg("other players are now schupfing for you");
+                            this.msg.setNewestMsg(translator.getString("demandPush2"));
                         }
                     }
 
                     if (msg instanceof SchupfenMsg) {
                         this.msg.setMessage(msg);
                         this.msg.set(8);
-                        this.msg.setNewestMsg("received card from: "+msg.getPlayerName());
                         this.msg.set(20);
                     }
 
@@ -113,11 +111,10 @@ public class ClientModel {
                         this.opponentScore = msg.getOpponentScore();
                         this.msg.set(10);
                         if (!this.playerName.equals(msg.getNextPlayer())) {
-                            //this.nextPlayerName = msg.getNextPlayer();
                             sendMessage(new ReceivedMsg(true));
                         } else {
                             this.myTurn = true;
-                            this.msg.setNewestMsg("it is your turn "+msg.getNextPlayer());
+                            this.msg.setNewestMsg(translator.getString("yourTurn"));
                         }
                     }
                 }
@@ -138,7 +135,7 @@ public class ClientModel {
      * @author Philipp
      */
     public void disconnect() {
-        logger.info("Disconnect");
+        logger.info("Disconnecting...");
         this.closed = true;
 
         if(socket != null) {

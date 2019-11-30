@@ -115,9 +115,9 @@ class PlayController {
          */
         this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setOnAction(event -> {
 
-            if (this.clientModel.getMsgCode() == 3 || this.clientModel.getMsgCode() == 5)
+            int code = this.clientModel.getMsgCode();
+            if (code == 3 || code == 4 || code == 5 || code == 20)
                 this.clientModel.sendMessage(new TichuMsg(this.clientModel.getPlayerName(), TichuType.none));
-
             else {
                 ArrayList<Card> cards = getSelectedCards();
                 this.clientModel.sendMessage(new DealMsg(cards));
