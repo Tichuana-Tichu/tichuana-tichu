@@ -191,7 +191,7 @@ class PlayController {
             //automatically sends GrandTichu msg
         } else {
             try {
-                Thread.sleep(500); } catch (InterruptedException e) { e.printStackTrace(); }
+                Thread.sleep(300); } catch (InterruptedException e) { e.printStackTrace(); }
             this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu));
         }
     }
@@ -237,7 +237,7 @@ class PlayController {
         //sets 8 cards and enables Buttons to be able to announce tichu
         this.clientModel.getHand().sort();
         Platform.runLater(() -> {
-            this.stage.setWidth(stage.getWidth()-1);
+            this.stage.setWidth(stage.getWidth()-0.1);
             this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn()
                     .setText(translator.getString("controlarea.pass"));
             this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setDisable(false);
@@ -261,7 +261,7 @@ class PlayController {
     private void activateHand(Observable observable) {
         Platform.runLater(() -> {
             this.gameView.getPlayView().getBottomView().getCardArea().updateCardLabels();
-            this.stage.setWidth(this.stage.getWidth()-1);
+            this.stage.setWidth(this.stage.getWidth()-0.1);
             makeCardsClickable();
         });
     }
