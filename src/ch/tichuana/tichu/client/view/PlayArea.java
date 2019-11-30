@@ -14,9 +14,8 @@ import javafx.scene.layout.Priority;
 public class PlayArea extends GridPane {
 
 	private ClientModel clientModel;
+	private Translator t;
 	private Label[] playerLbl;
-	private Label[] tichuLbl;
-	private Label[] headings;
 
 	/**
 	 * creates a table-like, resizeable grid for information about the game-flow
@@ -26,15 +25,15 @@ public class PlayArea extends GridPane {
 	PlayArea(ClientModel clientModel) {
 
 		this.clientModel = clientModel;
-		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
-		this.headings = new Label[7];
-		headings[0] = new Label(translator.getString("name"));
-		headings[1] = new Label(translator.getString("team"));
-		headings[2] = new Label(translator.getString("hand"));
-		headings[3] = new Label(translator.getString("tichu"));
-		headings[4] = new Label(translator.getString("played"));
-		headings[5] = new Label(translator.getString("matchPoints"));
-		headings[6] = new Label(translator.getString("total"));
+		this.t = ServiceLocator.getServiceLocator().getTranslator();
+		Label[] headings = new Label[7];
+		headings[0] = new Label(t.getString("name"));
+		headings[1] = new Label(t.getString("team"));
+		headings[2] = new Label(t.getString("hand"));
+		headings[3] = new Label(t.getString("tichu"));
+		headings[4] = new Label(t.getString("played"));
+		headings[5] = new Label(t.getString("matchPoints"));
+		headings[6] = new Label(t.getString("total"));
 
 		for (int i = 0; i < headings.length; i++)	{
 			this.add(headings[i], i, 0);
@@ -45,10 +44,10 @@ public class PlayArea extends GridPane {
 
 		this.playerLbl = new Label[4];
 		for (int i = 0; i < playerLbl.length; i++) {
-			playerLbl[i] = new Label(translator.getString("initPlayerColumn"));
+			playerLbl[i] = new Label(t.getString("initPlayerColumn"));
 		}
 
-		this.tichuLbl = new Label[4];
+		Label[] tichuLbl = new Label[4];
 		for (int i = 0; i < tichuLbl.length; i++) {
 			tichuLbl[i] = new Label("");
 		}
@@ -105,7 +104,12 @@ public class PlayArea extends GridPane {
 	public void updateTichuColumn(String playerName, TichuType tichuType) {
 
 		Label tichuLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), 3);
-		tichuLabel.setText(tichuType.toString());
+		if (tichuType.equals(TichuType.GrandTichu))
+			tichuLabel.setText(t.getString("GrandTichu"));
+		if (tichuType.equals(TichuType.SmallTichu))
+			tichuLabel.setText(t.getString("SmallTichu"));
+		else
+			tichuLabel.setText(t.getString("noTichu"));
 	}
 
 	/**
