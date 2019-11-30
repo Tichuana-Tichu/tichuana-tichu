@@ -2,9 +2,11 @@ package ch.tichuana.tichu.client.model;
 
 import ch.tichuana.tichu.commons.message.Message;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 public class SimpleMessageProperty extends SimpleIntegerProperty {
 
+	private SimpleStringProperty newestMsg = new SimpleStringProperty();
 	private Message message;
 
 	/**
@@ -17,15 +19,20 @@ public class SimpleMessageProperty extends SimpleIntegerProperty {
 		super();
 	}
 
-	public SimpleMessageProperty(int value){
-		super(value);
-	}
-
+	//Getter & Setter
 	public Message getMessage() {
 		return message;
 	}
-
 	public void setMessage(Message message) {
 		this.message = message;
+	}
+	public String getNewestMsg() {
+		return newestMsg.get();
+	}
+	public SimpleStringProperty newestMsgProperty() {
+		return newestMsg;
+	}
+	public void setNewestMsg(String newestMsg) {
+		this.newestMsg.set(newestMsg);
 	}
 }

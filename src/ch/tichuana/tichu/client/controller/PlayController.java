@@ -61,7 +61,7 @@ class PlayController {
         /*
         event-handler of the StringProperty to show the latest message on the console
          */
-        this.clientModel.getNewestMessageProperty().addListener((observable, oldVal, newVal) ->
+        this.clientModel.getMsgCodeProperty().newestMsgProperty().addListener((observable, oldVal, newVal) ->
                 Platform.runLater(() -> this.gameView.getPlayView().getBottomView().setConsole(newVal)));
 
         /*

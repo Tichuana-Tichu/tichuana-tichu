@@ -39,7 +39,7 @@ public class LobbyController {
 
 		this.gameView.getLobbyView().getLoginBtn().setOnAction(this::login);
 
-		this.clientModel.getNewestMessageProperty().addListener((observable, oldValue, newValue) ->
+		this.clientModel.getMsgCodeProperty().newestMsgProperty().addListener((observable, oldValue, newValue) ->
 				Platform.runLater(() -> this.gameView.getLobbyView().setLoginStatus(newValue)));
 
 		this.clientModel.getMsgCodeProperty().addListener((obs, oldVal, newVal) -> {
@@ -62,9 +62,9 @@ public class LobbyController {
 		String ipAddress =ServiceLocator.getServiceLocator().getConfiguration().getProperty("ipAddress");
 
 		if (lv.getUserField().getText().isEmpty()) {
-			this.clientModel.setNewestMessage("user name field must not be empty");
+			this.clientModel.getMsgCodeProperty().setNewestMsg("user name field must not be empty");
 		} else if (lv.getPasswordField().getText().isEmpty()) {
-			this.clientModel.setNewestMessage("password field must not be empty");
+			this.clientModel.getMsgCodeProperty().setNewestMsg("password field must not be empty");
 		} else {
 			String playerName = lv.getUserField().getText();
 			String password = lv.getPasswordField().getText();
