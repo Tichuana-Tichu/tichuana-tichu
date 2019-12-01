@@ -106,13 +106,15 @@ public class ClientModel {
                     if (msg instanceof UpdateMsg) {
                         //handing out all cards from pushing to other Players
                         this.msg.set(9);
-
                         this.msg.setMessage(msg);
                         this.ownScore = msg.getOwnScore();
                         this.opponentScore = msg.getOpponentScore();
                         this.msg.set(10);
+
                         if (!this.playerName.equals(msg.getNextPlayer())) {
+                            this.msg.setNewestMsg(msg.getPlayerName()+" "+translator.getString("elsesTurn"));
                             sendMessage(new ReceivedMsg(true));
+
                         } else {
                             this.myTurn = true;
                             this.msg.setNewestMsg(translator.getString("yourTurn"));

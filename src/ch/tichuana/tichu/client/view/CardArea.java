@@ -4,57 +4,58 @@ import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.Rank;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
-public class CardArea extends VBox {
+import java.util.ArrayList;
 
-	private HBox cardsLabels;
+public class CardArea extends HBox {
+
 	private ClientModel clientModel;
 
-	public enum CardAreaType {Blank, Cards, Thumbnails;}
-
-    /**
-     * instantiates a new Card for each CardLabel
-     * instantiates HBox with all CardLabels in it
+	/**
 	 * @author Philipp
-     */
-	CardArea(ClientModel clientModel, CardAreaType cat, int cardCounter) {
+	 */
+	CardArea(ClientModel clientModel) {
 		this.clientModel = clientModel;
-		this.cardsLabels = new HBox();
-
-		if (cat.equals(CardAreaType.Blank)) {
-			for (int i = 0; i < 8; i++) {
-				CardLabel cardLabel = new CardLabel();
-				cardLabel.setBlankCard();
-				cardsLabels.getChildren().add(cardLabel);
-				cardsLabels.setSpacing(-140);
-			}
-
-		} else {
-
-			for (int i = 0; i < cardCounter; i++) {
-				CardLabel cardLabel = new CardLabel();
-				//TODO - exchange after testing with real cards from GameStartedMsg
-				cardLabel.setThumbnail(new Card(Rank.mahjong));
-				cardsLabels.getChildren().add(cardLabel);
-				cardsLabels.setSpacing(-10);
-			}
-		}
-		this.getChildren().add(this.cardsLabels);
 	}
 
+	/**
+	 *
+	 * @author Philipp
+	 */
+	public void updateBlankCards() {
+		for (int i = 0; i < 8; i++) {
+			CardLabel cardLabel = new CardLabel();
+			cardLabel.setBlankCard();
+			this.getChildren().add(cardLabel);
+			this.setSpacing(-140);
+		}
+	}
+
+	/**
+	 *
+	 * @author Philipp
+	 */
 	public void updateCardLabels() {
-		this.cardsLabels.getChildren().clear();
+		this.getChildren().clear();
 		for (Card c : this.clientModel.getHand().getCards()) {
 			CardLabel cl = new CardLabel();
 			cl.setCard(c);
-			this.cardsLabels.getChildren().add(cl);
-			cardsLabels.setSpacing(-140);
+			this.getChildren().add(cl);
+			this.setSpacing(-140);
 		}
 	}
 
-	//Getter
-	public HBox getCardsLabels() {
-		return this.cardsLabels;
+	/**
+	 *
+	 * @author Philipp
+	 * @param cards
+	 */
+	public void updateThumbnails(ArrayList<Card> cards) {
+		for (int i = 0; i < cards.size(); i++) {
+			CardLabel cardLabel = new CardLabel();
+			cardLabel.setThumbnail(new Card(Rank.mahjong));
+			this.getChildren().add(cardLabel);
+			this.setSpacing(-10);
+		}
 	}
 }

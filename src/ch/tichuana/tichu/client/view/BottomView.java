@@ -18,7 +18,8 @@ public class BottomView extends BorderPane {
 	 */
 	BottomView(ClientModel clientModel) {
 		this.controlArea = new ControlArea();
-		this.cardArea = new CardArea(clientModel, CardArea.CardAreaType.Blank, 8);
+		this.cardArea = new CardArea(clientModel);
+		this.cardArea.updateBlankCards();
 		this.console = new TextField();
 		this.console.setEditable(false);
 		this.console.setFocusTraversable(false);

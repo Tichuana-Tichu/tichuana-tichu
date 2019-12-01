@@ -46,7 +46,7 @@ class PlayController {
         /* computation of the negative spacing related to the stage size */
         this.stage.widthProperty().addListener((observable, oldVal, newVal) -> {
 
-            HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea().getCardsLabels();
+            HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea();
 
             if (oldVal.intValue() < newVal.intValue()) { //screen gets bigger
                 cardLabels.setSpacing(((this.stage.getWidth() - (newVal.floatValue() - this.stage.getWidth())) / 15)
@@ -107,6 +107,7 @@ class PlayController {
                 ArrayList<Card> cards = getSelectedCards();
                 this.clientModel.sendMessage(new DealMsg(cards));
                 this.clientModel.getHand().sort();
+                Platform.runLater(() -> this.gameView.getPlayView().getPlayArea().updatePlayedColumn(cards));
             }
         });
 
@@ -253,7 +254,7 @@ class PlayController {
      */
     private void makeCardsClickable() {
 
-        HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea().getCardsLabels();
+        HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea();
 
         for (Node cl : cardLabels.getChildren()) {
 
@@ -275,7 +276,7 @@ class PlayController {
      * @return
      */
     private ArrayList<Card> getSelectedCards() {
-        HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea().getCardsLabels();
+        HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea();
         ArrayList<Card> selectedCards = new ArrayList<>();
 
         for (Node cl : cardLabels.getChildren()) {

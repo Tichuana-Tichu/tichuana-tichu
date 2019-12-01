@@ -3,6 +3,7 @@ package ch.tichuana.tichu.client.view;
 import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
+import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -10,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+
+import java.util.ArrayList;
 
 public class PlayArea extends GridPane {
 
@@ -73,6 +76,10 @@ public class PlayArea extends GridPane {
 
 		this.add(new Separator(), 0, 9, 9, 1);
 
+		for (int i = 2; i < this.getColumnCount(); i+=2) {
+			this.getChildren().add((new CardArea(clientModel)));
+		}
+
 		this.maxWidth(6000);
 		this.maxHeight(6000);
 		this.setHgap(2);
@@ -109,6 +116,21 @@ public class PlayArea extends GridPane {
 			case GrandTichu: tichuLabel.setText(t.getString("GrandTichu")); break;
 			case SmallTichu: tichuLabel.setText(t.getString("SmallTichu")); break;
 			case none: tichuLabel.setText(t.getString("noTichu")); break;
+		}
+	}
+
+	/**
+	 *
+	 * @author Philipp
+	 * @param cards
+	 */
+	public void updatePlayedColumn(ArrayList<Card> cards) {
+		String player = this.clientModel.getPlayerName();
+
+		for (int i = 2; i < this.getColumnCount(); i+=2) {
+
+			CardArea cardArea = (CardArea) getNodeByRowColumnIndex(getPlayerRow(player), 4);
+			cardArea.updateThumbnails(cards);
 		}
 	}
 
@@ -161,13 +183,6 @@ public class PlayArea extends GridPane {
 	public void updateHandColumn() {
 		for (int i = 2; i < this.getColumnCount(); i+=2) {
 			this.add(new Label(""), 2, i);
-		}
-	}
-
-	public void updatePlayedColumn() {
-		for (int i = 2; i < this.getColumnCount(); i+=2) {
-			//TODO - Change after GUI-Testing to be able to add the real cards from the msg
-			this.add(new CardArea(clientModel, CardArea.CardAreaType.Thumbnails, 8), 4, i);
 		}
 	}
 
