@@ -12,6 +12,7 @@ public class CardArea extends HBox {
 	private ClientModel clientModel;
 
 	/**
+	 * contains all CardLabels, multi use for BottomView and PlayView
 	 * @author Philipp
 	 */
 	CardArea(ClientModel clientModel) {
@@ -19,7 +20,7 @@ public class CardArea extends HBox {
 	}
 
 	/**
-	 *
+	 * fills the HBox with blank CardLabels, for the start screen
 	 * @author Philipp
 	 */
 	public void updateBlankCards() {
@@ -32,7 +33,8 @@ public class CardArea extends HBox {
 	}
 
 	/**
-	 *
+	 * fills and updates the HBox with CardLabels, in the BottomView
+	 * depending on the current Hand
 	 * @author Philipp
 	 */
 	public void updateCardLabels() {
@@ -46,7 +48,8 @@ public class CardArea extends HBox {
 	}
 
 	/**
-	 *
+	 * fills and updates the HBox with Thumbnails in the PlayView
+	 * depending on the current moves
 	 * @author Philipp
 	 * @param cards
 	 */
