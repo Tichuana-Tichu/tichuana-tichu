@@ -109,9 +109,9 @@ public class ClientModel {
                         this.msg.setMessage(msg);
                         this.ownScore = msg.getOwnScore();
                         this.opponentScore = msg.getOpponentScore();
-                        this.msg.set(10);
 
-                        if (!this.playerName.equals(msg.getNextPlayer())) {
+
+                        if (!this.playerName.equals("1")) {//msg.getNextPlayer())) {
                             this.msg.setNewestMsg(msg.getPlayerName()+" "+translator.getString("elsesTurn"));
                             sendMessage(new ReceivedMsg(true));
 
@@ -119,6 +119,8 @@ public class ClientModel {
                             this.myTurn = true;
                             this.msg.setNewestMsg(translator.getString("yourTurn"));
                         }
+                        this.msg.set(10);
+                        this.msg.set(30);
                     }
                 }
             };

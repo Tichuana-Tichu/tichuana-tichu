@@ -107,7 +107,6 @@ class PlayController {
                 ArrayList<Card> cards = getSelectedCards();
                 this.clientModel.sendMessage(new DealMsg(cards));
                 this.clientModel.getHand().sort();
-                Platform.runLater(() -> this.gameView.getPlayView().getPlayArea().updatePlayedColumn(cards));
             }
         });
 
@@ -120,6 +119,11 @@ class PlayController {
      * @author Philipp
      */
     private void handleUpdateMsg() {
+        UpdateMsg msg = (UpdateMsg) this.clientModel.getMsgCodeProperty().getMessage();
+        if (!(msg.getCards() == null))
+            Platform.runLater(() ->
+                    this.gameView.getPlayView().getPlayArea().updatePlayedColumn("1", msg.getCards()));
+
         if (this.clientModel.isMyTurn()) {
             Platform.runLater(() ->
                 this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(false));

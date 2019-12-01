@@ -76,9 +76,10 @@ public class PlayArea extends GridPane {
 
 		this.add(new Separator(), 0, 9, 9, 1);
 
-		for (int i = 2; i < this.getColumnCount(); i+=2) {
-			this.getChildren().add((new CardArea(clientModel)));
-		}
+		this.add(new CardArea(clientModel), 4, 2);
+		this.add(new CardArea(clientModel), 4, 4);
+		this.add(new CardArea(clientModel), 4, 6);
+		this.add(new CardArea(clientModel), 4, 8);
 
 		this.maxWidth(6000);
 		this.maxHeight(6000);
@@ -124,14 +125,10 @@ public class PlayArea extends GridPane {
 	 * @author Philipp
 	 * @param cards
 	 */
-	public void updatePlayedColumn(ArrayList<Card> cards) {
-		String player = this.clientModel.getPlayerName();
+	public void updatePlayedColumn(String playerName, ArrayList<Card> cards) {
 
-		for (int i = 2; i < this.getColumnCount(); i+=2) {
-
-			CardArea cardArea = (CardArea) getNodeByRowColumnIndex(getPlayerRow(player), 4);
-			cardArea.updateThumbnails(cards);
-		}
+		CardArea cardArea = (CardArea) getNodeByRowColumnIndex(getPlayerRow(playerName), 4);
+		cardArea.updateThumbnails(cards);
 	}
 
 	/**
