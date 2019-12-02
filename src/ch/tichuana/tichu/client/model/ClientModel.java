@@ -116,6 +116,7 @@ public class ClientModel {
                         this.opponentScore = msg.getOpponentScore();
 
                         if (!this.playerName.equals(msg.getNextPlayer())) {
+                            this.myTurn = false;
                             this.msg.setNewestMsg(msg.getNextPlayer()+" "+translator.getString("elsesTurn"));
                             sendMessage(new ReceivedMsg(true));
                         } else {

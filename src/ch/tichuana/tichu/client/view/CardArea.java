@@ -54,6 +54,8 @@ public class CardArea extends HBox {
 	 * @param cards
 	 */
 	public void updateThumbnails(ArrayList<Card> cards) {
+		this.getChildren().clear();
+
 		for (Card card : cards) {
 			CardLabel cardLabel = new CardLabel();
 			cardLabel.setThumbnail(card);

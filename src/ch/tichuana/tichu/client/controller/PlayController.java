@@ -118,9 +118,10 @@ class PlayController {
      */
     private void handleUpdateMsg() {
         UpdateMsg msg = (UpdateMsg) this.clientModel.getMsgCodeProperty().getMessage();
-        if (!(msg.getCards() == null))
+        String lastPlayer = getLastPlayer(msg.getNextPlayer());
+        if (!(msg.getLastMove().isEmpty()))
             Platform.runLater(() ->
-                    this.gameView.getPlayView().getPlayArea().updatePlayedColumn(msg.getPlayerName(), msg.getCards()));
+                    this.gameView.getPlayView().getPlayArea().updatePlayedColumn(lastPlayer, msg.getLastMove()));
 
         if (this.clientModel.isMyTurn()) {
             Platform.runLater(() ->
@@ -292,5 +293,24 @@ class PlayController {
 
     private String getPlayerName() {
         return this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
+    }
+
+    private String getLastPlayer(String player) {
+        String lastPlayer = "";
+
+        if (player.equals(clientModel.getPlayerName()))
+            lastPlayer = clientModel.getOpponent(1);
+
+        if (player.equals(clientModel.getOpponent(0)))
+            lastPlayer = clientModel.getPlayerName();
+
+        if (player.equals(clientModel.getTeamMate()))
+            lastPlayer = clientModel.getOpponent(0);
+
+        if (player.equals(clientModel.getOpponent(1)))
+            lastPlayer = clientModel.getTeamMate();
+
+
+        return lastPlayer;
     }
 }

@@ -71,8 +71,8 @@ CardLabel:hover {
     -fx-effect: dropshadow(three-pass-box, rgb(69, 69, 70), 2, 0, 2, 2);
 }
 
-.thumbnails:hover {
-    -fx-effect: dropshadow(three-pass-box, rgb(27, 27, 28), 5, 0, 2, 2);
+PlayArea CardArea {
+    -fx-alignment: center;
 }
 
 .clickedLabel {
