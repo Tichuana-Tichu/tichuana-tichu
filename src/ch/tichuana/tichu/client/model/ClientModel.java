@@ -19,6 +19,7 @@ public class ClientModel {
     //variables for game-flow
     private boolean grandTichu = false;
     private boolean myTurn = false;
+    private boolean firstUpdate = true;
     private String[] opponents;
     private String playerName;
     private String teamMate;
@@ -105,20 +106,23 @@ public class ClientModel {
 
                     if (msg instanceof UpdateMsg) {
                         //handing out all cards from pushing to other Players
-                        this.msg.set(9);
+                        if (this.firstUpdate) {
+                            this.msg.set(9);
+                            this.firstUpdate = false;
+                        }
+
                         this.msg.setMessage(msg);
                         this.ownScore = msg.getOwnScore();
                         this.opponentScore = msg.getOpponentScore();
 
-
-                        if (!this.playerName.equals("1")) {//msg.getNextPlayer())) {
-                            this.msg.setNewestMsg(msg.getPlayerName()+" "+translator.getString("elsesTurn"));
+                        if (!this.playerName.equals(msg.getNextPlayer())) {
+                            this.msg.setNewestMsg(msg.getNextPlayer()+" "+translator.getString("elsesTurn"));
                             sendMessage(new ReceivedMsg(true));
-
                         } else {
                             this.myTurn = true;
                             this.msg.setNewestMsg(translator.getString("yourTurn"));
                         }
+
                         this.msg.set(10);
                         this.msg.set(30);
                     }

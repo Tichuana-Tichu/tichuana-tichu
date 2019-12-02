@@ -54,9 +54,9 @@ public class CardArea extends HBox {
 	 * @param cards
 	 */
 	public void updateThumbnails(ArrayList<Card> cards) {
-		for (int i = 0; i < cards.size(); i++) {
+		for (Card card : cards) {
 			CardLabel cardLabel = new CardLabel();
-			cardLabel.setThumbnail(new Card(Rank.mahjong));
+			cardLabel.setThumbnail(card);
 			this.getChildren().add(cardLabel);
 			this.setSpacing(-10);
 		}

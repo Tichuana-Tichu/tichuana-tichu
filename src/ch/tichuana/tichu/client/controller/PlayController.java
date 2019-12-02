@@ -5,10 +5,7 @@ import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.client.view.CardLabel;
 import ch.tichuana.tichu.client.view.GameView;
-import ch.tichuana.tichu.commons.message.DealMsg;
-import ch.tichuana.tichu.commons.message.SchupfenMsg;
-import ch.tichuana.tichu.commons.message.TichuMsg;
-import ch.tichuana.tichu.commons.message.UpdateMsg;
+import ch.tichuana.tichu.commons.message.*;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.application.Platform;
@@ -105,7 +102,7 @@ class PlayController {
                 this.clientModel.sendMessage(new TichuMsg(this.clientModel.getPlayerName(), TichuType.none));
             else {
                 ArrayList<Card> cards = getSelectedCards();
-                this.clientModel.sendMessage(new DealMsg(cards));
+                this.clientModel.sendMessage(new PlayMsg(cards));
                 this.clientModel.getHand().sort();
             }
         });
@@ -122,7 +119,7 @@ class PlayController {
         UpdateMsg msg = (UpdateMsg) this.clientModel.getMsgCodeProperty().getMessage();
         if (!(msg.getCards() == null))
             Platform.runLater(() ->
-                    this.gameView.getPlayView().getPlayArea().updatePlayedColumn("1", msg.getCards()));
+                    this.gameView.getPlayView().getPlayArea().updatePlayedColumn(msg.getPlayerName(), msg.getCards()));
 
         if (this.clientModel.isMyTurn()) {
             Platform.runLater(() ->
@@ -141,7 +138,6 @@ class PlayController {
 
         if (!finished)
             receivedCards.add(this.clientModel.getMsgCodeProperty().getMessage().getCard());
-
         else {
             try { Thread.sleep(300); } catch (InterruptedException e) { e.printStackTrace(); }
             clientModel.getHand().addCards(receivedCards);
