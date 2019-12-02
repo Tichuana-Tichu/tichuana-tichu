@@ -206,7 +206,7 @@ class MessageTest {
         array.add(c1.toJSON());
         array.add(c2.toJSON());
         json.put("msg", "UpdateMsg");
-        json.put("playerName", "player1");
+        json.put("nextPlayer", "player1");
         json.put("lastMove", array);
         json.put("opponentScore", 1);
         json.put("ownScore", 1);
@@ -231,7 +231,7 @@ class MessageTest {
         assertEquals(1,msg.getOwnScore());
         assertEquals(2,msg.getRemainingCardsByPlayerName("player1"));
         assertEquals(3,msg.getRemainingCardsByPlayerName("player2"));
-        //System.out.println("updatemsg: "+msg);
+        System.out.println("updatemsg: "+msg);
     }
 
 

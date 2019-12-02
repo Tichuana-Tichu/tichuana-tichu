@@ -169,7 +169,7 @@ public abstract class Message {
 				}
 				int opponentScore = (Integer) json.get("opponentScore");
 				int ownScore = (Integer) json.get("ownScore");
-				playerName = (String) json.get("playerName");
+				playerName = (String) json.get("nextPlayer");
 
 				JSONArray playerArray = (JSONArray) json.get("remainingCards");
 				int[] remainingCards = new int[4];
