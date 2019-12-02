@@ -7,6 +7,7 @@ import ch.tichuana.tichu.client.view.CardLabel;
 import ch.tichuana.tichu.client.view.GameView;
 import ch.tichuana.tichu.commons.message.*;
 import ch.tichuana.tichu.commons.models.Card;
+import ch.tichuana.tichu.commons.models.Combination;
 import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.application.Platform;
 import javafx.beans.Observable;
@@ -101,10 +102,19 @@ class PlayController {
             if (code == 3 || code == 4 || code == 5 || code == 20)
                 this.clientModel.sendMessage(new TichuMsg(this.clientModel.getPlayerName(), TichuType.none));
             else {
-                ArrayList<Card> cards = getSelectedCards();
-                this.clientModel.sendMessage(new PlayMsg(cards));
-                this.clientModel.getHand().removeCards(cards);
-                this.clientModel.getHand().sort();
+                ArrayList<Card> newMove = getSelectedCards();
+
+                if (!newMove.isEmpty()) {
+                    ArrayList<Card> oldMove = this.clientModel.getMsgCodeProperty().getMessage().getLastMove();
+
+                    if (Combination.isValidMove(oldMove, newMove)) {
+                        this.clientModel.sendMessage(new PlayMsg(newMove));
+                        this.clientModel.getHand().removeCards(newMove);
+                        this.clientModel.getHand().sort();
+                    }
+                } else {
+                    this.clientModel.sendMessage(new PlayMsg(newMove));
+                }
             }
         });
 
