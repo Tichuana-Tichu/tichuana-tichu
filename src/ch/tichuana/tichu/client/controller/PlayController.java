@@ -103,6 +103,7 @@ class PlayController {
             else {
                 ArrayList<Card> cards = getSelectedCards();
                 this.clientModel.sendMessage(new PlayMsg(cards));
+                this.clientModel.getHand().removeCards(cards);
                 this.clientModel.getHand().sort();
             }
         });

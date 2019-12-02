@@ -36,6 +36,15 @@ public class Hand {
 		this.cards.remove(c);
 	}
 
+	/**
+	 *
+	 * @author Philipp
+	 * @param cards
+	 */
+	public void removeCards(ArrayList<Card> cards) {
+		this.cards.removeAll(cards);
+	}
+
 	public void sort() {
 		Collections.sort(this.cards);
 	}
