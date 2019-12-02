@@ -132,6 +132,12 @@ class PlayController {
         if (!(msg.getLastMove().isEmpty()))
             Platform.runLater(() ->
                     this.gameView.getPlayView().getPlayArea().updatePlayedColumn(lastPlayer, msg.getLastMove()));
+        /*
+        else
+            Platform.runLater(() ->
+                    this.gameView.getPlayView().getPlayArea().updatePlayedColumn(lastPlayer));
+
+         */
 
         if (this.clientModel.isMyTurn()) {
             Platform.runLater(() ->

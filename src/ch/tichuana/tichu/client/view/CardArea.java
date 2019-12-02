@@ -63,4 +63,23 @@ public class CardArea extends HBox {
 			this.setSpacing(-10);
 		}
 	}
+
+	/**
+	 * 
+	 * @author Philipp
+	 */
+	public void deleteThumbnails() {
+		this.getChildren().clear();
+	}
+
+	/**
+	 *
+	 * @author Philipp
+	 */
+	public void initThumbnails() {
+		CardLabel cardLabel = new CardLabel();
+		cardLabel.setThumbnail(new Card(Rank.phoenix));
+		cardLabel.setId("initThumbnail");
+		this.getChildren().add(cardLabel);
+	}
 }
