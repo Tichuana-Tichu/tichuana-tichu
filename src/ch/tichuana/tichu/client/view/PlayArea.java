@@ -31,10 +31,10 @@ public class PlayArea extends GridPane {
 		this.t = ServiceLocator.getServiceLocator().getTranslator();
 		Label[] headings = new Label[7];
 		headings[0] = new Label(t.getString("name"));
-		headings[1] = new Label(t.getString("team"));
-		headings[2] = new Label(t.getString("hand"));
-		headings[3] = new Label(t.getString("tichu"));
-		headings[4] = new Label(t.getString("played"));
+		headings[1] = new Label(t.getString("hand"));
+		headings[2] = new Label(t.getString("tichu"));
+		headings[3] = new Label(t.getString("played"));
+		headings[4] = new Label(t.getString("team"));
 		headings[5] = new Label(t.getString("matchPoints"));
 		headings[6] = new Label(t.getString("total"));
 
@@ -54,14 +54,14 @@ public class PlayArea extends GridPane {
 		for (int i = 0; i < tichuLbl.length; i++) {
 			tichuLbl[i] = new Label("");
 		}
-		this.add(tichuLbl[0], 3, 2, 1, 1);
-		this.add(tichuLbl[1], 3, 4, 1, 1);
-		this.add(tichuLbl[2], 3, 6, 1, 1);
-		this.add(tichuLbl[3], 3, 8, 1, 1);
+		this.add(tichuLbl[0], 2, 2);
+		this.add(tichuLbl[1], 2, 4);
+		this.add(tichuLbl[2], 2, 6);
+		this.add(tichuLbl[3], 2, 8);
 
 		this.add(playerLbl[0], 0, 2, 1, 1);
 		GridPane.setVgrow(playerLbl[0], Priority.ALWAYS);
-		this.add(new Separator(), 0, 3, 5, 1);
+		this.add(new Separator(), 0, 3, 4, 1);
 
 		this.add(playerLbl[1], 0, 4, 1, 1);
 		GridPane.setVgrow(playerLbl[1], Priority.ALWAYS);
@@ -69,20 +69,27 @@ public class PlayArea extends GridPane {
 
 		this.add(playerLbl[2], 0, 6, 1, 1);
 		GridPane.setVgrow(playerLbl[2], Priority.ALWAYS);
-		this.add(new Separator(), 0, 7, 5, 1);
+		this.add(new Separator(), 0, 7, 4, 1);
 
 		this.add(playerLbl[3], 0, 8, 1, 1);
 		GridPane.setVgrow(playerLbl[3], Priority.ALWAYS);
 
 		this.add(new Separator(), 0, 9, 9, 1);
 
-		this.add(new CardArea(clientModel), 4, 2);
-		this.add(new CardArea(clientModel), 4, 4);
-		this.add(new CardArea(clientModel), 4, 6);
-		this.add(new CardArea(clientModel), 4, 8);
+		Label l1 = new Label("");
+		l1.getStyleClass().add("teamLabel");
+		Label l2 = new Label("");
+		l2.getStyleClass().add("teamLabel");
+		this.add(l1, 4, 2, 1, 3);
+		this.add(l2, 4, 6, 1, 3);
+
+		this.add(new CardArea(clientModel), 3, 2);
+		this.add(new CardArea(clientModel), 3, 4);
+		this.add(new CardArea(clientModel), 3, 6);
+		this.add(new CardArea(clientModel), 3, 8);
 
 		for (int i = 2; i < 9; i+=2) {
-			CardArea ca =  (CardArea) getNodeByRowColumnIndex(i, 4);
+			CardArea ca =  (CardArea) getNodeByRowColumnIndex(i, 3);
 			ca.initThumbnails();
 		}
 
@@ -108,6 +115,11 @@ public class PlayArea extends GridPane {
 		this.playerLbl[3].setText(clientModel.getOpponent(1));
 	}
 
+	public void updateTeamColumn(String playerName) {
+		Label teamLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), 4);
+		teamLabel.setText("1");
+	}
+
 	/**
 	 *
 	 * @author Philipp
@@ -116,7 +128,7 @@ public class PlayArea extends GridPane {
 	 */
 	public void updateTichuColumn(String playerName, TichuType tichuType) {
 
-		Label tichuLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), 3);
+		Label tichuLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), 2);
 
 		switch (tichuType) {
 			case GrandTichu: tichuLabel.setText(t.getString("GrandTichu")); break;
@@ -133,7 +145,7 @@ public class PlayArea extends GridPane {
 	 */
 	public void updatePlayedColumn(String playerName, ArrayList<Card> cards) {
 
-		CardArea cardArea = (CardArea) getNodeByRowColumnIndex(getPlayerRow(playerName), 4);
+		CardArea cardArea = (CardArea) getNodeByRowColumnIndex(getPlayerRow(playerName), 3);
 		cardArea.updateThumbnails(cards);
 	}
 
@@ -144,7 +156,7 @@ public class PlayArea extends GridPane {
 	 */
 	public void updatePlayedColumn(String playerName) {
 
-		CardArea cardArea = (CardArea) getNodeByRowColumnIndex(getPlayerRow(playerName), 4);
+		CardArea cardArea = (CardArea) getNodeByRowColumnIndex(getPlayerRow(playerName), 3);
 		cardArea.deleteThumbnails();
 	}
 
@@ -186,12 +198,6 @@ public class PlayArea extends GridPane {
 			}
 		}
 		return result;
-	}
-
-	public void updateTeamColumn() {
-		for (int i = 2; i < this.getColumnCount(); i+=2) {
-			this.add(new Label(""), 1, i);
-		}
 	}
 
 	public void updateHandColumn() {

@@ -83,6 +83,11 @@ PlayArea CardArea {
     -fx-border-color: #B20000;
 }
 
+.teamLabel {
+    -fx-label-padding: 20px;
+    -fx-font-size: 40px;
+}
+
 PlayArea {
     -fx-padding: 5px;
 }
