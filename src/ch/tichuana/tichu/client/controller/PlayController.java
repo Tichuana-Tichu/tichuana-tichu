@@ -307,10 +307,20 @@ class PlayController {
         return selectedCards;
     }
 
+    /**
+     * @author Philipp
+     * @return
+     */
     private String getPlayerName() {
         return this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
     }
 
+    /**
+     *
+     * @author Philipp
+     * @param player
+     * @return
+     */
     private String getLastPlayer(String player) {
         String lastPlayer = "";
 
@@ -325,7 +335,6 @@ class PlayController {
 
         if (player.equals(clientModel.getOpponent(1)))
             lastPlayer = clientModel.getTeamMate();
-
 
         return lastPlayer;
     }
