@@ -3,6 +3,7 @@ package ch.tichuana.tichu.client.view;
 import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
+import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -11,12 +12,13 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
+import java.util.ArrayList;
+
 public class PlayArea extends GridPane {
 
-	private Label[] playerLbl;
-	private Label[] tichuLbl;
-	private Label[] headings;
 	private ClientModel clientModel;
+	private Translator t;
+	private Label[] playerLbl;
 
 	/**
 	 * creates a table-like, resizeable grid for information about the game-flow
@@ -26,15 +28,16 @@ public class PlayArea extends GridPane {
 	PlayArea(ClientModel clientModel) {
 
 		this.clientModel = clientModel;
-		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
-		this.headings = new Label[7];
-		headings[0] = new Label(translator.getString("name"));
-		headings[1] = new Label(translator.getString("team"));
-		headings[2] = new Label(translator.getString("hand"));
-		headings[3] = new Label(translator.getString("tichu"));
-		headings[4] = new Label(translator.getString("played"));
-		headings[5] = new Label(translator.getString("matchPoints"));
-		headings[6] = new Label(translator.getString("total"));
+		this.t = ServiceLocator.getServiceLocator().getTranslator();
+		Label[] headings = new Label[7];
+		headings[0] = new Label(t.getString("name"));
+		headings[1] = new Label(t.getString("hand"));
+		headings[2] = new Label(t.getString("tichu"));
+		headings[3] = new Label(t.getString("played"));
+		headings[4] = new Label(t.getString("team"));
+		headings[4].setId("teamHeading");
+		headings[5] = new Label(t.getString("matchPoints"));
+		headings[6] = new Label(t.getString("total"));
 
 		for (int i = 0; i < headings.length; i++)	{
 			this.add(headings[i], i, 0);
@@ -45,21 +48,21 @@ public class PlayArea extends GridPane {
 
 		this.playerLbl = new Label[4];
 		for (int i = 0; i < playerLbl.length; i++) {
-			playerLbl[i] = new Label("Waiting for player...");
+			playerLbl[i] = new Label(t.getString("initPlayerColumn"));
 		}
 
-		this.tichuLbl = new Label[4];
+		Label[] tichuLbl = new Label[4];
 		for (int i = 0; i < tichuLbl.length; i++) {
 			tichuLbl[i] = new Label("");
 		}
-		this.add(tichuLbl[0], 3, 2, 1, 1);
-		this.add(tichuLbl[1], 3, 4, 1, 1);
-		this.add(tichuLbl[2], 3, 6, 1, 1);
-		this.add(tichuLbl[3], 3, 8, 1, 1);
+		this.add(tichuLbl[0], 2, 2);
+		this.add(tichuLbl[1], 2, 4);
+		this.add(tichuLbl[2], 2, 6);
+		this.add(tichuLbl[3], 2, 8);
 
 		this.add(playerLbl[0], 0, 2, 1, 1);
 		GridPane.setVgrow(playerLbl[0], Priority.ALWAYS);
-		this.add(new Separator(), 0, 3, 5, 1);
+		this.add(new Separator(), 0, 3, 4, 1);
 
 		this.add(playerLbl[1], 0, 4, 1, 1);
 		GridPane.setVgrow(playerLbl[1], Priority.ALWAYS);
@@ -67,12 +70,29 @@ public class PlayArea extends GridPane {
 
 		this.add(playerLbl[2], 0, 6, 1, 1);
 		GridPane.setVgrow(playerLbl[2], Priority.ALWAYS);
-		this.add(new Separator(), 0, 7, 5, 1);
+		this.add(new Separator(), 0, 7, 4, 1);
 
 		this.add(playerLbl[3], 0, 8, 1, 1);
 		GridPane.setVgrow(playerLbl[3], Priority.ALWAYS);
 
 		this.add(new Separator(), 0, 9, 9, 1);
+
+		Label l1 = new Label("your Team");
+		l1.getStyleClass().add("teamLabel");
+		Label l2 = new Label("Opponents");
+		l2.getStyleClass().add("teamLabel");
+		this.add(l1, 4, 2, 1, 3);
+		this.add(l2, 4, 6, 1, 3);
+
+		this.add(new CardArea(clientModel), 3, 2);
+		this.add(new CardArea(clientModel), 3, 4);
+		this.add(new CardArea(clientModel), 3, 6);
+		this.add(new CardArea(clientModel), 3, 8);
+
+		for (int i = 2; i < 9; i+=2) {
+			CardArea ca =  (CardArea) getNodeByRowColumnIndex(i, 3);
+			ca.initThumbnails();
+		}
 
 		this.maxWidth(6000);
 		this.maxHeight(6000);
@@ -104,8 +124,28 @@ public class PlayArea extends GridPane {
 	 */
 	public void updateTichuColumn(String playerName, TichuType tichuType) {
 
-		Label tichuLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), 3);
-		tichuLabel.setText(tichuType.toString());
+		Label tichuLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), 2);
+
+		switch (tichuType) {
+			case GrandTichu: tichuLabel.setText(t.getString("GrandTichu")); break;
+			case SmallTichu: tichuLabel.setText(t.getString("SmallTichu")); break;
+			case none: tichuLabel.setText(t.getString("noTichu")); break;
+		}
+	}
+
+	/**
+	 *
+	 * @author Philipp
+	 * @param cards
+	 * @param playerName
+	 */
+	public void updatePlayedColumn(String playerName, ArrayList<Card> cards) {
+		CardArea cardArea = (CardArea) getNodeByRowColumnIndex(getPlayerRow(playerName), 3);
+
+		if (!cards.isEmpty())
+			cardArea.updateThumbnails(cards);
+		else
+			cardArea.deleteThumbnails();
 	}
 
 	/**
@@ -148,22 +188,9 @@ public class PlayArea extends GridPane {
 		return result;
 	}
 
-	public void updateTeamColumn() {
-		for (int i = 2; i < this.getColumnCount(); i+=2) {
-			this.add(new Label(""), 1, i);
-		}
-	}
-
 	public void updateHandColumn() {
 		for (int i = 2; i < this.getColumnCount(); i+=2) {
 			this.add(new Label(""), 2, i);
-		}
-	}
-
-	public void updatePlayedColumn() {
-		for (int i = 2; i < this.getColumnCount(); i+=2) {
-			//TODO - Change after GUI-Testing to be able to add the real cards from the msg
-			this.add(new CardArea(clientModel, CardArea.CardAreaType.Thumbnails, 8), 4, i);
 		}
 	}
 

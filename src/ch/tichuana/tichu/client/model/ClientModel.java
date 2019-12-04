@@ -1,5 +1,7 @@
 package ch.tichuana.tichu.client.model;
 
+import ch.tichuana.tichu.client.services.ServiceLocator;
+import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.commons.message.*;
 import javafx.beans.property.SimpleStringProperty;
 import java.io.IOException;
@@ -8,18 +10,21 @@ import java.util.logging.Logger;
 
 public class ClientModel {
 
-    private SimpleStringProperty newestMessage = new SimpleStringProperty();
-    private SimpleMessageProperty msgCode = new SimpleMessageProperty();
-    private volatile boolean grandTichu = false;
-    private Socket socket;
-    private volatile boolean closed;
-    private String playerName;
-    private String nextPlayerName;
-    private String playerToSchupfCard;
+    //variables for communication
+    private SimpleMessageProperty msg = new SimpleMessageProperty();
     private Logger logger = Logger.getLogger("");
-
-    private String teamMate;
+    private Translator translator;
+    private volatile boolean closed;
+    private Socket socket;
+    //variables for game-flow
+    private boolean grandTichu = false;
+    private boolean myTurn = false;
+    private boolean firstUpdate = true;
     private String[] opponents;
+    private String playerName;
+    private String teamMate;
+    private int opponentScore;
+    private int ownScore;
     private Hand hand;
 
     /**
@@ -31,7 +36,8 @@ public class ClientModel {
      * @param password receiving from GUI
      */
     public void connect(String ipAddress, int port, String playerName, String password) {
-        logger.info("Connect");
+        this.translator = ServiceLocator.getServiceLocator().getTranslator();
+        logger.info(playerName+" connecting...");
         this.playerName = playerName;
         this.closed = false;
         try {
@@ -44,69 +50,82 @@ public class ClientModel {
 
                     if (msg instanceof ConnectedMsg) {
                         if (msg.getStatus()) {
-                            this.msgCode.set(1);
-                            newestMessage.set("successfully connected to Server");
+                            this.msg.set(1);
+                            this.msg.setNewestMsg(translator.getString("connection"));
                         } else
-                            newestMessage.set("connection failed: wrong password");
+                            this.msg.setNewestMsg(translator.getString("connectionFailed"));
                     }
 
                     if (msg instanceof GameStartedMsg) {
 
                         this.teamMate = msg.getTeamMate();
                         this.opponents = msg.getOpponents();
-                        this.msgCode.set(2);
-                        newestMessage.set("you successfully entered a game");
+                        this.msg.set(2);
+                        this.msg.setNewestMsg(translator.getString("gameStarted"));
                     }
 
                     if (msg instanceof DealMsg) {
                         if (msg.getCards().size() == 8) {
                             this.hand = new Hand(msg.getCards());
-                            this.msgCode.set(3);
-                            newestMessage.set("your first eight cards, please announce grand tichu");
+                            this.msg.set(3);
+                            this.msg.setNewestMsg(translator.getString("firstEightCards"));
                         } else {
                             this.hand.addCards(msg.getCards());
                             if (this.grandTichu)
-                                newestMessage.set("you already announced, wait till schupfen");
+                                this.msg.setNewestMsg(translator.getString("grandTichuAnnounced"));
                             else
-                                newestMessage.set("your remaining six cards, please announce small tichu");
-                            this.msgCode.set(5);
+                                this.msg.setNewestMsg(translator.getString("lastSixCards"));
+                            this.msg.set(5);
                         }
                     }
 
                     if (msg instanceof AnnouncedTichuMsg) {
-                        this.msgCode.setMessage(msg);
-                        this.msgCode.set(4);
-                        this.newestMessage.set(msg.getPlayerName()+" announced: "+msg.getTichuType());
-                        this.msgCode.set(10);
+                        this.msg.setMessage(msg);
+                        this.msg.set(4);
+                        this.msg.set(20);
                     }
 
                     if (msg instanceof DemandSchupfenMsg) {
-                        this.msgCode.set(6);
-                        this.msgCode.setMessage(msg);
+                        this.msg.setMessage(msg);
                         if (!this.playerName.equals(msg.getPlayerName())) {
-                            this.playerToSchupfCard = msg.getPlayerName();
-                            this.newestMessage.set("please choose card for player: "+msg.getPlayerName());
-                        } else
+                            this.msg.set(6);
+                            this.msg.setNewestMsg(translator.getString("demandPush1")+msg.getPlayerName());
+                            this.msg.set(20);
+                        } else {
                             sendMessage(new ReceivedMsg(true));
+                            this.msg.set(7);
+                            this.msg.setNewestMsg(translator.getString("demandPush2"));
+                        }
                     }
 
                     if (msg instanceof SchupfenMsg) {
-                        this.msgCode.setMessage(msg);
-                        this.msgCode.set(7);
-                        this.newestMessage.set("your card from the other players");
+                        this.msg.setMessage(msg);
+                        this.msg.set(8);
+                        this.msg.set(20);
                     }
 
                     if (msg instanceof UpdateMsg) {
-                        /*
-                        this.msgCode.set(8);
-                        if (!this.playerName.equals(msg.getNextPlayer())) {
-                            this.nextPlayerName = msg.getNextPlayer();
-                            sendMessage(new ReceivedMsg(true));
-                        } else {
-                            logger.info("it is your turn "+msg.getNextPlayer());
+                        //handing out all cards from pushing to other Players
+                        if (this.firstUpdate) {
+                            this.msg.set(9);
+                            this.firstUpdate = false;
                         }
 
-                         */
+                        this.msg.setMessage(msg);
+                        this.ownScore = msg.getOwnScore();
+                        this.opponentScore = msg.getOpponentScore();
+
+                        if (!this.playerName.equals(msg.getNextPlayer())) {
+                            this.myTurn = false;
+                            this.msg.setNewestMsg(msg.getNextPlayer()+" "+translator.getString("elsesTurn"));
+                            sendMessage(new ReceivedMsg(true));
+                        } else {
+                            this.myTurn = true;
+                            this.msg.setNewestMsg(translator.getString("yourTurn"));
+                        }
+
+                        this.msg.set(10);
+                        this.msg.set(30);
                     }
                 }
             };
@@ -126,7 +145,7 @@ public class ClientModel {
      * @author Philipp
      */
     public void disconnect() {
-        logger.info("Disconnect");
+        logger.info("Disconnecting...");
         this.closed = true;
 
         if(socket != null) {
@@ -145,31 +164,12 @@ public class ClientModel {
      */
     public void sendMessage(Message message) { message.send(this.socket); }
 
-    //TODO - needed for broadcasts or not?
-    public String receiveMessage() {
-        logger.info("Receive Message");
-        return newestMessage.get();
-    }
-
     //Getter & Setter
-    public String getPlayerToSchupfCard() {
-        return playerToSchupfCard;
-    }
-    public void setMsgCode(int code) {
-        this.msgCode.set(code);
-    }
-    public String getNewestMessage() { return this.newestMessage.get(); }
     public int getMsgCode() {
-        return msgCode.get();
+        return this.msg.get();
     }
     public SimpleMessageProperty getMsgCodeProperty() {
-        return msgCode;
-    }
-    public SimpleStringProperty getNewestMessageProperty() {
-        return newestMessage;
-    }
-    public void setNewestMessage(String message) {
-        this.newestMessage.set(message);
+        return this.msg;
     }
     public String getTeamMate() {
         return teamMate;
@@ -188,5 +188,14 @@ public class ClientModel {
     }
     public void setGrandTichu(boolean grandTichu) {
         this.grandTichu = grandTichu;
+    }
+    public boolean isMyTurn() {
+        return myTurn;
+    }
+    public int getOwnScore() {
+        return ownScore;
+    }
+    public int getOpponentScore() {
+        return opponentScore;
     }
 }
