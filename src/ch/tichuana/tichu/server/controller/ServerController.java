@@ -106,6 +106,7 @@ public class ServerController {
 	 * @author Chrisitan
 	 */
 	private void demandSchupfen(){
+		try{Thread.sleep(300);}catch (Exception e){e.printStackTrace();};
 		Player p = serverModel.getGame().getNextPlayer();
 		DemandSchupfenMsg msg = new DemandSchupfenMsg(p.getPlayerName());
 		serverModel.broadcast(msg);
