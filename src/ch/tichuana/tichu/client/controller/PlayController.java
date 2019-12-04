@@ -133,8 +133,11 @@ class PlayController {
         String lastPlayer = getLastPlayer(msg.getNextPlayer());
         PlayView pv = this.gameView.getPlayView();
 
-        if (!(msg.getLastMove().isEmpty()))
-            Platform.runLater(() -> pv.getPlayArea().updatePlayedColumn(lastPlayer, msg.getLastMove()));
+        if (!msg.getLastMove().isEmpty())
+            Platform.runLater(() -> {
+                pv.getPlayArea().updatePlayedColumn(lastPlayer, msg.getLastMove());
+                pv.getPlayArea().updateHandColumn(lastPlayer, msg.getLastMove().size());
+            });
 
         if (this.clientModel.isMyTurn())
             Platform.runLater(() -> pv.getBottomView().getControlArea().getPlayBtn().setDisable(false));
