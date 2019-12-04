@@ -3,6 +3,7 @@ package ch.tichuana.tichu.commons.test;
 import ch.tichuana.tichu.commons.message.DealMsg;
 import ch.tichuana.tichu.commons.message.Message;
 import ch.tichuana.tichu.commons.message.MessageType;
+import ch.tichuana.tichu.commons.message.UpdateMsg;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.Rank;
 import ch.tichuana.tichu.commons.models.Suit;
@@ -182,7 +183,7 @@ class MessageTest {
         Card c1 = new Card(Suit.Jade, Rank.Ace);
         Card c2 = new Card(Suit.Swords, Rank.Ace);
         Card c3 = new Card(Suit.Swords, Rank.five);
-        array.add(c1.toJSON());
+        array.add(c1);
         array.add(c2.toJSON());
         json.put("msg", "PlayMsg");
         json.put("cards", array);
@@ -221,6 +222,17 @@ class MessageTest {
         }
 
         json.put("remainingCards",playerArray);
+
+        ArrayList<Card> move = new ArrayList<>();
+        move.add(c1);
+        move.add(c2);
+        UpdateMsg upmsg = new UpdateMsg("player1",move,0,0,new String[]{"player1","player2","3","4"}, new int[]{14,14,14,14});
+        assertTrue(upmsg.getLastMove().contains(c1));
+
+
+        Message msg2 = Message.parseMessage(json);
+        assertTrue(msg2.getLastMove().contains(c1));
+
 
         Message msg = Message.parseMessage(json);
         assertEquals(MessageType.UpdateMsg, msg.getMsgType());
