@@ -17,7 +17,7 @@ public class Match {
 	private ServerModel serverModel;
 	static int MIN_PLAYER = 2;
 	private Logger logger = Logger.getLogger("");
-	private Stich stich = null;
+	private Trick trick = null;
 
 	public Match(ServerModel serverModel) {
 		this.serverModel = serverModel;
@@ -30,14 +30,15 @@ public class Match {
 	 * @atuhor Christian
 	 */
 	public void start(){
-		this.stich = new Stich(this.serverModel);
+		this.trick = new Trick(this.serverModel);
 		for (Player p : serverModel.getGame().getPlayersInOrder()){
 			if (p.getHand().contains(new Card(Rank.mahjong))){
 				// the player with the mahjong card will begin the match. So we have to set currentPlayer in Game
 				// to the players index-1. this way getNextPlayer will return him when called.
 				serverModel.getGame().setCurrentPlayer(
 						Arrays.asList(serverModel.getGame().getPlayersInOrder()).indexOf(p));
-				UpdateMsg msg = new UpdateMsg(p.getPlayerName(), new ArrayList<Card>(),0,0);
+				UpdateMsg msg = new UpdateMsg(p.getPlayerName(), new ArrayList<Card>(),0,0,
+						getPlayerNames(), getRemainingCards());
 				serverModel.broadcast(msg);
 				break;
 			}
@@ -101,13 +102,13 @@ public class Match {
 	}
 
 	/**
-	 * Tells the current Stich to update with new move. Will add points to teams if the old is won and create new Stich
+	 * Tells the current Trick to update with new move. Will add points to teams if the old is won and create new Trick
 	 * @atuhor Christian
 	 * @param messageProperty
 	 */
 	public void handleUpdate(SimpleMessageProperty messageProperty) {
 		Player player = messageProperty.getPlayer();
-		this.stich.update(player, messageProperty.getMessage().getCards());
+		this.trick.update(player, messageProperty.getMessage().getCards());
 
 		// if the player has no more cards, he is done for this match
 		if (player.getHand().isEmpty()) {
@@ -116,20 +117,19 @@ public class Match {
 
 		// if a team is done we start a new match
 		if (isTeamDone()) {
-			//TODO: What to do with the played cards on the table?
 			evaluateFinalMove();
 			serverModel.getGame().startMatch();
 		} else {
 
-			if (this.stich.isWon()) {
-				Team team = serverModel.getGame().getTeamByMember(this.stich.getCurrentWinner());
-				team.addPoints(this.stich.getScore());
+			if (this.trick.isWon()) {
+				// add trick to winning player
+				this.trick.getCurrentWinner().addTrick(this.trick);
 
 				// set currentPlayer to the index of this player-1, so getNextPlayer() will return this player
-				int index = Arrays.asList(serverModel.getGame().getPlayersInOrder()).indexOf(stich.getCurrentWinner());
+				int index = Arrays.asList(serverModel.getGame().getPlayersInOrder()).indexOf(trick.getCurrentWinner());
 				serverModel.getGame().setCurrentPlayer(index - 1);
 
-				this.stich = new Stich(serverModel);
+				this.trick = new Trick(serverModel);
 			}
 
 			Team[] teams = serverModel.getGame().getTeams();
@@ -143,8 +143,9 @@ public class Match {
 			for (int i = 0; i < teams.length; i++) {
 				UpdateMsg msg = new UpdateMsg(
 						nextPlayer.getPlayerName(),
-						this.stich.getLastMove(),
-						teams[(i + 1) % 2].getCurrentScore(), teams[i].getCurrentScore());
+						this.trick.getLastMove(),
+						teams[(i + 1) % 2].getCurrentScore(), teams[i].getCurrentScore(),
+						getPlayerNames(),getRemainingCards());
 				for (Player p : teams[i].getPlayers()) {
 					p.sendMessage(msg);
 				}
@@ -158,15 +159,36 @@ public class Match {
 	 */
 	public void evaluateFinalMove(){
 		Team loosingTeam;
+
+        // this last trick is now over. all of its points will be given to the winners team
+        this.trick.getCurrentWinner().addTrick(this.trick);
+
 		for (Player p : serverModel.getGame().getPlayersInOrder()) {
+
 			// when the players hand isn't empty, his cards points will be given to the opposing team
 			if (!p.getHand().isEmpty()){
+
+				// score of tricks won will be given to the winners team
+				Team winnersTeam = serverModel.getGame().getTeamByMember(trick.getCurrentWinner());
+				for (Trick t : p.getTricksWon()){
+					winnersTeam.addPoints(t.getScore());
+				}
+				// remove all tricks from looser
+				p.getTricksWon().clear();
+
+				// score of card in hand will be given to opposing team
 				loosingTeam = serverModel.getGame().getTeamByMember(p);
 				int score = 0;
 				for (Card c : p.getHand()) {
 					score += c.getScoreValue();
 				}
 				serverModel.getGame().getOpposingTeam(loosingTeam).addPoints(score);
+			} else {
+				// get all the score of all the players tricks and add it to the teams points
+				Team team = serverModel.getGame().getTeamByMember(p);
+				for (Trick t : p.getTricksWon()){
+					team.addPoints(t.getScore());
+				}
 			}
 		}
 	}
@@ -194,6 +216,22 @@ public class Match {
 	private synchronized int getUniqueID() {
 		int uniqueID = 0;
 		return uniqueID++;
+	}
+
+	public String[] getPlayerNames(){
+		String[] names = new String[4];
+		for(int i = 0; i < serverModel.getGame().getPlayersInOrder().length; i++){
+			names[i] = serverModel.getGame().getPlayersInOrder()[i].getPlayerName();
+		}
+		return names;
+	}
+
+	public int[] getRemainingCards(){
+		int[] remainingCards = new int[4];
+		for(int i = 0; i < serverModel.getGame().getPlayersInOrder().length; i++){
+			remainingCards[i] = serverModel.getGame().getPlayersInOrder()[i].getHand().size();
+		}
+		return remainingCards;
 	}
 
 	//Getter & Setter

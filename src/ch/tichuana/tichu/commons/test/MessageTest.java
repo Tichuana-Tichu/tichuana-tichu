@@ -3,6 +3,7 @@ package ch.tichuana.tichu.commons.test;
 import ch.tichuana.tichu.commons.message.DealMsg;
 import ch.tichuana.tichu.commons.message.Message;
 import ch.tichuana.tichu.commons.message.MessageType;
+import ch.tichuana.tichu.commons.message.UpdateMsg;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.Rank;
 import ch.tichuana.tichu.commons.models.Suit;
@@ -182,7 +183,7 @@ class MessageTest {
         Card c1 = new Card(Suit.Jade, Rank.Ace);
         Card c2 = new Card(Suit.Swords, Rank.Ace);
         Card c3 = new Card(Suit.Swords, Rank.five);
-        array.add(c1.toJSON());
+        array.add(c1);
         array.add(c2.toJSON());
         json.put("msg", "PlayMsg");
         json.put("cards", array);
@@ -200,15 +201,39 @@ class MessageTest {
     public void testUpdateMsg(){
         JSONObject json = new JSONObject();
         JSONArray array = new JSONArray();
+        JSONArray playerArray = new JSONArray();
         Card c1 = new Card(Suit.Jade, Rank.Ace);
         Card c2 = new Card(Suit.Swords, Rank.Ace);
         array.add(c1.toJSON());
         array.add(c2.toJSON());
         json.put("msg", "UpdateMsg");
-        json.put("playerName", "player1");
+        json.put("nextPlayer", "player1");
         json.put("lastMove", array);
         json.put("opponentScore", 1);
         json.put("ownScore", 1);
+
+        JSONObject player;
+
+        for (int i=0; i<4; i++){
+            player = new JSONObject();
+            player.put("name", "player"+i);
+            player.put("number", 1+i);
+            playerArray.add(player);
+        }
+
+        json.put("remainingCards",playerArray);
+
+        ArrayList<Card> move = new ArrayList<>();
+        move.add(c1);
+        move.add(c2);
+        UpdateMsg upmsg = new UpdateMsg("player1",move,0,0,new String[]{"player1","player2","3","4"}, new int[]{14,14,14,14});
+        assertTrue(upmsg.getLastMove().contains(c1));
+
+
+        Message msg2 = Message.parseMessage(json);
+        assertTrue(msg2.getLastMove().contains(c1));
+
+
         Message msg = Message.parseMessage(json);
         assertEquals(MessageType.UpdateMsg, msg.getMsgType());
         assertTrue(msg.getLastMove().contains(c1));
@@ -216,7 +241,9 @@ class MessageTest {
         assertEquals("player1", msg.getNextPlayer());
         assertEquals(1,msg.getOpponentScore());
         assertEquals(1,msg.getOwnScore());
-        //System.out.println("updatemsg: "+msg);
+        assertEquals(2,msg.getRemainingCardsByPlayerName("player1"));
+        assertEquals(3,msg.getRemainingCardsByPlayerName("player2"));
+        System.out.println("updatemsg: "+msg);
     }
 
 
