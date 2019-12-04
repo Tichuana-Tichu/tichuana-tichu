@@ -85,7 +85,10 @@ PlayArea CardArea {
 
 .teamLabel {
     -fx-label-padding: 20px;
-    -fx-font-size: 40px;
+}
+
+#teamHeading {
+    -fx-label-padding: 0px 0px 0px 20px;
 }
 
 PlayArea {

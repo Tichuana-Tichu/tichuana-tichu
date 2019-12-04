@@ -35,6 +35,7 @@ public class PlayArea extends GridPane {
 		headings[2] = new Label(t.getString("tichu"));
 		headings[3] = new Label(t.getString("played"));
 		headings[4] = new Label(t.getString("team"));
+		headings[4].setId("teamHeading");
 		headings[5] = new Label(t.getString("matchPoints"));
 		headings[6] = new Label(t.getString("total"));
 
@@ -76,9 +77,9 @@ public class PlayArea extends GridPane {
 
 		this.add(new Separator(), 0, 9, 9, 1);
 
-		Label l1 = new Label("");
+		Label l1 = new Label("your Team");
 		l1.getStyleClass().add("teamLabel");
-		Label l2 = new Label("");
+		Label l2 = new Label("Opponents");
 		l2.getStyleClass().add("teamLabel");
 		this.add(l1, 4, 2, 1, 3);
 		this.add(l2, 4, 6, 1, 3);
@@ -113,11 +114,6 @@ public class PlayArea extends GridPane {
 		this.playerLbl[1].setText(clientModel.getTeamMate());
 		this.playerLbl[2].setText(clientModel.getOpponent(0));
 		this.playerLbl[3].setText(clientModel.getOpponent(1));
-	}
-
-	public void updateTeamColumn(String playerName) {
-		Label teamLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), 4);
-		teamLabel.setText("1");
 	}
 
 	/**
