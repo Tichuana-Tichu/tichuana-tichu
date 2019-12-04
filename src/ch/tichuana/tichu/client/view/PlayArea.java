@@ -140,20 +140,12 @@ public class PlayArea extends GridPane {
 	 * @param playerName
 	 */
 	public void updatePlayedColumn(String playerName, ArrayList<Card> cards) {
-
 		CardArea cardArea = (CardArea) getNodeByRowColumnIndex(getPlayerRow(playerName), 3);
-		cardArea.updateThumbnails(cards);
-	}
 
-	/**
-	 *
-	 * @author Philipp
-	 * @param playerName
-	 */
-	public void updatePlayedColumn(String playerName) {
-
-		CardArea cardArea = (CardArea) getNodeByRowColumnIndex(getPlayerRow(playerName), 3);
-		cardArea.deleteThumbnails();
+		if (!cards.isEmpty())
+			cardArea.updateThumbnails(cards);
+		else
+			cardArea.deleteThumbnails();
 	}
 
 	/**
