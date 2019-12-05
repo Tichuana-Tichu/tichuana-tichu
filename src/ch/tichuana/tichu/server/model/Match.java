@@ -143,7 +143,7 @@ public class Match {
 			for (int i = 0; i < teams.length; i++) {
 				UpdateMsg msg = new UpdateMsg(
 						nextPlayer.getPlayerName(),
-						this.trick.getLastMove(),
+						messageProperty.getMessage().getCards(), //was: last valid move, now: last move even when empty
 						teams[(i + 1) % 2].getCurrentScore(), teams[i].getCurrentScore(),
 						getPlayerNames(),getRemainingCards());
 				for (Player p : teams[i].getPlayers()) {
