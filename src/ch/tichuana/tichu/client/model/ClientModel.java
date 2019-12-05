@@ -57,7 +57,9 @@ public class ClientModel {
                     }
 
                     if (msg instanceof GameStartedMsg) {
-
+                        this.grandTichu = false;
+                        this.firstUpdate = true;
+                        this.myTurn = false;
                         this.teamMate = msg.getTeamMate();
                         this.opponents = msg.getOpponents();
                         this.msg.set(2);

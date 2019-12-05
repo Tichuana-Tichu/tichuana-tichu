@@ -77,10 +77,10 @@ public class PlayArea extends GridPane {
 
 		this.add(new Separator(), 0, 9, 9, 1);
 
-		this.add(new Label("14"), 1, 2);
-		this.add(new Label("14"), 1, 4);
-		this.add(new Label("14"), 1, 6);
-		this.add(new Label("14"), 1, 8);
+		this.add(new Label(""), 1, 2);
+		this.add(new Label(""), 1, 4);
+		this.add(new Label(""), 1, 6);
+		this.add(new Label(""), 1, 8);
 
 		Label l1 = new Label("your Team");
 		l1.getStyleClass().add("teamLabel");
@@ -142,6 +142,17 @@ public class PlayArea extends GridPane {
 			handLabel.setText("0");
 		else
 			handLabel.setText(String.valueOf(handSize-playedCards));
+	}
+
+	public void initHandColumn(int cards) {
+		Label h1 = (Label) getNodeByRowColumnIndex(2, 1);
+		Label h2 = (Label) getNodeByRowColumnIndex(4, 1);
+		Label h3 = (Label) getNodeByRowColumnIndex(6, 1);
+		Label h4 = (Label) getNodeByRowColumnIndex(8, 1);
+		h1.setText(String.valueOf(cards));
+		h2.setText(String.valueOf(cards));
+		h3.setText(String.valueOf(cards));
+		h4.setText(String.valueOf(cards));
 	}
 
 	/**
