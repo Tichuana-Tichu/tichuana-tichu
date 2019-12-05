@@ -1,10 +1,10 @@
 package ch.tichuana.tichu.client.controller;
 
 import ch.tichuana.tichu.client.model.ClientModel;
+import ch.tichuana.tichu.client.model.SimpleMessageProperty;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
-import ch.tichuana.tichu.client.view.CardLabel;
-import ch.tichuana.tichu.client.view.GameView;
+import ch.tichuana.tichu.client.view.*;
 import ch.tichuana.tichu.commons.message.*;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.Combination;
@@ -55,12 +55,15 @@ class PlayController {
             }
         });
 
+        ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
+        SimpleMessageProperty smp = this.clientModel.getMsgCodeProperty();
+
         /* event-handler of the StringProperty to show the latest message on the console */
-        this.clientModel.getMsgCodeProperty().newestMsgProperty().addListener((observable, oldVal, newVal) ->
+        smp.newestMsgProperty().addListener((observable, oldVal, newVal) ->
                 Platform.runLater(() -> this.gameView.getPlayView().getBottomView().setConsole(newVal)));
 
         /* handling of all messageTypes via specific handleMsg method */
-        this.clientModel.getMsgCodeProperty().addListener((obs, oldVal, newVal) -> {
+        smp.addListener((obs, oldVal, newVal) -> {
 
             switch (newVal.intValue()) {
                 case 2: handleGameStartedMsg(); break;
@@ -68,9 +71,7 @@ class PlayController {
                 case 4: handleAnnouncedTichuMsg(); break;
                 case 5: handleSecondDealMsg(); break;
                 case 6: handleDemandSchupfenMsg(); break;
-                case 7: Platform.runLater(() ->
-                        this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(true));
-                        break;
+                case 7: Platform.runLater(() -> ca.getSchupfenBtn().setDisable(true)); break;
                 case 8: handleSchupfenMsg(false); break;
                 case 9: handleSchupfenMsg(true); break;
                 case 10: handleUpdateMsg(); break;
@@ -78,32 +79,33 @@ class PlayController {
         });
 
         /* sends GrandTichuMsg to the server */
-        this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setOnAction(event ->
-            this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu)));
+        ca.getGrandTichuBtn().setOnAction(event ->
+                clientModel.sendMessage(new TichuMsg(this.clientModel.getPlayerName(), TichuType.GrandTichu)));
 
         /* sends SmallTichuMsg to the server */
-        this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setOnAction(event ->
-            this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.SmallTichu)));
+        ca.getSmallTichuBtn().setOnAction(event ->
+                clientModel.sendMessage(new TichuMsg(this.clientModel.getPlayerName(), TichuType.SmallTichu)));
 
         /* sends SchupfenMsg to the server and removes card out of hand and disables button*/
-        this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setOnAction(event -> {
-            Platform.runLater(() ->
-                    this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(true));
+        ca.getSchupfenBtn().setOnAction(event -> {
+            Platform.runLater(() -> ca.getSchupfenBtn().setDisable(true));
             ArrayList<Card> cards = getSelectedCards();
-            this.clientModel.sendMessage(new SchupfenMsg(getPlayerName(), cards.get(0)));
-            this.clientModel.getHand().remove(cards.get(0));
-            this.clientModel.getHand().sort();
+            if (!cards.isEmpty()) {
+                this.clientModel.sendMessage(new SchupfenMsg(getPlayerName(), cards.get(0)));
+                this.clientModel.getHand().remove(cards.get(0));
+                this.clientModel.getHand().sort();
+            } else
+                Platform.runLater(() -> ca.getSchupfenBtn().setDisable(false));
         });
 
         /* sends Tichu or DealMsg depending on MsgCode */
-        this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setOnAction(event -> {
-
+        ca.getPlayBtn().setOnAction(event -> {
             int code = this.clientModel.getMsgCode();
             if (code == 3 || code == 4 || code == 5 || code == 20)
                 this.clientModel.sendMessage(new TichuMsg(this.clientModel.getPlayerName(), TichuType.none));
+
             else {
                 ArrayList<Card> newMove = getSelectedCards();
-
                 if (!newMove.isEmpty()) {
                     ArrayList<Card> oldMove = this.clientModel.getMsgCodeProperty().getMessage().getLastMove();
 
@@ -129,17 +131,18 @@ class PlayController {
     private void handleUpdateMsg() {
         UpdateMsg msg = (UpdateMsg) this.clientModel.getMsgCodeProperty().getMessage();
         String lastPlayer = getLastPlayer(msg.getNextPlayer());
-        if (!(msg.getLastMove().isEmpty()))
-            Platform.runLater(() ->
-                    this.gameView.getPlayView().getPlayArea().updatePlayedColumn(lastPlayer, msg.getLastMove()));
+        PlayView pv = this.gameView.getPlayView();
 
-        if (this.clientModel.isMyTurn()) {
-            Platform.runLater(() ->
-                this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(false));
-        } else {
-            Platform.runLater(() ->
-                    this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(true));
-        }
+        if (!msg.getLastMove().isEmpty())
+            Platform.runLater(() -> {
+                pv.getPlayArea().updatePlayedColumn(lastPlayer, msg.getLastMove());
+                pv.getPlayArea().updateHandColumn(lastPlayer, msg.getLastMove().size());
+            });
+
+        if (this.clientModel.isMyTurn())
+            Platform.runLater(() -> pv.getBottomView().getControlArea().getPlayBtn().setDisable(false));
+        else
+            Platform.runLater(() -> pv.getBottomView().getControlArea().getPlayBtn().setDisable(true));
     }
 
     /**
@@ -162,13 +165,13 @@ class PlayController {
      * @author Philipp
      */
     private void handleDemandSchupfenMsg() {
-        if (this.pushCounter == 1)
-            Platform.runLater(() -> this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn()
-                    .setText(this.translator.getString("controlarea.play")));
-        this.pushCounter++;
+        ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
 
-        Platform.runLater(() ->
-            this.gameView.getPlayView().getBottomView().getControlArea().getSchupfenBtn().setDisable(false));
+        if (this.pushCounter == 1)
+            Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.play")));
+
+        this.pushCounter++;
+        Platform.runLater(() -> ca.getSchupfenBtn().setDisable(false));
     }
 
     /**
@@ -176,12 +179,14 @@ class PlayController {
      * @author Philipp
      */
     private void handleSecondDealMsg() {
+        ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
+
         //enables Buttons again to announce SmallTichu or none
         clientModel.getHand().sort();
         if (!this.clientModel.announcedGrandTichu()) {
             Platform.runLater(() -> {
-                this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setDisable(false);
-                this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(false);
+                ca.getSmallTichuBtn().setDisable(false);
+                ca.getPlayBtn().setDisable(false);
             });
             //automatically sends GrandTichu msg
         } else {
@@ -198,6 +203,8 @@ class PlayController {
     private void handleAnnouncedTichuMsg() {
         //gets the tichuType of the current message
         TichuType tichuType = this.clientModel.getMsgCodeProperty().getMessage().getTichuType();
+        ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
+        PlayArea pa = this.gameView.getPlayView().getPlayArea();
 
         //if i have announced Tichu myself
         if (this.clientModel.getPlayerName().equals(getPlayerName())) {
@@ -207,18 +214,13 @@ class PlayController {
             }
             //update TichuColumn and disable buttons again
             Platform.runLater(() -> {
-                this.gameView.getPlayView().getPlayArea().updateTichuColumn(getPlayerName(), tichuType);
-                this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setDisable(true);
-                this.gameView.getPlayView().getBottomView().getControlArea().getSmallTichuBtn().setDisable(true);
-                this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(true);
+                pa.updateTichuColumn(getPlayerName(), tichuType);
+                ca.getGrandTichuBtn().setDisable(true);
+                ca.getSmallTichuBtn().setDisable(true);
+                ca.getPlayBtn().setDisable(true);
             });
-            //if someone else announced Tichu
-        } else {
-            //just altering the TichuColumn
-            Platform.runLater(() -> {
-                this.gameView.getPlayView().getPlayArea().updateTichuColumn(getPlayerName(), tichuType);
-            });
-        }
+        } else //just altering the TichuColumn if someone else announced tichu
+            Platform.runLater(() -> pa.updateTichuColumn(getPlayerName(), tichuType));
     }
 
     /**
@@ -226,16 +228,16 @@ class PlayController {
      * @author Philipp
      */
     private void handleFirstDealMsg() {
+        ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
         this.clientModel.getHand().getCards().addListener(this::activateHand);
 
         //sets 8 cards and enables Buttons to be able to announce tichu
         this.clientModel.getHand().sort();
         Platform.runLater(() -> {
-            this.stage.setWidth(stage.getWidth()-0.1);
-            this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn()
-                    .setText(translator.getString("controlarea.pass"));
-            this.gameView.getPlayView().getBottomView().getControlArea().getGrandTichuBtn().setDisable(false);
-            this.gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(false);
+            stage.setWidth(stage.getWidth()-0.1);
+            ca.getPlayBtn().setText(translator.getString("controlarea.pass"));
+            ca.getGrandTichuBtn().setDisable(false);
+            ca.getPlayBtn().setDisable(false);
         });
     }
 
