@@ -92,7 +92,7 @@ public class GameView {
 		stage.setHeight(this.initialStageHeight);
 
 		stage.setMinWidth(stage.getWidth()*0.85);
-		stage.setMinHeight(stage.getHeight()*0.9);
+		stage.setMinHeight(stage.getHeight()*0.92);
 
 		stage.setScene(game);
 		//initial trigger of the event-handler to rearrange the cardLabels
