@@ -109,15 +109,19 @@ public class Match {
 	public void handleUpdate(SimpleMessageProperty messageProperty) {
 		Player player = messageProperty.getPlayer();
 		this.trick.update(player, messageProperty.getMessage().getCards());
+		logger.info(player.getPlayerName() + " played move: " +
+				messageProperty.getMessage().getCards().size() + " cards");
 
 		// if the player has no more cards, he is done for this match
 		if (player.getHand().isEmpty()) {
 			player.setDone(true);
+			logger.info(player.getPlayerName() + " is done");
 		}
 
 		// if a team is done we start a new match
 		if (isTeamDone()) {
 			evaluateFinalMove();
+			logger.info("Evaluation done");
 			serverModel.getGame().startMatch();
 		} else {
 
@@ -150,6 +154,7 @@ public class Match {
 					p.sendMessage(msg);
 				}
 			}
+			logger.info("Sent custom update message");
 		}
 	}
 
