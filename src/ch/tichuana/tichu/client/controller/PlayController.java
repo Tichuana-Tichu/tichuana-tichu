@@ -24,6 +24,7 @@ class PlayController {
     private ArrayList<Card> receivedCards = new ArrayList<>();
     private Translator translator;
     private int pushCounter = 1;
+    private int passCounter = 0;
 
     /**
      * attaches listener to the stage-width to make the CardArea responsive
@@ -133,11 +134,21 @@ class PlayController {
         String lastPlayer = getLastPlayer(msg.getNextPlayer());
         PlayView pv = this.gameView.getPlayView();
 
-        if (!msg.getLastMove().isEmpty())
+        Platform.runLater(() -> pv.getPlayArea().updateTotalPoints(msg.getOwnScore(), msg.getOpponentScore()));
+
+        if (!msg.getLastMove().isEmpty()) {
+            this.passCounter = 0;
             Platform.runLater(() -> {
                 pv.getPlayArea().updatePlayedColumn(lastPlayer, msg.getLastMove());
                 pv.getPlayArea().updateHandColumn(lastPlayer, msg.getLastMove().size());
             });
+        } else {
+            if (this.passCounter == 3) {
+                Platform.runLater(() -> pv.getPlayArea().deletePlayedColumn());
+                this.passCounter = 0;
+            }
+            this.passCounter++;
+        }
 
         if (this.clientModel.isMyTurn())
             Platform.runLater(() -> pv.getBottomView().getControlArea().getPlayBtn().setDisable(false));
