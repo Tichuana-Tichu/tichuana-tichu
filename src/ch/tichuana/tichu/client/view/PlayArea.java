@@ -82,9 +82,9 @@ public class PlayArea extends GridPane {
 		this.add(new Label(""), 1, 6);
 		this.add(new Label(""), 1, 8);
 
-		Label l1 = new Label("your Team");
+		Label l1 = new Label(t.getString("yourTeam"));
 		l1.getStyleClass().add("teamLabel");
-		Label l2 = new Label("Opponents");
+		Label l2 = new Label(t.getString("opponents"));
 		l2.getStyleClass().add("teamLabel");
 		this.add(l1, 4, 2, 1, 3);
 		this.add(l2, 4, 6, 1, 3);
@@ -173,6 +173,16 @@ public class PlayArea extends GridPane {
 	}
 
 	/**
+	 * @author Philipp
+	 */
+	public void clearTichuColumn() {
+		for (int i = 2; i < 9; i+=2) {
+			Label tichuLabel =  (Label) getNodeByRowColumnIndex(i, 2);
+			tichuLabel.setText("");
+		}
+	}
+
+	/**
 	 *
 	 * @author Philipp
 	 * @param cards
@@ -190,7 +200,7 @@ public class PlayArea extends GridPane {
 	/**
 	 * @author Philipp
 	 */
-	public void deletePlayedColumn() {
+	public void clearPlayedColumn() {
 		for (int i = 2; i < 9; i+=2) {
 			CardArea ca =  (CardArea) getNodeByRowColumnIndex(i, 3);
 			ca.deleteThumbnails();

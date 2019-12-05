@@ -148,7 +148,7 @@ class PlayController {
             });
         } else {
             if (this.passCounter == msg.getRemainingPlayers()-1) {
-                Platform.runLater(() -> pv.getPlayArea().deletePlayedColumn());
+                Platform.runLater(() -> pv.getPlayArea().clearPlayedColumn());
                 this.oldMove.clear();
                 this.passCounter = 0;
             }
@@ -258,6 +258,7 @@ class PlayController {
             ca.getGrandTichuBtn().setDisable(false);
             ca.getPlayBtn().setDisable(false);
             gameView.getPlayView().getPlayArea().initHandColumn(8);
+            gameView.getPlayView().getPlayArea().clearTichuColumn();
         });
     }
 

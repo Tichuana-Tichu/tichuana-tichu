@@ -18,8 +18,8 @@ public class ClientModel {
     private Socket socket;
     //variables for game-flow
     private boolean grandTichu = false;
-    private boolean myTurn = false;
-    private boolean firstUpdate = true;
+    private boolean myTurn;
+    private boolean firstUpdate;
     private String[] opponents;
     private String playerName;
     private String teamMate;
@@ -57,9 +57,6 @@ public class ClientModel {
                     }
 
                     if (msg instanceof GameStartedMsg) {
-                        this.grandTichu = false;
-                        this.firstUpdate = true;
-                        this.myTurn = false;
                         this.teamMate = msg.getTeamMate();
                         this.opponents = msg.getOpponents();
                         this.msg.set(2);
@@ -67,6 +64,9 @@ public class ClientModel {
                     }
 
                     if (msg instanceof DealMsg) {
+
+                        this.firstUpdate = true;
+                        this.myTurn = false;
                         if (msg.getCards().size() == 8) {
                             this.hand = new Hand(msg.getCards());
                             this.msg.set(3);
@@ -88,6 +88,7 @@ public class ClientModel {
                     }
 
                     if (msg instanceof DemandSchupfenMsg) {
+                        this.grandTichu = false;
                         this.msg.setMessage(msg);
                         if (!this.playerName.equals(msg.getPlayerName())) {
                             this.msg.set(6);
