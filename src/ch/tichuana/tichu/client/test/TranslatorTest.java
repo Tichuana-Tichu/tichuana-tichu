@@ -27,5 +27,7 @@ class TranslatorTest {
         translator = new Translator("de");
         string = translator.getString("hello");
         assertEquals("hallo", string);
+
+
     }
 }

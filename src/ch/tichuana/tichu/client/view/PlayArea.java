@@ -77,6 +77,11 @@ public class PlayArea extends GridPane {
 
 		this.add(new Separator(), 0, 9, 9, 1);
 
+		this.add(new Label("14"), 1, 2);
+		this.add(new Label("14"), 1, 4);
+		this.add(new Label("14"), 1, 6);
+		this.add(new Label("14"), 1, 8);
+
 		Label l1 = new Label("your Team");
 		l1.getStyleClass().add("teamLabel");
 		Label l2 = new Label("Opponents");
@@ -114,6 +119,12 @@ public class PlayArea extends GridPane {
 		this.playerLbl[1].setText(clientModel.getTeamMate());
 		this.playerLbl[2].setText(clientModel.getOpponent(0));
 		this.playerLbl[3].setText(clientModel.getOpponent(1));
+	}
+
+	public void updateHandColumn(String playerName, int playedCards) {
+		Label handLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), 1);
+		int handSize = Integer.parseInt(handLabel.getText());
+		handLabel.setText(String.valueOf(handSize-playedCards));
 	}
 
 	/**
@@ -186,12 +197,6 @@ public class PlayArea extends GridPane {
 			}
 		}
 		return result;
-	}
-
-	public void updateHandColumn() {
-		for (int i = 2; i < this.getColumnCount(); i+=2) {
-			this.add(new Label(""), 2, i);
-		}
 	}
 
 	public void updateMatchPoints() {
