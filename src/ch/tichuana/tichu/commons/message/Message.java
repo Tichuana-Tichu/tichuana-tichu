@@ -167,8 +167,8 @@ public abstract class Message {
 				while (iterator4.hasNext()){
 					cards.add(Card.cardFactory((JSONObject) iterator4.next()));
 				}
-				int opponentScore = (Integer) json.get("opponentScore");
-				int ownScore = (Integer) json.get("ownScore");
+				int opponentScore = convertToInt(json.get("opponentScore"));
+				int ownScore = convertToInt(json.get("ownScore"));
 				playerName = (String) json.get("nextPlayer");
 
 				JSONArray playerArray = (JSONArray) json.get("remainingCards");
@@ -179,7 +179,7 @@ public abstract class Message {
 				while (iterator5.hasNext()){
 					JSONObject player = (JSONObject) iterator5.next();
 					playerNames[counter] = (String) player.get("name");
-					remainingCards[counter] = (int) player.get("number");
+					remainingCards[counter] = convertToInt(player.get("number"));
 					counter++;
 				}
 
@@ -187,6 +187,22 @@ public abstract class Message {
 				break;
 		}
 		return newMessage;
+	}
+
+	/**
+	 * fixes weird issue with SimpleJSON library, on different Java versions it seems to store numbers into the hashmap
+	 * as integers or as long. Same code returned int on java 9 and long on java 10.
+	 * @param o
+	 * @return int
+	 */
+	public static int convertToInt(Object o){
+		if (o instanceof Integer) {
+			return (int) o;
+		} else if (o instanceof Long){
+			return (int) (long) o;
+		} else {
+			return 0;
+		}
 	}
 
 	public MessageType getMsgType(){
