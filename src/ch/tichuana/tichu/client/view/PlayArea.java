@@ -138,7 +138,10 @@ public class PlayArea extends GridPane {
 	public void updateHandColumn(String playerName, int playedCards) {
 		Label handLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), 1);
 		int handSize = Integer.parseInt(handLabel.getText());
-		handLabel.setText(String.valueOf(handSize-playedCards));
+		if (handSize < 0)
+			handLabel.setText("0");
+		else
+			handLabel.setText(String.valueOf(handSize-playedCards));
 	}
 
 	/**
@@ -173,19 +176,32 @@ public class PlayArea extends GridPane {
 			cardArea.deleteThumbnails();
 	}
 
-	public void updateMatchPoints() {
-
-	}
-
-	public void updateTotalPoints() {
-
-	}
-
+	/**
+	 * @author Philipp
+	 */
 	public void deletePlayedColumn() {
 		for (int i = 2; i < 9; i+=2) {
 			CardArea ca =  (CardArea) getNodeByRowColumnIndex(i, 3);
 			ca.deleteThumbnails();
+			ca.initThumbnails();
 		}
+	}
+
+	/**
+	 *
+	 * @author Philipp
+	 * @param ownScore
+	 * @param opponentScore
+	 */
+	public void updateTotalPoints(int ownScore, int opponentScore) {
+		Label own = (Label) getNodeByRowColumnIndex(2, 6);
+		Label opponent = (Label) getNodeByRowColumnIndex(6, 6);
+		own.setText(String.valueOf(ownScore));
+		opponent.setText(String.valueOf(opponentScore));
+	}
+
+	public void updateMatchPoints() {
+
 	}
 
 	/**

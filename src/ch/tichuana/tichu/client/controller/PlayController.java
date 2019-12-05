@@ -116,7 +116,6 @@ class PlayController {
                         this.clientModel.getHand().sort();
                     }
                 } else {
-
                     this.clientModel.sendMessage(new PlayMsg(newMove));
                 }
             }
@@ -135,6 +134,8 @@ class PlayController {
         String lastPlayer = getLastPlayer(msg.getNextPlayer());
         PlayView pv = this.gameView.getPlayView();
 
+        Platform.runLater(() -> pv.getPlayArea().updateTotalPoints(msg.getOwnScore(), msg.getOpponentScore()));
+
         if (!msg.getLastMove().isEmpty()) {
             this.passCounter = 0;
             Platform.runLater(() -> {
@@ -146,9 +147,7 @@ class PlayController {
                 Platform.runLater(() -> pv.getPlayArea().deletePlayedColumn());
                 this.passCounter = 0;
             }
-
             this.passCounter++;
-
         }
 
         if (this.clientModel.isMyTurn())

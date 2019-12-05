@@ -77,7 +77,7 @@ CardLabel:hover {
 
 PlayArea CardArea {
     -fx-alignment: center-left;
-    -fx-effect: dropshadow(three-pass-box, rgb(69, 69, 70), 1, 0, 1, 1);
+    -fx-effect: dropshadow(three-pass-box, rgb(69, 69, 70), 10, 1, 0, 0);
 }
 
 .clickedLabel {
