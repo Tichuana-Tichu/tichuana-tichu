@@ -120,4 +120,7 @@ public class ServerModel {
 	public int getSchupfenResponses() {
 		return schupfenResponses;
 	}
+	public void setTichuResponses(int tichuResponses) {
+		this.tichuResponses = tichuResponses;
+	}
 }

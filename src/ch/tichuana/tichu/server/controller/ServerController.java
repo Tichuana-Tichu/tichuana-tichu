@@ -96,6 +96,7 @@ public class ServerController {
 				serverModel.getGame().getCurrentMatch().dealRemainingCards();
 			} else if (serverModel.getTichuResponses() == 8) {
 				demandSchupfen();
+				serverModel.setTichuResponses(0);
 			}
 			property.setValue(false);
 		}
