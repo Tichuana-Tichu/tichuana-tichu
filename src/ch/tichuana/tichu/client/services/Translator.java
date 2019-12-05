@@ -1,5 +1,10 @@
 package ch.tichuana.tichu.client.services;
 
+import ch.tichuana.tichu.client.view.Settings;
+import javafx.event.Event;
+import javafx.scene.control.MenuItem;
+
+import java.awt.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -32,6 +37,7 @@ public class Translator {
 		this.resourceBundle = ResourceBundle.getBundle(path, this.locale);
 	}
 
+
 	/**
 	 * Returns the value belonging to its key.
 	 * @author Christian
@@ -40,5 +46,9 @@ public class Translator {
 	public String getString(String key) {
 		return resourceBundle.getString(key);
 	}
+
+
+
+
 
 }

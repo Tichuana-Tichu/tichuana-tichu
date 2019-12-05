@@ -64,4 +64,5 @@ public class Client extends Application {
 		Translator translator = new Translator(new Locale(configuration.getProperty("locale")));
 		serviceLocator.setTranslator(translator);
 	}
+
 }

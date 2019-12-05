@@ -52,6 +52,18 @@ public class LobbyView extends BorderPane {
 		tichuView.setPreserveRatio(true);
 		this.setCenter(tichuView);
 	}
+  
+  /**
+  * updates the lobby view with new translator
+  * @author Christian
+  */
+	public void update(){
+		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
+		this.userField.setPromptText(translator.getString("lobbyview.username"));
+		this.passwordField.setPromptText(translator.getString("lobbyview.password"));
+		this.loginBtn.setText(translator.getString("lobbyview.login"));
+		this.settings.update();
+	}
 
 	//Getter & Setter
 	public TextField getUserField() {
