@@ -123,4 +123,7 @@ public class ServerModel {
 	public void setTichuResponses(int tichuResponses) {
 		this.tichuResponses = tichuResponses;
 	}
+	public void setSchupfenResponses(int schupfenResponses) {
+		this.schupfenResponses = schupfenResponses;
+	}
 }
