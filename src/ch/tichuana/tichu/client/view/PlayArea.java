@@ -94,6 +94,20 @@ public class PlayArea extends GridPane {
 		this.add(new CardArea(clientModel), 3, 6);
 		this.add(new CardArea(clientModel), 3, 8);
 
+		Label currentScore = new Label("");
+		currentScore.getStyleClass().add("scoreLabels");
+		Label totalScore = new Label("");
+		totalScore.getStyleClass().add("scoreLabels");
+		Label opponentScore = new Label("");
+		opponentScore.getStyleClass().add("scoreLabels");
+		Label opponentTotal = new Label("");
+		opponentTotal.getStyleClass().add("scoreLabels");
+
+		this.add(currentScore, 5, 2, 1, 3);
+		this.add(totalScore, 6, 2, 1, 3);
+		this.add(opponentScore, 5, 6,1, 3);
+		this.add(opponentTotal, 6, 6, 1, 3);
+
 		for (int i = 2; i < 9; i+=2) {
 			CardArea ca =  (CardArea) getNodeByRowColumnIndex(i, 3);
 			ca.initThumbnails();
@@ -159,6 +173,21 @@ public class PlayArea extends GridPane {
 			cardArea.deleteThumbnails();
 	}
 
+	public void updateMatchPoints() {
+
+	}
+
+	public void updateTotalPoints() {
+
+	}
+
+	public void deletePlayedColumn() {
+		for (int i = 2; i < 9; i+=2) {
+			CardArea ca =  (CardArea) getNodeByRowColumnIndex(i, 3);
+			ca.deleteThumbnails();
+		}
+	}
+
 	/**
 	 *
 	 * @author Philipp
@@ -197,17 +226,5 @@ public class PlayArea extends GridPane {
 			}
 		}
 		return result;
-	}
-
-	public void updateMatchPoints() {
-		for (int i = 2; i < this.getColumnCount(); i+=2) {
-			this.add(new Label(""), 5, i);
-		}
-	}
-
-	public void updateTotalPoints() {
-		for (int i = 2; i < this.getColumnCount(); i+=2) {
-			this.add(new Label(""), 6, i);
-		}
 	}
 }
