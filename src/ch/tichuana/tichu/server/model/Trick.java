@@ -33,7 +33,7 @@ public class Trick {
     public void update(Player player, ArrayList<Card> move){
         if (move.isEmpty()){
             passCounter++;
-            if (passCounter == 4){
+            if (passCounter == serverModel.getGame().getNumberOfRemainingPlayers()){
                 this.won = true;
             }
         } else {

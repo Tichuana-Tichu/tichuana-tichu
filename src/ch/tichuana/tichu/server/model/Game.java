@@ -148,6 +148,21 @@ public class Game {
 		return false;
 	}
 
+	/**
+	 * counts how many players are still in the game
+	 * @author Christian
+	 * @return playerCount
+	 */
+	public int getNumberOfRemainingPlayers(){
+		int playerCount = 0;
+		for (Player p : playersInOrder){
+			if (!p.isDone()){
+				playerCount++;
+			}
+		}
+		return playerCount;
+	}
+
 
 	/**
 	 * for identification

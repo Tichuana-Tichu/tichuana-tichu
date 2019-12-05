@@ -227,6 +227,9 @@ public abstract class Message {
 	public ArrayList<Card> getLastMove() {
 		return null;
 	}
+	public int getRemainingPlayers(){
+		return 0;
+	}
 	public int getOpponentScore() {
 		return 0;
 	}

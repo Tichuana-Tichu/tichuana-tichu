@@ -69,6 +69,17 @@ public class UpdateMsg extends Message {
 	}
 
 	@Override
+	public int getRemainingPlayers(){
+		int playerCount = 0;
+		for (int i : remainingCards){
+			if (i != 0){
+				playerCount++;
+			}
+		}
+		return playerCount;
+	}
+
+	@Override
 	public String getNextPlayer() {
 		return this.nextPlayer;
 	}
