@@ -1,50 +1,85 @@
 package ch.tichuana.tichu.client.view;
 
+import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.Rank;
-import ch.tichuana.tichu.commons.models.Suit;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
-public class CardArea extends VBox {
+import java.util.ArrayList;
 
-	private HBox cardsLabels;
+public class CardArea extends HBox {
 
-	public enum CardAreaType {Cards, Thumbnails;}
+	private ClientModel clientModel;
 
-    /**
-     * instantiates a new Card for each CardLabel
-     * instantiates HBox with all CardLabels in it
+	/**
+	 * contains all CardLabels, multi use for BottomView and PlayView
 	 * @author Philipp
-     */
-	CardArea(CardAreaType cat, int cardCounter) {
-		this.cardsLabels = new HBox();
+	 */
+	CardArea(ClientModel clientModel) {
+		this.clientModel = clientModel;
+	}
 
-		if (cat.equals(CardAreaType.Cards)) {
-
-			for (int i = 0; i < cardCounter; i++) {
-				CardLabel cardLabel = new CardLabel();
-				//TODO - exchange after testing with real cards from GameStartedMsg
-				cardLabel.setCard(new Card(Suit.Pagodas, Rank.Ace));
-				cardsLabels.getChildren().add(cardLabel);
-				cardsLabels.setSpacing(-140);
-			}
-			this.getChildren().add(this.cardsLabels);
-		} else {
-
-			for (int i = 0; i < cardCounter; i++) {
-				CardLabel cardLabel = new CardLabel();
-				//TODO - exchange after testing with real cards from GameStartedMsg
-				cardLabel.setThumbnail(new Card(Rank.mahjong));
-				cardsLabels.getChildren().add(cardLabel);
-				cardsLabels.setSpacing(-10);
-			}
-			this.getChildren().add(this.cardsLabels);
+	/**
+	 * fills the HBox with blank CardLabels, for the start screen
+	 * @author Philipp
+	 */
+	public void updateBlankCards() {
+		for (int i = 0; i < 8; i++) {
+			CardLabel cardLabel = new CardLabel();
+			cardLabel.setBlankCard();
+			this.getChildren().add(cardLabel);
+			this.setSpacing(-140);
 		}
 	}
 
-	//Getter
-	public HBox getCardsLabels() {
-		return this.cardsLabels;
+	/**
+	 * fills and updates the HBox with CardLabels, in the BottomView
+	 * depending on the current Hand
+	 * @author Philipp
+	 */
+	public void updateCardLabels() {
+		this.getChildren().clear();
+		for (Card c : this.clientModel.getHand().getCards()) {
+			CardLabel cl = new CardLabel();
+			cl.setCard(c);
+			this.getChildren().add(cl);
+			this.setSpacing(-140);
+		}
+	}
+
+	/**
+	 * fills and updates the HBox with Thumbnails in the PlayView
+	 * depending on the current moves
+	 * @author Philipp
+	 * @param cards
+	 */
+	public void updateThumbnails(ArrayList<Card> cards) {
+		this.getChildren().clear();
+
+		for (Card card : cards) {
+			CardLabel cardLabel = new CardLabel();
+			cardLabel.setThumbnail(card);
+			this.getChildren().add(cardLabel);
+			this.setSpacing(-10);
+		}
+	}
+
+	/**
+	 * 
+	 * @author Philipp
+	 */
+	public void deleteThumbnails() {
+		this.getChildren().clear();
+	}
+
+	/**
+	 *
+	 * @author Philipp
+	 */
+	public void initThumbnails() {
+		CardLabel cardLabel = new CardLabel();
+		cardLabel.setThumbnail(new Card(Rank.phoenix));
+		cardLabel.setId("initThumbnail");
+		this.getChildren().add(cardLabel);
 	}
 }

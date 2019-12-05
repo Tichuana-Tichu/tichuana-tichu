@@ -18,6 +18,7 @@ public class LobbyView extends BorderPane {
 	private PasswordField passwordField;
 	private ToggleButton loginBtn;
 	private ImageView tichuView;
+	private Label loginStatus;
 
 	/**
 	 * sets up the whole Lobby including Button, TextFields and Logo
@@ -29,19 +30,18 @@ public class LobbyView extends BorderPane {
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		this.settings = new Settings();
 
+		this.loginStatus = new Label("");
 		this.userField = new TextField();
 		this.userField.setPromptText(translator.getString("lobbyview.username"));
-		this.userField.setFocusTraversable(false);
 		this.userField.getStyleClass().add("userPrompt");
 
 		this.passwordField = new PasswordField();
 		this.passwordField.setPromptText(translator.getString("lobbyview.password"));
-		this.passwordField.setFocusTraversable(false);
 		this.passwordField.getStyleClass().add("userPrompt");
 
 		this.loginBtn = new ToggleButton(translator.getString("lobbyview.login"));
 
-		VBox controls = new VBox(userField, passwordField, loginBtn);
+		VBox controls = new VBox(loginStatus,userField, passwordField, loginBtn);
 		this.setBottom(controls);
 		this.setTop(settings);
 
@@ -52,7 +52,11 @@ public class LobbyView extends BorderPane {
 		tichuView.setPreserveRatio(true);
 		this.setCenter(tichuView);
 	}
-
+  
+  /**
+  * updates the lobby view with new translator
+  * @author Christian
+  */
 	public void update(){
 		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
 		this.userField.setPromptText(translator.getString("lobbyview.username"));
@@ -61,7 +65,7 @@ public class LobbyView extends BorderPane {
 		this.settings.update();
 	}
 
-	//Getter
+	//Getter & Setter
 	public TextField getUserField() {
 		return userField;
 	}
@@ -76,5 +80,8 @@ public class LobbyView extends BorderPane {
 	}
 	public ImageView getTichuView() {
 		return tichuView;
+	}
+	public void setLoginStatus(String loginStatus) {
+		this.loginStatus.setText(loginStatus);
 	}
 }

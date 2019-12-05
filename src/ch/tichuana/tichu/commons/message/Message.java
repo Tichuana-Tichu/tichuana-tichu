@@ -169,8 +169,21 @@ public abstract class Message {
 				}
 				int opponentScore = (Integer) json.get("opponentScore");
 				int ownScore = (Integer) json.get("ownScore");
-				playerName = (String) json.get("playerName");
-				newMessage = new UpdateMsg(playerName,cards,opponentScore,ownScore);
+				playerName = (String) json.get("nextPlayer");
+
+				JSONArray playerArray = (JSONArray) json.get("remainingCards");
+				int[] remainingCards = new int[4];
+				String[] playerNames = new String[4];
+				Iterator iterator5 = playerArray.iterator();
+				int counter = 0;
+				while (iterator5.hasNext()){
+					JSONObject player = (JSONObject) iterator5.next();
+					playerNames[counter] = (String) player.get("name");
+					remainingCards[counter] = (int) player.get("number");
+					counter++;
+				}
+
+				newMessage = new UpdateMsg(playerName,cards,opponentScore,ownScore,playerNames,remainingCards);
 				break;
 		}
 		return newMessage;
@@ -202,6 +215,9 @@ public abstract class Message {
 		return 0;
 	}
 	public int getOwnScore() {
+		return 0;
+	}
+	public int getRemainingCardsByPlayerName(String name){
 		return 0;
 	}
 }

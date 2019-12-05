@@ -1,26 +1,31 @@
 package ch.tichuana.tichu.client.model;
 
+import ch.tichuana.tichu.client.services.ServiceLocator;
+import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.commons.message.*;
-import ch.tichuana.tichu.commons.models.Card;
-import ch.tichuana.tichu.commons.models.TichuType;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class ClientModel {
 
-    private SimpleStringProperty newestMessage = new SimpleStringProperty();
-    private Socket socket;
-    private volatile boolean closed;
-    private String playerName;
-    private String nextPlayerName;
-    private String playerToSchupfCard;
-    private SimpleBooleanProperty connected = new SimpleBooleanProperty(false);
-    private SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
+    //variables for communication
+    private SimpleMessageProperty msg = new SimpleMessageProperty();
     private Logger logger = Logger.getLogger("");
+    private Translator translator;
+    private volatile boolean closed;
+    private Socket socket;
+    //variables for game-flow
+    private boolean grandTichu = false;
+    private boolean myTurn = false;
+    private boolean firstUpdate = true;
+    private String[] opponents;
+    private String playerName;
+    private String teamMate;
+    private int opponentScore;
+    private int ownScore;
+    private Hand hand;
 
     /**
      * connects client to server with JoinMsg and listens for incoming messages
@@ -31,7 +36,8 @@ public class ClientModel {
      * @param password receiving from GUI
      */
     public void connect(String ipAddress, int port, String playerName, String password) {
-        logger.info("Connect");
+        this.translator = ServiceLocator.getServiceLocator().getTranslator();
+        logger.info(playerName+" connecting...");
         this.playerName = playerName;
         this.closed = false;
         try {
@@ -42,43 +48,84 @@ public class ClientModel {
 
                     Message msg = Message.receive(socket);
 
-                    if (msg instanceof AnnouncedTichuMsg) {
-                        newestMessage.set("");
-                        newestMessage.set(msg.getPlayers().toString()+" announced: "+msg.getTichuType());
-                    }
-
                     if (msg instanceof ConnectedMsg) {
-                        newestMessage.set("successfully connected to Server");
-                        this.connected.set(true);
+                        if (msg.getStatus()) {
+                            this.msg.set(1);
+                            this.msg.setNewestMsg(translator.getString("connection"));
+                        } else
+                            this.msg.setNewestMsg(translator.getString("connectionFailed"));
                     }
 
                     if (msg instanceof GameStartedMsg) {
-                        sendMessage(MessageType.ReceivedMsg, "true");
-                        logger.info("you successfully entered a game");
+
+                        this.teamMate = msg.getTeamMate();
+                        this.opponents = msg.getOpponents();
+                        this.msg.set(2);
+                        this.msg.setNewestMsg(translator.getString("gameStarted"));
                     }
 
-                    if (msg instanceof DemandTichuMsg) {
-                        logger.info("please announce tichu or pass");
+                    if (msg instanceof DealMsg) {
+                        if (msg.getCards().size() == 8) {
+                            this.hand = new Hand(msg.getCards());
+                            this.msg.set(3);
+                            this.msg.setNewestMsg(translator.getString("firstEightCards"));
+                        } else {
+                            this.hand.addCards(msg.getCards());
+                            if (this.grandTichu)
+                                this.msg.setNewestMsg(translator.getString("grandTichuAnnounced"));
+                            else
+                                this.msg.setNewestMsg(translator.getString("lastSixCards"));
+                            this.msg.set(5);
+                        }
+                    }
+
+                    if (msg instanceof AnnouncedTichuMsg) {
+                        this.msg.setMessage(msg);
+                        this.msg.set(4);
+                        this.msg.set(20);
                     }
 
                     if (msg instanceof DemandSchupfenMsg) {
+                        this.msg.setMessage(msg);
                         if (!this.playerName.equals(msg.getPlayerName())) {
-                            this.playerToSchupfCard = msg.getPlayerName();
-                            logger.info("please choose card for player: "+msg.getPlayerName());
-                        } else
-                            sendMessage(MessageType.ReceivedMsg, "true");
+                            this.msg.set(6);
+                            this.msg.setNewestMsg(translator.getString("demandPush1")+msg.getPlayerName());
+                            this.msg.set(20);
+                        } else {
+                            sendMessage(new ReceivedMsg(true));
+                            this.msg.set(7);
+                            this.msg.setNewestMsg(translator.getString("demandPush2"));
+                        }
+                    }
+
+                    if (msg instanceof SchupfenMsg) {
+                        this.msg.setMessage(msg);
+                        this.msg.set(8);
+                        this.msg.set(20);
                     }
 
                     if (msg instanceof UpdateMsg) {
-                        if (!this.playerName.equals(msg.getNextPlayer())) {
-                            this.hisTurn.set(false);
-                            this.nextPlayerName = msg.getNextPlayer();
-                            sendMessage(MessageType.ReceivedMsg, "true");
-                        } else {
-                            this.hisTurn.set(true);
-                            logger.info("it is your turn "+msg.getNextPlayer());
+                        //handing out all cards from pushing to other Players
+                        if (this.firstUpdate) {
+                            this.msg.set(9);
+                            this.firstUpdate = false;
                         }
 
+                        this.msg.setMessage(msg);
+                        this.ownScore = msg.getOwnScore();
+                        this.opponentScore = msg.getOpponentScore();
+
+                        if (!this.playerName.equals(msg.getNextPlayer())) {
+                            this.myTurn = false;
+                            this.msg.setNewestMsg(msg.getNextPlayer()+" "+translator.getString("elsesTurn"));
+                            sendMessage(new ReceivedMsg(true));
+                        } else {
+                            this.myTurn = true;
+                            this.msg.setNewestMsg(translator.getString("yourTurn"));
+                        }
+
+                        this.msg.set(10);
+                        this.msg.set(30);
                     }
                 }
             };
@@ -98,7 +145,7 @@ public class ClientModel {
      * @author Philipp
      */
     public void disconnect() {
-        logger.info("Disconnect");
+        logger.info("Disconnecting...");
         this.closed = true;
 
         if(socket != null) {
@@ -113,63 +160,42 @@ public class ClientModel {
     /**
      * called from controller to send messages to Player-Object (Server)
      * @author Philipp
-     * @param messageType from a specific type
+     * @param message from a specific type
      */
-    public void sendMessage(MessageType messageType, String identifier) {
-        logger.info("Send message");
-        Message msg;
+    public void sendMessage(Message message) { message.send(this.socket); }
 
-        switch (messageType) {
-
-            case ReceivedMsg:
-                msg = new ReceivedMsg(Boolean.parseBoolean(identifier));
-                msg.send(socket);
-                break;
-
-            case SchupfenMsg:
-                msg = new SchupfenMsg(this.nextPlayerName, new Card());
-                msg.send(socket);
-                break;
-
-            case PlayMsg:
-                msg = new PlayMsg(new ArrayList<>());
-                msg.send(socket);
-                break;
-        }
+    //Getter & Setter
+    public int getMsgCode() {
+        return this.msg.get();
     }
-
-    /**
-     * Overloaded method
-     * called from controller to send TichuMsg to Player-Object (Server)
-     * @author Philipp
-     * @param tichuType from type Small- or GrandTichu
-     */
-    public void sendMessage(TichuType tichuType) {
-        logger.info("Send message");
-        Message msg = new TichuMsg(this.playerName, tichuType);
-        msg.send(this.socket);
+    public SimpleMessageProperty getMsgCodeProperty() {
+        return this.msg;
     }
-
-    //TODO - needed for broadcasts or not?
-    public String receiveMessage() {
-        logger.info("Receive Message");
-        return newestMessage.get();
+    public String getTeamMate() {
+        return teamMate;
     }
-
-    //Getter
-    public String getPlayerToSchupfCard() {
-        return playerToSchupfCard;
+    public String getOpponent(int i) {
+        return opponents[i];
     }
-    public boolean isConnected() {
-        return connected.get();
+    public String getPlayerName() {
+        return playerName;
     }
-    public SimpleBooleanProperty getConnectedProperty() {
-        return connected;
+    public Hand getHand() {
+        return hand;
     }
-    public SimpleBooleanProperty getHisTurnProperty() {
-        return hisTurn;
+    public boolean announcedGrandTichu() {
+        return grandTichu;
     }
-    public SimpleStringProperty getNewestMessageProperty() {
-        return newestMessage;
+    public void setGrandTichu(boolean grandTichu) {
+        this.grandTichu = grandTichu;
+    }
+    public boolean isMyTurn() {
+        return myTurn;
+    }
+    public int getOwnScore() {
+        return ownScore;
+    }
+    public int getOpponentScore() {
+        return opponentScore;
     }
 }

@@ -8,6 +8,7 @@ public enum Combination {
 	FourOfAKindBomb, FourOfAKindPhoenix, StraightFlushBomb;
 
 	public static ArrayList<Card> clonedCards;
+	public static Card beforePhoenix = null;
 
 	/**
 	 * All Combinations are going to be checked and returned by currentEval.
@@ -287,5 +288,214 @@ public enum Combination {
 		}
 
 		return (straight && flush);
+	}
+
+
+	/**
+	 * Will compare the previous move to the current one and evaluate if the new move is not only valid,
+	 * but also beats the previous.
+	 * @author Christian
+	 * @param oldMove
+	 * @param newMove
+	 * @return isValidMove
+	 */
+	public static boolean isValidMove(ArrayList<Card> oldMove, ArrayList<Card> newMove){
+		ArrayList<Card> oldClone = (ArrayList<Card>) oldMove.clone();
+		ArrayList<Card> newClone = (ArrayList<Card>) newMove.clone();
+		Collections.sort(oldClone);
+		Collections.sort(newClone);
+		Combination comb;
+
+		// When the first move of a trick is played, oldMove is empty. If evaluateCombination returns anything but
+		// a HighCard it is a valid move. If its a high card we need to check if it actually is a single card.
+		if (oldMove.isEmpty()){
+			if (evaluateCombination(newMove) == HighCard){
+				return (newMove.size() == 1); // if the high card has a size other than 1 its not a valid move
+			} else {
+				return true;
+			}
+		}
+		// all evaluations are based on what the previous move was
+		switch (evaluateCombination(oldClone)){
+
+			case HighCard:
+
+				// special case if single phoenix was played
+				if (evaluateCombination(newClone) == HighCard &&
+						containsPhoenix(oldMove)){
+					if (beforePhoenix != null && beforePhoenix.compareTo(newMove.get(0)) < 0){
+						return true;
+					} else {
+						return false;
+					}
+				}
+
+				// newMove has to be HighCard as well and have a higher rank, else -> false
+				if(evaluateCombination(newClone) == HighCard &&
+						oldClone.get(0).compareTo(newClone.get(0)) < 0){
+
+					// if new move is single phoenix, we need to memorize previous card
+					if (containsPhoenix(newMove)){
+						beforePhoenix = oldMove.get(0);
+					}
+
+					// a dog can not be played on a mahjong and vise versa, everything else can
+					// only need to check mahjong because dog has a lower ordinal anyway
+					if(containsMahjong(newMove)){
+						return false;
+					} else {
+						return true;
+					}
+				} else {
+					return false;
+				}
+
+			case OnePair:
+				// even if one played a pair with phoenix we can always compare first cards (sorted list)
+				if(evaluateCombination(newClone) == OnePair &&
+				oldClone.get(0).compareTo(newClone.get(0))<0){
+					return true;
+				} else {
+					return false;
+				}
+
+			case ThreeOfAKind:
+				// same as OnePair
+				if(evaluateCombination(newClone) == ThreeOfAKind &&
+						oldClone.get(0).compareTo(newClone.get(0))<0){
+					return true;
+				} else {
+					return false;
+				}
+
+			case Steps:
+				// if new move is a step too, it must contain mor pairs (bigger size)
+				// if their the same, higher pairs win
+				if (evaluateCombination(newClone) == Steps){
+					if (newClone.size() > oldClone.size()){
+						return true;
+					} else if (newClone.size() == oldClone.size()){
+
+						// compare the ranks of the second to last card of each move, since last card might be phoenix
+						if (newMove.get(newMove.size()-2).getRank().ordinal() >
+								oldMove.get(oldMove.size()-2).getRank().ordinal()){
+							return true;
+						} else { // weaker pair
+							return false;
+						}
+					} else { // smaller step
+						return false;
+					}
+				} else { // no Step
+					return false;
+				}
+
+			case FullHouse:
+
+				if(evaluateCombination(newMove) ==  FullHouse){
+
+					// higher triplet wins. Middle card will always be part of triplet:
+					if (newMove.get(2).getRank().ordinal() > oldMove.get(2).getRank().ordinal()){
+						return true;
+					} else if (newMove.get(2).getRank().ordinal() == oldMove.get(2).getRank().ordinal()){
+						//TODO: compare the pair
+						return true;
+					} else { // lower full house
+						return false;
+					}
+				} else { // no full house
+					return false;
+				}
+
+			case Straight:
+				if (evaluateCombination(newMove) == Straight){
+
+					// longer straight wins
+					if (newMove.size() > oldMove.size()){
+						return true;
+
+					} else if (newMove.size() == oldMove.size()){
+						Card lastCardNew = newMove.get(newMove.size()-1);
+						Card lastCardOld = oldMove.get(oldMove.size()-1);
+
+						// ban phoenixes from joining the party
+						if (lastCardNew.getRank() == Rank.phoenix){
+							lastCardNew = newMove.get(newMove.size()-2);
+						} else if (lastCardOld.getRank() == Rank.phoenix){
+							lastCardOld = oldMove.get(oldMove.size()-2);
+						}
+
+						if (lastCardNew.getRank().ordinal() > lastCardOld.getRank().ordinal()){
+							return true;
+						} else{ // last card isn't higher
+							return false;
+						}
+
+					} else { // shorter straight
+						return false;
+					}
+				} else { // no straight
+					return false;
+				}
+
+			case FourOfAKindBomb:
+				// bomb will beat anything exept higher bomb (and straightFlushBomb)
+				// so we check if previous was also a bomb
+				// [EDIT] according to rules a straight is also a bomb (will beat fourOfAKind because of length)
+				comb = evaluateCombination(newClone);
+				if (comb == StraightFlushBomb || comb == Straight){
+					return true;
+				}
+				if (comb == FourOfAKindBomb){
+					// check if this bomb is higher than previous bomb
+					if (oldClone.get(0).compareTo(newClone.get(0))<0){
+						return true;
+					} else {
+						return false;
+					}
+				} else { // not a valid bomb (FourOfAKindPhoenix isn't a bomb)
+					return true;
+				}
+
+			case FourOfAKindPhoenix:
+				// is just a fourOfAKind, no bomb. Can only be beaten by bomb
+				comb = evaluateCombination(newClone);
+				if (comb == FourOfAKindBomb || comb == Straight || comb == StraightFlushBomb){
+					return true;
+				} else {
+					return false;
+				}
+
+			case StraightFlushBomb:
+				// highly likely case :-/
+				if (evaluateCombination(newClone) == StraightFlushBomb){
+
+					if (newClone.size() > oldClone.size()) {
+						return true;
+					} else if (newClone.size() == oldClone.size()){
+
+						Card lastCardNew = newMove.get(newMove.size()-1);
+						Card lastCardOld = oldMove.get(oldMove.size()-1);
+
+						// ban phoenixes from joining the party
+						if (lastCardNew.getRank() == Rank.phoenix){
+							lastCardNew = newMove.get(newMove.size()-2);
+						} else if (lastCardOld.getRank() == Rank.phoenix){
+							lastCardOld = oldMove.get(oldMove.size()-2);
+						}
+
+						if (lastCardNew.getRank().ordinal() > lastCardOld.getRank().ordinal()){
+							return true;
+						} else { // lower straightFlushBomb
+							return false;
+						}
+					} else { // smaller straightFlushBomb
+						return false;
+					}
+				} else { // no straightFlushBomb
+					return false;
+				}
+		}
+		return false;
 	}
 }

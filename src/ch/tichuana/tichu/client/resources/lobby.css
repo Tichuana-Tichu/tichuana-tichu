@@ -12,7 +12,7 @@ LobbyView {
 VBox {
     -fx-alignment: center bottom;
     -fx-padding: 20px;
-    -fx-spacing: 20px;
+    -fx-spacing: 10px;
 }
 
 .userPrompt {
@@ -25,9 +25,6 @@ VBox {
 }
 .userPrompt:focused {
     -fx-highlight-fill: #b20000;
-    /*
-    -fx-border-color: #b20000;
-     */
     -fx-border-width: 2px;
     -fx-background-radius: 2px;
 }
@@ -49,4 +46,8 @@ ToggleButton:hover {
 }
 ToggleButton:pressed {
     -fx-opacity: 0.5;
+}
+
+Label {
+    -fx-text-fill: red;
 }

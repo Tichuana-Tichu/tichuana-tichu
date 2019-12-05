@@ -1,5 +1,6 @@
 package ch.tichuana.tichu.client.view;
 
+import ch.tichuana.tichu.client.model.ClientModel;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -15,22 +16,20 @@ public class BottomView extends BorderPane {
 	 * a CardArea in the left area and a ControlArea in the right area
 	 * @author Philipp
 	 */
-	BottomView() {
-
+	BottomView(ClientModel clientModel) {
 		this.controlArea = new ControlArea();
-		this.cardArea = new CardArea(CardArea.CardAreaType.Cards, 14);
+		this.cardArea = new CardArea(clientModel);
+		this.cardArea.updateBlankCards();
 		this.console = new TextField();
 		this.console.setEditable(false);
 		this.console.setFocusTraversable(false);
-
 		VBox cardsNConsole = new VBox(this.cardArea, this.console);
 
-		//this.setLeft(this.cardArea);
 		this.setRight(this.controlArea);
 		this.setCenter(cardsNConsole);
 	}
 
-	//Getter
+	//Getter & Setter
 	public ControlArea getControlArea() {
 		return controlArea;
 	}

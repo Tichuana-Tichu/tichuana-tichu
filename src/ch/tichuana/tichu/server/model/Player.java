@@ -3,8 +3,6 @@ package ch.tichuana.tichu.server.model;
 import ch.tichuana.tichu.commons.message.*;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.TichuType;
-import javafx.beans.property.SimpleBooleanProperty;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -23,11 +21,11 @@ public class Player {
 	private volatile SimpleMessageProperty announcedGrandTichu = new SimpleMessageProperty(false);
 	private volatile SimpleMessageProperty schupfenProperty = new SimpleMessageProperty(false);
 	private TichuType tichuType = TichuType.none;
-	private volatile SimpleBooleanProperty hisTurn = new SimpleBooleanProperty(false);
-	private volatile SimpleBooleanProperty hasMahjong = new SimpleBooleanProperty(false);
+	private volatile SimpleMessageProperty playProperty = new SimpleMessageProperty(false);
 	private boolean done;
 	private ArrayList currentMove;
 	private ArrayList<Card> hand;
+	private ArrayList<Trick> tricksWon;
 
 	/**
 	 * New Object when clients connects, has its own socket for communication
@@ -41,6 +39,7 @@ public class Player {
 		this.socket = socket;
 		this.closed = false;
 		this.hand = new ArrayList<Card>();
+		this.tricksWon = new ArrayList<Trick>();
 		this.done = false;
 
 		Runnable r = () -> {
@@ -54,8 +53,8 @@ public class Player {
 					// check if password is correct
 					if (verifyPassword()){
 						sendMessage(new ConnectedMsg(true));
-						serverModel.getPlayers().add(this);
 						logger.info("Player: "+msg.getPlayerName()+" logged in");
+						serverModel.getPlayers().add(this);
 					}
 					else {
 						sendMessage(new ConnectedMsg(false));
@@ -63,7 +62,7 @@ public class Player {
 				}
 
 				else if (msg instanceof TichuMsg) {
-					logger.info("Player: "+this.playerName+" announced SmallTichu");
+					logger.info("Player: "+this.playerName+" announced Tichu: " + msg.getTichuType());
 					this.tichuType = msg.getTichuType();
 
 					// Important: The boolean value of SimpleMessagePropertys means that a player has already announced
@@ -91,21 +90,26 @@ public class Player {
 				}
 
 				else if (msg instanceof SchupfenMsg) {
-					logger.info("Player: "+this.playerName+" schupfed card to"+msg.getPlayerName());
+					logger.info("Player: "+this.playerName+" pushed card to "+msg.getPlayerName());
 					this.schupfenProperty.setMessage(msg);
 					this.schupfenProperty.setValue(true);
 				}
 
 				else if (msg instanceof PlayMsg) {
-					logger.info("Player: "+this.playerName+" played cards");
-					this.currentMove = msg.getCards();
+					this.playProperty.setPlayer(this);
+					this.playProperty.setMessage(msg);
+					this.playProperty.setValue(true);
 				}
 
+
+				// Does the server ever receive an Update message?
 				else if (msg instanceof UpdateMsg) {
-					if (this.playerName.equals(msg.getNextPlayer()))
-						this.hisTurn.set(true);
-					else
-						this.hisTurn.set(false);
+					if (this.playerName.equals(msg.getNextPlayer())) {
+						this.playProperty.setMessage(msg);
+						this.playProperty.setValue(true);
+					} else {
+						this.playProperty.setValue(false);
+					}
 				}
 			}
 		};
@@ -147,6 +151,15 @@ public class Player {
 		return true;
 	}
 
+	/**
+	 * adds a won trick to this player
+	 * @author Christian
+	 * @param trick
+	 */
+	public void addTrick(Trick trick){
+		this.tricksWon.add(trick);
+	}
+
 	//Getter & Setter
 	public String getPlayerName() {
 		return this.playerName;
@@ -160,17 +173,11 @@ public class Player {
 	public final void setAnnouncedTichu(boolean announcedTichu) {
 		this.announcedTichu.set(announcedTichu);
 	}
-	public SimpleBooleanProperty getHisHisTurnProperty() {
-		return this.hisTurn;
+	public SimpleMessageProperty getPlayProperty() {
+		return this.playProperty;
 	}
-	public final void setHisTurn(boolean hisTurn) {
-		this.hisTurn.set(hisTurn);
-	}
-	public SimpleBooleanProperty getHasMahjongProperty() {
-		return this.hasMahjong;
-	}
-	public final void setHasMahjong(boolean hasMahjong) {
-		this.hasMahjong.set(hasMahjong);
+	public final void setPlayProperty(boolean playProperty) {
+		this.playProperty.set(playProperty);
 	}
 	public ArrayList<Card> getCurrentMove() {
 		return currentMove;
@@ -184,7 +191,10 @@ public class Player {
 	public boolean isDone() {
 		return done;
 	}
-	public SimpleMessageProperty getAnnouncedGrandTichuProperty(){
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+    public SimpleMessageProperty getAnnouncedGrandTichuProperty(){
 		return announcedGrandTichu;
 	}
 
@@ -193,5 +203,9 @@ public class Player {
 	}
 	public SimpleMessageProperty getSchupfenProperty(){
 		return schupfenProperty;
+	}
+
+	public ArrayList<Trick> getTricksWon() {
+		return tricksWon;
 	}
 }

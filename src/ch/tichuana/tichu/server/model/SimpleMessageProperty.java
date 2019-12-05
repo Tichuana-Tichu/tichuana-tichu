@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 public class SimpleMessageProperty extends SimpleBooleanProperty {
 
     private Message message;
+    private Player player;
 
     /**
      * SimpleMessageProperty replaces SimpleBooleanProperty in cases where the controller needs
@@ -28,4 +29,13 @@ public class SimpleMessageProperty extends SimpleBooleanProperty {
     public void setMessage(Message message) {
         this.message = message;
     }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
 }

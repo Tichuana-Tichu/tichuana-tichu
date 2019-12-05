@@ -1,6 +1,5 @@
 package ch.tichuana.tichu.client.view;
 
-import ch.tichuana.tichu.client.controller.PlayController;
 import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.services.Configuration;
 import ch.tichuana.tichu.client.services.ServiceLocator;
@@ -54,7 +53,7 @@ public class GameView {
 	 * @author Philipp
 	 */
 	public void start() {
-		this.playView = new PlayView();
+		this.playView = new PlayView(this.clientModel);
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 
 		//stage is 90 % of both width an height in initial size
@@ -68,11 +67,6 @@ public class GameView {
 		stage.setMinWidth(stage.getWidth()/3);
 		stage.setMinHeight(stage.getHeight()*0.9);
 
-		/*
-		//delete after testing
-		this.updateView();
-		new PlayController(this.clientModel, this, this.stage);
-		 */
 		stage.show();
 	}
 
@@ -103,6 +97,7 @@ public class GameView {
 		stage.setScene(game);
 		//initial trigger of the event-handler to rearrange the cardLabels
 		stage.setWidth(stage.getWidth()-1);
+		this.getPlayView().getPlayArea().updatePlayerName();
 	}
 
 	//Getters
