@@ -117,6 +117,12 @@ public class Game {
 			this.deck.shuffleDeck();
 			this.currentMatch = new Match(serverModel);
 			currentMatch.dealFirstEightCards();
+			serverModel.setSchupfenResponses(0);
+			serverModel.setTichuResponses(0);
+			this.currentPlayer = -1;
+			for (Player p : playersInOrder){
+				p.setDone(false);
+			}
 		}
 	}
 
