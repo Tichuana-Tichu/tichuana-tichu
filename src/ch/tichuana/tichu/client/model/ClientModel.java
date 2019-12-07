@@ -195,10 +195,4 @@ public class ClientModel {
     public boolean isMyTurn() {
         return myTurn;
     }
-    public int getOwnScore() {
-        return ownScore;
-    }
-    public int getOpponentScore() {
-        return opponentScore;
-    }
 }

@@ -259,6 +259,7 @@ class PlayController {
             ca.getPlayBtn().setDisable(false);
             gameView.getPlayView().getPlayArea().initHandColumn(8);
             gameView.getPlayView().getPlayArea().clearTichuColumn();
+            gameView.getPlayView().getPlayArea().clearPlayedColumn(); //TODO - Testing
         });
     }
 
