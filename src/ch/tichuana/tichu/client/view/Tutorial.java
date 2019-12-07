@@ -178,6 +178,7 @@ public class Tutorial extends Stage {
 
     public Tab makeCreditsTab(){
         Tab tab = new Tab(translator.getString("tutorial.credits"));
+        tab.setClosable(false);
 
         VBox root = new VBox();
         Label text = new Label(translator.getString("tutorial.credits.text"));
