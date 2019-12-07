@@ -1,4 +1,4 @@
-package ch.tichuana.tichu.client;
+package ch.tichuana.tichu.commons.test;
 
 import ch.tichuana.tichu.client.view.Tutorial;
 import javafx.application.Application;
