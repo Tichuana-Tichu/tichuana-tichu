@@ -18,6 +18,7 @@ public class Tutorial extends Stage {
     private Configuration configuration;
     private Translator translator;
     private static Tutorial tutorial;
+    private Button nextBtnRules, nextBtnCards, nextBtnMoves;
 
     private Tutorial(){
 
@@ -30,23 +31,27 @@ public class Tutorial extends Stage {
         this.translator = translator;
         this.configuration = configuration;
 
+        // next buttons
+        nextBtnRules = new Button(translator.getString("tutorial.next"));
+        nextBtnCards = new Button(translator.getString("tutorial.next"));
+        nextBtnMoves = new Button(translator.getString("tutorial.next"));
+
+        Tab rules = makeRulesTab();
+        Tab moves = makeValidMoveTab();
+        Tab cards = makeCardsTab();
 
         tabPane = new TabPane();
-        tabPane.getTabs().addAll(makeRulesTab(),makeValidMoveTab(), makeCardsTab());
+        tabPane.getTabs().addAll(rules,moves, cards);
 
-
-
-        /*
+        // selection model -> for next buttons
         SelectionModel<Tab> select = tabPane.getSelectionModel();
-        button.setOnAction(e -> {select.select(validMoves);});
-        tabPane.getTabs().addAll(rules,validMoves);
-        */
+        nextBtnRules.setOnAction(e -> {select.select(moves);});
+        nextBtnMoves.setOnAction(e -> {select.select(cards);});
+        nextBtnCards.setOnAction(e -> {select.select(rules);});
 
-
-
+        // scene
         Scene scene = new Scene(tabPane);
         this.setScene(scene);
-
     }
 
     /**
@@ -91,6 +96,7 @@ public class Tutorial extends Stage {
             grid.add(lbl,1, rowCount);
             rowCount++;
         }
+        grid.add(nextBtnMoves,0,rowCount+1);
         grid.setHgap(10);
         grid.setVgap(10);
         scrollPane.setContent(grid);
@@ -117,6 +123,7 @@ public class Tutorial extends Stage {
             lbl.setWrapText(true);
             root.getChildren().add(lbl);
         }
+        root.getChildren().add(nextBtnRules);
         root.setSpacing(10);
         rulesTab.setContent(root);
         rulesTab.setClosable(false);
@@ -140,6 +147,27 @@ public class Tutorial extends Stage {
             lbl.setWrapText(true);
             root.getChildren().add(lbl);
         }
+
+        GridPane grid = new GridPane();
+        String[] specialCards = {"mahjong", "hound", "phoenix", "dragon"};
+        int rowCounter = 0;
+        for (String rule : specialCards){
+            String path = configuration.getProperty("tutorial")+ rule + ".png";
+            Image img = new Image(path);
+            ImageView imgv = new ImageView(img);
+            imgv.setPreserveRatio(true);
+            imgv.setFitHeight(100);
+            Label lbl = new Label(translator.getString("tutorial.specialcard."+ rule));
+            lbl.setWrapText(true);
+            grid.add(imgv,0,rowCounter);
+            grid.add(lbl,1,rowCounter);
+            rowCounter++;
+        }
+        grid.setVgap(10);
+        grid.setHgap(10);
+        root.getChildren().add(grid);
+        root.getChildren().add(nextBtnCards);
+
         root.setSpacing(10);
         cardsTab.setContent(root);
         cardsTab.setClosable(false);
