@@ -40,15 +40,16 @@ public class Tutorial extends Stage {
         Tab rules = makeRulesTab();
         Tab moves = makeValidMoveTab();
         Tab cards = makeCardsTab();
+        Tab credits = makeCreditsTab();
 
         tabPane = new TabPane();
-        tabPane.getTabs().addAll(rules,moves, cards);
+        tabPane.getTabs().addAll(rules,moves, cards,credits);
 
         // selection model -> for next buttons
         SelectionModel<Tab> select = tabPane.getSelectionModel();
         nextBtnRules.setOnAction(e -> {select.select(moves);});
         nextBtnMoves.setOnAction(e -> {select.select(cards);});
-        nextBtnCards.setOnAction(e -> {select.select(rules);});
+        nextBtnCards.setOnAction(e -> {select.select(credits);});
 
         // scene
         Scene scene = new Scene(tabPane);
@@ -173,5 +174,19 @@ public class Tutorial extends Stage {
         cardsTab.setContent(root);
         cardsTab.setClosable(false);
         return cardsTab;
+    }
+
+    public Tab makeCreditsTab(){
+        Tab tab = new Tab(translator.getString("tutorial.credits"));
+
+        VBox root = new VBox();
+        Label text = new Label(translator.getString("tutorial.credits.text"));
+        Label col = new Label(translator.getString("tutorial.credits.collaborators"));
+
+        text.setWrapText(true);
+        root.getChildren().addAll(text,col);
+        tab.setContent(root);
+
+        return tab;
     }
 }
