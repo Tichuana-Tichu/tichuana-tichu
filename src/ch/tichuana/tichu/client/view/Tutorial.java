@@ -15,21 +15,22 @@ import javafx.stage.Stage;
 public class Tutorial extends Stage {
 
     private TabPane tabPane;
-    private Configuration configuration;
-    private Translator translator;
+    private static Configuration configuration;
+    private static Translator translator;
     private static Tutorial tutorial;
     private Button nextBtnRules, nextBtnCards, nextBtnMoves;
 
     private Tutorial(){
 
-        //temporary
         ServiceLocator serviceLocator = ServiceLocator.getServiceLocator();
-        Configuration configuration = new Configuration("src/ch/tichuana/tichu/client/resources/config.properties");
-        serviceLocator.setConfiguration(configuration);
-        Translator translator = new Translator("de");
-        serviceLocator.setTranslator(translator);
-        this.translator = translator;
-        this.configuration = configuration;
+
+        // temporary for testing
+        serviceLocator.setConfiguration(new Configuration("src/ch/tichuana/tichu/client/resources/config.properties"));
+        serviceLocator.setTranslator(new Translator("de"));
+
+        // needs to stay
+        translator = serviceLocator.getTranslator();
+        configuration = serviceLocator.getConfiguration();
 
         // next buttons
         nextBtnRules = new Button(translator.getString("tutorial.next"));
@@ -59,7 +60,7 @@ public class Tutorial extends Stage {
      * @return
      */
     public static Tutorial getTutorial(){
-        if (tutorial == null){
+        if (tutorial == null ){
             tutorial = new Tutorial();
         }
         return tutorial;
