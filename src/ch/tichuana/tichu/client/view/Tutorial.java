@@ -1,39 +1,46 @@
 package ch.tichuana.tichu.client.view;
 
+import ch.tichuana.tichu.client.services.Configuration;
+import ch.tichuana.tichu.client.services.ServiceLocator;
+import ch.tichuana.tichu.client.services.Translator;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Tutorial extends Stage {
 
-    private VBox root;
     private TabPane tabPane;
+    private Configuration configuration;
+    private Translator translator;
     private static Tutorial tutorial;
 
     private Tutorial(){
 
-        // root stage
-        root = new VBox();
+        //temporary
+        ServiceLocator serviceLocator = ServiceLocator.getServiceLocator();
+        Configuration configuration = new Configuration("src/ch/tichuana/tichu/client/resources/config.properties");
+        serviceLocator.setConfiguration(configuration);
+        Translator translator = new Translator("de");
+        serviceLocator.setTranslator(translator);
+        this.translator = translator;
+        this.configuration = configuration;
 
-        //
+
         tabPane = new TabPane();
+        tabPane.getTabs().addAll(makeRulesTab(),makeValidMoveTab(), makeCardsTab());
 
-        Tab rules = new Tab("Rules");
-        Button button = new Button("next");
-        rules.setContent(button);
-        rules.setClosable(false);
 
-        Tab combinations = new Tab("Valid Moves");
-        combinations.setContent(new Label("Rules klasdfj klajsdflkj laksdfjlk asdfjlköas jfölkasj flösakjfölkasj fölasjfklö adsfj asdl fladsö flads fjasdjfö asdf adsf ads f"));
-        combinations.setClosable(false);
 
+        /*
         SelectionModel<Tab> select = tabPane.getSelectionModel();
-
-        button.setOnAction(e -> {select.select(combinations);});
-
-        tabPane.getTabs().addAll(rules,combinations);
-
+        button.setOnAction(e -> {select.select(validMoves);});
+        tabPane.getTabs().addAll(rules,validMoves);
+        */
 
 
 
@@ -51,5 +58,91 @@ public class Tutorial extends Stage {
             tutorial = new Tutorial();
         }
         return tutorial;
+    }
+
+
+    /**
+     * creates the valid moves tab
+     * @author Christian
+     * @return validMoves tab
+     */
+    public Tab makeValidMoveTab(){
+        // valid moves
+        Tab validMoves = new Tab(translator.getString("tutorial.moves"));
+        ScrollPane scrollPane = new ScrollPane();
+        GridPane grid = new GridPane();
+
+        // combinations
+        String[] combinations = {"highcard", "pair", "step", "bomb","fullhouse", "straight", "straightflush"};
+        int rowCount = 0;
+        for (String combination : combinations){
+            // create image view
+            String path = configuration.getProperty("tutorial")+ combination + ".png";
+            Image img = new Image(path);
+            ImageView imgv= new ImageView(img);
+            imgv.setPreserveRatio(true);
+            imgv.setFitHeight(100);
+            grid.add(imgv,0,rowCount);
+
+            // create description
+            Label lbl = new Label(translator.getString("tutorial.moves."+combination));
+            lbl.setWrapText(true);
+            lbl.setPrefWidth(300);
+            grid.add(lbl,1, rowCount);
+            rowCount++;
+        }
+        grid.setHgap(10);
+        grid.setVgap(10);
+        scrollPane.setContent(grid);
+        validMoves.setContent(scrollPane);
+        validMoves.setClosable(false);
+
+        return validMoves;
+    }
+
+    /**
+     * creates the rules Tab
+     * @author Christian
+     * @return rulesTab
+     */
+    public Tab makeRulesTab(){
+        Tab rulesTab = new Tab(translator.getString("tutorial.rules"));
+
+        VBox root = new VBox();
+        String[] rules = {"players", "matches", "tricks", "smalltichu", "grandtichu", "push"};
+        int ruleCounter = 0;
+        for (String rule : rules){
+            ruleCounter ++;
+            Label lbl = new Label(ruleCounter + ". " + translator.getString("tutorial.rules."+rule));
+            lbl.setWrapText(true);
+            root.getChildren().add(lbl);
+        }
+        root.setSpacing(10);
+        rulesTab.setContent(root);
+        rulesTab.setClosable(false);
+        return rulesTab;
+    }
+
+    /**
+     * creates the cards tab
+     * @author Christian
+     * @return cardsTab
+     */
+    public Tab makeCardsTab(){
+        Tab cardsTab = new Tab(translator.getString("tutorial.cards"));
+        VBox root = new VBox();
+
+        String[] rules = {"deck", "suit"};
+        int ruleCounter = 0;
+        for (String rule : rules){
+            ruleCounter ++;
+            Label lbl = new Label(ruleCounter + ". " + translator.getString("tutorial.cards."+rule));
+            lbl.setWrapText(true);
+            root.getChildren().add(lbl);
+        }
+        root.setSpacing(10);
+        cardsTab.setContent(root);
+        cardsTab.setClosable(false);
+        return cardsTab;
     }
 }
