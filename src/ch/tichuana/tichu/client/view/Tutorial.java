@@ -32,6 +32,7 @@ public class Tutorial extends Stage {
         translator = serviceLocator.getTranslator();
         configuration = serviceLocator.getConfiguration();
 
+
         // next buttons
         nextBtnRules = new Button(translator.getString("tutorial.next"));
         nextBtnCards = new Button(translator.getString("tutorial.next"));
@@ -54,6 +55,9 @@ public class Tutorial extends Stage {
         // scene
         Scene scene = new Scene(tabPane);
         this.setScene(scene);
+
+        scene.getStylesheets().add(
+                getClass().getResource(configuration.getProperty("tutorialStyle")).toExternalForm());
     }
 
     /**
@@ -101,6 +105,7 @@ public class Tutorial extends Stage {
         grid.add(nextBtnMoves,0,rowCount+1);
         grid.setHgap(10);
         grid.setVgap(10);
+        grid.setId("validmove");
         scrollPane.setContent(grid);
         validMoves.setContent(scrollPane);
         validMoves.setClosable(false);
