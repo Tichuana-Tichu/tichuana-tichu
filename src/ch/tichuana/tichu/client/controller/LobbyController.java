@@ -69,16 +69,17 @@ public class LobbyController {
 	public void changeTranslator(Event event){
 		MenuItem m = (MenuItem) event.getSource();
 
-		if (m.getText() == t.getString("langMenu.german")){
+		if (m.getText().equals(t.getString("langMenu.german"))){
 
 			Translator de = new Translator("de");
 			ServiceLocator.getServiceLocator().setTranslator(de);
 
-		} else if (m.getText() == t.getString("langMenu.english")){
+		} else if (m.getText().equals(t.getString("langMenu.english"))){
 
 			Translator en = new Translator("en");
 			ServiceLocator.getServiceLocator().setTranslator(en);
 		}
+		t = serviceLocator.getTranslator();
 		gameView.getLobbyView().update();
 	}
 
