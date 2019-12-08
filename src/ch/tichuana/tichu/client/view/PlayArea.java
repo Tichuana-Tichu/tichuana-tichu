@@ -135,14 +135,14 @@ public class PlayArea extends GridPane {
 		this.playerLbl[3].setText(clientModel.getOpponent(1));
 	}
 
-	public void updateHandColumn(String playerName, int playedCards) {
+	private void updateHandColumn(String playerName, int playedCards) {
 		Label handLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), 1);
 
 		if (playerName.equals(clientModel.getPlayerName())) {
 			handLabel.setText(String.valueOf(clientModel.getHand().getCards().size()));
 		} else {
 			int handSize = Integer.parseInt(handLabel.getText());
-			if (handSize == playedCards) //TODO - Testing
+			if (handSize == playedCards)
 				handLabel.setText("0");
 			else
 				handLabel.setText(String.valueOf(handSize-playedCards));
@@ -195,6 +195,8 @@ public class PlayArea extends GridPane {
 	 */
 	public void updatePlayedColumn(String playerName, ArrayList<Card> cards) {
 		CardArea cardArea = (CardArea) getNodeByRowColumnIndex(getPlayerRow(playerName), 3);
+
+		updateHandColumn(playerName, cards.size()); //also updates HandColumn
 
 		if (!cards.isEmpty())
 			cardArea.updateThumbnails(cards);

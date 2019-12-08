@@ -115,8 +115,10 @@ public class ClientModel {
                         }
 
                         this.msg.setMessage(msg);
-                        this.ownScore = msg.getOwnScore();
-                        this.opponentScore = msg.getOpponentScore();
+                        if (msg.getOwnScore() > 0)
+                            this.ownScore = msg.getOwnScore();
+                        if (msg.getOpponentScore() > 0)
+                            this.opponentScore = msg.getOpponentScore();
 
                         if (!this.playerName.equals(msg.getNextPlayer())) {
                             this.myTurn = false;
@@ -194,5 +196,11 @@ public class ClientModel {
     }
     public boolean isMyTurn() {
         return myTurn;
+    }
+    public int getOpponentScore() {
+        return opponentScore;
+    }
+    public int getOwnScore() {
+        return ownScore;
     }
 }
