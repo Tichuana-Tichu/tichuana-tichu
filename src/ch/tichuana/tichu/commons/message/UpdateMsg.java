@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class UpdateMsg extends Message {
 
-	private String nextPlayer;
+	private String nextPlayer, lastPlayer;
 	private ArrayList<Card> lastMove;
 	private String[] players;
 	private int[] remainingCards;
@@ -25,9 +25,10 @@ public class UpdateMsg extends Message {
 	 * @param opponentScore
 	 * @param ownScore
 	 */
-	public UpdateMsg(String nextPlayer, ArrayList<Card> lastMove, int opponentScore, int ownScore,
+	public UpdateMsg(String nextPlayer, String lastPlayer, ArrayList<Card> lastMove, int opponentScore, int ownScore,
 					 String[] players, int[] remainingCards) {
 		this.nextPlayer = nextPlayer;
+		this.lastPlayer = lastPlayer;
 		this.lastMove = lastMove;
 		this.opponentScore = opponentScore;
 		this.ownScore = ownScore;
@@ -41,6 +42,7 @@ public class UpdateMsg extends Message {
 		JSONObject json = new JSONObject();
 		json.put("msg",this.getMsgType().toString());
 		json.put("nextPlayer", nextPlayer);
+		json.put("lastPlayer", lastPlayer);
 		json.put("opponentScore",this.opponentScore);
 		json.put("ownScore",this.ownScore);
 		JSONArray array = new JSONArray();
@@ -97,6 +99,11 @@ public class UpdateMsg extends Message {
 	@Override
 	public int getOwnScore() {
 		return this.ownScore;
+	}
+
+	@Override
+	public String getLastPlayer(){
+		return this.lastPlayer;
 	}
 
 }

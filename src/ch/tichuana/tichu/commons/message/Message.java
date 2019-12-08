@@ -170,6 +170,7 @@ public abstract class Message {
 				int opponentScore = convertToInt(json.get("opponentScore"));
 				int ownScore = convertToInt(json.get("ownScore"));
 				playerName = (String) json.get("nextPlayer");
+				String lastPlayer = (String) json.get("lastPlayer");
 
 				JSONArray playerArray = (JSONArray) json.get("remainingCards");
 				int[] remainingCards = new int[4];
@@ -183,7 +184,7 @@ public abstract class Message {
 					counter++;
 				}
 
-				newMessage = new UpdateMsg(playerName,cards,opponentScore,ownScore,playerNames,remainingCards);
+				newMessage = new UpdateMsg(playerName,lastPlayer, cards,opponentScore,ownScore,playerNames,remainingCards);
 				break;
 		}
 		return newMessage;
@@ -238,5 +239,8 @@ public abstract class Message {
 	}
 	public int getRemainingCardsByPlayerName(String name){
 		return 0;
+	}
+	public String getLastPlayer(){
+		return null;
 	}
 }

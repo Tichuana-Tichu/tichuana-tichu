@@ -37,7 +37,7 @@ public class Match {
 				// to the players index-1. this way getNextPlayer will return him when called.
 				serverModel.getGame().setCurrentPlayer(
 						Arrays.asList(serverModel.getGame().getPlayersInOrder()).indexOf(p));
-				UpdateMsg msg = new UpdateMsg(p.getPlayerName(), new ArrayList<Card>(),0,0,
+				UpdateMsg msg = new UpdateMsg(p.getPlayerName(), "", new ArrayList<Card>(),0,0,
 						getPlayerNames(), getRemainingCards());
 				serverModel.broadcast(msg);
 				break;
@@ -147,6 +147,7 @@ public class Match {
 			for (int i = 0; i < teams.length; i++) {
 				UpdateMsg msg = new UpdateMsg(
 						nextPlayer.getPlayerName(),
+						trick.getLastPlayer().getPlayerName(),
 						messageProperty.getMessage().getCards(), // was: last valid move, now: last move even when empty
 						teams[(i + 1) % 2].getCurrentScore(), teams[i].getCurrentScore(),
 						getPlayerNames(),getRemainingCards());
