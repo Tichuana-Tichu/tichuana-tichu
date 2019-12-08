@@ -145,7 +145,7 @@ public class Tutorial extends Stage {
         Tab cardsTab = new Tab(translator.getString("tutorial.cards"));
         VBox root = new VBox();
 
-        String[] rules = {"deck", "suit"};
+        String[] rules = {"deck", "suit", "score"};
         int ruleCounter = 0;
         for (String rule : rules){
             ruleCounter ++;
