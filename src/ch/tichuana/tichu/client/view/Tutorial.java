@@ -24,10 +24,6 @@ public class Tutorial extends Stage {
 
         ServiceLocator serviceLocator = ServiceLocator.getServiceLocator();
 
-        // temporary for testing
-        serviceLocator.setConfiguration(new Configuration("src/ch/tichuana/tichu/client/resources/config.properties"));
-        serviceLocator.setTranslator(new Translator("de"));
-
         // needs to stay
         translator = serviceLocator.getTranslator();
         configuration = serviceLocator.getConfiguration();
@@ -66,6 +62,9 @@ public class Tutorial extends Stage {
      */
     public static Tutorial getTutorial(){
         if (tutorial == null ){
+            tutorial = new Tutorial();
+        } else if (ServiceLocator.getServiceLocator().getTranslator() != translator) {
+            // if translator has changed, we also make new tutorial
             tutorial = new Tutorial();
         }
         return tutorial;

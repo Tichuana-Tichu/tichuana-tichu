@@ -17,7 +17,7 @@ public class Settings extends MenuBar {
 
     private Translator translator;
     private Menu langMenu, tutorial;
-    private MenuItem lang1, lang2;
+    private MenuItem lang1, lang2, showTutorial;
 
     /**
      * @author Philipp
@@ -33,6 +33,9 @@ public class Settings extends MenuBar {
         this.langMenu.getItems().addAll(lang1,lang2);
 
         tutorial = new Menu(translator.getString("tutorial"));
+        showTutorial = new MenuItem(translator.getString("tutorial.show"));
+        showTutorial.setOnAction(e -> { Tutorial.getTutorial().show(); });
+        tutorial.getItems().add(showTutorial);
 
 
         this.getMenus().addAll(this.langMenu, this.tutorial);
@@ -47,6 +50,9 @@ public class Settings extends MenuBar {
         langMenu.setText(translator.getString("settings.langMenu"));
         lang1.setText(translator.getString("langMenu.german"));
         lang2.setText(translator.getString("langMenu.english"));
+
+        tutorial.setText(translator.getString("tutorial"));
+        showTutorial.setText(translator.getString("tutorial.show"));
     }
 
     //Getter
