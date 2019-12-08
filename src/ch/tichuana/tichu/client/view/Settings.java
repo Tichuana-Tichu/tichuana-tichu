@@ -16,7 +16,7 @@ import java.util.Locale;
 public class Settings extends MenuBar {
 
     private Translator translator;
-    private Menu langMenu;
+    private Menu langMenu, tutorial;
     private MenuItem lang1, lang2;
 
     /**
@@ -32,7 +32,10 @@ public class Settings extends MenuBar {
 
         this.langMenu.getItems().addAll(lang1,lang2);
 
-        this.getMenus().add(this.langMenu);
+        tutorial = new Menu(translator.getString("tutorial"));
+
+
+        this.getMenus().addAll(this.langMenu, this.tutorial);
     }
 
     /**
