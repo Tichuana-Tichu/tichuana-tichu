@@ -206,6 +206,7 @@ class MessageTest {
         Card c2 = new Card(Suit.Swords, Rank.Ace);
         array.add(c1.toJSON());
         array.add(c2.toJSON());
+        json.put("lastPlayer", "");
         json.put("msg", "UpdateMsg");
         json.put("nextPlayer", "player1");
         json.put("lastMove", array);
@@ -235,7 +236,7 @@ class MessageTest {
 
 
         Message msg = Message.parseMessage(json);
-        assertEquals("player4", msg.getLastPlayer());
+        assertEquals("", msg.getLastPlayer());
         assertEquals(MessageType.UpdateMsg, msg.getMsgType());
         assertTrue(msg.getLastMove().contains(c1));
         assertTrue(msg.getLastMove().contains(c2));

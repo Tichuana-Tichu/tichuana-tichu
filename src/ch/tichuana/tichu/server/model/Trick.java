@@ -12,6 +12,7 @@ public class Trick {
     private ArrayList<Card> lastMove;
     private Combination combination;
     private Player currentWinner;
+    private Player lastPlayer;
     private int passCounter;
     private boolean won;
     private ServerModel serverModel;
@@ -31,6 +32,9 @@ public class Trick {
      * @param move
      */
     public void update(Player player, ArrayList<Card> move){
+        // last player is added even if he passed
+        lastPlayer = player;
+
         if (move.isEmpty()){
             passCounter++;
             if (passCounter == serverModel.getGame().getNumberOfRemainingPlayers()){
@@ -80,5 +84,9 @@ public class Trick {
 
     public ArrayList<Card> getLastMove() {
         return lastMove;
+    }
+
+    public Player getLastPlayer() {
+        return lastPlayer;
     }
 }
