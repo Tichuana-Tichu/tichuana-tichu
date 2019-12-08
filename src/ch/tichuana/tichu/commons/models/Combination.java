@@ -454,7 +454,7 @@ public enum Combination {
 						return false;
 					}
 				} else { // not a valid bomb (FourOfAKindPhoenix isn't a bomb)
-					return true;
+					return false;
 				}
 
 			case FourOfAKindPhoenix:
