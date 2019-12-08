@@ -89,4 +89,12 @@ public class Trick {
     public Player getLastPlayer() {
         return lastPlayer;
     }
+
+    public String getLastPlayerName(){
+        if (this.lastPlayer != null) {
+            return this.lastPlayer.getPlayerName();
+        } else {
+            return "";
+        }
+    }
 }
