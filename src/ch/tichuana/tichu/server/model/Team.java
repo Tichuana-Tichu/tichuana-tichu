@@ -35,6 +35,19 @@ public class Team implements Comparable<Team> {
 	}
 
 	/**
+	 * returns a players team mate
+	 * @param player
+	 * @return teammate
+	 */
+	public Player getOtherMemberByMember(Player player) {
+		if (player == players[0]) {
+			return players[1];
+		} else {
+			return players[0];
+		}
+	}
+
+	/**
 	 *
 	 * @return uniqueID
 	 */
