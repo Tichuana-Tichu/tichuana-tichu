@@ -96,7 +96,6 @@ public class ServerController {
 				serverModel.getGame().getCurrentMatch().dealRemainingCards();
 			} else if (serverModel.getTichuResponses() == 8) {
 				demandSchupfen();
-				serverModel.setTichuResponses(0);
 			}
 			property.setValue(false);
 		}
@@ -129,7 +128,6 @@ public class ServerController {
 			// When all Schupfen Responses have been received we can start the first match
 			if (serverModel.getSchupfenResponses() >= 12){
 				serverModel.getGame().getCurrentMatch().start();
-				serverModel.setSchupfenResponses(0);
 			} else {
 				if (serverModel.getSchupfenResponses()%3 == 0){
 					demandSchupfen();

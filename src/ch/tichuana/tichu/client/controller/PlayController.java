@@ -22,7 +22,7 @@ class PlayController {
     private GameView gameView;
     private Stage stage;
     private ArrayList<Card> receivedCards = new ArrayList<>();
-    private ArrayList<Card> oldMove = new ArrayList<>();
+    private static ArrayList<Card> oldMove = new ArrayList<>();
     private Translator translator;
     private int pushCounter = 1;
     private int passCounter = 0;
@@ -109,17 +109,15 @@ class PlayController {
             else {
                 ArrayList<Card> newMove = getSelectedCards();
 
-                if (!this.clientModel.getMsgCodeProperty().getMessage().getLastMove().isEmpty())
-                    this.oldMove = this.clientModel.getMsgCodeProperty().getMessage().getLastMove();
-
                 if (!newMove.isEmpty()) {
+
                     if (Combination.isValidMove(oldMove, newMove)) {
                         this.clientModel.sendMessage(new PlayMsg(newMove));
                         this.clientModel.getHand().removeCards(newMove);
                         this.clientModel.getHand().sort();
                     }
                 } else {
-                    this.clientModel.sendMessage(new PlayMsg(newMove));
+                    this.clientModel.sendMessage(new PlayMsg(new ArrayList<>()));
                 }
             }
         });
@@ -141,6 +139,7 @@ class PlayController {
         Platform.runLater(() -> pv.getPlayArea().updateTotalPoints(msg.getOwnScore(), msg.getOpponentScore()));
 
         if (!msg.getLastMove().isEmpty()) {
+            oldMove = this.clientModel.getMsgCodeProperty().getMessage().getLastMove();
             this.passCounter = 0;
             Platform.runLater(() -> {
                 pv.getPlayArea().updatePlayedColumn(lastPlayer, msg.getLastMove());
@@ -149,7 +148,7 @@ class PlayController {
         } else {
             if (this.passCounter == msg.getRemainingPlayers()-1) {
                 Platform.runLater(() -> pv.getPlayArea().clearPlayedColumn());
-                this.oldMove.clear();
+                oldMove.clear();
                 this.passCounter = 0;
             }
             this.passCounter++;
@@ -157,6 +156,7 @@ class PlayController {
 
         if (this.clientModel.isMyTurn())
             Platform.runLater(() -> pv.getBottomView().getControlArea().getPlayBtn().setDisable(false));
+
         else
             Platform.runLater(() -> pv.getBottomView().getControlArea().getPlayBtn().setDisable(true));
     }
@@ -248,6 +248,10 @@ class PlayController {
      */
     private void handleFirstDealMsg() {
         ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
+        PlayArea pa = this.gameView.getPlayView().getPlayArea();
+
+        this.receivedCards.clear();//TODO Testing
+        oldMove.clear(); //TODO - Testing
         this.clientModel.getHand().getCards().addListener(this::activateHand);
 
         //sets 8 cards and enables Buttons to be able to announce tichu
@@ -257,8 +261,9 @@ class PlayController {
             ca.getPlayBtn().setText(translator.getString("controlarea.pass"));
             ca.getGrandTichuBtn().setDisable(false);
             ca.getPlayBtn().setDisable(false);
-            gameView.getPlayView().getPlayArea().initHandColumn(8);
-            gameView.getPlayView().getPlayArea().clearTichuColumn();
+            pa.initHandColumn(8);
+            pa.clearTichuColumn();
+            pa.clearPlayedColumn();
         });
     }
 
