@@ -111,21 +111,6 @@ public class Match {
 		Player player = messageProperty.getPlayer();
 		ArrayList<Card> move = messageProperty.getMessage().getCards();
 		this.trick.update(player, move);
-
-		// handle special case if card was a hound
-		if (move.size() == 1 && move.get(0) == new Card(Rank.dog)) {
-
-			Player teamMate = serverModel.getGame().getTeamByMember(player).getOtherMemberByMember(player);
-
-			// if teammate is done we set the current player to the position just before him
-			// so getNextPlayer() returns him. if that isn't the case we do nothing
-			if (!teamMate.isDone()) {
-				int teamMatePosition = Arrays.asList(
-					serverModel.getGame().getPlayersInOrder()).indexOf(teamMate);
-				serverModel.getGame().setCurrentPlayer(teamMatePosition-1);
-			}
-		}
-
 		logger.info(player.getPlayerName() + " played move: " +
 				messageProperty.getMessage().getCards().size() + " cards");
 
@@ -151,6 +136,20 @@ public class Match {
 				serverModel.getGame().setCurrentPlayer(index - 1);
 
 				this.trick = new Trick(serverModel);
+			}
+
+			// handle special case if card was a hound
+			if (move.size() == 1 && move.get(0) == new Card(Rank.dog)) {
+
+				Player teamMate = serverModel.getGame().getTeamByMember(player).getOtherMemberByMember(player);
+
+				// if teammate is done we set the current player to the position just before him
+				// so getNextPlayer() returns him. if that isn't the case we do nothing
+				if (!teamMate.isDone()) {
+					int teamMatePosition = Arrays.asList(
+							serverModel.getGame().getPlayersInOrder()).indexOf(teamMate);
+					serverModel.getGame().setCurrentPlayer(teamMatePosition-1);
+				}
 			}
 
 			Team[] teams = serverModel.getGame().getTeams();
