@@ -226,7 +226,7 @@ class MessageTest {
         ArrayList<Card> move = new ArrayList<>();
         move.add(c1);
         move.add(c2);
-        UpdateMsg upmsg = new UpdateMsg("player1",move,0,0,new String[]{"player1","player2","3","4"}, new int[]{14,14,14,14});
+        UpdateMsg upmsg = new UpdateMsg("player1","player4", move,0,0,new String[]{"player1","player2","3","4"}, new int[]{14,14,14,14});
         assertTrue(upmsg.getLastMove().contains(c1));
 
 
@@ -235,6 +235,7 @@ class MessageTest {
 
 
         Message msg = Message.parseMessage(json);
+        assertEquals("player4", msg.getLastPlayer());
         assertEquals(MessageType.UpdateMsg, msg.getMsgType());
         assertTrue(msg.getLastMove().contains(c1));
         assertTrue(msg.getLastMove().contains(c2));
