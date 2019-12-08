@@ -111,9 +111,6 @@ class PlayController {
 
                 if (!newMove.isEmpty()) {
 
-                    if (!this.clientModel.getMsgCodeProperty().getMessage().getLastMove().isEmpty())
-                        oldMove = this.clientModel.getMsgCodeProperty().getMessage().getLastMove();
-
                     if (Combination.isValidMove(oldMove, newMove)) {
                         this.clientModel.sendMessage(new PlayMsg(newMove));
                         this.clientModel.getHand().removeCards(newMove);
@@ -142,6 +139,7 @@ class PlayController {
         Platform.runLater(() -> pv.getPlayArea().updateTotalPoints(msg.getOwnScore(), msg.getOpponentScore()));
 
         if (!msg.getLastMove().isEmpty()) {
+            oldMove = this.clientModel.getMsgCodeProperty().getMessage().getLastMove();
             this.passCounter = 0;
             Platform.runLater(() -> {
                 pv.getPlayArea().updatePlayedColumn(lastPlayer, msg.getLastMove());
@@ -150,7 +148,7 @@ class PlayController {
         } else {
             if (this.passCounter == msg.getRemainingPlayers()-1) {
                 Platform.runLater(() -> pv.getPlayArea().clearPlayedColumn());
-                //oldMove.clear();
+                oldMove.clear();
                 this.passCounter = 0;
             }
             this.passCounter++;
@@ -158,6 +156,7 @@ class PlayController {
 
         if (this.clientModel.isMyTurn())
             Platform.runLater(() -> pv.getBottomView().getControlArea().getPlayBtn().setDisable(false));
+
         else
             Platform.runLater(() -> pv.getBottomView().getControlArea().getPlayBtn().setDisable(true));
     }
@@ -251,6 +250,8 @@ class PlayController {
         ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
         PlayArea pa = this.gameView.getPlayView().getPlayArea();
 
+        this.receivedCards.clear();//TODO Testing
+        oldMove.clear(); //TODO - Testing
         this.clientModel.getHand().getCards().addListener(this::activateHand);
 
         //sets 8 cards and enables Buttons to be able to announce tichu
@@ -262,7 +263,7 @@ class PlayController {
             ca.getPlayBtn().setDisable(false);
             pa.initHandColumn(8);
             pa.clearTichuColumn();
-            pa.clearPlayedColumn(); //TODO - Testing
+            pa.clearPlayedColumn();
         });
     }
 

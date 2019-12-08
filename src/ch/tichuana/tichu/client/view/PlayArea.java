@@ -142,7 +142,7 @@ public class PlayArea extends GridPane {
 			handLabel.setText(String.valueOf(clientModel.getHand().getCards().size()));
 		} else {
 			int handSize = Integer.parseInt(handLabel.getText());
-			if (handSize < 0)
+			if (handSize == playedCards) //TODO - Testing
 				handLabel.setText("0");
 			else
 				handLabel.setText(String.valueOf(handSize-playedCards));
