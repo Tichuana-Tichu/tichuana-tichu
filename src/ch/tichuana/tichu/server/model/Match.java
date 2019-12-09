@@ -145,11 +145,6 @@ public class Match {
 				this.trick = new Trick(serverModel);
 			}
 
-			// handle special case if card was a hound
-			if (!move.isEmpty()) {
-				Card potetialDog = move.get(0);
-			}
-
 			if (move.size() == 1 && move.get(0).equals(new Card(Rank.dog))) {
 
 				Player teamMate = serverModel.getGame().getTeamByMember(player).getOtherMemberByMember(player);
