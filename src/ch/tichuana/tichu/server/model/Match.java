@@ -241,6 +241,8 @@ public class Match {
 				}
 
 			case OnePair:
+			case ThreeOfAKind:
+				/*
 				// get the second last card, because last might be phoenix
 				if (move.get(move.size()-2).getRank().equals(Rank.Ace)){
 					return false;
@@ -252,12 +254,32 @@ public class Match {
 							return true;
 						}
 					}
-				}
+				}*/
 				break;
 
-			case ThreeOfAKind:
-			case FourOfAKindBomb:
+			case Steps:
+				/*
+				// if any player has a higher step, move is still beatable
+				for (Player p : serverModel.getGame().getPlayersInOrder()) {
+					ArrayList<Card> hand = p.getSortedHand();
 
+					// iterate through hand minus last size of move
+					for (int i = 0; i < hand.size()-move.size(); i++){
+
+						//possible step has same size as hand -> i - i+size-1
+						ArrayList<Card> possibleStep = new ArrayList<Card>(hand.subList(i,i+move.size()-1));
+						if (Combination.isSteps(possibleStep)){
+							return true;
+						}
+					}
+				}
+				return false;*/
+
+			case FullHouse:
+			case FourOfAKindPhoenix:
+			case FourOfAKindBomb:
+			case Straight:
+			case StraightFlushBomb:
 
 		}
 		return true;
