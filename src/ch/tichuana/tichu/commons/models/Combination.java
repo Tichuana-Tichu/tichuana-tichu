@@ -410,11 +410,7 @@ public enum Combination {
 			case Straight:
 				if (evaluateCombination(newMove) == Straight){
 
-					// longer straight wins
-					if (newMove.size() > oldMove.size()){
-						return true;
-
-					} else if (newMove.size() == oldMove.size()){
+					if (newMove.size() == oldMove.size()){
 						Card lastCardNew = newMove.get(newMove.size()-1);
 						Card lastCardOld = oldMove.get(oldMove.size()-1);
 
