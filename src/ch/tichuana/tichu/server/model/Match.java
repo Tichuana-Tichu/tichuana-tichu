@@ -127,6 +127,13 @@ public class Match {
 			serverModel.getGame().startMatch();
 		} else {
 
+			// if no higher combination is still possible, trick is won
+			if (!move.isEmpty()) {
+				if (!isMoveBeatable(move)) {
+					this.trick.setWon(true);
+				}
+			}
+
 			if (this.trick.isWon()) {
 				// add trick to winning player
 				this.trick.getCurrentWinner().addTrick(this.trick);
@@ -217,6 +224,48 @@ public class Match {
 				}
 			}
 		}
+	}
+
+	public boolean isMoveBeatable(ArrayList<Card> move) {
+
+		switch (Combination.evaluateCombination(move)){
+
+			case HighCard:
+				if (move.get(move.size()-1).getRank().equals(Rank.dragon)) {
+					return false;
+				} else {
+					for (Player p : serverModel.getGame().getPlayersInOrder()) {
+						// if any players highest card has a higher rank than this move -> still beatable
+						if (p.getSortedHand().get(p.getSortedHand().size()-1).getRank().ordinal() >
+								move.get(0).getRank().ordinal()) {
+							return true;
+						}
+					}
+					// no player has higher single card
+					return false;
+				}
+
+			case OnePair:
+				// get the second last card, because last might be phoenix
+				if (move.get(move.size()-2).getRank().equals(Rank.Ace)){
+					return false;
+				} else {
+					for (Player p : serverModel.getGame().getPlayersInOrder()) {
+						// if any players highest card has a higher rank than this move -> still beatable
+						if (p.getSortedHand().get(p.getSortedHand().size()-1).getRank().ordinal() >
+								move.get(0).getRank().ordinal()) {
+							return true;
+						}
+					}
+				}
+				break;
+
+			case ThreeOfAKind:
+			case FourOfAKindBomb:
+
+
+		}
+		return true;
 	}
 
 	/**

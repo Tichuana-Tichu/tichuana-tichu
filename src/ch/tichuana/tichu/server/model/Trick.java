@@ -90,6 +90,10 @@ public class Trick {
         return lastPlayer;
     }
 
+    public void setWon(boolean won) {
+        this.won = won;
+    }
+
     public String getLastPlayerName(){
         if (this.lastPlayer != null) {
             return this.lastPlayer.getPlayerName();
