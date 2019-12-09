@@ -25,6 +25,7 @@ class PlayController {
     private static ArrayList<Card> oldMove = new ArrayList<>();
     private ArrayList<String> finishedPlayers = new ArrayList<>();
     private Translator translator;
+    private boolean firstRound = true;
     private int pushCounter = 1;
     private int passCounter = 0;
 
@@ -248,6 +249,12 @@ class PlayController {
      * @author Philipp
      */
     private void handleFirstDealMsg() {
+
+        if (!this.firstRound) {
+            try { Thread.sleep(10000); } catch (InterruptedException e) { e.printStackTrace(); }
+        }
+        this.firstRound = false;
+
         ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
         PlayArea pa = this.gameView.getPlayView().getPlayArea();
 
