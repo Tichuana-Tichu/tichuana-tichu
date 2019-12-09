@@ -203,7 +203,7 @@ public enum Combination {
 		boolean found = true;
 		boolean phoenixUsed = false;
 
-		if(cards.size() > 4 && !containsMahjong(cards) && !containsDog(cards) && !containsDragon(cards)){
+		if(cards.size() > 4 && !containsDog(cards) && !containsDragon(cards)){
 			if(containsPhoenix(cards)){
 				for(int i = 0; i < cards.size() - 2 && found; i++){
 					if (cards.get(i).getRank().ordinal() != cards.get(i + 1).getRank().ordinal() -1){
