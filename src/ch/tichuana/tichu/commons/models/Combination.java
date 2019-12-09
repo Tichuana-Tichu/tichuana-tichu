@@ -326,6 +326,10 @@ public enum Combination {
 					if (beforePhoenix != null && beforePhoenix.compareTo(newMove.get(0)) < 0){
 						return true;
 					} else {
+						// this is a bit ugly, only because clients do not hav the beforePhoenix initialized
+						if (newClone.get(0).getRank() == Rank.dragon){
+							return true;
+						}
 						return false;
 					}
 				}
