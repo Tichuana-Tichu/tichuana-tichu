@@ -6,6 +6,7 @@ import ch.tichuana.tichu.commons.models.TichuType;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Logger;
 
 public class Player {
@@ -158,6 +159,12 @@ public class Player {
 	 */
 	public void addTrick(Trick trick){
 		this.tricksWon.add(trick);
+	}
+
+	public ArrayList<Card> getSortedHand() {
+		ArrayList<Card> hand = (ArrayList<Card>) this.hand.clone();
+		Collections.sort(hand);
+		return hand;
 	}
 
 	//Getter & Setter
