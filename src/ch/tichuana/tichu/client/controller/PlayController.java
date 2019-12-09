@@ -117,8 +117,9 @@ class PlayController {
                         this.clientModel.getHand().removeCards(newMove);
                         this.clientModel.getHand().sort();
                     }
-                } else {
-                    this.clientModel.sendMessage(new PlayMsg(new ArrayList<>()));
+                } else { // able to pass only in between a trick not at the beginning
+                    if (!clientModel.getMsgCodeProperty().getMessage().getLastPlayer().isEmpty())
+                        this.clientModel.sendMessage(new PlayMsg(new ArrayList<>()));
                 }
             }
         });
