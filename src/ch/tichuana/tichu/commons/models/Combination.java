@@ -315,6 +315,12 @@ public enum Combination {
 				return true;
 			}
 		}
+
+		// if the old move was a hound, everything is allowed again
+		if (oldMove.size() == 1 && containsDog(oldMove)){
+			return true;
+		}
+
 		// all evaluations are based on what the previous move was
 		switch (evaluateCombination(oldClone)){
 
