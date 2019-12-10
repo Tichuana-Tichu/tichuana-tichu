@@ -17,7 +17,7 @@ public class Game {
 	private Team[] teams = new Team[2];
 	private DeckOfCards deck;
 	private Match currentMatch;
-	private final int MAX_SCORE = 1000;
+	private final int MAX_SCORE = 100;
 
 	/**
 	 * Game will be started from ServerModel as soon as 4 player are connected to server

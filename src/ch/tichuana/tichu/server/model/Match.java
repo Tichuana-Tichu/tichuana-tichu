@@ -7,6 +7,8 @@ import ch.tichuana.tichu.commons.message.UpdateMsg;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.Combination;
 import ch.tichuana.tichu.commons.models.Rank;
+import ch.tichuana.tichu.commons.models.TichuType;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -19,6 +21,7 @@ public class Match {
 	static int MIN_PLAYER = 2;
 	private Logger logger = Logger.getLogger("");
 	private Trick trick = null;
+	private Player firstPlayer = null;
 
 	public Match(ServerModel serverModel) {
 		this.serverModel = serverModel;
@@ -190,6 +193,20 @@ public class Match {
         this.trick.getCurrentWinner().addTrick(this.trick);
 
 		for (Player p : serverModel.getGame().getPlayersInOrder()) {
+
+			Team pTeam = serverModel.getGame().getTeamByMember(p);
+
+			// add/remove points for Tichus
+			switch (p.getTichuType()){
+				case none:
+					break;
+				case SmallTichu:
+					pTeam.addPoints((p == firstPlayer) ? 100 : -100);
+					break;
+				case GrandTichu:
+					pTeam.addPoints((p == firstPlayer) ? 200 : -200);
+					break;
+			}
 
 			// when the players hand isn't empty, his cards points will be given to the opposing team
 			if (!p.getHand().isEmpty()){

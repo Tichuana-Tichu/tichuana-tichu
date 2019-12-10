@@ -83,7 +83,7 @@ public class Card implements Comparable {
 				value = 5;
 				break;
 			case "ten":
-			case "king":
+			case "King":
 				value = 10;
 				break;
 			case "dragon":

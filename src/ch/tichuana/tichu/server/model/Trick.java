@@ -74,8 +74,8 @@ public class Trick {
         return won;
     }
 
-    public boolean addMove(){
-        return true;
+    public void addMove(ArrayList<Card> move){
+        this.cards.addAll(move);
     }
 
     public Player getCurrentWinner() {
