@@ -30,6 +30,9 @@ public class BottomView extends BorderPane {
 		this.setCenter(cardsNConsole);
 	}
 
+	/**
+	 * @author dominik
+	 */
 	public void update(){
 	controlArea.update();
 	//TODO Console is not translated ATM.

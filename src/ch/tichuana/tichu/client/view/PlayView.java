@@ -29,6 +29,9 @@ public class PlayView extends BorderPane {
 		this.setTop(this.settings);
 	}
 
+	/**
+	 * @author dominik
+	 */
 	public void update(){
 		this.bottomView.update();
 		this.settings.update();

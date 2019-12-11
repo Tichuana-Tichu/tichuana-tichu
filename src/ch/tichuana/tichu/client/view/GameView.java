@@ -100,6 +100,9 @@ public class GameView {
 		this.getPlayView().getPlayArea().updatePlayerName();
 	}
 
+	/**
+	 * @author dominik
+	 */
 	public void update(){
 		playView.update();
 		lobbyView.update();

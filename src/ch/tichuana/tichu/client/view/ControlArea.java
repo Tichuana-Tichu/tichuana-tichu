@@ -34,6 +34,9 @@ public class ControlArea extends VBox {
 		this.getChildren().addAll(this.grandTichuBtn, this.smallTichuBtn, this.schupfenBtn, this.playBtn);
 	}
 
+	/**
+	 * @author dominik
+	 */
 	public void update(){
 		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
 		this.playBtn.setText(translator.getString("controlarea.play"));

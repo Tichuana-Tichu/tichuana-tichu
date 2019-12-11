@@ -270,6 +270,9 @@ public class PlayArea extends GridPane {
 		return result;
 	}
 
+	/**
+	 * @author dominik
+	 */
 	public void update(){
 		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
 		this.headings[0].setText(translator.getString("name"));
