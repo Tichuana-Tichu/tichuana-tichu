@@ -7,6 +7,7 @@ import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.client.view.*;
 import javafx.application.Application;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import java.util.Locale;
 
@@ -63,6 +64,9 @@ public class Client extends Application {
 		// initialize Translator
 		Translator translator = new Translator(new Locale(configuration.getProperty("locale")));
 		serviceLocator.setTranslator(translator);
+
+		Font.loadFont(Client.class.getResourceAsStream(
+				"src/ch/tichuana/tichu/client/resources/MATURASC.TTF"), 20.0);
 	}
 
 }
