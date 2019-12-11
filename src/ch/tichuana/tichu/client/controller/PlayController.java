@@ -263,7 +263,10 @@ class PlayController {
 
         /*
         if (!this.firstRound) {
-            try { Thread.sleep(10000); } catch (InterruptedException e) { e.printStackTrace(); }
+            this.clientModel.getMsgCodeProperty().setNewestMsg(translator.getString("matchWon"));
+            Platform.runLater(() ->
+                    gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(true));
+            try { Thread.sleep(5000); } catch (InterruptedException e) { e.printStackTrace(); }
         }
         this.firstRound = false;
 

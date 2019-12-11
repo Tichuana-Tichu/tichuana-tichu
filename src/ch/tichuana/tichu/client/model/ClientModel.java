@@ -112,7 +112,6 @@ public class ClientModel {
                             this.msg.set(9);
                             this.firstUpdate = false;
                         }
-
                         this.msg.setMessage(msg);
 
                         if (!this.playerName.equals(msg.getNextPlayer())) {
