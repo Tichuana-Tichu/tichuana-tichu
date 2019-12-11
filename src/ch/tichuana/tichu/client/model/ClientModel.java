@@ -131,6 +131,15 @@ public class ClientModel {
                         this.msg.set(10);
                         this.msg.set(30);
                     }
+
+                    if (msg instanceof GameDoneMsg) {
+                        if (!msg.isDone())
+                            this.msg.setNewestMsg(translator.getString("matchWon"));
+                        else
+                            this.msg.setNewestMsg(translator.getString("gameWon"));
+                        this.msg.set(11);
+                        this.msg.set(30);
+                    }
                 }
             };
             Thread t = new Thread(r);
