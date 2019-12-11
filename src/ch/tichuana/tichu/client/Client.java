@@ -65,8 +65,11 @@ public class Client extends Application {
 		Translator translator = new Translator(new Locale(configuration.getProperty("locale")));
 		serviceLocator.setTranslator(translator);
 
+		/*
 		Font.loadFont(Client.class.getResourceAsStream(
 				"src/ch/tichuana/tichu/client/resources/MATURASC.TTF"), 20.0);
+
+		 */
 	}
 
 }
