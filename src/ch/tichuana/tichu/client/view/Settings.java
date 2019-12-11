@@ -18,6 +18,7 @@ public class Settings extends MenuBar {
     private Translator translator;
     private Menu langMenu, tutorial;
     private MenuItem lang1, lang2, showTutorial;
+    private static Settings settings = null;
 
     /**
      * @author Philipp
@@ -53,6 +54,13 @@ public class Settings extends MenuBar {
         tutorial.setText(translator.getString("tutorial"));
         showTutorial.setText(translator.getString("tutorial.show"));
 
+    }
+
+    public static Settings getTopSettings(){
+        if (settings == null){
+            settings = new Settings();
+        }
+        return settings;
     }
 
     //Getter
