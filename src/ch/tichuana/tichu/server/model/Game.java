@@ -111,8 +111,9 @@ public class Game {
 	 * @author Christian
 	 */
 	public void startMatch(){
+		boolean gameDone = false;
 		if(isGameDone()){
-			//TODO: handle if game is done
+			gameDone = true;
 		} else {
 			this.deck.shuffleDeck();
 			this.currentMatch = new Match(serverModel);
@@ -123,6 +124,13 @@ public class Game {
 			for (Player p : playersInOrder){
 				p.setDone(false);
 			}
+		}
+
+		for (Player p : playersInOrder){
+			Message msg = new GameDoneMsg(
+					getTeamByMember(p).getCurrentScore(),
+					getOpposingTeam(getTeamByMember(p)).getCurrentScore(),
+					gameDone);
 		}
 	}
 

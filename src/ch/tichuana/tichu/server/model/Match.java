@@ -1,9 +1,6 @@
 package ch.tichuana.tichu.server.model;
 
-import ch.tichuana.tichu.commons.message.DealMsg;
-import ch.tichuana.tichu.commons.message.Message;
-import ch.tichuana.tichu.commons.message.SchupfenMsg;
-import ch.tichuana.tichu.commons.message.UpdateMsg;
+import ch.tichuana.tichu.commons.message.*;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.Combination;
 import ch.tichuana.tichu.commons.models.Rank;
