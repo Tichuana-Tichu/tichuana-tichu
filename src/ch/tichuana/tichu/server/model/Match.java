@@ -119,6 +119,9 @@ public class Match {
 
 		// if the player has no more cards, he is done for this match
 		if (player.getHand().isEmpty()) {
+			if (firstPlayer == null) {
+				firstPlayer = player;
+			}
 			player.setDone(true);
 			logger.info(player.getPlayerName() + " is done");
 		}
