@@ -3,13 +3,8 @@ package ch.tichuana.tichu.client.view;
 import ch.tichuana.tichu.client.services.Configuration;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.stage.Screen;
 
 public class ControlArea extends VBox {
 
@@ -37,6 +32,17 @@ public class ControlArea extends VBox {
 		this.grandTichuBtn = new ToggleButton(translator.getString("controlarea.grandtichu"));
 		this.grandTichuBtn.setDisable(true);
 		this.getChildren().addAll(this.grandTichuBtn, this.smallTichuBtn, this.schupfenBtn, this.playBtn);
+	}
+
+	/**
+	 * @author dominik
+	 */
+	public void update(){
+		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
+		this.playBtn.setText(translator.getString("controlarea.play"));
+		this.schupfenBtn.setText(translator.getString("controlarea.schupfen"));
+		this.smallTichuBtn.setText(translator.getString("controlarea.smalltichu"));
+		this.grandTichuBtn.setText(translator.getString("controlarea.grandtichu"));
 	}
 
 	//Getter

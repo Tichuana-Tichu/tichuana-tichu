@@ -14,7 +14,7 @@ public class Configuration {
     /**
      * Loads the properties file. Based on the JavaFX-App-Template.
      * @author Christian
-     * @param configPath
+     * @param configPath absolute path to the config.properties file
      */
     public Configuration(String configPath){
         this.properties = new Properties();
@@ -38,7 +38,7 @@ public class Configuration {
 
     // save current properties to file
     public void save(){
-        FileOutputStream propertiesFile = null;
+        FileOutputStream propertiesFile;
         try {
             propertiesFile = new FileOutputStream(configPath);
             properties.store(propertiesFile, null);
