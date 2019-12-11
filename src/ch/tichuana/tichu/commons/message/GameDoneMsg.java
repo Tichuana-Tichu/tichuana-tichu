@@ -8,6 +8,7 @@ public class GameDoneMsg extends Message{
     private boolean done;
 
     public GameDoneMsg(int ownScore, int opponentScore, boolean done){
+        this.setMsgType(MessageType.GameDoneMsg);
         this.ownScore = ownScore;
         this.opponentScore = opponentScore;
         this.done = done;

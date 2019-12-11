@@ -17,7 +17,7 @@ public class Game {
 	private Team[] teams = new Team[2];
 	private DeckOfCards deck;
 	private Match currentMatch;
-	private final int MAX_SCORE = 1000;
+	private final int MAX_SCORE = 10;
 
 	/**
 	 * Game will be started from ServerModel as soon as 4 player are connected to server
@@ -114,6 +114,7 @@ public class Game {
 		boolean gameDone = false;
 		if(isGameDone()){
 			gameDone = true;
+			logger.info("Game is done");
 		} else {
 			this.deck.shuffleDeck();
 			this.currentMatch = new Match(serverModel);
@@ -131,6 +132,7 @@ public class Game {
 					getTeamByMember(p).getCurrentScore(),
 					getOpposingTeam(getTeamByMember(p)).getCurrentScore(),
 					gameDone);
+			p.sendMessage(msg);
 		}
 	}
 
