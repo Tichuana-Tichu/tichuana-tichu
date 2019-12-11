@@ -1,15 +1,10 @@
 package ch.tichuana.tichu.client.services;
 
-import ch.tichuana.tichu.client.Client;
-import java.util.Locale;
-
 public class ServiceLocator {
 
 	private static ServiceLocator serviceLocator;
 	private Translator translator;
 	private Configuration configuration;
-	private Locale[] locales; // = {new Locale("de"), new Locale("de")};
-	final private Class<?> APP_CLASS = Client.class;
 
 	/**
 	 * ServiceLocator is a singleton. There's only one instance.
@@ -44,8 +39,4 @@ public class ServiceLocator {
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
 	}
-	public Class<?> getAPP_CLASS() {
-		return APP_CLASS;
-	}
-
 }

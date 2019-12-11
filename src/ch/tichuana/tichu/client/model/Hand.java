@@ -13,7 +13,7 @@ public class Hand {
 
     /**
      * @author Philipp
-     * @param cards
+     * @param cards cards that need to be added
      */
 	Hand(ArrayList<Card> cards) {
 		this.cards = FXCollections.observableArrayList();
@@ -22,7 +22,7 @@ public class Hand {
 
     /**
      * @author Philipp
-     * @param cards
+     * @param cards cards that need to be added
      */
 	public void addCards(ArrayList<Card> cards) {
 		this.cards.addAll(cards);
@@ -30,7 +30,7 @@ public class Hand {
 
     /**
      * @author Philipp
-     * @param c
+     * @param c card that need to be deleted
      */
 	public void remove(Card c) {
 		this.cards.remove(c);
@@ -39,7 +39,7 @@ public class Hand {
 	/**
 	 *
 	 * @author Philipp
-	 * @param cards
+	 * @param cards cards that need to be deleted
 	 */
 	public void removeCards(ArrayList<Card> cards) {
 		this.cards.removeAll(cards);

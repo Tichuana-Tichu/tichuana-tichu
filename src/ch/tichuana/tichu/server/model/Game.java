@@ -216,4 +216,7 @@ public class Game {
 	public void setCurrentPlayer(int currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
+	public int getCurrentPlayer(){
+		return currentPlayer;
+	}
 }

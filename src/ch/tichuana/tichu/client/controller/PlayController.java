@@ -24,6 +24,7 @@ class PlayController {
     private ArrayList<Card> receivedCards = new ArrayList<>();
     private static ArrayList<Card> oldMove = new ArrayList<>();
     private Translator translator;
+    private boolean firstRound = true;
     private int pushCounter = 1;
     private int passCounter = 0;
 
@@ -116,8 +117,9 @@ class PlayController {
                         this.clientModel.getHand().removeCards(newMove);
                         this.clientModel.getHand().sort();
                     }
-                } else {
-                    this.clientModel.sendMessage(new PlayMsg(new ArrayList<>()));
+                } else { // able to pass only in between a trick not at the beginning
+                    if (!clientModel.getMsgCodeProperty().getMessage().getLastPlayer().isEmpty())
+                        this.clientModel.sendMessage(new PlayMsg(new ArrayList<>()));
                 }
             }
         });
@@ -133,21 +135,19 @@ class PlayController {
     private void handleUpdateMsg() {
         this.pushCounter = 1;
         UpdateMsg msg = (UpdateMsg) this.clientModel.getMsgCodeProperty().getMessage();
-        String lastPlayer = getLastPlayer(msg.getNextPlayer());
-        PlayView pv = this.gameView.getPlayView();
+        String lastPlayer = msg.getLastPlayer();
+        ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
+        PlayArea pa = this.gameView.getPlayView().getPlayArea();
 
-        Platform.runLater(() -> pv.getPlayArea().updateTotalPoints(msg.getOwnScore(), msg.getOpponentScore()));
+        Platform.runLater(() -> pa.updateTotalPoints(clientModel.getOwnScore(), clientModel.getOpponentScore()));
 
         if (!msg.getLastMove().isEmpty()) {
             oldMove = this.clientModel.getMsgCodeProperty().getMessage().getLastMove();
             this.passCounter = 0;
-            Platform.runLater(() -> {
-                pv.getPlayArea().updatePlayedColumn(lastPlayer, msg.getLastMove());
-                pv.getPlayArea().updateHandColumn(lastPlayer, msg.getLastMove().size());
-            });
+            Platform.runLater(() -> pa.updatePlayedColumn(lastPlayer, msg.getLastMove()));
         } else {
             if (this.passCounter == msg.getRemainingPlayers()-1) {
-                Platform.runLater(() -> pv.getPlayArea().clearPlayedColumn());
+                Platform.runLater(pa::clearPlayedColumn);
                 oldMove.clear();
                 this.passCounter = 0;
             }
@@ -155,10 +155,10 @@ class PlayController {
         }
 
         if (this.clientModel.isMyTurn())
-            Platform.runLater(() -> pv.getBottomView().getControlArea().getPlayBtn().setDisable(false));
+            Platform.runLater(() -> ca.getPlayBtn().setDisable(false));
 
         else
-            Platform.runLater(() -> pv.getBottomView().getControlArea().getPlayBtn().setDisable(true));
+            Platform.runLater(() -> ca.getPlayBtn().setDisable(true));
     }
 
     /**
@@ -247,11 +247,17 @@ class PlayController {
      * @author Philipp
      */
     private void handleFirstDealMsg() {
+
+        if (!this.firstRound) {
+            try { Thread.sleep(10000); } catch (InterruptedException e) { e.printStackTrace(); }
+        }
+        this.firstRound = false;
+
         ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
         PlayArea pa = this.gameView.getPlayView().getPlayArea();
 
-        this.receivedCards.clear();//TODO Testing
-        oldMove.clear(); //TODO - Testing
+        this.receivedCards.clear();
+        oldMove.clear();
         this.clientModel.getHand().getCards().addListener(this::activateHand);
 
         //sets 8 cards and enables Buttons to be able to announce tichu
@@ -278,9 +284,9 @@ class PlayController {
     /**
      *
      * @author Philipp
-     * @param observable
+     * @param obs observable value from the listener
      */
-    private void activateHand(Observable observable) {
+    private void activateHand(Observable obs) {
         Platform.runLater(() -> {
             this.gameView.getPlayView().getBottomView().getCardArea().updateCardLabels();
             this.stage.setWidth(this.stage.getWidth()-0.1);
@@ -313,7 +319,7 @@ class PlayController {
     /**
      *
      * @author Philipp
-     * @return
+     * @return returns the currently selected CardLabels
      */
     private ArrayList<Card> getSelectedCards() {
         HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea();
@@ -331,33 +337,9 @@ class PlayController {
 
     /**
      * @author Philipp
-     * @return
+     * @return returns the playerName of the current message
      */
     private String getPlayerName() {
         return this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
-    }
-
-    /**
-     *
-     * @author Philipp
-     * @param player
-     * @return
-     */
-    private String getLastPlayer(String player) {
-        String lastPlayer = "";
-
-        if (player.equals(clientModel.getPlayerName()))
-            lastPlayer = clientModel.getOpponent(1);
-
-        if (player.equals(clientModel.getOpponent(0)))
-            lastPlayer = clientModel.getPlayerName();
-
-        if (player.equals(clientModel.getTeamMate()))
-            lastPlayer = clientModel.getOpponent(0);
-
-        if (player.equals(clientModel.getOpponent(1)))
-            lastPlayer = clientModel.getTeamMate();
-
-        return lastPlayer;
     }
 }

@@ -3,7 +3,6 @@ package ch.tichuana.tichu.client.model;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.commons.message.*;
-import javafx.beans.property.SimpleStringProperty;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Logger;
@@ -115,8 +114,10 @@ public class ClientModel {
                         }
 
                         this.msg.setMessage(msg);
-                        this.ownScore = msg.getOwnScore();
-                        this.opponentScore = msg.getOpponentScore();
+                        if (msg.getOwnScore() > 0)
+                            this.ownScore = msg.getOwnScore();
+                        if (msg.getOpponentScore() > 0)
+                            this.opponentScore = msg.getOpponentScore();
 
                         if (!this.playerName.equals(msg.getNextPlayer())) {
                             this.myTurn = false;
@@ -194,5 +195,11 @@ public class ClientModel {
     }
     public boolean isMyTurn() {
         return myTurn;
+    }
+    public int getOpponentScore() {
+        return opponentScore;
+    }
+    public int getOwnScore() {
+        return ownScore;
     }
 }

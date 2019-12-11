@@ -203,7 +203,7 @@ public enum Combination {
 		boolean found = true;
 		boolean phoenixUsed = false;
 
-		if(cards.size() > 4 && !containsMahjong(cards) && !containsDog(cards) && !containsDragon(cards)){
+		if(cards.size() > 4 && !containsDog(cards) && !containsDragon(cards)){
 			if(containsPhoenix(cards)){
 				for(int i = 0; i < cards.size() - 2 && found; i++){
 					if (cards.get(i).getRank().ordinal() != cards.get(i + 1).getRank().ordinal() -1){
@@ -315,6 +315,12 @@ public enum Combination {
 				return true;
 			}
 		}
+
+		// if the old move was a hound, everything is allowed again
+		if (oldMove.size() == 1 && containsDog(oldMove)){
+			return true;
+		}
+
 		// all evaluations are based on what the previous move was
 		switch (evaluateCombination(oldClone)){
 
@@ -326,6 +332,10 @@ public enum Combination {
 					if (beforePhoenix != null && beforePhoenix.compareTo(newMove.get(0)) < 0){
 						return true;
 					} else {
+						// this is a bit ugly, only because clients do not hav the beforePhoenix initialized
+						if (newClone.get(0).getRank() == Rank.dragon){
+							return true;
+						}
 						return false;
 					}
 				}
@@ -410,11 +420,7 @@ public enum Combination {
 			case Straight:
 				if (evaluateCombination(newMove) == Straight){
 
-					// longer straight wins
-					if (newMove.size() > oldMove.size()){
-						return true;
-
-					} else if (newMove.size() == oldMove.size()){
+					if (newMove.size() == oldMove.size()){
 						Card lastCardNew = newMove.get(newMove.size()-1);
 						Card lastCardOld = oldMove.get(oldMove.size()-1);
 

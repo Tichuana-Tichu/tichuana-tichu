@@ -6,6 +6,7 @@ import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
@@ -19,17 +20,18 @@ public class PlayArea extends GridPane {
 	private ClientModel clientModel;
 	private Translator t;
 	private Label[] playerLbl;
+	private Label[] headings = new Label[7];
 
 	/**
 	 * creates a table-like, resizeable grid for information about the game-flow
 	 * @author Philipp
-	 * @param clientModel
+	 * @param clientModel following MVC pattern
 	 */
 	PlayArea(ClientModel clientModel) {
 
 		this.clientModel = clientModel;
 		this.t = ServiceLocator.getServiceLocator().getTranslator();
-		Label[] headings = new Label[7];
+		//Label[] headings = new Label[7];
 		headings[0] = new Label(t.getString("name"));
 		headings[1] = new Label(t.getString("hand"));
 		headings[2] = new Label(t.getString("tichu"));
@@ -135,14 +137,14 @@ public class PlayArea extends GridPane {
 		this.playerLbl[3].setText(clientModel.getOpponent(1));
 	}
 
-	public void updateHandColumn(String playerName, int playedCards) {
+	private void updateHandColumn(String playerName, int playedCards) {
 		Label handLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), 1);
 
 		if (playerName.equals(clientModel.getPlayerName())) {
 			handLabel.setText(String.valueOf(clientModel.getHand().getCards().size()));
 		} else {
 			int handSize = Integer.parseInt(handLabel.getText());
-			if (handSize == playedCards) //TODO - Testing
+			if (handSize == playedCards)
 				handLabel.setText("0");
 			else
 				handLabel.setText(String.valueOf(handSize-playedCards));
@@ -163,8 +165,8 @@ public class PlayArea extends GridPane {
 	/**
 	 *
 	 * @author Philipp
-	 * @param playerName
-	 * @param tichuType
+	 * @param playerName player whose Label needs to be adjusted
+	 * @param tichuType the type of tichu the given player announces
 	 */
 	public void updateTichuColumn(String playerName, TichuType tichuType) {
 
@@ -190,11 +192,13 @@ public class PlayArea extends GridPane {
 	/**
 	 *
 	 * @author Philipp
-	 * @param cards
-	 * @param playerName
+	 * @param playerName player whose CardArea needs to be adjusted
+	 * @param cards cards the given player chooses to play
 	 */
 	public void updatePlayedColumn(String playerName, ArrayList<Card> cards) {
 		CardArea cardArea = (CardArea) getNodeByRowColumnIndex(getPlayerRow(playerName), 3);
+
+		updateHandColumn(playerName, cards.size()); //also updates HandColumn
 
 		if (!cards.isEmpty())
 			cardArea.updateThumbnails(cards);
@@ -216,8 +220,8 @@ public class PlayArea extends GridPane {
 	/**
 	 *
 	 * @author Philipp
-	 * @param ownScore
-	 * @param opponentScore
+	 * @param ownScore the current score of the team this instance participates
+	 * @param opponentScore the current score of the oppnents
 	 */
 	public void updateTotalPoints(int ownScore, int opponentScore) {
 		Label own = (Label) getNodeByRowColumnIndex(2, 6);
@@ -226,15 +230,11 @@ public class PlayArea extends GridPane {
 		opponent.setText(String.valueOf(opponentScore));
 	}
 
-	public void updateMatchPoints() {
-
-	}
-
 	/**
 	 *
 	 * @author Philipp
-	 * @param playerName
-	 * @return
+	 * @param playerName player to which the column belongs
+	 * @return returns the row index, which belongs to the requested player
 	 */
 	private int getPlayerRow(String playerName) {
 		int result = 0;
@@ -269,4 +269,19 @@ public class PlayArea extends GridPane {
 		}
 		return result;
 	}
+
+	/**
+	 * @author dominik
+	 */
+	public void update(){
+		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
+		this.headings[0].setText(translator.getString("name"));
+		this.headings[1].setText(translator.getString("hand"));
+		this.headings[2].setText(translator.getString("tichu"));
+		this.headings[3].setText(translator.getString("played"));
+		this.headings[4].setText(translator.getString("team"));
+		this.headings[5].setText(translator.getString("matchPoints"));
+		this.headings[6].setText(translator.getString("total"));
+	}
+
 }

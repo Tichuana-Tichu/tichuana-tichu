@@ -219,11 +219,11 @@ public abstract class Message {
 	public String getPassword(){ return null; }
 	public boolean getStatus(){ return false; }
 	public TichuType getTichuType() { return null; }
-	public ArrayList getPlayers(){ return null; }
+	public ArrayList<String> getPlayers(){ return null; }
 	public String[] getOpponents(){ return null; }
 	public String getTeamMate(){ return null; }
 	public Card getCard() { return null; }
-	public ArrayList getCards(){return null; }
+	public ArrayList<Card> getCards(){return null; }
 	public String getNextPlayer() { return null; }
 	public ArrayList<Card> getLastMove() {
 		return null;

@@ -26,9 +26,6 @@ public class SimpleMessageProperty extends SimpleIntegerProperty {
 	public void setMessage(Message message) {
 		this.message = message;
 	}
-	public String getNewestMsg() {
-		return newestMsg.get();
-	}
 	public SimpleStringProperty newestMsgProperty() {
 		return newestMsg;
 	}

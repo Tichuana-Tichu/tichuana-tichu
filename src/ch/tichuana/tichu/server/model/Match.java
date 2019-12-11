@@ -5,7 +5,10 @@ import ch.tichuana.tichu.commons.message.Message;
 import ch.tichuana.tichu.commons.message.SchupfenMsg;
 import ch.tichuana.tichu.commons.message.UpdateMsg;
 import ch.tichuana.tichu.commons.models.Card;
+import ch.tichuana.tichu.commons.models.Combination;
 import ch.tichuana.tichu.commons.models.Rank;
+import ch.tichuana.tichu.commons.models.TichuType;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -18,6 +21,7 @@ public class Match {
 	static int MIN_PLAYER = 2;
 	private Logger logger = Logger.getLogger("");
 	private Trick trick = null;
+	private Player firstPlayer = null;
 
 	public Match(ServerModel serverModel) {
 		this.serverModel = serverModel;
@@ -108,12 +112,16 @@ public class Match {
 	 */
 	public void handleUpdate(SimpleMessageProperty messageProperty) {
 		Player player = messageProperty.getPlayer();
-		this.trick.update(player, messageProperty.getMessage().getCards());
+		ArrayList<Card> move = messageProperty.getMessage().getCards();
+		this.trick.update(player, move);
 		logger.info(player.getPlayerName() + " played move: " +
 				messageProperty.getMessage().getCards().size() + " cards");
 
 		// if the player has no more cards, he is done for this match
 		if (player.getHand().isEmpty()) {
+			if (firstPlayer == null) {
+				firstPlayer = player;
+			}
 			player.setDone(true);
 			logger.info(player.getPlayerName() + " is done");
 		}
@@ -134,6 +142,24 @@ public class Match {
 				serverModel.getGame().setCurrentPlayer(index - 1);
 
 				this.trick = new Trick(serverModel);
+			}
+
+			// handle special case if card was a hound
+			if (!move.isEmpty()) {
+				Card potetialDog = move.get(0);
+			}
+
+			if (move.size() == 1 && move.get(0).equals(new Card(Rank.dog))) {
+
+				Player teamMate = serverModel.getGame().getTeamByMember(player).getOtherMemberByMember(player);
+
+				// if teammate is done we set the current player to the position just before him
+				// so getNextPlayer() returns him. if that isn't the case we do nothing
+				if (!teamMate.isDone()) {
+					int teamMatePosition = Arrays.asList(
+							serverModel.getGame().getPlayersInOrder()).indexOf(teamMate);
+					serverModel.getGame().setCurrentPlayer(teamMatePosition-1);
+				}
 			}
 
 			Team[] teams = serverModel.getGame().getTeams();
@@ -170,6 +196,20 @@ public class Match {
         this.trick.getCurrentWinner().addTrick(this.trick);
 
 		for (Player p : serverModel.getGame().getPlayersInOrder()) {
+
+			Team pTeam = serverModel.getGame().getTeamByMember(p);
+
+			// add/remove points for Tichus
+			switch (p.getTichuType()){
+				case none:
+					break;
+				case SmallTichu:
+					pTeam.addPoints((p == firstPlayer) ? 100 : -100);
+					break;
+				case GrandTichu:
+					pTeam.addPoints((p == firstPlayer) ? 200 : -200);
+					break;
+			}
 
 			// when the players hand isn't empty, his cards points will be given to the opposing team
 			if (!p.getHand().isEmpty()){
