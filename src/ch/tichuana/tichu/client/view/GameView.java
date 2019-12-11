@@ -100,6 +100,11 @@ public class GameView {
 		this.getPlayView().getPlayArea().updatePlayerName();
 	}
 
+	public void update(){
+		playView.update();
+		lobbyView.update();
+	}
+
 	//Getters
 	public Stage getStage() {
 		return this.stage;

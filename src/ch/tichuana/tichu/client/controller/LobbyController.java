@@ -79,6 +79,8 @@ public class LobbyController {
 			ServiceLocator.getServiceLocator().setTranslator(en);
 		}
 		gameView.getLobbyView().update();
+		gameView.getPlayView().update();
+
 	}
 
 	/**

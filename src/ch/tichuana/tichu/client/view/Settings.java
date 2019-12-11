@@ -44,6 +44,7 @@ public class Settings extends MenuBar {
         langMenu.setText(translator.getString("settings.langMenu"));
         lang1.setText(translator.getString("langMenu.german"));
         lang2.setText(translator.getString("langMenu.english"));
+
     }
 
     //Getter
