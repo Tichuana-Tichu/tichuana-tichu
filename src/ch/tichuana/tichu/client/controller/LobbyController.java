@@ -78,6 +78,7 @@ public class LobbyController {
 			Translator en = new Translator("en");
 			ServiceLocator.getServiceLocator().setTranslator(en);
 		}
+		t = serviceLocator.getTranslator();
 		gameView.getLobbyView().update();
 		gameView.getPlayView().update();
 
