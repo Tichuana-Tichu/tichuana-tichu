@@ -47,11 +47,11 @@ public class Player {
 				Message msg = Message.receive(socket);
 
 				if (msg instanceof JoinMsg) {
-					Player.this.playerName = msg.getPlayerName();
+					this.playerName = msg.getPlayerName();
 					this.password = msg.getPassword();
 
 					// check if password is correct
-					if (verifyPassword()){
+					if (verifyPassword() && verifyUserName()){
 						sendMessage(new ConnectedMsg(true));
 						logger.info("Player: "+msg.getPlayerName()+" logged in");
 						serverModel.getPlayers().add(this);
@@ -143,11 +143,22 @@ public class Player {
 	 * Checks if password matches password in database belonging to player
 	 * @return boolean
 	 */
-	public boolean verifyPassword(){
+	private boolean verifyPassword(){
 		// TODO: Check if password is correct
-		// this.password
-		// this.playerName
-		// get DatabaseConnection from ServiceLocator
+		return true;
+	}
+
+	/**
+	 * checks if the username is already taken
+	 * @return is valid name
+	 */
+	private boolean verifyUserName() {
+		// make sure no two players have the same name
+		for (Player p : serverModel.getPlayers()){
+			if (p.getPlayerName().equals(this.playerName)){
+				return false;
+			}
+		}
 		return true;
 	}
 
