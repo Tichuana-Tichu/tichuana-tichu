@@ -1,3 +1,8 @@
+@font-face {
+    font-family: Delicious;
+    src: url("/MATURASC.TTF");
+}
+
 * {
     -fx-font-family: 'Matura MT Script Capitals', arial;
 }
