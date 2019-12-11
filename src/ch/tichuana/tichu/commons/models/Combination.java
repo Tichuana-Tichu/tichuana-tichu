@@ -385,9 +385,9 @@ public enum Combination {
 				// if new move is a step too, it must contain mor pairs (bigger size)
 				// if their the same, higher pairs win
 				if (comb == Steps){
-					if (newClone.size() > oldClone.size()){
-						return true;
-					} else if (newClone.size() == oldClone.size()){
+
+					// step can now only beat steps of the same size
+					if (newClone.size() == oldClone.size()){
 
 						// compare the ranks of the second to last card of each move, since last card might be phoenix
 						// weaker pair
