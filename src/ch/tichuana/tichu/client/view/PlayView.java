@@ -11,15 +11,13 @@ public class PlayView extends BorderPane {
 	private PlayArea playArea;
 	private Settings settings;
 	private Translator translator;
-	private ClientModel clientModel;
 
-    /**
+	/**
      * extends BorderPane including a BottomView in the bottom area,
      * a MenuBar at the top and a PlayArea in the center
 	 * @author Philipp
      */
 	PlayView(ClientModel clientModel) {
-		this.clientModel = clientModel;
 		this.translator = ServiceLocator.getServiceLocator().getTranslator();
 
 		this.bottomView = new BottomView(clientModel);

@@ -1,10 +1,5 @@
 package ch.tichuana.tichu.client.services;
 
-import ch.tichuana.tichu.client.view.Settings;
-import javafx.event.Event;
-import javafx.scene.control.MenuItem;
-
-import java.awt.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -16,7 +11,7 @@ public class Translator {
 	/**
 	 * Translator class loads properties from a resource bundle. Based on the JavaFX-App-Template.
 	 * @author Christian
-	 * @param localeString
+	 * @param localeString to identify the language according to a String object
 	 */
 	public Translator(String localeString) {
 		ServiceLocator serviceLocator= ServiceLocator.getServiceLocator();
@@ -28,7 +23,7 @@ public class Translator {
 	/**
 	 * Alternate Constructor, locale as parameter
 	 * @author Christian
-	 * @param locale
+	 * @param locale to identify the language according to a Locale object
 	 */
 	public Translator(Locale locale) {
 		ServiceLocator serviceLocator= ServiceLocator.getServiceLocator();
@@ -41,7 +36,7 @@ public class Translator {
 	/**
 	 * Returns the value belonging to its key.
 	 * @author Christian
-	 * @param key
+	 * @param key identify the property by key
 	 */
 	public String getString(String key) {
 		return resourceBundle.getString(key);

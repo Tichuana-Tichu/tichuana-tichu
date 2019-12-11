@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 
 public class LobbyController {
 
-	private static ServiceLocator serviceLocator;
 	private ClientModel clientModel;
 	private GameView gameView;
 	private Stage stage;
@@ -29,7 +28,7 @@ public class LobbyController {
 	 * @param stage following MVC pattern
      */
 	public LobbyController(ClientModel clientModel, GameView gameView, Stage stage) {
-		serviceLocator = ServiceLocator.getServiceLocator();
+		ServiceLocator serviceLocator = ServiceLocator.getServiceLocator();
 		this.t = serviceLocator.getTranslator();
 		this.clientModel = clientModel;
 		this.gameView = gameView;
@@ -58,7 +57,7 @@ public class LobbyController {
 		// moved Dominik's code here
 		// add listener to every language menu item
 		for(MenuItem m : this.gameView.getLobbyView().getSettings().getLangMenu().getItems()){
-			m.setOnAction(event -> changeTranslator(event));
+			m.setOnAction(this::changeTranslator);
 		}
 	}
 
@@ -69,12 +68,12 @@ public class LobbyController {
 	public void changeTranslator(Event event){
 		MenuItem m = (MenuItem) event.getSource();
 
-		if (m.getText() == t.getString("langMenu.german")){
+		if (m.getText().equals(t.getString("langMenu.german"))){
 
 			Translator de = new Translator("de");
 			ServiceLocator.getServiceLocator().setTranslator(de);
 
-		} else if (m.getText() == t.getString("langMenu.english")){
+		} else if (m.getText().equals(t.getString("langMenu.english"))){
 
 			Translator en = new Translator("en");
 			ServiceLocator.getServiceLocator().setTranslator(en);

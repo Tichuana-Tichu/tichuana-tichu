@@ -23,7 +23,7 @@ public class PlayArea extends GridPane {
 	/**
 	 * creates a table-like, resizeable grid for information about the game-flow
 	 * @author Philipp
-	 * @param clientModel
+	 * @param clientModel following MVC pattern
 	 */
 	PlayArea(ClientModel clientModel) {
 
@@ -163,8 +163,8 @@ public class PlayArea extends GridPane {
 	/**
 	 *
 	 * @author Philipp
-	 * @param playerName
-	 * @param tichuType
+	 * @param playerName player whose Label needs to be adjusted
+	 * @param tichuType the type of tichu the given player announces
 	 */
 	public void updateTichuColumn(String playerName, TichuType tichuType) {
 
@@ -190,8 +190,8 @@ public class PlayArea extends GridPane {
 	/**
 	 *
 	 * @author Philipp
-	 * @param cards
-	 * @param playerName
+	 * @param playerName player whose CardArea needs to be adjusted
+	 * @param cards cards the given player chooses to play
 	 */
 	public void updatePlayedColumn(String playerName, ArrayList<Card> cards) {
 		CardArea cardArea = (CardArea) getNodeByRowColumnIndex(getPlayerRow(playerName), 3);
@@ -218,8 +218,8 @@ public class PlayArea extends GridPane {
 	/**
 	 *
 	 * @author Philipp
-	 * @param ownScore
-	 * @param opponentScore
+	 * @param ownScore the current score of the team this instance participates
+	 * @param opponentScore the current score of the oppnents
 	 */
 	public void updateTotalPoints(int ownScore, int opponentScore) {
 		Label own = (Label) getNodeByRowColumnIndex(2, 6);
@@ -228,15 +228,11 @@ public class PlayArea extends GridPane {
 		opponent.setText(String.valueOf(opponentScore));
 	}
 
-	public void updateMatchPoints() {
-
-	}
-
 	/**
 	 *
 	 * @author Philipp
-	 * @param playerName
-	 * @return
+	 * @param playerName player to which the column belongs
+	 * @return returns the row index, which belongs to the requested player
 	 */
 	private int getPlayerRow(String playerName) {
 		int result = 0;

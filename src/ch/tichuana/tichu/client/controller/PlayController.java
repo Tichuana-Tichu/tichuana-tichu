@@ -23,7 +23,6 @@ class PlayController {
     private Stage stage;
     private ArrayList<Card> receivedCards = new ArrayList<>();
     private static ArrayList<Card> oldMove = new ArrayList<>();
-    private ArrayList<String> finishedPlayers = new ArrayList<>();
     private Translator translator;
     private boolean firstRound = true;
     private int pushCounter = 1;
@@ -145,8 +144,7 @@ class PlayController {
         if (!msg.getLastMove().isEmpty()) {
             oldMove = this.clientModel.getMsgCodeProperty().getMessage().getLastMove();
             this.passCounter = 0;
-            Platform.runLater(() -> { pa.updatePlayedColumn(lastPlayer, msg.getLastMove());
-            });
+            Platform.runLater(() -> pa.updatePlayedColumn(lastPlayer, msg.getLastMove()));
         } else {
             if (this.passCounter == msg.getRemainingPlayers()-1) {
                 Platform.runLater(pa::clearPlayedColumn);
@@ -286,9 +284,9 @@ class PlayController {
     /**
      *
      * @author Philipp
-     * @param observable
+     * @param obs observable value from the listener
      */
-    private void activateHand(Observable observable) {
+    private void activateHand(Observable obs) {
         Platform.runLater(() -> {
             this.gameView.getPlayView().getBottomView().getCardArea().updateCardLabels();
             this.stage.setWidth(this.stage.getWidth()-0.1);
@@ -321,7 +319,7 @@ class PlayController {
     /**
      *
      * @author Philipp
-     * @return
+     * @return returns the currently selected CardLabels
      */
     private ArrayList<Card> getSelectedCards() {
         HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea();
@@ -339,7 +337,7 @@ class PlayController {
 
     /**
      * @author Philipp
-     * @return
+     * @return returns the playerName of the current message
      */
     private String getPlayerName() {
         return this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();

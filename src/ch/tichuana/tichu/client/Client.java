@@ -25,10 +25,10 @@ public class Client extends Application {
 	/**
 	 * Starting the Game
 	 * @author Philipp
-	 * @param primaryStage
+	 * @param primaryStage JavaFX start method
 	 */
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage) {
 		initialize();
 
 		ClientModel clientModel = new ClientModel();
