@@ -1,8 +1,6 @@
 * {
     -fx-font-family: 'Matura MT Script Capitals', arial;
-    /*
     src: url("../resources/MATURASC.TTF");
-     */
 }
 
 LobbyView {
