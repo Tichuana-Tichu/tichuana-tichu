@@ -29,22 +29,21 @@ public class PlayArea extends GridPane {
 
 		this.clientModel = clientModel;
 		this.t = ServiceLocator.getServiceLocator().getTranslator();
-		Label[] headings = new Label[7];
+		Label[] headings = new Label[6];
 		headings[0] = new Label(t.getString("name"));
 		headings[1] = new Label(t.getString("hand"));
 		headings[2] = new Label(t.getString("tichu"));
 		headings[3] = new Label(t.getString("played"));
 		headings[4] = new Label(t.getString("team"));
 		headings[4].setId("teamHeading");
-		headings[5] = new Label(t.getString("matchPoints"));
-		headings[6] = new Label(t.getString("total"));
+		headings[5] = new Label(t.getString("total"));
 
 		for (int i = 0; i < headings.length; i++)	{
 			this.add(headings[i], i, 0);
 			GridPane.setHgrow(headings[i], Priority.ALWAYS);
 		}
 
-		this.add(new Separator(), 0, 1, 7, 1);
+		this.add(new Separator(), 0, 1, 6, 1);
 
 		this.playerLbl = new Label[4];
 		for (int i = 0; i < playerLbl.length; i++) {
@@ -66,7 +65,7 @@ public class PlayArea extends GridPane {
 
 		this.add(playerLbl[1], 0, 4, 1, 1);
 		GridPane.setVgrow(playerLbl[1], Priority.ALWAYS);
-		this.add(new Separator(), 0, 5, 7, 1);
+		this.add(new Separator(), 0, 5, 6, 1);
 
 		this.add(playerLbl[2], 0, 6, 1, 1);
 		GridPane.setVgrow(playerLbl[2], Priority.ALWAYS);
@@ -75,7 +74,7 @@ public class PlayArea extends GridPane {
 		this.add(playerLbl[3], 0, 8, 1, 1);
 		GridPane.setVgrow(playerLbl[3], Priority.ALWAYS);
 
-		this.add(new Separator(), 0, 9, 9, 1);
+		this.add(new Separator(), 0, 9, 8, 1);
 
 		this.add(new Label(""), 1, 2);
 		this.add(new Label(""), 1, 4);
@@ -94,19 +93,14 @@ public class PlayArea extends GridPane {
 		this.add(new CardArea(clientModel), 3, 6);
 		this.add(new CardArea(clientModel), 3, 8);
 
-		Label currentScore = new Label("");
-		currentScore.getStyleClass().add("scoreLabels");
-		Label totalScore = new Label("");
+
+		Label totalScore = new Label("0");
 		totalScore.getStyleClass().add("scoreLabels");
-		Label opponentScore = new Label("");
-		opponentScore.getStyleClass().add("scoreLabels");
-		Label opponentTotal = new Label("");
+		Label opponentTotal = new Label("0");
 		opponentTotal.getStyleClass().add("scoreLabels");
 
-		this.add(currentScore, 5, 2, 1, 3);
-		this.add(totalScore, 6, 2, 1, 3);
-		this.add(opponentScore, 5, 6,1, 3);
-		this.add(opponentTotal, 6, 6, 1, 3);
+		this.add(totalScore, 5, 2, 1, 3);
+		this.add(opponentTotal, 5, 6, 1, 3);
 
 		for (int i = 2; i < 9; i+=2) {
 			CardArea ca =  (CardArea) getNodeByRowColumnIndex(i, 3);
