@@ -138,6 +138,10 @@ public class ClientModel {
                         this.msg.set(11);
                         this.msg.set(30);
                     }
+
+                    if (msg instanceof ChatMsg) {
+
+                    }
                 }
             };
             Thread t = new Thread(r);

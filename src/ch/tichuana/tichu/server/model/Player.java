@@ -111,6 +111,11 @@ public class Player {
 						this.playProperty.setValue(false);
 					}
 				}
+
+				// broadcast incoming chat msg to all players
+				else if (msg instanceof ChatMsg) {
+					serverModel.broadcast(msg);
+				}
 			}
 		};
 		Thread t = new Thread(r);

@@ -25,7 +25,7 @@ public class ChatMsg extends Message{
     public ChatMsg(String playerName, String content) {
         this.playerName = playerName;
         this.content = content;
-        super.setMsgType(MessageType.JoinMsg);
+        super.setMsgType(MessageType.ChatMsg);
     }
 
     @Override
