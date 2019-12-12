@@ -114,13 +114,13 @@ public class Game {
 	public void startMatch(){
 		boolean gameDone = false;
 		if(isGameDone()){
-			sendGameDoneMSg(true);
+			sendGameDoneMsg(true);
 			logger.info("Game is done");
 		} else {
 			if (firstMatch) {
 				firstMatch = false;
 			} else {
-				sendGameDoneMSg(false);
+				sendGameDoneMsg(false);
 			}
 			this.deck.shuffleDeck();
 			this.currentMatch = new Match(serverModel);
@@ -133,6 +133,8 @@ public class Game {
 			}
 		}
 	}
+
+	public void sendGameDoneMsg(boolean gameDone) {
 
 		for (Player p : playersInOrder){
 			Message msg = new GameDoneMsg(
