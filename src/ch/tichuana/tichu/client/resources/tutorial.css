@@ -17,13 +17,9 @@ VBox {
     -fx-border-width: 0px;
     -fx-background-color: white;
 }
-/*
-#ffef69
-*/
 .active {
     -fx-background-color:#920108;
     -fx-text-base-color:white;
-    /*-fx-text-fill: #920108;*/
 }
 #validmove {
     -fx-padding:25px;
