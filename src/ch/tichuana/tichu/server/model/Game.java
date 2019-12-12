@@ -134,7 +134,6 @@ public class Game {
 		}
 	}
 
-	private void sendGameDoneMSg(boolean gameDone) {
 		for (Player p : playersInOrder){
 			Message msg = new GameDoneMsg(
 					getTeamByMember(p).getCurrentScore(),
