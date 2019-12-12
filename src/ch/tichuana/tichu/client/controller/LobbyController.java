@@ -59,6 +59,7 @@ public class LobbyController {
 		for(MenuItem m : this.gameView.getLobbyView().getSettings().getLangMenu().getItems()){
 			m.setOnAction(this::changeTranslator);
 		}
+
 	}
 
 	/**
@@ -78,7 +79,9 @@ public class LobbyController {
 			Translator en = new Translator("en");
 			ServiceLocator.getServiceLocator().setTranslator(en);
 		}
+		t = ServiceLocator.getServiceLocator().getTranslator();
 		gameView.getLobbyView().update();
+
 	}
 
 	/**
