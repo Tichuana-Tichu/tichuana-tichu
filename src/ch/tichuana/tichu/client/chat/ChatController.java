@@ -1,23 +1,27 @@
 package ch.tichuana.tichu.client.chat;
 
+import ch.tichuana.tichu.client.model.ClientModel;
+import ch.tichuana.tichu.commons.message.ChatMsg;
+import javafx.event.Event;
+
 public class ChatController {
-    private ChatModel model;
+
     private ChatView view;
+    private ClientModel model;
 
     /**
      * @author Dominik
-     * @param model
      * @param view
      */
-    public ChatController(ChatModel model, ChatView view){
-        this.model = model;
+    public ChatController(ChatView view, ClientModel model){
         this.view = view;
+        this.model = model;
 
-        view.btnSend.setOnAction(event -> model.sendMessage(view.txtChatMessage.getText()));
+        view.getBtnSend().setOnAction(event -> sendMessage(model.getPlayerName(), view.getContent()));
+    }
 
-        model.newestMessage.addListener((o, oldValue, newValue) -> {
-            if(!newValue.isEmpty())
-                view.txtChatMessage.appendText(newValue + "\n");
-        });
+    public void sendMessage(String name, String content){
+        ChatMsg msg = new ChatMsg(name, content);
+        model.sendMessage(msg);
     }
 }

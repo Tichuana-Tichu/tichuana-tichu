@@ -1,5 +1,7 @@
 package ch.tichuana.tichu.client.view;
 
+import ch.tichuana.tichu.client.chat.ChatController;
+import ch.tichuana.tichu.client.chat.ChatView;
 import ch.tichuana.tichu.client.controller.LobbyController;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
@@ -16,8 +18,8 @@ import java.util.Locale;
 public class Settings extends MenuBar {
 
     private Translator translator;
-    private Menu langMenu;
-    private MenuItem lang1, lang2;
+    private Menu langMenu, chatMenu;
+    private MenuItem lang1, lang2, chat;
 
     /**
      * @author Philipp
@@ -30,9 +32,15 @@ public class Settings extends MenuBar {
         lang1 = new MenuItem(translator.getString("langMenu.german"));
         lang2 = new MenuItem(translator.getString("langMenu.english"));
 
+
         this.langMenu.getItems().addAll(lang1,lang2);
 
-        this.getMenus().add(this.langMenu);
+        chatMenu = new Menu(translator.getString("chat"));
+        chat = new MenuItem(translator.getString("chat"));
+        chatMenu.getItems().add(chat);
+        chat.setOnAction(event -> ChatView.getView().show());
+
+        this.getMenus().addAll(this.langMenu, chatMenu);
     }
 
     /**
@@ -50,4 +58,6 @@ public class Settings extends MenuBar {
     public Menu getLangMenu() {
         return langMenu;
     }
+
+    public Menu getChatMenu() { return chatMenu; }
 }

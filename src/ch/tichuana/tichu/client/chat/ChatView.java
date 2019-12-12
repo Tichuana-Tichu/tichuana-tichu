@@ -1,5 +1,6 @@
 package ch.tichuana.tichu.client.chat;
 
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -10,28 +11,54 @@ import javafx.stage.Stage;
  */
 public class ChatView extends Stage{
 
-    protected Stage stage;
-    private Model model;
+    private VBox scrollBox;
+    private Button btnSend;
+    private TextField txt;
+    private static ChatView view;
+
+    public ChatView(){
+
+        //VBox as main overlay
+        VBox box = new VBox();
+
+        //ScrollPane for Messages
+        ScrollPane pane = new ScrollPane();
+
+        //Vbox for showing seperate Messages in Scrollpane
+        scrollBox = new VBox();
+        scrollBox.getChildren().add(new Label("test"));
+        pane.setContent(scrollBox);
 
 
-    VBox box = new VBox();
-    ScrollPane pane = new ScrollPane();
-    HBox hbox = new HBox();
+        //HBox for TextArea and Send Button
+        HBox bottomBox = new HBox();
+        txt = new TextField();
+        btnSend = new Button("Send");
+        bottomBox.getChildren().addAll(txt, btnSend);
 
+        box.getChildren().addAll(pane,bottomBox);
 
+        Scene scene = new Scene(box);
+        this.setScene(scene);
 
-    Label lblName = new Label("Name");
-    TextField txtName = new TextField();
+    }
 
-    TextArea txtChatArea  = new TextArea();
+    public void addMessage(String name, String content){
+        MessageView view = new MessageView(name, content);
+        this.scrollBox.getChildren().add(view);
+    }
 
-    TextField txtChatMessage = new TextField();
-    Button btnSend = new Button("Send");
+    public Button getBtnSend() {
+        return btnSend;
+    }
 
-    public View(Stage stage, Model model){
-        this.stage = stage;
-        this.model = model;
+    public String getContent(){
+        return txt.getText();
+    }
 
-
+    public static ChatView getView(){
+        if(view == null)
+            view = new ChatView();
+        return view;
     }
 }

@@ -1,5 +1,7 @@
 package ch.tichuana.tichu.client.controller;
 
+import ch.tichuana.tichu.client.chat.ChatController;
+import ch.tichuana.tichu.client.chat.ChatView;
 import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.model.SimpleMessageProperty;
 import ch.tichuana.tichu.client.services.ServiceLocator;
@@ -27,6 +29,7 @@ class PlayController {
     private boolean firstRound = true;
     private int pushCounter = 1;
     private int passCounter = 0;
+    private ChatController chatController;
 
     /**
      * attaches listener to the stage-width to make the CardArea responsive
@@ -43,6 +46,9 @@ class PlayController {
         this.clientModel = clientModel;
         this.gameView = gameView;
         this.stage = stage;
+
+        Platform.runLater(()->this.chatController = new ChatController(ChatView.getView(),clientModel));
+
 
         /* computation of the negative spacing related to the stage size */
         this.stage.widthProperty().addListener((observable, oldVal, newVal) -> {
