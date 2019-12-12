@@ -114,9 +114,14 @@ public class Game {
 	public void startMatch(){
 		boolean gameDone = false;
 		if(isGameDone()){
-			gameDone = true;
+			sendGameDoneMSg(true);
 			logger.info("Game is done");
 		} else {
+			if (firstMatch) {
+				firstMatch = false;
+			} else {
+				sendGameDoneMSg(false);
+			}
 			this.deck.shuffleDeck();
 			this.currentMatch = new Match(serverModel);
 			currentMatch.dealFirstEightCards();
@@ -127,19 +132,16 @@ public class Game {
 				p.setDone(false);
 			}
 		}
+	}
 
-		if (firstMatch) {
-		    firstMatch = false;
-        } else {
-            for (Player p : playersInOrder){
-                Message msg = new GameDoneMsg(
-                        getTeamByMember(p).getCurrentScore(),
-                        getOpposingTeam(getTeamByMember(p)).getCurrentScore(),
-                        gameDone);
-                p.sendMessage(msg);
-            }
-        }
-
+	private void sendGameDoneMSg(boolean gameDone) {
+		for (Player p : playersInOrder){
+			Message msg = new GameDoneMsg(
+					getTeamByMember(p).getCurrentScore(),
+					getOpposingTeam(getTeamByMember(p)).getCurrentScore(),
+					gameDone);
+			p.sendMessage(msg);
+		}
 	}
 
 	/**
