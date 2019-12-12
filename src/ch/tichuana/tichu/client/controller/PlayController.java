@@ -260,18 +260,6 @@ class PlayController {
      * @author Philipp
      */
     private void handleFirstDealMsg() {
-
-        /*
-        if (!this.firstRound) {
-            this.clientModel.getMsgCodeProperty().setNewestMsg(translator.getString("matchWon"));
-            Platform.runLater(() ->
-                    gameView.getPlayView().getBottomView().getControlArea().getPlayBtn().setDisable(true));
-            try { Thread.sleep(5000); } catch (InterruptedException e) { e.printStackTrace(); }
-        }
-        this.firstRound = false;
-
-         */
-
         ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
         PlayArea pa = this.gameView.getPlayView().getPlayArea();
 

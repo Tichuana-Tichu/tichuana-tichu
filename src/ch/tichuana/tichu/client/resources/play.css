@@ -84,6 +84,10 @@ PlayArea CardArea {
     -fx-border-color: #B20000;
 }
 
+.validCombination {
+    -fx-border-color: #04b202;
+}
+
 .teamLabel {
     -fx-label-padding: 20px;
 }
