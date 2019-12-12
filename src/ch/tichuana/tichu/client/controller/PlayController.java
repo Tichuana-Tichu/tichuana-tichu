@@ -24,7 +24,6 @@ class PlayController {
     private ArrayList<Card> receivedCards = new ArrayList<>();
     private static ArrayList<Card> oldMove = new ArrayList<>();
     private Translator translator;
-    private boolean firstRound = true;
     private int pushCounter = 1;
     private int passCounter = 0;
 
@@ -167,11 +166,31 @@ class PlayController {
             this.passCounter++;
         }
 
-        if (this.clientModel.isMyTurn())
+        if (this.clientModel.isMyTurn()) {
             Platform.runLater(() -> ca.getPlayBtn().setDisable(false));
+            autoValidateMove();
+        }
 
         else
             Platform.runLater(() -> ca.getPlayBtn().setDisable(true));
+    }
+
+    //TODO - Testing
+    private void autoValidateMove() {
+        while (true) {
+            ArrayList<CardLabel> selection = getSelectedCardLabels();
+
+            if (Combination.isValidMove(oldMove, getSelectedCards())) {
+
+                for (CardLabel cl : selection) {
+                    cl.getStyleClass().add("validCombination");
+                }
+            } else {
+                for (CardLabel cl : selection) {
+                    cl.getStyleClass().remove("validCombination");
+                }
+            }
+        }
     }
 
     /**
@@ -337,6 +356,21 @@ class PlayController {
 
             if (label.isSelected()) {
                 selectedCards.add(label.getCard());
+            }
+        }
+        return selectedCards;
+    }
+
+    //TODO - Testing
+    private ArrayList<CardLabel> getSelectedCardLabels() {
+        HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea();
+        ArrayList<CardLabel> selectedCards = new ArrayList<>();
+
+        for (Node cl : cardLabels.getChildren()) {
+            CardLabel label = (CardLabel) cl;
+
+            if (label.isSelected()) {
+                selectedCards.add(label);
             }
         }
         return selectedCards;
