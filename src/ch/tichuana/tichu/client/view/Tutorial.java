@@ -121,7 +121,7 @@ public class Tutorial extends Stage {
         Tab rulesTab = new Tab(translator.getString("tutorial.rules"));
 
         VBox root = new VBox();
-        String[] rules = {"players", "matches", "tricks", "smalltichu", "grandtichu", "push"};
+        String[] rules = {"players", "matches", "tricks", "smalltichu", "grandtichu", "push", "start"};
         int ruleCounter = 0;
         for (String rule : rules){
             ruleCounter ++;
