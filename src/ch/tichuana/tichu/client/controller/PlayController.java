@@ -80,6 +80,7 @@ class PlayController {
                 case 8: handleSchupfenMsg(false); break;
                 case 9: handleSchupfenMsg(true); break;
                 case 10: handleUpdateMsg(); break;
+                case 11: handleGameDoneMsg(); break;
             }
         });
 
@@ -157,6 +158,20 @@ class PlayController {
     }
 
     /**
+     * @author Philipp
+     */
+    private void handleGameDoneMsg() {
+        ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
+        PlayArea pa = this.gameView.getPlayView().getPlayArea();
+        Platform.runLater(() -> {
+            pa.updateTotalPoints(clientModel.getOwnScore(), clientModel.getOpponentScore());
+            ca.getPlayBtn().setDisable(true);
+        });
+
+        try { Thread.sleep(5000); } catch (InterruptedException e) { e.printStackTrace(); }
+    }
+
+    /**
      *
      * @author Philipp
      */
@@ -166,8 +181,6 @@ class PlayController {
         String lastPlayer = msg.getLastPlayer();
         ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
         PlayArea pa = this.gameView.getPlayView().getPlayArea();
-
-        Platform.runLater(() -> pa.updateTotalPoints(clientModel.getOwnScore(), clientModel.getOpponentScore()));
 
         if (!msg.getLastMove().isEmpty()) {
             oldMove = this.clientModel.getMsgCodeProperty().getMessage().getLastMove();
@@ -275,12 +288,6 @@ class PlayController {
      * @author Philipp
      */
     private void handleFirstDealMsg() {
-
-        if (!this.firstRound) {
-            try { Thread.sleep(10000); } catch (InterruptedException e) { e.printStackTrace(); }
-        }
-        this.firstRound = false;
-
         ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
         PlayArea pa = this.gameView.getPlayView().getPlayArea();
 

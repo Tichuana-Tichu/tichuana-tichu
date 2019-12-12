@@ -186,6 +186,13 @@ public abstract class Message {
 
 				newMessage = new UpdateMsg(playerName,lastPlayer, cards,opponentScore,ownScore,playerNames,remainingCards);
 				break;
+
+			case GameDoneMsg:
+				int opponent = convertToInt(json.get("opponentScore"));
+				int own = convertToInt(json.get("ownScore"));
+				boolean done = (Boolean) json.get("done");
+				newMessage = new GameDoneMsg(own,opponent,done);
+
 		}
 		return newMessage;
 	}
@@ -242,5 +249,8 @@ public abstract class Message {
 	}
 	public String getLastPlayer(){
 		return null;
+	}
+	public boolean isDone() {
+		return false;
 	}
 }

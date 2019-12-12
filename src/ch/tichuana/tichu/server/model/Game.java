@@ -18,6 +18,7 @@ public class Game {
 	private DeckOfCards deck;
 	private Match currentMatch;
 	private final int MAX_SCORE = 1000;
+	private boolean firstMatch = true;
 
 	/**
 	 * Game will be started from ServerModel as soon as 4 player are connected to server
@@ -111,9 +112,16 @@ public class Game {
 	 * @author Christian
 	 */
 	public void startMatch(){
+		boolean gameDone = false;
 		if(isGameDone()){
-			//TODO: handle if game is done
+			sendGameDoneMsg(true);
+			logger.info("Game is done");
 		} else {
+			if (firstMatch) {
+				firstMatch = false;
+			} else {
+				sendGameDoneMsg(false);
+			}
 			this.deck.shuffleDeck();
 			this.currentMatch = new Match(serverModel);
 			currentMatch.dealFirstEightCards();
@@ -123,6 +131,17 @@ public class Game {
 			for (Player p : playersInOrder){
 				p.setDone(false);
 			}
+		}
+	}
+
+	public void sendGameDoneMsg(boolean gameDone) {
+
+		for (Player p : playersInOrder){
+			Message msg = new GameDoneMsg(
+					getTeamByMember(p).getCurrentScore(),
+					getOpposingTeam(getTeamByMember(p)).getCurrentScore(),
+					gameDone);
+			p.sendMessage(msg);
 		}
 	}
 

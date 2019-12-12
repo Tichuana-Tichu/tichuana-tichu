@@ -112,12 +112,7 @@ public class ClientModel {
                             this.msg.set(9);
                             this.firstUpdate = false;
                         }
-
                         this.msg.setMessage(msg);
-                        if (msg.getOwnScore() > 0)
-                            this.ownScore = msg.getOwnScore();
-                        if (msg.getOpponentScore() > 0)
-                            this.opponentScore = msg.getOpponentScore();
 
                         if (!this.playerName.equals(msg.getNextPlayer())) {
                             this.myTurn = false;
@@ -129,6 +124,18 @@ public class ClientModel {
                         }
 
                         this.msg.set(10);
+                        this.msg.set(30);
+                    }
+
+                    if (msg instanceof GameDoneMsg) {
+                        this.ownScore = msg.getOwnScore();
+                        this.opponentScore = msg.getOpponentScore();
+
+                        if (!msg.isDone())
+                            this.msg.setNewestMsg(translator.getString("matchWon"));
+                        else
+                            this.msg.setNewestMsg(translator.getString("gameWon"));
+                        this.msg.set(11);
                         this.msg.set(30);
                     }
                 }

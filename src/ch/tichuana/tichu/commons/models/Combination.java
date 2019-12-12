@@ -72,8 +72,8 @@ public enum Combination {
 	/**
 	 * checks if cards contain two cards of the same rank
 	 * or a phoenix and a random second card
-	 * @param cards
-	 * @return
+	 * @param cards hand
+	 * @return isOnePair
 	 * @author dominik
 	 */
 	public static boolean isOnePair(ArrayList<Card> cards) {
@@ -87,8 +87,8 @@ public enum Combination {
 	/**
 	 * Check if three cards in the Array have the same rank.
 	 * Phoenix control implemented.
-	 * @param cards
-	 * @return
+	 * @param cards hand
+	 * @return isThreeOfAKind
 	 * @author dominik
 	 */
 	public static boolean isThreeOfAKind(ArrayList<Card> cards) {
@@ -107,8 +107,8 @@ public enum Combination {
 	/**
 	 * Check if there are 4 or more cards in the array, if not return false. If there are, check if they are pairs and
 	 * the rank is one higher then the first pair.
-	 * @param cards
-	 * @return
+	 * @param cards hand
+	 * @return isSteps
 	 * @author christian, dominik, philipp
 	 */
 	public static boolean isSteps(ArrayList<Card> cards) {
@@ -164,8 +164,8 @@ public enum Combination {
 	 * The first 3 cards and the second 2, or the first 2 and the following 3 cards need to be the same.
 	 * Phoenix control implemented.
 	 * @author dominik
-	 * @return
-	 * @param cards
+	 * @return isFullHouse
+	 * @param cards hand
 	 */
 	public static boolean isFullHouse(ArrayList<Card> cards) {
 
@@ -174,13 +174,10 @@ public enum Combination {
 
 			if (containsPhoenix(cards)) {
 
-				if (cards.get(0).getRank() == cards.get(2).getRank() ||
-					cards.get(1).getRank() == cards.get(3).getRank() ||
-					(cards.get(0).getRank() == cards.get(1).getRank() &&
-					cards.get(2).getRank() == cards.get(3).getRank())) {
-					return true;
-				} else
-					return false;
+				return cards.get(0).getRank() == cards.get(2).getRank() ||
+						cards.get(1).getRank() == cards.get(3).getRank() ||
+						(cards.get(0).getRank() == cards.get(1).getRank() &&
+								cards.get(2).getRank() == cards.get(3).getRank());
 
 			} else {//simple handling without phoenix
 				return (cards.get(0).getRank() == cards.get(1).getRank() &&
@@ -196,8 +193,8 @@ public enum Combination {
 	 * Check if every following Card is one rank higher then the one before. Also check if there are special cards
 	 * included.
 	 * @author dominik
-	 * @return
-	 * @param cards
+	 * @return isStraight
+	 * @param cards hand
 	 */
 	public static boolean isStraight(ArrayList<Card> cards) {
 		boolean found = true;
@@ -216,8 +213,10 @@ public enum Combination {
 				}
 			}else {
 				for (int i = 0; i < cards.size() - 2 && found; i++) {
-					if (cards.get(i).getRank().ordinal() != cards.get(i + 1).getRank().ordinal() -1)
+					if (cards.get(i).getRank().ordinal() != cards.get(i + 1).getRank().ordinal() - 1) {
 						found = false;
+						break;
+					}
 				}
 			}
 		}else
@@ -228,19 +227,15 @@ public enum Combination {
 	/**
 	 * Check if all 4 Cards have same Rank and do not include any special card.
 	 * @author dominik
-	 * @return
-	 * @param cards
+	 * @return isFourOfAKindBomb
+	 * @param cards hand
 	 */
 	public static boolean isFourOfAKindBomb(ArrayList<Card> cards) {
 
 		if (cards.size() == 4 && !containsPhoenix(cards) && !containsDragon(cards) &&
 			!containsDog(cards) && !containsMahjong(cards)) {
 
-			if(cards.get(0).getRank().ordinal() == cards.get(3).getRank().ordinal()){
-				return true;
-			}else{
-				return false;
-			}
+			return cards.get(0).getRank().ordinal() == cards.get(3).getRank().ordinal();
 
 		}else{
 			return false;
@@ -256,14 +251,11 @@ public enum Combination {
 	 */
 	public static boolean isFourOfAKindPhoenix(ArrayList<Card> cards) {
 
-		if(cards.size() == 4 && containsPhoenix(cards) && !containsDog(cards) &&
+		if (cards.size() == 4 && containsPhoenix(cards) && !containsDog(cards) &&
 				!containsMahjong(cards) && !containsDragon(cards)) {
 
-			if (cards.get(0).getRank().ordinal() == cards.get(2).getRank().ordinal()){
-				return true;
-			}else
-				return false;
-		}return false;
+			return cards.get(0).getRank().ordinal() == cards.get(2).getRank().ordinal();
+		} return false;
 	}
 
 	/**
@@ -279,11 +271,13 @@ public enum Combination {
 
 		if (containsPhoenix(cards)){
 			return false;
-		}else{
+		} else {
 			Suit suitOfCard = cards.get(0).getSuit();
 			for(int i = 1; i < cards.size() -1 && flush; i++) {
-				if(cards.get(i).getSuit() != suitOfCard)
+				if (cards.get(i).getSuit() != suitOfCard) {
 					flush = false;
+					break;
+				}
 			}
 		}
 
@@ -304,7 +298,7 @@ public enum Combination {
 		ArrayList<Card> newClone = (ArrayList<Card>) newMove.clone();
 		Collections.sort(oldClone);
 		Collections.sort(newClone);
-		Combination comb;
+		Combination comb = evaluateCombination(newClone);
 
 		// When the first move of a trick is played, oldMove is empty. If evaluateCombination returns anything but
 		// a HighCard it is a valid move. If its a high card we need to check if it actually is a single card.
@@ -326,22 +320,24 @@ public enum Combination {
 
 			case HighCard:
 
+				// beaten by any kind of bomb
+				if (comb == FourOfAKindBomb || comb == StraightFlushBomb){
+					return true;
+				}
+
 				// special case if single phoenix was played
-				if (evaluateCombination(newClone) == HighCard &&
+				if (comb == HighCard &&
 						containsPhoenix(oldMove)){
 					if (beforePhoenix != null && beforePhoenix.compareTo(newMove.get(0)) < 0){
 						return true;
 					} else {
 						// this is a bit ugly, only because clients do not hav the beforePhoenix initialized
-						if (newClone.get(0).getRank() == Rank.dragon){
-							return true;
-						}
-						return false;
+						return newClone.get(0).getRank() == Rank.dragon;
 					}
 				}
 
 				// newMove has to be HighCard as well and have a higher rank, else -> false
-				if(evaluateCombination(newClone) == HighCard &&
+				if(comb == HighCard &&
 						oldClone.get(0).compareTo(newClone.get(0)) < 0){
 
 					// if new move is single phoenix, we need to memorize previous card
@@ -351,48 +347,52 @@ public enum Combination {
 
 					// a dog can not be played on a mahjong and vise versa, everything else can
 					// only need to check mahjong because dog has a lower ordinal anyway
-					if(containsMahjong(newMove)){
-						return false;
-					} else {
-						return true;
-					}
+					return !containsMahjong(newMove);
+
 				} else {
 					return false;
 				}
 
 			case OnePair:
-				// even if one played a pair with phoenix we can always compare first cards (sorted list)
-				if(evaluateCombination(newClone) == OnePair &&
-				oldClone.get(0).compareTo(newClone.get(0))<0){
+
+				// beaten by any kind of bomb
+				if (comb == FourOfAKindBomb || comb == StraightFlushBomb){
 					return true;
-				} else {
-					return false;
 				}
+
+				// even if one played a pair with phoenix we can always compare first cards (sorted list)
+				return comb == OnePair &&
+						oldClone.get(0).compareTo(newClone.get(0)) < 0;
 
 			case ThreeOfAKind:
-				// same as OnePair
-				if(evaluateCombination(newClone) == ThreeOfAKind &&
-						oldClone.get(0).compareTo(newClone.get(0))<0){
+
+				// beaten by any kind of bomb
+				if (comb == FourOfAKindBomb || comb == StraightFlushBomb){
 					return true;
-				} else {
-					return false;
 				}
 
+				// same as OnePair
+				return comb == ThreeOfAKind &&
+						oldClone.get(0).compareTo(newClone.get(0)) < 0;
+
 			case Steps:
+
+				// beaten by any kind of bomb
+				if (comb == FourOfAKindBomb || comb == StraightFlushBomb){
+					return true;
+				}
+
 				// if new move is a step too, it must contain mor pairs (bigger size)
 				// if their the same, higher pairs win
-				if (evaluateCombination(newClone) == Steps){
-					if (newClone.size() > oldClone.size()){
-						return true;
-					} else if (newClone.size() == oldClone.size()){
+				if (comb == Steps){
+
+					// step can now only beat steps of the same size
+					if (newClone.size() == oldClone.size()){
 
 						// compare the ranks of the second to last card of each move, since last card might be phoenix
-						if (newMove.get(newMove.size()-2).getRank().ordinal() >
-								oldMove.get(oldMove.size()-2).getRank().ordinal()){
-							return true;
-						} else { // weaker pair
-							return false;
-						}
+						// weaker pair
+						return (newMove.get(newMove.size() - 2).getRank().ordinal() >
+								oldMove.get(oldMove.size() - 2).getRank().ordinal());
 					} else { // smaller step
 						return false;
 					}
@@ -402,23 +402,33 @@ public enum Combination {
 
 			case FullHouse:
 
-				if(evaluateCombination(newMove) ==  FullHouse){
+				// beaten by any kind of bomb
+				if (comb == FourOfAKindBomb || comb == StraightFlushBomb){
+					return true;
+				}
+
+				if(comb ==  FullHouse){
 
 					// higher triplet wins. Middle card will always be part of triplet:
+					//TODO: compare the pair
+					// lower full house
 					if (newMove.get(2).getRank().ordinal() > oldMove.get(2).getRank().ordinal()){
 						return true;
-					} else if (newMove.get(2).getRank().ordinal() == oldMove.get(2).getRank().ordinal()){
-						//TODO: compare the pair
-						return true;
-					} else { // lower full house
-						return false;
+					} else {
+						return newMove.get(2).getRank().ordinal() == oldMove.get(2).getRank().ordinal();
 					}
 				} else { // no full house
 					return false;
 				}
 
 			case Straight:
-				if (evaluateCombination(newMove) == Straight){
+
+				// beaten by any kind of bomb
+				if (comb == FourOfAKindBomb || comb == StraightFlushBomb){
+					return true;
+				}
+
+				if (comb == Straight){
 
 					if (newMove.size() == oldMove.size()){
 						Card lastCardNew = newMove.get(newMove.size()-1);
@@ -431,11 +441,8 @@ public enum Combination {
 							lastCardOld = oldMove.get(oldMove.size()-2);
 						}
 
-						if (lastCardNew.getRank().ordinal() > lastCardOld.getRank().ordinal()){
-							return true;
-						} else{ // last card isn't higher
-							return false;
-						}
+						// last card isn't higher
+						return (lastCardNew.getRank().ordinal() > lastCardOld.getRank().ordinal());
 
 					} else { // shorter straight
 						return false;
@@ -448,33 +455,24 @@ public enum Combination {
 				// bomb will beat anything exept higher bomb (and straightFlushBomb)
 				// so we check if previous was also a bomb
 				// [EDIT] according to rules a straight is also a bomb (will beat fourOfAKind because of length)
-				comb = evaluateCombination(newClone);
+
 				if (comb == StraightFlushBomb || comb == Straight){
 					return true;
 				}
 				if (comb == FourOfAKindBomb){
 					// check if this bomb is higher than previous bomb
-					if (oldClone.get(0).compareTo(newClone.get(0))<0){
-						return true;
-					} else {
-						return false;
-					}
+					return (oldClone.get(0).compareTo(newClone.get(0)) < 0);
 				} else { // not a valid bomb (FourOfAKindPhoenix isn't a bomb)
 					return false;
 				}
 
 			case FourOfAKindPhoenix:
 				// is just a fourOfAKind, no bomb. Can only be beaten by bomb
-				comb = evaluateCombination(newClone);
-				if (comb == FourOfAKindBomb || comb == Straight || comb == StraightFlushBomb){
-					return true;
-				} else {
-					return false;
-				}
+				return (comb == FourOfAKindBomb || comb == Straight || comb == StraightFlushBomb);
 
 			case StraightFlushBomb:
 				// highly likely case :-/
-				if (evaluateCombination(newClone) == StraightFlushBomb){
+				if (comb == StraightFlushBomb){
 
 					if (newClone.size() > oldClone.size()) {
 						return true;
@@ -490,11 +488,8 @@ public enum Combination {
 							lastCardOld = oldMove.get(oldMove.size()-2);
 						}
 
-						if (lastCardNew.getRank().ordinal() > lastCardOld.getRank().ordinal()){
-							return true;
-						} else { // lower straightFlushBomb
-							return false;
-						}
+						// lower straightFlushBomb
+						return (lastCardNew.getRank().ordinal() > lastCardOld.getRank().ordinal());
 					} else { // smaller straightFlushBomb
 						return false;
 					}

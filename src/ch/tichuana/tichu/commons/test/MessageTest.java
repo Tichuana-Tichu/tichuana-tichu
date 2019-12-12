@@ -248,5 +248,22 @@ class MessageTest {
         System.out.println("updatemsg: "+msg);
     }
 
+    @Test
+    public void testGameDone() {
+        JSONObject json = new JSONObject();
+        json.put("msg","GameDoneMsg");
+        json.put("ownScore",20);
+        json.put("opponentScore",100);
+        json.put("done",true);
+
+
+        Message msg = Message.parseMessage(json);
+
+        assertEquals(true, msg.isDone());
+        assertEquals(20,msg.getOwnScore());
+        assertEquals(100, msg.getOpponentScore());
+
+    }
+
 
 }
