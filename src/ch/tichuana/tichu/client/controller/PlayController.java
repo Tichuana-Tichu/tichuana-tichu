@@ -177,20 +177,24 @@ class PlayController {
 
     //TODO - Testing
     private void autoValidateMove() {
-        while (true) {
+        //while (true) {
             ArrayList<CardLabel> selection = getSelectedCardLabels();
 
-            if (Combination.isValidMove(oldMove, getSelectedCards())) {
+            if (!getSelectedCards().isEmpty()) {
+                if (Combination.isValidMove(oldMove, getSelectedCards())) {
 
-                for (CardLabel cl : selection) {
-                    cl.getStyleClass().add("validCombination");
-                }
-            } else {
-                for (CardLabel cl : selection) {
-                    cl.getStyleClass().remove("validCombination");
+                    for (CardLabel cl : selection) {
+                        cl.getStyleClass().add("validCombination");
+                        cl.getStyleClass().remove("clickedLabel");
+                    }
+                } else {
+                    for (CardLabel cl : selection) {
+                        cl.getStyleClass().remove("validCombination");
+                        cl.getStyleClass().add("clickedLabel");
+                    }
                 }
             }
-        }
+        //}
     }
 
     /**
@@ -332,7 +336,8 @@ class PlayController {
 
             cl.setOnMouseClicked(event -> {
                 CardLabel clickedLabel = (CardLabel) event.getSource();
-                if (clickedLabel.getStyleClass().removeIf(s -> s.equals("clickedLabel")))
+                if (clickedLabel.getStyleClass().contains("clickedLabel"))
+                    //clickedLabel.getStyleClass().removeIf(s -> s.equals("clickedLabel")))
                     clickedLabel.getStyleClass().remove("clickedLabel");
 
                 else
