@@ -12,6 +12,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class Tutorial extends Stage {
 
     private TabPane tabPane;
@@ -28,19 +30,39 @@ public class Tutorial extends Stage {
         translator = serviceLocator.getTranslator();
         configuration = serviceLocator.getConfiguration();
 
-
         // next buttons
         nextBtnRules = new Button(translator.getString("tutorial.next"));
         nextBtnCards = new Button(translator.getString("tutorial.next"));
         nextBtnMoves = new Button(translator.getString("tutorial.next"));
+
+        ArrayList<Tab> tabs = new ArrayList<>();
 
         Tab rules = makeRulesTab();
         Tab moves = makeValidMoveTab();
         Tab cards = makeCardsTab();
         Tab credits = makeCreditsTab();
 
+        rules.getStyleClass().add("tabs");
+        moves.getStyleClass().add("tabs");
+        cards.getStyleClass().add("tabs");
+        credits.getStyleClass().add("tabs");
+
+        tabs.add(rules);
+        tabs.add(moves);
+        tabs.add(cards);
+        tabs.add(credits);
+
+        for (Tab tab : tabs){
+            tab.setOnSelectionChanged(e-> {
+                if (tab.isSelected()) tab.getStyleClass().add("active");
+                else tab.getStyleClass().remove("active");
+            });
+        }
+
         tabPane = new TabPane();
+        tabPane.getStyleClass().add("red");
         tabPane.getTabs().addAll(rules,moves, cards,credits);
+
 
         // selection model -> for next buttons
         SelectionModel<Tab> select = tabPane.getSelectionModel();
@@ -105,6 +127,7 @@ public class Tutorial extends Stage {
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setId("validmove");
+        scrollPane.getStyleClass().add("red");
         scrollPane.setContent(grid);
         validMoves.setContent(scrollPane);
         validMoves.setClosable(false);
@@ -121,7 +144,7 @@ public class Tutorial extends Stage {
         Tab rulesTab = new Tab(translator.getString("tutorial.rules"));
 
         VBox root = new VBox();
-        String[] rules = {"players", "matches", "tricks", "smalltichu", "grandtichu", "push", "start"};
+        String[] rules = {"players", "matches", "tricks", "smalltichu", "grandtichu", "push", "start", "combo", "points"};
         int ruleCounter = 0;
         for (String rule : rules){
             ruleCounter ++;

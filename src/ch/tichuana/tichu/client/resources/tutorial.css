@@ -1,6 +1,31 @@
+* {
+    -fx-font-family: 'Matura MT Script Capitals', arial;
+}
 VBox {
     -fx-padding:25px;
+}
+.red {
+    -fx-background-color:#920108;
+    -fx-background:#920108;
+}
+.tabs {
+    -fx-background-color: #4c0105;
+    -fx-text-base-color: white;
+}
+.tab-header-area {
+    -fx-border: none;
+    -fx-border-width: 0px;
+    -fx-background-color: white;
+}
+/*
+#ffef69
+*/
+.active {
+    -fx-background-color:#920108;
+    -fx-text-base-color:white;
+    /*-fx-text-fill: #920108;*/
 }
 #validmove {
     -fx-padding:25px;
 }
+
