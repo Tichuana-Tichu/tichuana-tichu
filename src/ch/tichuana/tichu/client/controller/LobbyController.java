@@ -78,10 +78,13 @@ public class LobbyController {
 
 			Translator en = new Translator("en");
 			ServiceLocator.getServiceLocator().setTranslator(en);
+		} else if (m.getText().equals(t.getString("langMenu.chinese"))){
+
+			Translator ch = new Translator("ch");
+			ServiceLocator.getServiceLocator().setTranslator(ch);
 		}
 		t = ServiceLocator.getServiceLocator().getTranslator();
 		gameView.getLobbyView().update();
-
 	}
 
 	/**
