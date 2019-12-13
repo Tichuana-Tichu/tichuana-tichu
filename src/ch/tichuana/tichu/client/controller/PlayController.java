@@ -25,16 +25,20 @@ class PlayController {
     private GameView gameView;
     private Stage stage;
     private ArrayList<Card> receivedCards = new ArrayList<>();
+    private static final int MAX_HANDSIZE = 14;
     private static ArrayList<Card> oldMove = new ArrayList<>();
     private Translator translator;
-    private int pushCounter = 1;
     private int passCounter = 0;
 
     /**
-     * attaches listener to the stage-width to make the CardArea responsive
-     * updates TextField (console) on incoming Messages from the server
-     * sets Buttons on action, to send Messages to server when being clicked
+     * attaches listener to the stage-width to make the CardArea responsive,
+     * updates TextField (console) on incoming Messages from the server,
+     * handling all messagesTypes depending on the int code which is set in the clientModel
+     * sets Buttons on action, to send Messages to server when being clicked,
+     * makes the cardArea listen to mouse event for auto-validation of the selection,
+     * sets the Language menu on action,
      * disconnects client from server when the windows is closed
+     * general information: local variables are used as often as possible to avoid ugly getter chains
      * @author Philipp
      * @param clientModel following MVC pattern
      * @param gameView following MVC pattern
@@ -75,7 +79,7 @@ class PlayController {
                 case 3: handleFirstDealMsg(); break;
                 case 4: handleAnnouncedTichuMsg(); break;
                 case 5: handleSecondDealMsg(); break;
-                case 6: handleDemandSchupfenMsg(); break;
+                case 6: Platform.runLater(() -> ca.getSchupfenBtn().setDisable(false)); break;
                 case 7: Platform.runLater(() -> ca.getSchupfenBtn().setDisable(true)); break;
                 case 8: handleSchupfenMsg(false); break;
                 case 9: handleSchupfenMsg(true); break;
@@ -97,7 +101,7 @@ class PlayController {
             Platform.runLater(() -> ca.getSchupfenBtn().setDisable(true));
             ArrayList<Card> cards = getSelectedCards();
             if (!cards.isEmpty()) {
-                this.clientModel.sendMessage(new SchupfenMsg(getPlayerName(), cards.get(0)));
+                this.clientModel.sendMessage(new SchupfenMsg(getTriggeringPlayer(), cards.get(0)));
                 this.clientModel.getHand().remove(cards.get(0));
                 this.clientModel.getHand().sort();
             } else
@@ -140,6 +144,9 @@ class PlayController {
     }
 
     /**
+     * updates the points column in the view with the new scores,
+     * makes sure no inputs is possible and then wait 5 seconds for UX reasons:
+     * user has the chance to see why the Game/Match is done
      * @author Philipp
      */
     private void handleGameDoneMsg() {
@@ -154,11 +161,12 @@ class PlayController {
     }
 
     /**
-     *
+     * the first if/else block decides whether the last player played or passed
+     * depending on that the view will be updated and the pass counter will be updated
+     * the second if/else block decides whether its this player's turn or not and acts accordingly
      * @author Philipp
      */
     private void handleUpdateMsg() {
-        this.pushCounter = 1;
         UpdateMsg msg = (UpdateMsg) this.clientModel.getMsgCodeProperty().getMessage();
         String lastPlayer = msg.getLastPlayer();
         ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
@@ -184,94 +192,82 @@ class PlayController {
                 Platform.runLater(() -> ca.getPlayBtn().setText(translator.getString("controlarea.pass")));
             Platform.runLater(() -> ca.getPlayBtn().setDisable(false));
         }
-
         else
             Platform.runLater(() -> ca.getPlayBtn().setDisable(true));
     }
 
     /**
-     *
+     * decides whether all clients are done with pushing and the saved cards can be handed out,
+     * or if not and the cards only need to be saved
      * @author Philipp
      */
     private void handleSchupfenMsg(boolean finished) {
-
         if (!finished)
             receivedCards.add(this.clientModel.getMsgCodeProperty().getMessage().getCard());
-        else {
+        else { //Thread.sleep() prevents loss of the updateMsg for the last client receiving
             try { Thread.sleep(300); } catch (InterruptedException e) { e.printStackTrace(); }
             clientModel.getHand().addCards(receivedCards);
-            clientModel.getHand().sort();
+            clientModel.getHand().sort(); //sorting the hand including the new cards
         }
     }
 
     /**
-     *
-     * @author Philipp
-     */
-    private void handleDemandSchupfenMsg() {
-        ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
-
-        if (this.pushCounter == 1)
-            Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.play")));
-
-        this.pushCounter++;
-        Platform.runLater(() -> ca.getSchupfenBtn().setDisable(false));
-    }
-
-    /**
-     *
+     * the cards receiving in the second DealMsg have already been set by the ClientModel!
+     * initializes the handColumn to prevent ugly resizing in the playArea while playing cards
+     * attention: MAX_HANDSIZE is important for the handColumn in the PlayArea
+     * decides whether the use did not announced GrandTichu and is now able to announce SmallTichu
+     * or announced GrandTichu and needs to wait until all players made their announcements
      * @author Philipp
      */
     private void handleSecondDealMsg() {
         ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
+        Platform.runLater(() -> gameView.getPlayView().getPlayArea().initHandColumn(MAX_HANDSIZE));
 
-        Platform.runLater(() ->
-                gameView.getPlayView().getPlayArea().initHandColumn( 14));
-
-        //enables Buttons again to announce SmallTichu or none
         clientModel.getHand().sort();
-        if (!this.clientModel.announcedGrandTichu()) {
+
+        if (!this.clientModel.announcedGrandTichu()) {//enables Buttons again for further announcements
             Platform.runLater(() -> {
                 ca.getSmallTichuBtn().setDisable(false);
                 ca.getPlayBtn().setDisable(false);
             });
-            //automatically sends GrandTichu msg
-        } else {
-            try {
+        } else { //automatically sends GrandTichu msg if the client already announced GrandTichu (DesignDecision)
+            try { //Thread.sleep() prevents loss of the AnnouncedTichuMsg for the last client receiving it
                 Thread.sleep(300); } catch (InterruptedException e) { e.printStackTrace(); }
             this.clientModel.sendMessage(new TichuMsg(clientModel.getPlayerName(), TichuType.GrandTichu));
         }
     }
 
     /**
-     *
+     * mainly altering the GUI depending on this player announced or not.
+     * changes the instance variable "GrandTichu" in the clientModel if necessary
      * @author Philipp
      */
     private void handleAnnouncedTichuMsg() {
-        //gets the tichuType of the current message
         TichuType tichuType = this.clientModel.getMsgCodeProperty().getMessage().getTichuType();
         ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
         PlayArea pa = this.gameView.getPlayView().getPlayArea();
 
-        //if i have announced Tichu myself
-        if (this.clientModel.getPlayerName().equals(getPlayerName())) {
+        if (this.clientModel.getPlayerName().equals(getTriggeringPlayer())) { //if this player announced
             //if i have announced GrandTichu myself
             if (tichuType.equals(TichuType.GrandTichu)) {
                 this.clientModel.setGrandTichu(true);
             }
             //update TichuColumn and disable buttons again
             Platform.runLater(() -> {
-                pa.updateTichuColumn(getPlayerName(), tichuType);
+                pa.updateTichuColumn(getTriggeringPlayer(), tichuType);
                 ca.getGrandTichuBtn().setDisable(true);
                 ca.getSmallTichuBtn().setDisable(true);
                 ca.getPlayBtn().setDisable(true);
             });
-        } else //just altering the TichuColumn if someone else announced tichu
-            Platform.runLater(() -> pa.updateTichuColumn(getPlayerName(), tichuType));
+        } else //if someone else announced
+            Platform.runLater(() -> pa.updateTichuColumn(getTriggeringPlayer(), tichuType));
     }
 
     /**
-     *
+     * the cards receiving in the first DealMsg have already been set by the ClientModel!
+     * resetting some important variable which have been set in the previous Match and
+     * activating the the hand to automatically alter the GUI if cards are played or received
+     * altering GUI to make it possible for the user to announce GrandTichu or pass
      * @author Philipp
      */
     private void handleFirstDealMsg() {
@@ -304,9 +300,10 @@ class PlayController {
     }
 
     /**
-     *
+     * updating the CardsLabels when something changes in the Hand from the ClientModel and
+     * makeing cards clickable
      * @author Philipp
-     * @param obs observable value from the listener
+     * @param obs unused but necessary observable value from the listener
      */
     private void activateHand(Observable obs) {
         Platform.runLater(() -> {
@@ -317,31 +314,30 @@ class PlayController {
     }
 
     /**
-     *
+     * sets all cardLabels in the CardArea on action and toggles its isSelected variable accordingly
      * @author Philipp
      */
     private void makeCardsClickable() {
-
         HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea();
 
         for (Node cl : cardLabels.getChildren()) {
 
             cl.setOnMouseClicked(event -> {
-                CardLabel clickedLabel = (CardLabel) event.getSource();
-                clickedLabel.setSelected(!clickedLabel.isSelected());
+                CardLabel clickedLabel = (CardLabel) event.getSource(); //getting the clicked element
+                clickedLabel.setSelected(!clickedLabel.isSelected()); //toggle value
                 if (!clickedLabel.isSelected()) {
-                    clickedLabel.getStyleClass().clear();
+                    clickedLabel.getStyleClass().clear(); //removing all style classes if not selected anymore
                 }
-                else
-                    clickedLabel.getStyleClass().add("clickedLabel");
-
             });
         }
     }
 
     /**
+     * if cards are selected the play button changes to play and if not it changes to pass
+     * if the combination is valid according to the last move, the selected cards change their
+     * border color to green, if not, they change their border color to red
      * @author Philipp
-     * @param mouseEvent handling mouse click in CardAre
+     * @param mouseEvent handling mouse click in CardArea
      */
     private void autoValidateMove(MouseEvent mouseEvent) {
         ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
@@ -369,7 +365,8 @@ class PlayController {
     }
 
     /**
-     *
+     * Important: not similar to the following method. This method returns the current selection
+     * based on the card objects
      * @author Philipp
      * @return the currently selected cards
      */
@@ -388,6 +385,7 @@ class PlayController {
     }
 
     /**
+     * returns the current selection of the cardLabel objects
      * @author Philipp
      * @return the currently selected cardLabels
      */
@@ -406,15 +404,16 @@ class PlayController {
     }
 
     /**
+     * simple service method to avoid repeating ugly calls in the upper service methods
      * @author Philipp
      * @return returns the playerName of the current message
      */
-    private String getPlayerName() {
+    private String getTriggeringPlayer() {
         return this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
     }
 
     /**
-     * initialize new Translator for language change.
+     * initialize new a translator object for language change.
      * @author dominik
      */
     public void changeTranslator(Event event) {
