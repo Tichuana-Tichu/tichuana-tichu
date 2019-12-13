@@ -20,7 +20,7 @@ public class PlayArea extends GridPane {
 	private ClientModel clientModel;
 	private Translator t;
 	private Label[] playerLbl;
-	private Label[] headings = new Label[7];
+	private Label[] headings = new Label[6];
 	private Label l1;
 	private Label l2;
 
@@ -34,7 +34,6 @@ public class PlayArea extends GridPane {
 
 		this.clientModel = clientModel;
 		this.t = ServiceLocator.getServiceLocator().getTranslator();
-		Label[] headings = new Label[6];
 		headings[0] = new Label(t.getString("name"));
 		headings[1] = new Label(t.getString("hand"));
 		headings[2] = new Label(t.getString("tichu"));
@@ -277,8 +276,7 @@ public class PlayArea extends GridPane {
 		this.headings[2].setText(translator.getString("tichu"));
 		this.headings[3].setText(translator.getString("played"));
 		this.headings[4].setText(translator.getString("team"));
-		this.headings[5].setText(translator.getString("matchPoints"));
-		this.headings[6].setText(translator.getString("total"));
+		this.headings[5].setText(translator.getString("total"));
 		this.l1.setText(translator.getString("yourTeam"));
 		this.l2.setText(translator.getString("opponents"));
 
