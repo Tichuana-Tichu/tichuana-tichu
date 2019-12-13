@@ -6,6 +6,7 @@ import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.TichuType;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
@@ -19,6 +20,10 @@ public class PlayArea extends GridPane {
 	private ClientModel clientModel;
 	private Translator t;
 	private Label[] playerLbl;
+	private Label[] headings = new Label[7];
+	private Label l1;
+	private Label l2;
+
 
 	/**
 	 * creates a table-like, resizeable grid for information about the game-flow
@@ -81,9 +86,9 @@ public class PlayArea extends GridPane {
 		this.add(new Label(""), 1, 6);
 		this.add(new Label(""), 1, 8);
 
-		Label l1 = new Label(t.getString("yourTeam"));
+		l1 = new Label(t.getString("yourTeam"));
 		l1.getStyleClass().add("teamLabel");
-		Label l2 = new Label(t.getString("opponents"));
+		l2 = new Label(t.getString("opponents"));
 		l2.getStyleClass().add("teamLabel");
 		this.add(l1, 4, 2, 1, 3);
 		this.add(l2, 4, 6, 1, 3);
@@ -261,4 +266,28 @@ public class PlayArea extends GridPane {
 		}
 		return result;
 	}
+
+	/**
+	 * @author dominik
+	 */
+	public void update() {
+		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
+		this.headings[0].setText(translator.getString("name"));
+		this.headings[1].setText(translator.getString("hand"));
+		this.headings[2].setText(translator.getString("tichu"));
+		this.headings[3].setText(translator.getString("played"));
+		this.headings[4].setText(translator.getString("team"));
+		this.headings[5].setText(translator.getString("matchPoints"));
+		this.headings[6].setText(translator.getString("total"));
+		this.l1.setText(translator.getString("yourTeam"));
+		this.l2.setText(translator.getString("opponents"));
+
+		if (clientModel.getTeamMate() == null) {
+			this.playerLbl[1].setText(translator.getString("initPlayerColumn"));
+			this.playerLbl[2].setText(translator.getString("initPlayerColumn"));
+			this.playerLbl[3].setText(translator.getString("initPlayerColumn"));
+		}
+
+	}
+
 }

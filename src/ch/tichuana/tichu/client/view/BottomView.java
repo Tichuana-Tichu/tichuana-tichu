@@ -11,6 +11,7 @@ public class BottomView extends BorderPane {
 	private CardArea cardArea;
 	private TextField console;
 
+
 	/**
 	 * extends BorderPane including a console in the top area
 	 * a CardArea in the left area and a ControlArea in the right area
@@ -27,6 +28,14 @@ public class BottomView extends BorderPane {
 
 		this.setRight(this.controlArea);
 		this.setCenter(cardsNConsole);
+	}
+
+	/**
+	 * @author dominik
+	 */
+	public void update(){
+	controlArea.update();
+	//TODO Console is not translated ATM.
 	}
 
 	//Getter & Setter

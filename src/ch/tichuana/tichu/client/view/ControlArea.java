@@ -34,6 +34,17 @@ public class ControlArea extends VBox {
 		this.getChildren().addAll(this.grandTichuBtn, this.smallTichuBtn, this.schupfenBtn, this.playBtn);
 	}
 
+	/**
+	 * @author dominik
+	 */
+	public void update(){
+		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
+		this.playBtn.setText(translator.getString("controlarea.play"));
+		this.schupfenBtn.setText(translator.getString("controlarea.schupfen"));
+		this.smallTichuBtn.setText(translator.getString("controlarea.smalltichu"));
+		this.grandTichuBtn.setText(translator.getString("controlarea.grandtichu"));
+	}
+
 	//Getter
 	public ToggleButton getPlayBtn() {
 		return playBtn;

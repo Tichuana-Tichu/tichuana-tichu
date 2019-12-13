@@ -325,30 +325,34 @@ public enum Combination {
 					return true;
 				}
 
-				// special case if single phoenix was played
-				if (comb == HighCard &&
-						containsPhoenix(oldMove)){
-					if (beforePhoenix != null && beforePhoenix.compareTo(newMove.get(0)) < 0){
-						return true;
+				if (newClone.size() == 1) {
+					// special case if single phoenix was played
+					if (comb == HighCard &&
+							containsPhoenix(oldMove)) {
+						if (beforePhoenix != null && beforePhoenix.compareTo(newMove.get(0)) < 0) {
+							return true;
+						} else {
+							// this is a bit ugly, only because clients do not hav the beforePhoenix initialized
+							return newClone.get(0).getRank() == Rank.dragon;
+						}
+					}
+
+					// newMove has to be HighCard as well and have a higher rank, else -> false
+					if (comb == HighCard &&
+							oldClone.get(0).compareTo(newClone.get(0)) < 0) {
+
+						// if new move is single phoenix, we need to memorize previous card
+						if (containsPhoenix(newMove)) {
+							beforePhoenix = oldMove.get(0);
+						}
+
+						// a dog can not be played on a mahjong and vise versa, everything else can
+						// only need to check mahjong because dog has a lower ordinal anyway
+						return !containsMahjong(newMove);
+
 					} else {
-						// this is a bit ugly, only because clients do not hav the beforePhoenix initialized
-						return newClone.get(0).getRank() == Rank.dragon;
+						return false;
 					}
-				}
-
-				// newMove has to be HighCard as well and have a higher rank, else -> false
-				if(comb == HighCard &&
-						oldClone.get(0).compareTo(newClone.get(0)) < 0){
-
-					// if new move is single phoenix, we need to memorize previous card
-					if (containsPhoenix(newMove)){
-						beforePhoenix = oldMove.get(0);
-					}
-
-					// a dog can not be played on a mahjong and vise versa, everything else can
-					// only need to check mahjong because dog has a lower ordinal anyway
-					return !containsMahjong(newMove);
-
 				} else {
 					return false;
 				}

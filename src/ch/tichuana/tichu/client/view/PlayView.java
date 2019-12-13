@@ -22,11 +22,19 @@ public class PlayView extends BorderPane {
 
 		this.bottomView = new BottomView(clientModel);
 		this.playArea = new PlayArea(clientModel);
-		this.settings = new Settings();
-
+		this.settings = Settings.getTopSettings();
 		this.setBottom(this.bottomView);
 		this.setCenter(this.playArea);
 		this.setTop(this.settings);
+	}
+
+	/**
+	 * @author dominik
+	 */
+	public void update(){
+		this.bottomView.update();
+		this.settings.update();
+		this.playArea.update();
 	}
 
 	//Getter
