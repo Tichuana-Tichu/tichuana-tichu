@@ -14,6 +14,7 @@ import javafx.beans.Observable;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
 
 class PlayController {
@@ -124,6 +125,9 @@ class PlayController {
             }
         });
 
+        /* setting CardArea on action */
+        gameView.getPlayView().getBottomView().getCardArea().setOnMouseClicked(this::autoValidateMove);
+
         /* disconnects client if stage is closed */
         this.gameView.getStage().setOnCloseRequest(event -> this.clientModel.disconnect());
     }
@@ -167,34 +171,14 @@ class PlayController {
         }
 
         if (this.clientModel.isMyTurn()) {
-            Platform.runLater(() -> ca.getPlayBtn().setDisable(false));
-            autoValidateMove();
+            Platform.runLater(() -> {
+                ca.getPlayBtn().setDisable(false);
+                ca.getPlayBtn().setText(this.translator.getString("controlarea.pass"));
+            });
         }
 
         else
             Platform.runLater(() -> ca.getPlayBtn().setDisable(true));
-    }
-
-    //TODO - Testing
-    private void autoValidateMove() {
-        //while (true) {
-            ArrayList<CardLabel> selection = getSelectedCardLabels();
-
-            if (!getSelectedCards().isEmpty()) {
-                if (Combination.isValidMove(oldMove, getSelectedCards())) {
-
-                    for (CardLabel cl : selection) {
-                        cl.getStyleClass().add("validCombination");
-                        cl.getStyleClass().remove("clickedLabel");
-                    }
-                } else {
-                    for (CardLabel cl : selection) {
-                        cl.getStyleClass().remove("validCombination");
-                        cl.getStyleClass().add("clickedLabel");
-                    }
-                }
-            }
-        //}
     }
 
     /**
@@ -336,21 +320,50 @@ class PlayController {
 
             cl.setOnMouseClicked(event -> {
                 CardLabel clickedLabel = (CardLabel) event.getSource();
-                if (clickedLabel.getStyleClass().contains("clickedLabel"))
-                    //clickedLabel.getStyleClass().removeIf(s -> s.equals("clickedLabel")))
-                    clickedLabel.getStyleClass().remove("clickedLabel");
-
+                clickedLabel.setSelected(!clickedLabel.isSelected());
+                if (!clickedLabel.isSelected()) {
+                    clickedLabel.getStyleClass().clear();
+                }
                 else
                     clickedLabel.getStyleClass().add("clickedLabel");
-                clickedLabel.setSelected(!clickedLabel.isSelected());
+
             });
         }
     }
 
     /**
+     * @author Philipp
+     * @param mouseEvent handling mouse click in CardAre
+     */
+    private void autoValidateMove(MouseEvent mouseEvent) {
+        ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
+        ArrayList<CardLabel> selection = getSelectedCardLabels();
+
+        if (!selection.isEmpty()) {
+            Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.play")));
+
+            if (Combination.isValidMove(oldMove, getSelectedCards())) {
+                for (CardLabel cl : selection) {
+                    if (!cl.getStyleClass().contains("validCombination"))
+                        cl.getStyleClass().add("validCombination");
+                    cl.getStyleClass().remove("invalidCombination");
+                }
+
+            } else {
+                for (CardLabel cl : selection) {
+                    if (!cl.getStyleClass().contains("invalidCombination"))
+                        cl.getStyleClass().add("invalidCombination");
+                    cl.getStyleClass().remove("validCombination");
+                }
+            }
+        } else
+            Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.pass")));
+    }
+
+    /**
      *
      * @author Philipp
-     * @return returns the currently selected CardLabels
+     * @return the currently selected cards
      */
     private ArrayList<Card> getSelectedCards() {
         HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea();
@@ -366,7 +379,10 @@ class PlayController {
         return selectedCards;
     }
 
-    //TODO - Testing
+    /**
+     * @author Philipp
+     * @return the currently selected cardLabels
+     */
     private ArrayList<CardLabel> getSelectedCardLabels() {
         HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea();
         ArrayList<CardLabel> selectedCards = new ArrayList<>();

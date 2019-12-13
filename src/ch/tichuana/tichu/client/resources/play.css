@@ -81,6 +81,10 @@ PlayArea CardArea {
 }
 
 .clickedLabel {
+    -fx-border-color: #a2a2a2;
+}
+
+.invalidCombination {
     -fx-border-color: #B20000;
 }
 
