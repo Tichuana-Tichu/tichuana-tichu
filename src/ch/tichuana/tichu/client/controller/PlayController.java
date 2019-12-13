@@ -178,10 +178,11 @@ class PlayController {
         }
 
         if (this.clientModel.isMyTurn()) {
-            Platform.runLater(() -> {
-                ca.getPlayBtn().setDisable(false);
-                ca.getPlayBtn().setText(this.translator.getString("controlarea.pass"));
-            });
+            if (this.passCounter == msg.getRemainingPlayers()-1)
+                Platform.runLater(() -> ca.getPlayBtn().setText(translator.getString("controlarea.get")));
+            else
+                Platform.runLater(() -> ca.getPlayBtn().setText(translator.getString("controlarea.pass")));
+            Platform.runLater(() -> ca.getPlayBtn().setDisable(false));
         }
 
         else
