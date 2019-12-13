@@ -16,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
 
 class PlayController {
@@ -26,7 +27,6 @@ class PlayController {
     private ArrayList<Card> receivedCards = new ArrayList<>();
     private static ArrayList<Card> oldMove = new ArrayList<>();
     private Translator translator;
-    private boolean firstRound = true;
     private int pushCounter = 1;
     private int passCounter = 0;
 
@@ -127,6 +127,10 @@ class PlayController {
             }
         });
 
+        /* setting CardArea on action */
+        gameView.getPlayView().getBottomView().getCardArea().setOnMouseClicked(this::autoValidateMove);
+
+        /* setting MenuBar "settings" on action */
         for(MenuItem m : this.gameView.getPlayView().getSettings().getLangMenu().getItems()){
             m.setOnAction(this::changeTranslator);
         }
@@ -195,8 +199,12 @@ class PlayController {
             this.passCounter++;
         }
 
-        if (this.clientModel.isMyTurn())
-            Platform.runLater(() -> ca.getPlayBtn().setDisable(false));
+        if (this.clientModel.isMyTurn()) {
+            Platform.runLater(() -> {
+                ca.getPlayBtn().setDisable(false);
+                ca.getPlayBtn().setText(this.translator.getString("controlarea.pass"));
+            });
+        }
 
         else
             Platform.runLater(() -> ca.getPlayBtn().setDisable(true));
@@ -341,20 +349,50 @@ class PlayController {
 
             cl.setOnMouseClicked(event -> {
                 CardLabel clickedLabel = (CardLabel) event.getSource();
-                if (clickedLabel.getStyleClass().removeIf(s -> s.equals("clickedLabel")))
-                    clickedLabel.getStyleClass().remove("clickedLabel");
-
+                clickedLabel.setSelected(!clickedLabel.isSelected());
+                if (!clickedLabel.isSelected()) {
+                    clickedLabel.getStyleClass().clear();
+                }
                 else
                     clickedLabel.getStyleClass().add("clickedLabel");
-                clickedLabel.setSelected(!clickedLabel.isSelected());
+
             });
         }
     }
 
     /**
+     * @author Philipp
+     * @param mouseEvent handling mouse click in CardAre
+     */
+    private void autoValidateMove(MouseEvent mouseEvent) {
+        ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
+        ArrayList<CardLabel> selection = getSelectedCardLabels();
+
+        if (!selection.isEmpty()) {
+            Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.play")));
+
+            if (Combination.isValidMove(oldMove, getSelectedCards())) {
+                for (CardLabel cl : selection) {
+                    if (!cl.getStyleClass().contains("validCombination"))
+                        cl.getStyleClass().add("validCombination");
+                    cl.getStyleClass().remove("invalidCombination");
+                }
+
+            } else {
+                for (CardLabel cl : selection) {
+                    if (!cl.getStyleClass().contains("invalidCombination"))
+                        cl.getStyleClass().add("invalidCombination");
+                    cl.getStyleClass().remove("validCombination");
+                }
+            }
+        } else
+            Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.pass")));
+    }
+
+    /**
      *
      * @author Philipp
-     * @return returns the currently selected CardLabels
+     * @return the currently selected cards
      */
     private ArrayList<Card> getSelectedCards() {
         HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea();
@@ -365,6 +403,24 @@ class PlayController {
 
             if (label.isSelected()) {
                 selectedCards.add(label.getCard());
+            }
+        }
+        return selectedCards;
+    }
+
+    /**
+     * @author Philipp
+     * @return the currently selected cardLabels
+     */
+    private ArrayList<CardLabel> getSelectedCardLabels() {
+        HBox cardLabels = this.gameView.getPlayView().getBottomView().getCardArea();
+        ArrayList<CardLabel> selectedCards = new ArrayList<>();
+
+        for (Node cl : cardLabels.getChildren()) {
+            CardLabel label = (CardLabel) cl;
+
+            if (label.isSelected()) {
+                selectedCards.add(label);
             }
         }
         return selectedCards;

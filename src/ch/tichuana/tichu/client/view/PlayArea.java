@@ -221,8 +221,8 @@ public class PlayArea extends GridPane {
 	 * @param opponentScore the current score of the oppnents
 	 */
 	public void updateTotalPoints(int ownScore, int opponentScore) {
-		Label own = (Label) getNodeByRowColumnIndex(2, 6);
-		Label opponent = (Label) getNodeByRowColumnIndex(6, 6);
+		Label own = (Label) getNodeByRowColumnIndex(2, 5);
+		Label opponent = (Label) getNodeByRowColumnIndex(6, 5);
 		own.setText(String.valueOf(ownScore));
 		opponent.setText(String.valueOf(opponentScore));
 	}
