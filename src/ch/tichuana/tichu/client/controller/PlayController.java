@@ -130,35 +130,13 @@ class PlayController {
         /* setting CardArea on action */
         gameView.getPlayView().getBottomView().getCardArea().setOnMouseClicked(this::autoValidateMove);
 
-        /* setting MenuBar "settings" on action */
-        for(MenuItem m : this.gameView.getPlayView().getSettings().getLangMenu().getItems()){
+        /* setting MenuItems in LangMenu on action */
+        for(MenuItem m : this.gameView.getPlayView().getSettings().getLangMenu().getItems()) {
             m.setOnAction(this::changeTranslator);
         }
 
         /* disconnects client if stage is closed */
         this.gameView.getStage().setOnCloseRequest(event -> this.clientModel.disconnect());
-    }
-
-
-    /**
-     * initialize new Translator for language change.
-     * @author dominik
-     */
-    public void changeTranslator(Event event){
-        MenuItem m = (MenuItem) event.getSource();
-
-        if (m.getText().equals(translator.getString("langMenu.german"))){
-
-            Translator de = new Translator("de");
-            ServiceLocator.getServiceLocator().setTranslator(de);
-
-        } else if (m.getText().equals(translator.getString("langMenu.english"))){
-
-            Translator en = new Translator("en");
-            ServiceLocator.getServiceLocator().setTranslator(en);
-        }
-        translator = ServiceLocator.getServiceLocator().getTranslator();
-        gameView.getPlayView().update();
     }
 
     /**
@@ -432,5 +410,26 @@ class PlayController {
      */
     private String getPlayerName() {
         return this.clientModel.getMsgCodeProperty().getMessage().getPlayerName();
+    }
+
+    /**
+     * initialize new Translator for language change.
+     * @author dominik
+     */
+    public void changeTranslator(Event event) {
+        MenuItem m = (MenuItem) event.getSource();
+
+        if (m.getText().equals(translator.getString("langMenu.german"))) {
+
+            Translator de = new Translator("de");
+            ServiceLocator.getServiceLocator().setTranslator(de);
+
+        } else if (m.getText().equals(translator.getString("langMenu.english"))) {
+
+            Translator en = new Translator("en");
+            ServiceLocator.getServiceLocator().setTranslator(en);
+        }
+        translator = ServiceLocator.getServiceLocator().getTranslator();
+        gameView.getPlayView().update();
     }
 }
