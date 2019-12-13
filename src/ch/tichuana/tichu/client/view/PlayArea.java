@@ -23,7 +23,6 @@ public class PlayArea extends GridPane {
 	private Label l1;
 	private Label l2;
 
-
 	/**
 	 * creates a table-like, resizeable grid for information about the game-flow
 	 * @author Philipp
@@ -146,15 +145,19 @@ public class PlayArea extends GridPane {
 		}
 	}
 
-	public void initHandColumn(int cards) {
+	/**
+	 * @author Philipp
+	 * @param handSize size of the current hand durring initial game processes
+	 */
+	public void initHandColumn(int handSize) {
 		Label h1 = (Label) getNodeByRowColumnIndex(2, 1);
 		Label h2 = (Label) getNodeByRowColumnIndex(4, 1);
 		Label h3 = (Label) getNodeByRowColumnIndex(6, 1);
 		Label h4 = (Label) getNodeByRowColumnIndex(8, 1);
-		h1.setText(String.valueOf(cards));
-		h2.setText(String.valueOf(cards));
-		h3.setText(String.valueOf(cards));
-		h4.setText(String.valueOf(cards));
+		h1.setText(String.valueOf(handSize));
+		h2.setText(String.valueOf(handSize));
+		h3.setText(String.valueOf(handSize));
+		h4.setText(String.valueOf(handSize));
 	}
 
 	/**
@@ -284,7 +287,5 @@ public class PlayArea extends GridPane {
 			this.playerLbl[2].setText(translator.getString("initPlayerColumn"));
 			this.playerLbl[3].setText(translator.getString("initPlayerColumn"));
 		}
-
 	}
-
 }

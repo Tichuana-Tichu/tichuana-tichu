@@ -26,6 +26,7 @@ class PlayController {
     private Stage stage;
     private ArrayList<Card> receivedCards = new ArrayList<>();
     private static final int MAX_HANDSIZE = 14;
+    private static final int INIT_HANDSIZE = 8;
     private static ArrayList<Card> oldMove = new ArrayList<>();
     private Translator translator;
     private int passCounter = 0;
@@ -285,7 +286,7 @@ class PlayController {
             ca.getPlayBtn().setText(translator.getString("controlarea.pass"));
             ca.getGrandTichuBtn().setDisable(false);
             ca.getPlayBtn().setDisable(false);
-            pa.initHandColumn(8);
+            pa.initHandColumn(INIT_HANDSIZE);
             pa.clearTichuColumn();
             pa.clearPlayedColumn();
         });
