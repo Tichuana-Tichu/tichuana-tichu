@@ -1,6 +1,5 @@
 package ch.tichuana.tichu.client.view;
 
-import ch.tichuana.tichu.client.services.Configuration;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
 import javafx.scene.control.ToggleButton;
@@ -8,8 +7,6 @@ import javafx.scene.layout.*;
 
 public class ControlArea extends VBox {
 
-	private Translator translator;
-	private Configuration configuration;
 	private ToggleButton playBtn;
 	private ToggleButton schupfenBtn;
 	private ToggleButton smallTichuBtn;
@@ -20,8 +17,7 @@ public class ControlArea extends VBox {
 	 */
 	ControlArea() {
 
-		this.translator = ServiceLocator.getServiceLocator().getTranslator();
-		this.configuration = ServiceLocator.getServiceLocator().getConfiguration();
+		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
 		//temporary instantiation
 		this.playBtn = new ToggleButton(translator.getString("controlarea.play"));
 		this.playBtn.setDisable(true);

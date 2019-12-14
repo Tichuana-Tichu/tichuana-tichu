@@ -11,8 +11,6 @@ import javafx.scene.control.MenuItem;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
-import javax.swing.event.ChangeListener;
-
 public class LobbyController {
 
 	private ClientModel clientModel;
@@ -64,6 +62,31 @@ public class LobbyController {
 	}
 
 	/**
+	 * initialize new Translator for language change.
+	 * @author dominik
+	 */
+	public void changeTranslator(Event event){
+		MenuItem m = (MenuItem) event.getSource();
+
+		if (m.getText().equals(t.getString("langMenu.german"))){
+
+			Translator de = new Translator("de");
+			ServiceLocator.getServiceLocator().setTranslator(de);
+
+		} else if (m.getText().equals(t.getString("langMenu.english"))){
+
+			Translator en = new Translator("en");
+			ServiceLocator.getServiceLocator().setTranslator(en);
+		} else if (m.getText().equals(t.getString("langMenu.chinese"))){
+
+			Translator ch = new Translator("ch");
+			ServiceLocator.getServiceLocator().setTranslator(ch);
+		}
+		t = ServiceLocator.getServiceLocator().getTranslator();
+		gameView.getLobbyView().update();
+	}
+
+	/**
 	 * sets Login-Button & PasswordField on Action, reads user input and connects to server,
 	 * with credential from config.properties
 	 * @author Philipp
@@ -84,26 +107,5 @@ public class LobbyController {
 			String password = lv.getPasswordField().getText();
 			this.clientModel.connect(ipAddress, port, playerName, password);
 		}
-	}
-
-	/**
-	 * initialize new Translator for language change.
-	 * @author dominik
-	 */
-	public void changeTranslator(Event event){
-		MenuItem m = (MenuItem) event.getSource();
-
-		if (m.getText().equals(t.getString("langMenu.german"))){
-
-			Translator de = new Translator("de");
-			ServiceLocator.getServiceLocator().setTranslator(de);
-
-		} else if (m.getText().equals(t.getString("langMenu.english"))){
-
-			Translator en = new Translator("en");
-			ServiceLocator.getServiceLocator().setTranslator(en);
-		}
-		t = ServiceLocator.getServiceLocator().getTranslator();
-		gameView.getLobbyView().update();
 	}
 }

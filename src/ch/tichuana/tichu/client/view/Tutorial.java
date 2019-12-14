@@ -8,7 +8,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 
 public class Tutorial extends Stage {
 
-    private TabPane tabPane;
     private static Configuration configuration;
     private static Translator translator;
     private static Tutorial tutorial;
@@ -59,28 +57,31 @@ public class Tutorial extends Stage {
             });
         }
 
-        tabPane = new TabPane();
+        TabPane tabPane = new TabPane();
         tabPane.getStyleClass().add("red");
         tabPane.getTabs().addAll(rules,moves, cards,credits);
 
 
         // selection model -> for next buttons
         SelectionModel<Tab> select = tabPane.getSelectionModel();
-        nextBtnRules.setOnAction(e -> {select.select(moves);});
-        nextBtnMoves.setOnAction(e -> {select.select(cards);});
-        nextBtnCards.setOnAction(e -> {select.select(credits);});
+        nextBtnRules.setOnAction(e -> select.select(moves));
+        nextBtnMoves.setOnAction(e -> select.select(cards));
+        nextBtnCards.setOnAction(e -> select.select(credits));
 
         // scene
         Scene scene = new Scene(tabPane);
         this.setScene(scene);
+        this.setHeight(600);
+        this.setWidth(1000);
 
+        this.getIcons().add(new Image(configuration.getProperty("tichu-icon")));
         scene.getStylesheets().add(
                 getClass().getResource(configuration.getProperty("tutorialStyle")).toExternalForm());
     }
 
     /**
      * factory method to return singleton Tutorial. We only ever need one instance
-     * @return
+     * @return the only existing instance of this class
      */
     public static Tutorial getTutorial(){
         if (tutorial == null ){
