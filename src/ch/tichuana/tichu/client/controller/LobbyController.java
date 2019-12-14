@@ -11,8 +11,6 @@ import javafx.scene.control.MenuItem;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
-import javax.swing.event.ChangeListener;
-
 public class LobbyController {
 
 	private ClientModel clientModel;
@@ -86,7 +84,6 @@ public class LobbyController {
 		}
 		t = ServiceLocator.getServiceLocator().getTranslator();
 		gameView.getLobbyView().update();
-
 	}
 
 	/**
