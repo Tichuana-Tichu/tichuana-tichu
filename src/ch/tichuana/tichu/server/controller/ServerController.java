@@ -16,7 +16,6 @@ public class ServerController {
 
 	private Logger logger = Logger.getLogger("");
 	private ServerModel serverModel;
-	private volatile int playerCount;
 
 	/**
 	 * controls game flow because listening to SimpleBooleanProperties
@@ -25,7 +24,6 @@ public class ServerController {
 	 */
 	public ServerController(ServerModel serverModel) {
 		this.serverModel = serverModel;
-		this.playerCount = 0;
 		//instantly starting server with port number from config.properties
 		int port = Integer.parseInt(ServiceLocator.getServiceLocator().getConfiguration().getProperty("port"));
 		this.serverModel.startServer(port);
@@ -106,7 +104,7 @@ public class ServerController {
 	 * @author Chrisitan
 	 */
 	private void demandSchupfen(){
-		try{Thread.sleep(300);}catch (Exception e){e.printStackTrace();};
+		try{Thread.sleep(300);}catch (Exception e){e.printStackTrace();}
 		Player p = serverModel.getGame().getNextPlayer();
 		DemandSchupfenMsg msg = new DemandSchupfenMsg(p.getPlayerName());
 		serverModel.broadcast(msg);
@@ -141,7 +139,7 @@ public class ServerController {
 	 * @author Christian
 	 */
 	private void handleUpdate(SimpleMessageProperty messageProperty) {
-		if (messageProperty.getValue() ==true){
+		if (messageProperty.getValue()){
 			this.serverModel.getGame().getCurrentMatch().handleUpdate(messageProperty);
 			// set value false. so next update can set it true again.
 			messageProperty.setValue(false);
