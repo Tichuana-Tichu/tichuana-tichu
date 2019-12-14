@@ -11,14 +11,20 @@ public class ConnectedMsg extends Message {
 	}
 
 	/**
+	 * Tells the player if he successfully connected to the server
 	 * @author Christian
-	 * @param status
+	 * @param status boolean stating if client was connected to server
 	 */
 	public ConnectedMsg(boolean status) {
 		this.status = status;
 		super.setMsgType(MessageType.ConnectedMsg);
 	}
 
+	/**
+	 * returns a json string with content of message
+	 * @author Christian
+	 * @return json representation of Message
+	 */
 	@Override
 	public String toString() {
 		JSONObject json = new JSONObject();

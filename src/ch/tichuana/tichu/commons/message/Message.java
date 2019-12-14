@@ -24,7 +24,7 @@ public abstract class Message {
 	/**
 	 * Sends the message (msg) of this instace through the socket given as a parameter
 	 * @author Christian
-	 * @param socket
+	 * @param socket socket to send message through
 	 */
 	public void send(Socket socket) {
 		OutputStreamWriter out;
@@ -40,7 +40,7 @@ public abstract class Message {
 	/**
 	 * Receives a JSON-String from a specified
 	 * @author Christian
-	 * @param socket
+	 * @param socket socket to receive message through
 	 */
 	public static Message receive(Socket socket) {
 		BufferedReader in;
@@ -60,10 +60,11 @@ public abstract class Message {
 
 		if (response != null) {
 			try {
-				message = (JSONObject) parser.parse(response.toString());
+				message = (JSONObject) parser.parse(response);
 			} catch (Exception e){
 				e.printStackTrace();
 			}
+			assert message != null;
 			return parseMessage(message);
 		}
 		return null;
@@ -72,13 +73,12 @@ public abstract class Message {
 	/**
 	 * Parses a JSON-Message and returns a Message-object of the corresponding Message class
 	 * @author Christian
-	 * @param json
+	 * @param json json object as received
 	 * @return Message
 	 */
 	public static Message parseMessage(JSONObject json){
 		String playerName, password, status;
 		TichuType tichuType;
-		ArrayList<String> players = new ArrayList();
 		JSONArray array;
 		ArrayList cards;
 
@@ -121,11 +121,10 @@ public abstract class Message {
 				break;
 
 			case DealMsg:
-				cards= new ArrayList();
+				cards = new ArrayList();
 				array = (JSONArray) json.get("cards");
-				Iterator iterator2 = array.iterator();
-				while (iterator2.hasNext()){
-					cards.add(Card.cardFactory((JSONObject) iterator2.next()));
+				for (Object o : array) {
+					cards.add(Card.cardFactory((JSONObject) o));
 				}
 				newMessage = new DealMsg(cards);
 				break;
@@ -160,9 +159,8 @@ public abstract class Message {
 			case PlayMsg:
 				cards= new ArrayList();
 				array = (JSONArray) json.get("cards");
-				Iterator iterator3 = array.iterator();
-				while (iterator3.hasNext()){
-					cards.add(Card.cardFactory((JSONObject) iterator3.next()));
+				for (Object o : array) {
+					cards.add(Card.cardFactory((JSONObject) o));
 				}
 				newMessage = new PlayMsg(cards);
 				break;
@@ -170,9 +168,8 @@ public abstract class Message {
 			case UpdateMsg:
 				cards= new ArrayList();
 				array = (JSONArray) json.get("lastMove");
-				Iterator iterator4 = array.iterator();
-				while (iterator4.hasNext()){
-					cards.add(Card.cardFactory((JSONObject) iterator4.next()));
+				for (Object o : array) {
+					cards.add(Card.cardFactory((JSONObject) o));
 				}
 				int opponentScore = convertToInt(json.get("opponentScore"));
 				int ownScore = convertToInt(json.get("ownScore"));
@@ -207,10 +204,10 @@ public abstract class Message {
 	/**
 	 * fixes weird issue with SimpleJSON library, on different Java versions it seems to store numbers into the hashmap
 	 * as integers or as long. Same code returned int on java 9 and long on java 10.
-	 * @param o
+	 * @param o Object to convert to int
 	 * @return int
 	 */
-	public static int convertToInt(Object o){
+	private static int convertToInt(Object o){
 		if (o instanceof Integer) {
 			return (int) o;
 		} else if (o instanceof Long){

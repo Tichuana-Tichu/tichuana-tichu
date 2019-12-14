@@ -10,9 +10,10 @@ public class GameStartedMsg extends Message {
 	private String[] opponents;
 
 	/**
+	 * Tells the players that the game has started, who their teammate is and who they're up against
 	 * @author Christian
-	 * @param teamMate
-	 * @param opponents
+	 * @param teamMate player name of player's teammate
+	 * @param opponents names of player's opponents
 	 */
 	public GameStartedMsg(String teamMate, String[] opponents) {
 		this.teamMate = teamMate;
@@ -20,6 +21,11 @@ public class GameStartedMsg extends Message {
 		this.setMsgType(MessageType.GameStartedMsg);
 	}
 
+	/**
+	 * returns a json string with content of message
+	 * @author Christian
+	 * @return json representation of Message
+	 */
 	@Override
 	public String toString() {
 		JSONObject json = new JSONObject();
