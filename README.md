@@ -1,6 +1,6 @@
 # tichuana-tichu
 
-This project is a java implementation of the card game tichu. It consists of server and a client. It allows four clients
+This project is a java implementation of the card game tichu. It consists of a server and a client. It allows four clients
 to connect to the server and play the game against each other.
 
 ## Usage
