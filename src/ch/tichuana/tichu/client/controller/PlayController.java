@@ -426,6 +426,11 @@ class PlayController {
 
             Translator en = new Translator("en");
             ServiceLocator.getServiceLocator().setTranslator(en);
+
+        } else if (m.getText().equals(translator.getString("langMenu.chinese"))){
+
+            Translator ch = new Translator("ch");
+            ServiceLocator.getServiceLocator().setTranslator(ch);
         }
         translator = ServiceLocator.getServiceLocator().getTranslator();
         gameView.getPlayView().update();
