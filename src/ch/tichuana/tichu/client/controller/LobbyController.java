@@ -11,6 +11,8 @@ import javafx.scene.control.MenuItem;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
+import javax.swing.event.ChangeListener;
+
 public class LobbyController {
 
 	private ClientModel clientModel;
@@ -47,6 +49,7 @@ public class LobbyController {
 		this.clientModel.getMsgCodeProperty().newestMsgProperty().addListener((observable, oldValue, newValue) ->
 				Platform.runLater(() -> this.gameView.getLobbyView().setLoginStatus(newValue)));
 
+
 		this.clientModel.getMsgCodeProperty().addListener((obs, oldVal, newVal) -> {
 			if (newVal.intValue() == 1) {
 				new PlayController(this.clientModel, this.gameView, this.stage);
@@ -54,12 +57,33 @@ public class LobbyController {
 			}
 		});
 
-		// moved Dominik's code here
-		// add listener to every language menu item
+		// add listener for every language menu item
 		for(MenuItem m : this.gameView.getLobbyView().getSettings().getLangMenu().getItems()){
 			m.setOnAction(this::changeTranslator);
 		}
+	}
 
+	/**
+	 * sets Login-Button & PasswordField on Action, reads user input and connects to server,
+	 * with credential from config.properties
+	 * @author Philipp
+	 * @param actionEvent button press or enter in passwordField
+	 */
+	private void login(ActionEvent actionEvent) {
+		LobbyView lv = this.gameView.getLobbyView();
+
+		int port = Integer.parseInt(ServiceLocator.getServiceLocator().getConfiguration().getProperty("port"));
+		String ipAddress =ServiceLocator.getServiceLocator().getConfiguration().getProperty("ipAddress");
+
+		if (lv.getUserField().getText().isEmpty()) {
+			this.clientModel.getMsgCodeProperty().setNewestMsg(t.getString("emptyUserField"));
+		} else if (lv.getPasswordField().getText().isEmpty()) {
+			this.clientModel.getMsgCodeProperty().setNewestMsg(t.getString("emptyPasswordField"));
+		} else {
+			String playerName = lv.getUserField().getText();
+			String password = lv.getPasswordField().getText();
+			this.clientModel.connect(ipAddress, port, playerName, password);
+		}
 	}
 
 	/**
@@ -81,28 +105,5 @@ public class LobbyController {
 		}
 		t = ServiceLocator.getServiceLocator().getTranslator();
 		gameView.getLobbyView().update();
-
-	}
-
-	/**
-	 * sets Login-Button & PasswordField on Action, reads user input and connects to server,
-	 * with credential from config.properties
-	 * @param actionEvent button press or enter in passwordField
-	 */
-	private void login(ActionEvent actionEvent) {
-		LobbyView lv = this.gameView.getLobbyView();
-
-		int port = Integer.parseInt(ServiceLocator.getServiceLocator().getConfiguration().getProperty("port"));
-		String ipAddress =ServiceLocator.getServiceLocator().getConfiguration().getProperty("ipAddress");
-
-		if (lv.getUserField().getText().isEmpty()) {
-			this.clientModel.getMsgCodeProperty().setNewestMsg(t.getString("emptyUserField"));
-		} else if (lv.getPasswordField().getText().isEmpty()) {
-			this.clientModel.getMsgCodeProperty().setNewestMsg(t.getString("emptyPasswordField"));
-		} else {
-			String playerName = lv.getUserField().getText();
-			String password = lv.getPasswordField().getText();
-			this.clientModel.connect(ipAddress, port, playerName, password);
-		}
 	}
 }

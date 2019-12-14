@@ -49,7 +49,7 @@ public class ClientModel {
 
                     if (msg instanceof ConnectedMsg) {
                         if (msg.getStatus()) {
-                            this.msg.set(1); //triggers handleConnectedMsg in playController
+                            this.msg.set(1); //triggers handleConnectedMsg in lobbyController
                             this.msg.setNewestMsg(translator.getString("connection"));
                         } else
                             this.msg.setNewestMsg(translator.getString("connectionFailed"));
