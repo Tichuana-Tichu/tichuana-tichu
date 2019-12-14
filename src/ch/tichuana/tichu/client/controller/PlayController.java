@@ -164,7 +164,7 @@ class PlayController {
     /**
      * the first if/else block decides whether the last player played or passed
      * depending on that the view will be updated and the pass counter will be updated
-     * the second if/else block decides whether its this player's turn or not and acts accordingly
+     * the second if/else block decides whether its this player's turn or not and updates the GUI accordingly
      * @author Philipp
      */
     private void handleUpdateMsg() {
