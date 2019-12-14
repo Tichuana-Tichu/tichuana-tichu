@@ -1,6 +1,5 @@
 package ch.tichuana.tichu.commons.test;
 
-import ch.tichuana.tichu.commons.message.DealMsg;
 import ch.tichuana.tichu.commons.message.Message;
 import ch.tichuana.tichu.commons.message.MessageType;
 import ch.tichuana.tichu.commons.message.UpdateMsg;
@@ -30,7 +29,7 @@ class MessageTest {
         assertEquals("player1", msg.getPlayerName());
         assertEquals("pw123", msg.getPassword());
         assertEquals(json.toJSONString(), msg.toString());
-        //System.out.println("joinmsg: "+msg);
+        //System.out.println("joinMsg: "+msg);
     }
 
     @Test
@@ -44,7 +43,7 @@ class MessageTest {
         assertEquals("player1", msg.getPlayerName());
         assertEquals("pw123", msg.getPassword());
         assertEquals(json.toJSONString(), msg.toString());
-        //System.out.println("createplayermsg: "+msg);
+        //System.out.println("createPlayerMsg: "+msg);
     }
 
     @Test
@@ -56,7 +55,7 @@ class MessageTest {
         assertEquals(MessageType.ConnectedMsg, msg.getMsgType());
         assertEquals("true", Boolean.toString(msg.getStatus()));
         assertEquals(json.toJSONString(), msg.toString());
-        //System.out.println("connectedmsg: "+msg);
+        //System.out.println("connectedMsg: "+msg);
     }
 
     @Test
@@ -68,7 +67,7 @@ class MessageTest {
         assertEquals(MessageType.DemandSchupfenMsg, msg.getMsgType());
         assertEquals("player1", msg.getPlayerName());
         assertEquals(json.toJSONString(), msg.toString());
-        //System.out.println("demandschupfenmsg: "+msg);
+        //System.out.println("demandSchupfenMsg: "+msg);
     }
 
     @Test
@@ -82,7 +81,7 @@ class MessageTest {
         assertEquals("player1", msg.getPlayerName());
         assertEquals(TichuType.GrandTichu, msg.getTichuType());
         assertEquals(json.toJSONString(), msg.toString());
-        //System.out.println("tichumsg: "+msg);
+        //System.out.println("tichuMsg: "+msg);
     }
 
     @Test
@@ -94,7 +93,7 @@ class MessageTest {
         assertEquals(MessageType.ReceivedMsg, msg.getMsgType());
         assertEquals("true", Boolean.toString(msg.getStatus()));
         assertEquals(json.toJSONString(), msg.toString());
-        //System.out.println("receivedmsg: "+msg);
+        //System.out.println("receivedMsg: "+msg);
     }
 
     @Test
@@ -106,7 +105,7 @@ class MessageTest {
         assertEquals(MessageType.DemandTichuMsg, msg.getMsgType());
         assertEquals(TichuType.GrandTichu, msg.getTichuType());
         assertEquals(json.toJSONString(), msg.toString());
-        //System.out.println("demandtichumsg: "+msg);
+        //System.out.println("demandTichuMsg: "+msg);
     }
 
     @Test
@@ -120,7 +119,7 @@ class MessageTest {
         assertEquals(TichuType.GrandTichu, msg.getTichuType());
         assertEquals("Christian", msg.getPlayerName());
         assertEquals(json.toJSONString(), msg.toString());
-        //System.out.println("announcedtichumsg: "+msg);
+        //System.out.println("announcedTichuMsg: "+msg);
     }
 
     @Test
@@ -256,14 +255,10 @@ class MessageTest {
         json.put("opponentScore",100);
         json.put("done",true);
 
-
         Message msg = Message.parseMessage(json);
 
-        assertEquals(true, msg.isDone());
+        assertTrue(msg.isDone());
         assertEquals(20,msg.getOwnScore());
         assertEquals(100, msg.getOpponentScore());
-
     }
-
-
 }

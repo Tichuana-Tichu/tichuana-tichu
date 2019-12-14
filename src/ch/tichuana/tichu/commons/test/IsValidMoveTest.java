@@ -8,16 +8,15 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class IsValidMoveTest {
 
     static Rank[] rank = Rank.values();
-    static ArrayList<Card> cards = new ArrayList<Card>();
-    static ArrayList<Card> oldMove = new ArrayList<Card>();
-    static ArrayList<Card> newMove = new ArrayList<Card>();
+    static ArrayList<Card> cards = new ArrayList<>();
+    static ArrayList<Card> oldMove = new ArrayList<>();
+    static ArrayList<Card> newMove = new ArrayList<>();
 
     @BeforeAll
     public static void makeCards(){
@@ -136,10 +135,8 @@ class IsValidMoveTest {
 
     @Test
     public void testSteps(){
-        ArrayList<Card> stepFourLower = new ArrayList<Card>();
-        ArrayList<Card> stepFourHigher = new ArrayList<Card>();
-        ArrayList<Card> stepSixLower = new ArrayList<Card>();
-        ArrayList<Card> stepSixHigher = new ArrayList<Card>();
+        ArrayList<Card> stepFourLower = new ArrayList<>();
+        ArrayList<Card> stepFourHigher = new ArrayList<>();
 
         stepFourHigher.add(new Card(Suit.Stars,Rank.six));
         stepFourHigher.add(new Card(Suit.Pagodas,Rank.six));
@@ -155,7 +152,7 @@ class IsValidMoveTest {
         assertTrue(Combination.isValidMove(stepFourLower,stepFourHigher));
         assertFalse(Combination.isValidMove(stepFourHigher,stepFourLower));
 
-        stepSixLower.addAll(stepFourLower);
+        ArrayList<Card> stepSixLower = new ArrayList<>(stepFourLower);
         stepSixLower.add(new Card(Suit.Stars,Rank.four));
         stepSixLower.add(new Card(Suit.Pagodas,Rank.four));
 
@@ -163,7 +160,7 @@ class IsValidMoveTest {
         assertTrue(Combination.isValidMove(stepFourHigher,stepSixLower));
         assertFalse(Combination.isValidMove(stepSixLower,stepFourHigher));
 
-        stepSixHigher.addAll(stepFourHigher);
+        ArrayList<Card> stepSixHigher = new ArrayList<>(stepFourHigher);
         stepSixHigher.add(new Card(Suit.Stars,Rank.seven));
         stepSixHigher.add(new Card(Suit.Pagodas,Rank.seven));
 
@@ -176,7 +173,5 @@ class IsValidMoveTest {
 
         assertTrue(Combination.isValidMove(stepSixLower,stepSixHigher));
         assertFalse(Combination.isValidMove(stepSixHigher,stepSixLower));
-
     }
-
 }
