@@ -16,7 +16,6 @@ public class GameView {
 	private PlayView playView;
 	private ClientModel clientModel;//delete after testing
 	private LobbyView lobbyView;
-	private Translator translator;
 	private Configuration configuration;
 	private double initialStageWith;
 	private double initialStageHeight;
@@ -33,7 +32,7 @@ public class GameView {
 
 		this.clientModel = clientModel;//delete after testing
 		this.stage = stage;
-		this.translator = ServiceLocator.getServiceLocator().getTranslator();
+		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
 		this.configuration = ServiceLocator.getServiceLocator().getConfiguration();
 
 		this.lobbyView = new LobbyView();
@@ -110,9 +109,6 @@ public class GameView {
 	}
 
 	//Getters
-	public Stage getStage() {
-		return this.stage;
-	}
 	public PlayView getPlayView() {
 		return playView;
 	}
