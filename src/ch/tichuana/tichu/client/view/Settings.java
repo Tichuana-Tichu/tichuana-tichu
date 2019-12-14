@@ -1,17 +1,10 @@
 package ch.tichuana.tichu.client.view;
 
-import ch.tichuana.tichu.client.controller.LobbyController;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-
-import java.awt.event.MouseEvent;
-import java.util.Locale;
 
 public class Settings extends MenuBar {
 
@@ -35,9 +28,8 @@ public class Settings extends MenuBar {
 
         tutorial = new Menu(translator.getString("tutorial"));
         showTutorial = new MenuItem(translator.getString("tutorial.show"));
-        showTutorial.setOnAction(e -> { Tutorial.getTutorial().show(); });
+        showTutorial.setOnAction(e -> Tutorial.getTutorial().show());
         tutorial.getItems().add(showTutorial);
-
 
         this.getMenus().addAll(this.langMenu, this.tutorial);
     }
