@@ -13,14 +13,14 @@ public class Card implements Comparable {
 	 * @author Christian
 	 */
 	public Card() {
-		//TODO: check if we ever even need this constructor
+
 	}
 
 	/**
 	 * Constructor with both parameters, not usable for special Cards.
 	 * @author Christian
-	 * @param suit
-	 * @param rank
+	 * @param suit suit of card
+	 * @param rank rank of card
 	 */
 	public Card(Suit suit, Rank rank){
 		this.suit = suit;
@@ -28,9 +28,8 @@ public class Card implements Comparable {
 	}
 
 	/**
-	 * Constructor for special cards
-	 * @author
-	 * @return
+	 * Constructor for special cards, as they do not have a suit
+	 * @author Christian
 	 */
 	public Card(Rank rank){
 		this.rank = rank;
@@ -58,7 +57,8 @@ public class Card implements Comparable {
 	/**
 	 * Factory-method that creates a Card from its JSON-representation
 	 * @author Christian
-	 * @param jsonObject
+	 * @param jsonObject json representation of card
+	 * @return card
 	 */
 	public static Card cardFactory(JSONObject jsonObject) {
 		Rank rank = Rank.valueOf((String) jsonObject.get("rank"));
@@ -99,7 +99,7 @@ public class Card implements Comparable {
 	/**
 	 * Compares Cards based on their Rank.
 	 * @author Christian
-	 * @param o
+	 * @param o Object to compare to
 	 */
 	@Override
 	public int compareTo(Object o) {
@@ -111,18 +111,15 @@ public class Card implements Comparable {
 		}
 	}
 
-
-	public Suit getSuit() {
-		return this.suit;
-	}
-
-	public Rank getRank() {
-		return this.rank;
-	}
-
+	/**
+	 * checks if card are equal based on rank and suit (if available)
+	 * @param o Object to compare to
+	 * @return boolean if equal
+	 */
 	@Override
 	public boolean equals(Object o) {
-		try{
+		if (o instanceof Card) {
+
 			Card card = (Card) o;
 
 			if (this.rank == card.getRank()){
@@ -138,11 +135,15 @@ public class Card implements Comparable {
 					return true;
 				}
 			}
-		} catch(Exception e){
-			e.printStackTrace();
 		}
 		return false;
 	}
 
+	public Suit getSuit() {
+		return this.suit;
+	}
 
+	public Rank getRank() {
+		return this.rank;
+	}
 }
