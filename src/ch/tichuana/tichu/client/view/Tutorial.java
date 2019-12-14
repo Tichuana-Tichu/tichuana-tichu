@@ -71,7 +71,10 @@ public class Tutorial extends Stage {
         // scene
         Scene scene = new Scene(tabPane);
         this.setScene(scene);
+        this.setHeight(600);
+        this.setWidth(1000);
 
+        this.getIcons().add(new Image(configuration.getProperty("tichu-icon")));
         scene.getStylesheets().add(
                 getClass().getResource(configuration.getProperty("tutorialStyle")).toExternalForm());
     }

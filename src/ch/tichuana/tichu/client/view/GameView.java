@@ -7,6 +7,7 @@ import ch.tichuana.tichu.client.services.Translator;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -42,6 +43,7 @@ public class GameView {
 				getClass().getResource(configuration.getProperty("lobbyStyle")).toExternalForm());
 
 		this.stage.setScene(lobby);
+		this.stage.getIcons().add(new Image(configuration.getProperty("tichu-icon")));
 		this.stage.setTitle(translator.getString("application.name"));
 	}
 
