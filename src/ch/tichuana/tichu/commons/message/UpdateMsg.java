@@ -19,11 +19,12 @@ public class UpdateMsg extends Message {
 	private int ownScore;
 
 	/**
+	 * Message updating the client on last move, next player and current scores
 	 * @author Christian
-	 * @param nextPlayer
-	 * @param lastMove
-	 * @param opponentScore
-	 * @param ownScore
+	 * @param nextPlayer next player in row
+	 * @param lastMove last move played
+	 * @param opponentScore score of opposing team
+	 * @param ownScore score of own team
 	 */
 	public UpdateMsg(String nextPlayer, String lastPlayer, ArrayList<Card> lastMove, int opponentScore, int ownScore,
 					 String[] players, int[] remainingCards) {
@@ -37,6 +38,11 @@ public class UpdateMsg extends Message {
 		this.setMsgType(MessageType.UpdateMsg);
 	}
 
+	/**
+	 * returns a json string with content of message
+	 * @author Christian
+	 * @return json representation of Message
+	 */
 	@Override
 	public String toString() {
 		JSONObject json = new JSONObject();
@@ -64,12 +70,23 @@ public class UpdateMsg extends Message {
 		return json.toJSONString();
 	}
 
+	/**
+	 * Returns the number of cards a player has left on his hand by his name
+	 * @author Christian
+	 * @param name player name
+	 * @return number of cards
+	 */
 	@Override
 	public int getRemainingCardsByPlayerName(String name) {
 		int pos = Arrays.asList(this.players).indexOf(name);
 		return remainingCards[pos];
 	}
 
+	/**
+	 * Returns the number of players left in the match
+	 * @author Christian
+	 * @return number of players left in the match
+	 */
 	@Override
 	public int getRemainingPlayers(){
 		int playerCount = 0;

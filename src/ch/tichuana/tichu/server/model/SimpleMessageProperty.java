@@ -14,11 +14,7 @@ public class SimpleMessageProperty extends SimpleBooleanProperty {
      * Simple concept, big effect
      * @author Christian
      */
-    public SimpleMessageProperty(){
-        super();
-    }
-
-    public SimpleMessageProperty(boolean value){
+    protected SimpleMessageProperty(boolean value){
         super(value);
     }
 

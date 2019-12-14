@@ -11,9 +11,10 @@ public class SchupfenMsg extends Message {
 	private Card card;
 
 	/**
+	 * Message allowing players to push a card to another player
 	 * @author Christian
-	 * @param playerName
-	 * @param card
+	 * @param playerName players name
+	 * @param card card to push
 	 */
 	public SchupfenMsg(String playerName, Card card) {
 		this.playerName = playerName;
@@ -21,6 +22,11 @@ public class SchupfenMsg extends Message {
 		this.setMsgType(MessageType.SchupfenMsg);
 	}
 
+	/**
+	 * returns a json string with content of message
+	 * @author Christian
+	 * @return json representation of Message
+	 */
 	@Override
 	public String toString() {
 		JSONObject json = new JSONObject();

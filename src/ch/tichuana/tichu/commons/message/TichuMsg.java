@@ -7,10 +7,12 @@ public class TichuMsg extends Message {
 
 	private String playerName;
 	private TichuType tichuType;
+
 	/**
+	 * Message allowing the player to announce a type of Tichu
 	 * @author Christian
-	 * @param playerName
-	 * @param tichuType
+	 * @param playerName players name
+	 * @param tichuType type of tichu
 	 */
 	public TichuMsg(String playerName, TichuType tichuType) {
 		this.playerName = playerName;
@@ -18,6 +20,11 @@ public class TichuMsg extends Message {
 		this.setMsgType(MessageType.TichuMsg);
 	}
 
+	/**
+	 * returns a json string with content of message
+	 * @author Christian
+	 * @return json representation of Message
+	 */
 	@Override
 	public String toString() {
 		JSONObject json = new JSONObject();

@@ -415,7 +415,7 @@ class PlayController {
      * @author dominik
      */
     public void changeTranslator(Event event) {
-        var m = (MenuItem) event.getSource();
+        MenuItem m = (MenuItem) event.getSource();
 
         if (m.getText().equals(translator.getString("langMenu.german"))) {
 

@@ -1,8 +1,6 @@
 package ch.tichuana.tichu.server.services;
 
 import ch.tichuana.tichu.client.services.Configuration;
-
-import java.util.Properties;
 import java.util.logging.Logger;
 
 public class ServiceLocator {

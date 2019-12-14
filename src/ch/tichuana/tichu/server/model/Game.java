@@ -8,10 +8,6 @@ public class Game {
 
 	private Logger logger = Logger.getLogger("");
 	private ServerModel serverModel;
-	private int gameID;
-	private int currentScore;
-	private int matchesPlayed = 0;
-	private volatile boolean closed;
 	private Player[] playersInOrder;
 	private int currentPlayer;
 	private Team[] teams = new Team[2];
@@ -29,14 +25,11 @@ public class Game {
 	 * @param serverModel to have access to serverModel.broadcast()
 	 */
 	Game(Team teamOne, Team teamTwo, ServerModel serverModel) {
-		this.gameID = getUniqueID();
-		this.currentScore = 0;
 		this.teams[0] = teamOne;
 		this.teams[1] = teamTwo;
 		this.serverModel = serverModel;
-		this.closed = false;
 		this.deck = new DeckOfCards();
-		this.currentPlayer = -1;
+		this.currentPlayer = -1; // set to -1 so getNetPlayer() will return first player when called the first time
 	}
 
 	/**
@@ -95,10 +88,11 @@ public class Game {
 
 	/**
 	 * returns a teams opponent
-	 * @param team
-	 * @return
+	 * @author Chrisitan
+	 * @param team team to get opponent of
+	 * @return opposing team
 	 */
-	public Team getOpposingTeam(Team team){
+	protected Team getOpposingTeam(Team team){
 		if(team == teams[0]){
 			return teams[1];
 		}
@@ -111,8 +105,7 @@ public class Game {
 	 * starts a new Match in a game
 	 * @author Christian
 	 */
-	public void startMatch(){
-		boolean gameDone = false;
+	protected void startMatch(){
 		if(isGameDone()){
 			sendGameDoneMsg(true);
 			logger.info("Game is done");
@@ -134,7 +127,14 @@ public class Game {
 		}
 	}
 
-	public void sendGameDoneMsg(boolean gameDone) {
+	/**
+	 * creates a custom game Done message for every player
+	 * informs the player if the game is done after every match
+	 * sends the current scores
+	 * @author Christian
+	 * @param gameDone boolean if game is done
+	 */
+	protected void sendGameDoneMsg(boolean gameDone) {
 
 		for (Player p : playersInOrder){
 			Message msg = new GameDoneMsg(
@@ -147,10 +147,11 @@ public class Game {
 
 	/**
 	 * Returns the Team a given Player is in
-	 * @param player
-	 * @return
+	 * @author Christian
+	 * @param player player to get team of
+	 * @return team the player is in
 	 */
-	public Team getTeamByMember(Player player){
+	protected Team getTeamByMember(Player player){
 		for (Team t : teams){
 			if (Arrays.asList(t.getPlayers()).contains(player)) {
 				return t;
@@ -162,9 +163,9 @@ public class Game {
 	/**
 	 * checks if a a team has already reached a total of 1000 points
 	 * @author Christian
-	 * @return
+	 * @return boolean if game is done
 	 */
-	public boolean isGameDone(){
+	protected boolean isGameDone(){
 		for (Team t : teams){
 			if (t.getCurrentScore() >= MAX_SCORE){
 				return true;
@@ -178,7 +179,7 @@ public class Game {
 	 * @author Christian
 	 * @return playerCount
 	 */
-	public int getNumberOfRemainingPlayers(){
+	protected int getNumberOfRemainingPlayers(){
 		int playerCount = 0;
 		for (Player p : playersInOrder){
 			if (!p.isDone()){
@@ -188,36 +189,7 @@ public class Game {
 		return playerCount;
 	}
 
-
-	/**
-	 * for identification
-	 * @author Philipp
-	 * @return uniqueID
-	 */
-	private synchronized int getUniqueID() {
-		int uniqueID = 0;
-		return ++uniqueID;
-	}
-
 	//Getter & Setter
-	public int getGameID() {
-		return this.gameID;
-	}
-	public int getMAX_SCORE() {
-		return MAX_SCORE;
-	}
-	public int getCurrentScore() {
-		return this.currentScore;
-	}
-	public void setCurrentScore(int currentScore) {
-		this.currentScore = currentScore;
-	}
-	public int getMatchesPlayed() {
-		return this.matchesPlayed;
-	}
-	public void setMatchesPlayed(int matchesPlayed) {
-		this.matchesPlayed = matchesPlayed;
-	}
 	public Team[] getTeams() {
 		return this.teams;
 	}
@@ -227,15 +199,10 @@ public class Game {
 	public DeckOfCards getDeck() {
 		return deck;
 	}
-
-	public Match getCurrentMatch() {
-		return currentMatch;
-	}
-
 	public void setCurrentPlayer(int currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
-	public int getCurrentPlayer(){
-		return currentPlayer;
+	public Match getCurrentMatch() {
+		return currentMatch;
 	}
 }

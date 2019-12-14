@@ -2,10 +2,7 @@ package ch.tichuana.tichu.server.model;
 
 import ch.tichuana.tichu.commons.message.*;
 import ch.tichuana.tichu.commons.models.Card;
-import ch.tichuana.tichu.commons.models.Combination;
 import ch.tichuana.tichu.commons.models.Rank;
-import ch.tichuana.tichu.commons.models.TichuType;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -15,7 +12,7 @@ public class Match {
 	private int matchID;
 	private int currentScore;
 	private ServerModel serverModel;
-	static int MIN_PLAYER = 2;
+	private static int MIN_PLAYER = 2;
 	private Logger logger = Logger.getLogger("");
 	private Trick trick = null;
 	private Player firstPlayer = null;
@@ -28,7 +25,7 @@ public class Match {
 
 	/**
 	 * Will start the actual game-play of a match. It is called after the schupfen-process is complete
-	 * @atuhor Christian
+	 * @author Christian
 	 */
 	public void start(){
 		this.trick = new Trick(this.serverModel);
@@ -51,12 +48,12 @@ public class Match {
 	 * Deals eight cards to every client by sending a custom DealMsg
 	 * @author Christian
 	 */
-	public void dealFirstEightCards(){
-		try{Thread.sleep(300);}catch (Exception e){e.printStackTrace();};
+	protected void dealFirstEightCards(){
+		try{Thread.sleep(300);}catch (Exception e){e.printStackTrace();}
 		ArrayList<Card> cards = new ArrayList<>(Arrays.asList(serverModel.getGame().getDeck().getFirstHalf()));
 		int rangeCounter = 0;
 		for (Player p : serverModel.getGame().getPlayersInOrder()){
-			ArrayList<Card> hand = new ArrayList<Card>(cards.subList(rangeCounter, rangeCounter + 8));
+			ArrayList<Card> hand = new ArrayList<>(cards.subList(rangeCounter, rangeCounter + 8));
 			p.getHand().addAll(hand);
 			Message msg = new DealMsg(hand);
 			p.sendMessage(msg);
@@ -70,7 +67,7 @@ public class Match {
 	 * @author Christian
 	 */
 	public void dealRemainingCards(){
-		try{Thread.sleep(300);}catch (Exception e){e.printStackTrace();};
+		try{Thread.sleep(300);}catch (Exception e){e.printStackTrace();}
 		ArrayList<Card> cards = new ArrayList<>(Arrays.asList(serverModel.getGame().getDeck().getSecondHalf()));
 		int rangeCounter = 0;
 		for (Player p : serverModel.getGame().getPlayersInOrder()){
@@ -86,7 +83,7 @@ public class Match {
 	/**
 	 * removed the card from origin players hand and adds it to it's new owner
 	 * @author Christian
-	 * @param card
+	 * @param card card to push
 	 * @param player target player
 	 */
 	public void schupfen(Card card, Player player){
@@ -104,8 +101,8 @@ public class Match {
 
 	/**
 	 * Tells the current Trick to update with new move. Will add points to teams if the old is won and create new Trick
-	 * @atuhor Christian
-	 * @param messageProperty
+	 * @author Christian
+	 * @param messageProperty msg property containing the update message
 	 */
 	public void handleUpdate(SimpleMessageProperty messageProperty) {
 		Player player = messageProperty.getPlayer();
@@ -141,11 +138,7 @@ public class Match {
 				this.trick = new Trick(serverModel);
 			}
 
-			// handle special case if card was a hound
-			if (!move.isEmpty()) {
-				Card potetialDog = move.get(0);
-			}
-
+			// handle special case if card is a dog
 			if (move.size() == 1 && move.get(0).equals(new Card(Rank.dog))) {
 
 				Player teamMate = serverModel.getGame().getTeamByMember(player).getOtherMemberByMember(player);
@@ -186,7 +179,7 @@ public class Match {
 	 * Will add the loosers hands score value to score of winning team
 	 * @author Christian
 	 */
-	public void evaluateFinalMove(){
+	private void evaluateFinalMove(){
 		Team loosingTeam;
 
         // this last trick is now over. all of its points will be given to the winners team
@@ -238,9 +231,9 @@ public class Match {
 
 	/**
 	 * checks if there is a team of which both members are done
-	 * @return
+	 * @return boolean is team done
 	 */
-	public boolean isTeamDone(){
+	private boolean isTeamDone(){
 		// check if both players of a team are done (terminal condition for match)
 		boolean teamDone = false;
 		for (Team t : serverModel.getGame().getTeams()) {
@@ -253,7 +246,7 @@ public class Match {
 	}
 
 	/**
-	 *
+	 * creates a unique match id
 	 * @return uniqueID
 	 */
 	private synchronized int getUniqueID() {
@@ -261,7 +254,12 @@ public class Match {
 		return uniqueID++;
 	}
 
-	public String[] getPlayerNames(){
+	/**
+	 * Creates a string array containing the names of all players
+	 * @author Christian
+	 * @return player names
+	 */
+	private String[] getPlayerNames(){
 		String[] names = new String[4];
 		for(int i = 0; i < serverModel.getGame().getPlayersInOrder().length; i++){
 			names[i] = serverModel.getGame().getPlayersInOrder()[i].getPlayerName();
@@ -269,26 +267,16 @@ public class Match {
 		return names;
 	}
 
-	public int[] getRemainingCards(){
+	/**
+	 * creates an array of counts of cards left in each players hand
+	 * @author Christian
+	 * @return array card count
+	 */
+	private int[] getRemainingCards(){
 		int[] remainingCards = new int[4];
 		for(int i = 0; i < serverModel.getGame().getPlayersInOrder().length; i++){
 			remainingCards[i] = serverModel.getGame().getPlayersInOrder()[i].getHand().size();
 		}
 		return remainingCards;
 	}
-
-	//Getter & Setter
-	public int getMatchID() {
-		return this.matchID;
-	}
-	public int getCurrentScore() {
-		return this.currentScore;
-	}
-	public void setCurrentScore(int currentScore) {
-		this.currentScore = currentScore;
-	}
-	public int getMIN_PLAYER() {
-		return this.MIN_PLAYER;
-	}
-
 }

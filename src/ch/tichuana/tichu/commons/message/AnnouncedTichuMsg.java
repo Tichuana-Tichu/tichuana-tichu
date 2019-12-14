@@ -1,11 +1,7 @@
 package ch.tichuana.tichu.commons.message;
 
 import ch.tichuana.tichu.commons.models.TichuType;
-import ch.tichuana.tichu.server.model.Player;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
-import java.util.ArrayList;
 
 public class AnnouncedTichuMsg extends Message {
 
@@ -13,9 +9,10 @@ public class AnnouncedTichuMsg extends Message {
 	private TichuType tichuType;
 
 	/**
+	 * Player sends this message to server announcing a type of tichu
 	 * @author Christian
-	 * @param playerName
-	 * @param tichuType
+	 * @param playerName name of player announcing tichu
+	 * @param tichuType type of tichu announced
 	 */
 
 	public AnnouncedTichuMsg(String playerName, TichuType tichuType) {
@@ -24,6 +21,11 @@ public class AnnouncedTichuMsg extends Message {
 		this.setMsgType(MessageType.AnnouncedTichuMsg);
 	}
 
+	/**
+	 * returns a json string with content of message
+	 * @author Christian
+	 * @return json representation of Message
+	 */
 	@Override
 	public String toString() {
 		JSONObject json = new JSONObject();
