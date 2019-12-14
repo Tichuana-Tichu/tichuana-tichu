@@ -74,6 +74,7 @@ public class GameView {
 	 * @author Philipp
 	 */
 	public void stop() {
+		clientModel.disconnect();
 		stage.hide();
 		Platform.exit();
 	}

@@ -139,9 +139,6 @@ class PlayController {
         for(MenuItem m : this.gameView.getPlayView().getSettings().getLangMenu().getItems()) {
             m.setOnAction(this::changeTranslator);
         }
-
-        /* disconnects client if stage is closed */
-        this.gameView.getStage().setOnCloseRequest(event -> this.clientModel.disconnect());
     }
 
     /**
