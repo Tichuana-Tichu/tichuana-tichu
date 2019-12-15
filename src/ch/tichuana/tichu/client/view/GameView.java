@@ -7,6 +7,7 @@ import ch.tichuana.tichu.client.services.Translator;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -16,7 +17,6 @@ public class GameView {
 	private PlayView playView;
 	private ClientModel clientModel;//delete after testing
 	private LobbyView lobbyView;
-	private Translator translator;
 	private Configuration configuration;
 	private double initialStageWith;
 	private double initialStageHeight;
@@ -33,7 +33,7 @@ public class GameView {
 
 		this.clientModel = clientModel;//delete after testing
 		this.stage = stage;
-		this.translator = ServiceLocator.getServiceLocator().getTranslator();
+		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
 		this.configuration = ServiceLocator.getServiceLocator().getConfiguration();
 
 		this.lobbyView = new LobbyView();
@@ -43,6 +43,7 @@ public class GameView {
 				getClass().getResource(configuration.getProperty("lobbyStyle")).toExternalForm());
 
 		this.stage.setScene(lobby);
+		this.stage.getIcons().add(new Image(configuration.getProperty("tichu-icon")));
 		this.stage.setTitle(translator.getString("application.name"));
 	}
 
@@ -74,6 +75,7 @@ public class GameView {
 	 * @author Philipp
 	 */
 	public void stop() {
+		clientModel.disconnect();
 		stage.hide();
 		Platform.exit();
 	}
@@ -100,10 +102,15 @@ public class GameView {
 		this.getPlayView().getPlayArea().updatePlayerName();
 	}
 
-	//Getters
-	public Stage getStage() {
-		return this.stage;
+	/**
+	 * @author dominik
+	 */
+	public void update(){
+		playView.update();
+		lobbyView.update();
 	}
+
+	//Getters
 	public PlayView getPlayView() {
 		return playView;
 	}

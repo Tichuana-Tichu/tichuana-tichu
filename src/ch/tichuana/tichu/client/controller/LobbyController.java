@@ -5,6 +5,7 @@ import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.client.view.GameView;
 import ch.tichuana.tichu.client.view.LobbyView;
+import ch.tichuana.tichu.client.view.ServerSelector;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.scene.control.MenuItem;
@@ -47,6 +48,7 @@ public class LobbyController {
 		this.clientModel.getMsgCodeProperty().newestMsgProperty().addListener((observable, oldValue, newValue) ->
 				Platform.runLater(() -> this.gameView.getLobbyView().setLoginStatus(newValue)));
 
+
 		this.clientModel.getMsgCodeProperty().addListener((obs, oldVal, newVal) -> {
 			if (newVal.intValue() == 1) {
 				new PlayController(this.clientModel, this.gameView, this.stage);
@@ -54,11 +56,23 @@ public class LobbyController {
 			}
 		});
 
-		// moved Dominik's code here
-		// add listener to every language menu item
+		// add listener for every language menu item
 		for(MenuItem m : this.gameView.getLobbyView().getSettings().getLangMenu().getItems()){
 			m.setOnAction(this::changeTranslator);
 		}
+
+		ServerSelector serverSelector = ServerSelector.getServerSelector();
+		serverSelector.getConfirm().setOnAction(e -> {
+			serviceLocator.getConfiguration().setProperty("ipAddress",
+					serverSelector.getHost());
+			serviceLocator.getConfiguration().setProperty("port",
+					serverSelector.getPort());
+			serverSelector.getSave().setDisable(false);
+		});
+		serverSelector.getSave().setOnAction(e -> {
+			serviceLocator.getConfiguration().save();
+			serverSelector.getSave().setDisable(true);
+		});
 	}
 
 	/**
@@ -77,13 +91,20 @@ public class LobbyController {
 
 			Translator en = new Translator("en");
 			ServiceLocator.getServiceLocator().setTranslator(en);
+		} else if (m.getText().equals(t.getString("langMenu.chinese"))){
+
+			Translator ch = new Translator("ch");
+			ServiceLocator.getServiceLocator().setTranslator(ch);
 		}
+		t = ServiceLocator.getServiceLocator().getTranslator();
 		gameView.getLobbyView().update();
+		ServerSelector.getServerSelector().update();
 	}
 
 	/**
 	 * sets Login-Button & PasswordField on Action, reads user input and connects to server,
 	 * with credential from config.properties
+	 * @author Philipp
 	 * @param actionEvent button press or enter in passwordField
 	 */
 	private void login(ActionEvent actionEvent) {

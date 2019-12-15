@@ -1,22 +1,18 @@
 package ch.tichuana.tichu.server.model;
 
-import java.util.logging.Logger;
-
 public class Team implements Comparable<Team> {
 
 	private int teamID;
 	private Player[] players;
 	private int currentScore;
 	private boolean finished;
-	private Logger logger;
 
 	/**
-	 * 
-	 * @param playerOne
-	 * @param playerTwo
+	 * creates a team with two players
+	 * @param playerOne first player
+	 * @param playerTwo second player
 	 */
 	public Team(Player playerOne, Player playerTwo) {
-		logger = Logger.getLogger("");
 		players = new Player[2];
 		this.teamID = getUniqueID();
 		players[0] = playerOne;
@@ -28,18 +24,18 @@ public class Team implements Comparable<Team> {
 	/**
 	 * adds points to current score
 	 * @author Christian
-	 * @param points
+	 * @param points points to add to the team's score
 	 */
-	public void addPoints(int points){
+	protected void addPoints(int points){
 		this.currentScore += points;
 	}
 
 	/**
 	 * returns a players team mate
-	 * @param player
+	 * @param player player to get team mate of
 	 * @return teammate
 	 */
-	public Player getOtherMemberByMember(Player player) {
+	protected Player getOtherMemberByMember(Player player) {
 		if (player == players[0]) {
 			return players[1];
 		} else {
@@ -57,8 +53,8 @@ public class Team implements Comparable<Team> {
 	}
 
 	/**
-	 * 
-	 * @param t
+	 * Compare teams by score
+	 * @param t other team
 	 */
 	@Override
 	public int compareTo(Team t) {

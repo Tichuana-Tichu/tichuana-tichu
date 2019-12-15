@@ -19,6 +19,16 @@ public class PlayArea extends GridPane {
 	private ClientModel clientModel;
 	private Translator t;
 	private Label[] playerLbl;
+	private Label[] headings = new Label[6];
+	private Label onwTeamLbl;
+	private Label opponentLbl;
+	public static final int NAME_COLUMN_INDEX = 0;
+	public static final int HAND_COLUMN_INDEX = 1;
+	public static final int TICHU_COLUMN_INDEX = 2;
+	public static final int PLAYED_COLUMN_INDEX = 3;
+	public static final int TEAM_COLUMN_INDEX = 4;
+	public static final int SCORE_COLUMN_INDEX = 5;
+	public static final int LAST_PLAYER_ROW = 9;
 
 	/**
 	 * creates a table-like, resizeable grid for information about the game-flow
@@ -29,7 +39,6 @@ public class PlayArea extends GridPane {
 
 		this.clientModel = clientModel;
 		this.t = ServiceLocator.getServiceLocator().getTranslator();
-		Label[] headings = new Label[6];
 		headings[0] = new Label(t.getString("name"));
 		headings[1] = new Label(t.getString("hand"));
 		headings[2] = new Label(t.getString("tichu"));
@@ -43,7 +52,7 @@ public class PlayArea extends GridPane {
 			GridPane.setHgrow(headings[i], Priority.ALWAYS);
 		}
 
-		this.add(new Separator(), 0, 1, 6, 1);
+		this.add(new Separator(), NAME_COLUMN_INDEX, 1, 6, 1);
 
 		this.playerLbl = new Label[4];
 		for (int i = 0; i < playerLbl.length; i++) {
@@ -54,59 +63,55 @@ public class PlayArea extends GridPane {
 		for (int i = 0; i < tichuLbl.length; i++) {
 			tichuLbl[i] = new Label("");
 		}
-		this.add(tichuLbl[0], 2, 2);
-		this.add(tichuLbl[1], 2, 4);
-		this.add(tichuLbl[2], 2, 6);
-		this.add(tichuLbl[3], 2, 8);
+		this.add(tichuLbl[0], TICHU_COLUMN_INDEX, 2);
+		this.add(tichuLbl[1], TICHU_COLUMN_INDEX, 4);
+		this.add(tichuLbl[2], TICHU_COLUMN_INDEX, 6);
+		this.add(tichuLbl[3], TICHU_COLUMN_INDEX, 8);
 
-		this.add(playerLbl[0], 0, 2, 1, 1);
+		this.add(playerLbl[0], NAME_COLUMN_INDEX, 2, 1, 1);
 		GridPane.setVgrow(playerLbl[0], Priority.ALWAYS);
-		this.add(new Separator(), 0, 3, 4, 1);
+		this.add(new Separator(), NAME_COLUMN_INDEX, 3, 4, 1);
 
-		this.add(playerLbl[1], 0, 4, 1, 1);
+		this.add(playerLbl[1], NAME_COLUMN_INDEX, 4, 1, 1);
 		GridPane.setVgrow(playerLbl[1], Priority.ALWAYS);
-		this.add(new Separator(), 0, 5, 6, 1);
+		this.add(new Separator(), NAME_COLUMN_INDEX, 5, 6, 1);
 
-		this.add(playerLbl[2], 0, 6, 1, 1);
+		this.add(playerLbl[2], NAME_COLUMN_INDEX, 6, 1, 1);
 		GridPane.setVgrow(playerLbl[2], Priority.ALWAYS);
-		this.add(new Separator(), 0, 7, 4, 1);
+		this.add(new Separator(), NAME_COLUMN_INDEX, 7, 4, 1);
 
-		this.add(playerLbl[3], 0, 8, 1, 1);
+		this.add(playerLbl[3], NAME_COLUMN_INDEX, 8, 1, 1);
 		GridPane.setVgrow(playerLbl[3], Priority.ALWAYS);
 
-		this.add(new Separator(), 0, 9, 8, 1);
+		this.add(new Separator(), NAME_COLUMN_INDEX, 9, 8, 1);
 
-		this.add(new Label(""), 1, 2);
-		this.add(new Label(""), 1, 4);
-		this.add(new Label(""), 1, 6);
-		this.add(new Label(""), 1, 8);
+		for (int i = 2; i < 9; i+=2) {
+			this.add(new Label(""), HAND_COLUMN_INDEX, i);
+		}
 
-		Label l1 = new Label(t.getString("yourTeam"));
-		l1.getStyleClass().add("teamLabel");
-		Label l2 = new Label(t.getString("opponents"));
-		l2.getStyleClass().add("teamLabel");
-		this.add(l1, 4, 2, 1, 3);
-		this.add(l2, 4, 6, 1, 3);
+		this.onwTeamLbl = new Label(t.getString("yourTeam"));
+		this.onwTeamLbl.getStyleClass().add("teamLabel");
+		this.opponentLbl = new Label(t.getString("opponents"));
+		this.opponentLbl.getStyleClass().add("teamLabel");
+		this.add(onwTeamLbl, TEAM_COLUMN_INDEX, 2, 1, 3);
+		this.add(opponentLbl, TEAM_COLUMN_INDEX, 6, 1, 3);
 
-		this.add(new CardArea(clientModel), 3, 2);
-		this.add(new CardArea(clientModel), 3, 4);
-		this.add(new CardArea(clientModel), 3, 6);
-		this.add(new CardArea(clientModel), 3, 8);
-
+		for (int i = 2; i < LAST_PLAYER_ROW; i+=2) {
+			this.add(new CardArea(clientModel), PLAYED_COLUMN_INDEX, i);
+		}
 
 		Label totalScore = new Label("0");
 		totalScore.getStyleClass().add("scoreLabels");
 		Label opponentTotal = new Label("0");
 		opponentTotal.getStyleClass().add("scoreLabels");
 
-		this.add(totalScore, 5, 2, 1, 3);
-		this.add(opponentTotal, 5, 6, 1, 3);
+		this.add(totalScore, SCORE_COLUMN_INDEX, 2, 1, 3);
+		this.add(opponentTotal, SCORE_COLUMN_INDEX, 6, 1, 3);
 
-		for (int i = 2; i < 9; i+=2) {
-			CardArea ca =  (CardArea) getNodeByRowColumnIndex(i, 3);
+		for (int i = 2; i < LAST_PLAYER_ROW; i+=2) {
+			CardArea ca =  (CardArea) getNodeByRowColumnIndex(i, PLAYED_COLUMN_INDEX);
 			ca.initThumbnails();
 		}
-
 		this.maxWidth(6000);
 		this.maxHeight(6000);
 		this.setHgap(2);
@@ -114,6 +119,7 @@ public class PlayArea extends GridPane {
 	}
 
 	/**
+	 * updates the name of this player
 	 * @author Philipp
 	 */
 	void updatePlayerName() {
@@ -121,6 +127,7 @@ public class PlayArea extends GridPane {
 	}
 
 	/**
+	 * updates the names of all the other players
 	 * @author Philipp
 	 */
 	public void updateNameColumn() {
@@ -129,40 +136,48 @@ public class PlayArea extends GridPane {
 		this.playerLbl[3].setText(clientModel.getOpponent(1));
 	}
 
+	/**
+	 * updates the handColumn by getting the actual hand size, or if not updating a move from this player
+	 * by dividing the int value from the Label with the now played cards
+	 * @author Philipp
+	 * @param playerName the player whose column needs to be updated
+	 * @param playedCards the size of the move he made
+	 */
 	private void updateHandColumn(String playerName, int playedCards) {
-		Label handLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), 1);
+		Label handLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), HAND_COLUMN_INDEX);
 
 		if (playerName.equals(clientModel.getPlayerName())) {
 			handLabel.setText(String.valueOf(clientModel.getHand().getCards().size()));
 		} else {
 			int handSize = Integer.parseInt(handLabel.getText());
-			if (handSize == playedCards)
+			if (handSize == playedCards) //makes sure values dont get negative
 				handLabel.setText("0");
 			else
 				handLabel.setText(String.valueOf(handSize-playedCards));
 		}
 	}
 
-	public void initHandColumn(int cards) {
-		Label h1 = (Label) getNodeByRowColumnIndex(2, 1);
-		Label h2 = (Label) getNodeByRowColumnIndex(4, 1);
-		Label h3 = (Label) getNodeByRowColumnIndex(6, 1);
-		Label h4 = (Label) getNodeByRowColumnIndex(8, 1);
-		h1.setText(String.valueOf(cards));
-		h2.setText(String.valueOf(cards));
-		h3.setText(String.valueOf(cards));
-		h4.setText(String.valueOf(cards));
+	/**
+	 * sets the hand sizes of all players in real-time during initializing game process (pushing & announcing)
+	 * @author Philipp
+	 * @param handSize size of the current hand during initial game processes
+	 */
+	public void initHandColumn(int handSize) {
+		for (int i = 2; i < LAST_PLAYER_ROW; i+=2) {
+			Label lbl = (Label) getNodeByRowColumnIndex(i, HAND_COLUMN_INDEX);
+			lbl.setText(String.valueOf(handSize));
+		}
 	}
 
 	/**
-	 *
+	 * updates the tichuColumn with the announced tichuType
 	 * @author Philipp
 	 * @param playerName player whose Label needs to be adjusted
 	 * @param tichuType the type of tichu the given player announces
 	 */
 	public void updateTichuColumn(String playerName, TichuType tichuType) {
 
-		Label tichuLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), 2);
+		Label tichuLabel = (Label) getNodeByRowColumnIndex(getPlayerRow(playerName), TICHU_COLUMN_INDEX);
 
 		switch (tichuType) {
 			case GrandTichu: tichuLabel.setText(t.getString("GrandTichu")); break;
@@ -172,58 +187,56 @@ public class PlayArea extends GridPane {
 	}
 
 	/**
+	 * clears the tichuColumn when a new match starts
 	 * @author Philipp
 	 */
 	public void clearTichuColumn() {
-		for (int i = 2; i < 9; i+=2) {
-			Label tichuLabel =  (Label) getNodeByRowColumnIndex(i, 2);
+		for (int i = 2; i < LAST_PLAYER_ROW; i+=2) {
+			Label tichuLabel =  (Label) getNodeByRowColumnIndex(i, TICHU_COLUMN_INDEX);
 			tichuLabel.setText("");
 		}
 	}
 
 	/**
-	 *
+	 * updates the playedColumn with the current move and calls updateHandColumn method
 	 * @author Philipp
 	 * @param playerName player whose CardArea needs to be adjusted
 	 * @param cards cards the given player chooses to play
 	 */
 	public void updatePlayedColumn(String playerName, ArrayList<Card> cards) {
-		CardArea cardArea = (CardArea) getNodeByRowColumnIndex(getPlayerRow(playerName), 3);
+		CardArea cardArea = (CardArea) getNodeByRowColumnIndex(getPlayerRow(playerName), PLAYED_COLUMN_INDEX);
 
 		updateHandColumn(playerName, cards.size()); //also updates HandColumn
-
-		if (!cards.isEmpty())
-			cardArea.updateThumbnails(cards);
-		else
-			cardArea.deleteThumbnails();
+		cardArea.updateThumbnails(cards);
 	}
 
 	/**
+	 * deletes all displayed moves and re-initialize the playedColumn
 	 * @author Philipp
 	 */
 	public void clearPlayedColumn() {
-		for (int i = 2; i < 9; i+=2) {
-			CardArea ca =  (CardArea) getNodeByRowColumnIndex(i, 3);
+		for (int i = 2; i < LAST_PLAYER_ROW; i+=2) {
+			CardArea ca =  (CardArea) getNodeByRowColumnIndex(i, PLAYED_COLUMN_INDEX);
 			ca.deleteThumbnails();
 			ca.initThumbnails();
 		}
 	}
 
 	/**
-	 *
+	 * updates the scoreColumn
 	 * @author Philipp
 	 * @param ownScore the current score of the team this instance participates
-	 * @param opponentScore the current score of the oppnents
+	 * @param opponentScore the current score of the opponents
 	 */
 	public void updateTotalPoints(int ownScore, int opponentScore) {
-		Label own = (Label) getNodeByRowColumnIndex(2, 6);
-		Label opponent = (Label) getNodeByRowColumnIndex(6, 6);
+		Label own = (Label) getNodeByRowColumnIndex(2, SCORE_COLUMN_INDEX);
+		Label opponent = (Label) getNodeByRowColumnIndex(6, SCORE_COLUMN_INDEX);
 		own.setText(String.valueOf(ownScore));
 		opponent.setText(String.valueOf(opponentScore));
 	}
 
 	/**
-	 *
+	 * gets the column depending on the queried player
 	 * @author Philipp
 	 * @param playerName player to which the column belongs
 	 * @return returns the row index, which belongs to the requested player
@@ -260,5 +273,27 @@ public class PlayArea extends GridPane {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * updates the language specific components
+	 * @author dominik
+	 */
+	public void update() {
+		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
+		this.headings[0].setText(translator.getString("name"));
+		this.headings[1].setText(translator.getString("hand"));
+		this.headings[2].setText(translator.getString("tichu"));
+		this.headings[3].setText(translator.getString("played"));
+		this.headings[4].setText(translator.getString("team"));
+		this.headings[5].setText(translator.getString("total"));
+		this.onwTeamLbl.setText(translator.getString("yourTeam"));
+		this.opponentLbl.setText(translator.getString("opponents"));
+
+		if (clientModel.getTeamMate() == null) {
+			this.playerLbl[1].setText(translator.getString("initPlayerColumn"));
+			this.playerLbl[2].setText(translator.getString("initPlayerColumn"));
+			this.playerLbl[3].setText(translator.getString("initPlayerColumn"));
+		}
 	}
 }

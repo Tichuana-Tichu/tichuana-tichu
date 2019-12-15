@@ -12,14 +12,20 @@ public class PlayMsg extends Message {
 	private ArrayList<Card> cards;
 
 	/**
+	 * Contains a players move
 	 * @author Christian
-	 * @param cards
+	 * @param cards players
 	 */
 	public PlayMsg(ArrayList<Card> cards) {
 		this.cards = cards;
 		this.setMsgType(MessageType.PlayMsg);
 	}
 
+	/**
+	 * returns a json string with content of message
+	 * @author Christian
+	 * @return json representation of Message
+	 */
 	@Override
 	public String toString() {
 		JSONObject json = new JSONObject();

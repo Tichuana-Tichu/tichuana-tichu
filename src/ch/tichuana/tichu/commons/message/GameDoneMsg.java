@@ -7,6 +7,13 @@ public class GameDoneMsg extends Message{
     private int ownScore, opponentScore;
     private boolean done;
 
+    /**
+     * Game done message is sent after every match updating the scores and informing if the game is done or not.
+     * @author Christian
+     * @param ownScore score of player's team
+     * @param opponentScore score of player's opposing team
+     * @param done boolean stating if game is over
+     */
     public GameDoneMsg(int ownScore, int opponentScore, boolean done){
         this.setMsgType(MessageType.GameDoneMsg);
         this.ownScore = ownScore;
@@ -14,6 +21,11 @@ public class GameDoneMsg extends Message{
         this.done = done;
     }
 
+    /**
+     * returns a json string with content of message
+     * @author Christian
+     * @return json representation of Message
+     */
     @Override
     public String toString() {
         JSONObject json = new JSONObject();

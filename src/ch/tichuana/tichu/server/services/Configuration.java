@@ -13,7 +13,7 @@ public class Configuration {
     /**
      * Loads the properties file. Based on the JavaFX-App-Template.
      * @author Philipp
-     * @param configPath
+     * @param configPath path to config file
      */
     public Configuration(String configPath){
         this.properties = new Properties();

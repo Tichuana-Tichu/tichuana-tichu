@@ -37,16 +37,16 @@ public enum Combination {
 
 	/**
 	 * checks if cards contain phoenix
-	 * @param cards
-	 * @return
+	 * @param cards move to analise
+	 * @return containsPhoenix
 	 * @author dominik
 	 */
 	private static boolean containsPhoenix(ArrayList<Card> cards) {return cards.contains(new Card(Rank.phoenix));}
 
 	/**
 	 * checks if cards contain dog
-	 * @param cards
-	 * @return
+	 * @param cards move to analise
+	 * @return containsDog
 	 * @author dominik
 	 */
 	private static boolean containsDog(ArrayList<Card> cards) {
@@ -56,16 +56,16 @@ public enum Combination {
 	/**
 	 * check if cards contain majhong
 	 * @author dominik
-	 * @param cards
-	 * @return
+	 * @param cards move to analise
+	 * @return containsMahjong
 	 */
 	private static boolean containsMahjong(ArrayList<Card> cards) {return cards.contains(new Card(Rank.mahjong));}
 
 	/**
 	 * check if cards contain dragon
 	 * @author dominik
-	 * @param cards
-	 * @return
+	 * @param cards move to analise
+	 * @return containsDragon
 	 */
 	private static boolean containsDragon(ArrayList<Card> cards) {return cards.contains(new Card(Rank.dragon));}
 
@@ -202,7 +202,7 @@ public enum Combination {
 
 		if(cards.size() > 4 && !containsDog(cards) && !containsDragon(cards)){
 			if(containsPhoenix(cards)){
-				for(int i = 0; i < cards.size() - 2 && found; i++){
+				for(int i = 0; i < cards.size() - 1; i++){
 					if (cards.get(i).getRank().ordinal() != cards.get(i + 1).getRank().ordinal() -1){
 						if (phoenixUsed && cards.get(i + 1).getRank().ordinal() != 13){
 							return false;
@@ -212,7 +212,7 @@ public enum Combination {
 					}
 				}
 			}else {
-				for (int i = 0; i < cards.size() - 2 && found; i++) {
+				for (int i = 0; i < cards.size() - 1; i++) {
 					if (cards.get(i).getRank().ordinal() != cards.get(i + 1).getRank().ordinal() - 1) {
 						found = false;
 						break;
@@ -246,8 +246,8 @@ public enum Combination {
 	 * Same as method isFourOfAKindBomb, but with the phoenix it's not a bomb.
 	 * Phoenix control.
 	 * @author dominik
-	 * @param cards
-	 * @return
+	 * @param cards move to analise
+	 * @return isFourOfAKindPhoenix boolean
 	 */
 	public static boolean isFourOfAKindPhoenix(ArrayList<Card> cards) {
 
@@ -262,8 +262,8 @@ public enum Combination {
 	 * Check first if it is a Straight,in method straight ist already checked if it contains
 	 * 	 * a special card. If method isStraight() is true, then check Suits of card.
 	 * @author dominik
-	 * @param cards
-	 * @return
+	 * @param cards move to analise
+	 * @return isStraightFlush boolean
 	 */
 	public static boolean isStraightFlushBomb(ArrayList<Card> cards) {
 		boolean straight = Combination.isStraight(cards);
@@ -273,7 +273,7 @@ public enum Combination {
 			return false;
 		} else {
 			Suit suitOfCard = cards.get(0).getSuit();
-			for(int i = 1; i < cards.size() -1 && flush; i++) {
+			for(int i = 1; i < cards.size() - 1; i++) {
 				if (cards.get(i).getSuit() != suitOfCard) {
 					flush = false;
 					break;
@@ -289,8 +289,8 @@ public enum Combination {
 	 * Will compare the previous move to the current one and evaluate if the new move is not only valid,
 	 * but also beats the previous.
 	 * @author Christian
-	 * @param oldMove
-	 * @param newMove
+	 * @param oldMove previous move
+	 * @param newMove current move
 	 * @return isValidMove
 	 */
 	public static boolean isValidMove(ArrayList<Card> oldMove, ArrayList<Card> newMove){
@@ -325,30 +325,34 @@ public enum Combination {
 					return true;
 				}
 
-				// special case if single phoenix was played
-				if (comb == HighCard &&
-						containsPhoenix(oldMove)){
-					if (beforePhoenix != null && beforePhoenix.compareTo(newMove.get(0)) < 0){
-						return true;
+				if (newClone.size() == 1) {
+					// special case if single phoenix was played
+					if (comb == HighCard &&
+							containsPhoenix(oldMove)) {
+						if (beforePhoenix != null && beforePhoenix.compareTo(newMove.get(0)) < 0) {
+							return true;
+						} else {
+							// this is a bit ugly, only because clients do not hav the beforePhoenix initialized
+							return newClone.get(0).getRank() == Rank.dragon;
+						}
+					}
+
+					// newMove has to be HighCard as well and have a higher rank, else -> false
+					if (comb == HighCard &&
+							oldClone.get(0).compareTo(newClone.get(0)) < 0) {
+
+						// if new move is single phoenix, we need to memorize previous card
+						if (containsPhoenix(newMove)) {
+							beforePhoenix = oldMove.get(0);
+						}
+
+						// a dog can not be played on a mahjong and vise versa, everything else can
+						// only need to check mahjong because dog has a lower ordinal anyway
+						return !containsMahjong(newMove);
+
 					} else {
-						// this is a bit ugly, only because clients do not hav the beforePhoenix initialized
-						return newClone.get(0).getRank() == Rank.dragon;
+						return false;
 					}
-				}
-
-				// newMove has to be HighCard as well and have a higher rank, else -> false
-				if(comb == HighCard &&
-						oldClone.get(0).compareTo(newClone.get(0)) < 0){
-
-					// if new move is single phoenix, we need to memorize previous card
-					if (containsPhoenix(newMove)){
-						beforePhoenix = oldMove.get(0);
-					}
-
-					// a dog can not be played on a mahjong and vise versa, everything else can
-					// only need to check mahjong because dog has a lower ordinal anyway
-					return !containsMahjong(newMove);
-
 				} else {
 					return false;
 				}

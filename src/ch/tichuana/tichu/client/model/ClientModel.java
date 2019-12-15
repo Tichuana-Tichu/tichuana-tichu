@@ -52,7 +52,7 @@ public class ClientModel {
 
                     if (msg instanceof ConnectedMsg) {
                         if (msg.getStatus()) {
-                            this.msg.set(1);
+                            this.msg.set(1); //triggers handleConnectedMsg in lobbyController
                             this.msg.setNewestMsg(translator.getString("connection"));
                         } else
                             this.msg.setNewestMsg(translator.getString("connectionFailed"));
@@ -61,7 +61,7 @@ public class ClientModel {
                     if (msg instanceof GameStartedMsg) {
                         this.teamMate = msg.getTeamMate();
                         this.opponents = msg.getOpponents();
-                        this.msg.set(2);
+                        this.msg.set(2); //triggers handleGameStartedMsg in playController
                         this.msg.setNewestMsg(translator.getString("gameStarted"));
                     }
 
@@ -70,49 +70,49 @@ public class ClientModel {
                         this.firstUpdate = true;
                         this.myTurn = false;
                         if (msg.getCards().size() == 8) {
-                            this.hand = new Hand(msg.getCards());
-                            this.msg.set(3);
+                            this.hand = new Hand(msg.getCards()); //creates hand with first 8 cards
+                            this.msg.set(3); //triggers handleFirstDealMsg in playController
                             this.msg.setNewestMsg(translator.getString("firstEightCards"));
                         } else {
-                            this.hand.addCards(msg.getCards());
+                            this.hand.addCards(msg.getCards()); //updates hand with second 6 cards
                             if (this.grandTichu)
                                 this.msg.setNewestMsg(translator.getString("grandTichuAnnounced"));
                             else
                                 this.msg.setNewestMsg(translator.getString("lastSixCards"));
-                            this.msg.set(5);
+                            this.msg.set(5); //triggers handleSecondDealMsg in playController
                         }
                     }
 
                     if (msg instanceof AnnouncedTichuMsg) {
                         this.msg.setMessage(msg);
-                        this.msg.set(4);
-                        this.msg.set(20);
+                        this.msg.set(4); //triggers handleAnnouncedTichuMsg in playController
+                        this.msg.set(20); //is only set to trigger an event for the next message
                     }
 
                     if (msg instanceof DemandSchupfenMsg) {
-                        this.grandTichu = false;
+                        this.grandTichu = false; //resetting variable for the next match
                         this.msg.setMessage(msg);
-                        if (!this.playerName.equals(msg.getPlayerName())) {
-                            this.msg.set(6);
+                        if (!this.playerName.equals(msg.getPlayerName())) { //this player needs to take action
+                            this.msg.set(6); //enables the schupfen button in playController
                             this.msg.setNewestMsg(translator.getString("demandPush1")+msg.getPlayerName());
-                            this.msg.set(20);
-                        } else {
+                            this.msg.set(20); //is only set to trigger an event for the next message
+                        } else { //this player is being pushed
                             sendMessage(new ReceivedMsg(true));
-                            this.msg.set(7);
+                            this.msg.set(7); //disables the schupfen button in playController
                             this.msg.setNewestMsg(translator.getString("demandPush2"));
                         }
                     }
 
                     if (msg instanceof SchupfenMsg) {
                         this.msg.setMessage(msg);
-                        this.msg.set(8);
-                        this.msg.set(20);
+                        this.msg.set(8); //triggers handleSchupfenMsg in playController
+                        this.msg.set(20); //is only set to trigger an event for the next message
                     }
 
                     if (msg instanceof UpdateMsg) {
                         //handing out all cards from pushing to other Players
                         if (this.firstUpdate) {
-                            this.msg.set(9);
+                            this.msg.set(9); //triggers last handleSchupfenMsg in playController
                             this.firstUpdate = false;
                         }
                         this.msg.setMessage(msg);
@@ -126,20 +126,20 @@ public class ClientModel {
                             this.msg.setNewestMsg(translator.getString("yourTurn"));
                         }
 
-                        this.msg.set(10);
-                        this.msg.set(30);
+                        this.msg.set(10); //triggers handleUpdateMsg in playController
+                        this.msg.set(30);//is only set to trigger an event for the next message
                     }
 
                     if (msg instanceof GameDoneMsg) {
-                        this.ownScore = msg.getOwnScore();
-                        this.opponentScore = msg.getOpponentScore();
+                        this.ownScore = msg.getOwnScore(); //getting current score
+                        this.opponentScore = msg.getOpponentScore(); //getting current score
 
                         if (!msg.isDone())
                             this.msg.setNewestMsg(translator.getString("matchWon"));
                         else
                             this.msg.setNewestMsg(translator.getString("gameWon"));
-                        this.msg.set(11);
-                        this.msg.set(30);
+                        this.msg.set(11); //triggers handleGameDoneMsg in playController
+                        this.msg.set(30);//is only set to trigger an event for the next message
                     }
 
                     if (msg instanceof ChatMsg) {

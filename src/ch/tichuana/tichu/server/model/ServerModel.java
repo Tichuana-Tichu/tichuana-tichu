@@ -89,13 +89,21 @@ public class ServerModel {
 		this.game = new Game(teamOne, teamTwo, this);
 	}
 
+	/**
+	 * increases the tichu responses by 1
+	 * @author Christian
+	 */
 	public void increaseTichuResponses(){
 		this.tichuResponses++;
 	}
+
+	/**
+	 * increases the schupfen responses by one
+	 * @author Christian
+	 */
 	public void increaseSchupfenResponses(){
 		this.schupfenResponses++;
 	}
-
 
 	// Getters and setters
 	public Game getGame() {
