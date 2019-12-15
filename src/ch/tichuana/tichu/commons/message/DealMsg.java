@@ -12,22 +12,24 @@ public class DealMsg extends Message {
 	private ArrayList<Card> cards;
 
 	/**
+	 * Deals a set of cards to each player
 	 * @author Christian
-	 * @param cards
+	 * @param cards cards to be dealt to player
 	 */
 	public DealMsg(ArrayList<Card> cards) {
 		this.cards = cards;
 		this.setMsgType(MessageType.DealMsg);
 	}
 
+	/**
+	 * returns a json string with content of message
+	 * @author Christian
+	 * @return json representation of Message
+	 */
 	@Override
 	public String toString() {
 		JSONObject json = new JSONObject();
 		json.put("msg",this.getMsgType().toString());
-		JSONArray array = new JSONArray();
-		for (Card card : cards){
-			array.add(card);
-		}
 		json.put("cards",cards);
 		return json.toJSONString();
 	}

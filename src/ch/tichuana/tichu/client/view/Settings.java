@@ -1,23 +1,17 @@
 package ch.tichuana.tichu.client.view;
 
-import ch.tichuana.tichu.client.controller.LobbyController;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
-import java.awt.event.MouseEvent;
-import java.util.Locale;
-
 public class Settings extends MenuBar {
 
     private Translator translator;
-    private Menu langMenu;
-    private MenuItem lang1, lang2;
+    private Menu langMenu, tutorial;
+    private MenuItem lang1, lang2, lang3, showTutorial;
+    private static Settings settings = null;
 
     /**
      * @author Philipp
@@ -29,10 +23,16 @@ public class Settings extends MenuBar {
 
         lang1 = new MenuItem(translator.getString("langMenu.german"));
         lang2 = new MenuItem(translator.getString("langMenu.english"));
+        lang3 = new MenuItem(translator.getString("langMenu.chinese"));
 
-        this.langMenu.getItems().addAll(lang1,lang2);
+        this.langMenu.getItems().addAll(lang1,lang2,lang3);
 
-        this.getMenus().add(this.langMenu);
+        tutorial = new Menu(translator.getString("tutorial"));
+        showTutorial = new MenuItem(translator.getString("tutorial.show"));
+        showTutorial.setOnAction(e -> Tutorial.getTutorial().show());
+        tutorial.getItems().add(showTutorial);
+
+        this.getMenus().addAll(this.langMenu, this.tutorial);
     }
 
     /**
@@ -44,6 +44,17 @@ public class Settings extends MenuBar {
         langMenu.setText(translator.getString("settings.langMenu"));
         lang1.setText(translator.getString("langMenu.german"));
         lang2.setText(translator.getString("langMenu.english"));
+        lang3.setText(translator.getString("langMenu.chinese"));
+        tutorial.setText(translator.getString("tutorial"));
+        showTutorial.setText(translator.getString("tutorial.show"));
+
+    }
+
+    public static Settings getTopSettings(){
+        if (settings == null){
+            settings = new Settings();
+        }
+        return settings;
     }
 
     //Getter

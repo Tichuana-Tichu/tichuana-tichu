@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class UpdateMsg extends Message {
 
-	private String nextPlayer;
+	private String nextPlayer, lastPlayer;
 	private ArrayList<Card> lastMove;
 	private String[] players;
 	private int[] remainingCards;
@@ -19,15 +19,17 @@ public class UpdateMsg extends Message {
 	private int ownScore;
 
 	/**
+	 * Message updating the client on last move, next player and current scores
 	 * @author Christian
-	 * @param nextPlayer
-	 * @param lastMove
-	 * @param opponentScore
-	 * @param ownScore
+	 * @param nextPlayer next player in row
+	 * @param lastMove last move played
+	 * @param opponentScore score of opposing team
+	 * @param ownScore score of own team
 	 */
-	public UpdateMsg(String nextPlayer, ArrayList<Card> lastMove, int opponentScore, int ownScore,
+	public UpdateMsg(String nextPlayer, String lastPlayer, ArrayList<Card> lastMove, int opponentScore, int ownScore,
 					 String[] players, int[] remainingCards) {
 		this.nextPlayer = nextPlayer;
+		this.lastPlayer = lastPlayer;
 		this.lastMove = lastMove;
 		this.opponentScore = opponentScore;
 		this.ownScore = ownScore;
@@ -36,11 +38,17 @@ public class UpdateMsg extends Message {
 		this.setMsgType(MessageType.UpdateMsg);
 	}
 
+	/**
+	 * returns a json string with content of message
+	 * @author Christian
+	 * @return json representation of Message
+	 */
 	@Override
 	public String toString() {
 		JSONObject json = new JSONObject();
 		json.put("msg",this.getMsgType().toString());
 		json.put("nextPlayer", nextPlayer);
+		json.put("lastPlayer", lastPlayer);
 		json.put("opponentScore",this.opponentScore);
 		json.put("ownScore",this.ownScore);
 		JSONArray array = new JSONArray();
@@ -62,12 +70,23 @@ public class UpdateMsg extends Message {
 		return json.toJSONString();
 	}
 
+	/**
+	 * Returns the number of cards a player has left on his hand by his name
+	 * @author Christian
+	 * @param name player name
+	 * @return number of cards
+	 */
 	@Override
 	public int getRemainingCardsByPlayerName(String name) {
 		int pos = Arrays.asList(this.players).indexOf(name);
 		return remainingCards[pos];
 	}
 
+	/**
+	 * Returns the number of players left in the match
+	 * @author Christian
+	 * @return number of players left in the match
+	 */
 	@Override
 	public int getRemainingPlayers(){
 		int playerCount = 0;
@@ -97,6 +116,11 @@ public class UpdateMsg extends Message {
 	@Override
 	public int getOwnScore() {
 		return this.ownScore;
+	}
+
+	@Override
+	public String getLastPlayer(){
+		return this.lastPlayer;
 	}
 
 }

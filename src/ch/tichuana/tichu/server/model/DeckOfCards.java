@@ -11,7 +11,7 @@ public class DeckOfCards {
     private ArrayList<Card> deck;
 
 
-    public DeckOfCards(){
+    protected DeckOfCards(){
         deck = new ArrayList<Card>();
         makeDeckOfCards();
     }
@@ -20,7 +20,7 @@ public class DeckOfCards {
      * Creates a complete deck of valid tichu cards. Stores the cards in instance variable deck
      * @author Christian
      */
-    public void makeDeckOfCards(){
+    private void makeDeckOfCards(){
         deck.add(new Card(Rank.mahjong));
         deck.add(new Card(Rank.dog));
         deck.add(new Card(Rank.dragon));
@@ -37,7 +37,7 @@ public class DeckOfCards {
      * Reorders the deck into random order
      * @author Christian
      */
-    public void shuffleDeck(){
+    protected void shuffleDeck(){
         Collections.shuffle(this.deck);
     }
 
@@ -47,7 +47,7 @@ public class DeckOfCards {
      * @author Christian
      * @return cards
      */
-    public Card[] getFirstHalf(){
+    protected Card[] getFirstHalf(){
         Card[] cards = new Card[32];
         for (int i=0; i<32; i++){
             cards[i] = deck.get(i);
@@ -60,7 +60,7 @@ public class DeckOfCards {
      * @author Christian
      * @return cards
      */
-    public Card[] getSecondHalf(){
+    protected Card[] getSecondHalf(){
         Card[] cards = new Card[24];
         for (int i = deck.size()-1; i>=32; i--){
             cards[i-32] = deck.get(i);

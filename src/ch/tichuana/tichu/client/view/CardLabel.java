@@ -29,7 +29,7 @@ public class CardLabel extends Label {
 	/**
 	 *
 	 * @author Philipp
-	 * @param card
+	 * @param card card object to which a CardLabel object needs to be generated
 	 */
 	public void setCard(Card card) {
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
@@ -76,8 +76,8 @@ public class CardLabel extends Label {
 	/**
 	 *
 	 * @author Christian (revised by Philipp)
-	 * @param card
-	 * @return
+	 * @param card object we need the file name of
+	 * @return the file name of the .png representation of the card
 	 */
 	private String cardToFileName(Card card) {
 		String fileName = "";

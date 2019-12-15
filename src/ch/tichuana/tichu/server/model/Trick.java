@@ -2,7 +2,6 @@ package ch.tichuana.tichu.server.model;
 
 import ch.tichuana.tichu.commons.models.Card;
 import ch.tichuana.tichu.commons.models.Combination;
-import ch.tichuana.tichu.server.Server;
 
 import java.util.ArrayList;
 
@@ -10,15 +9,15 @@ public class Trick {
 
     private ArrayList<Card> cards;
     private ArrayList<Card> lastMove;
-    private Combination combination;
     private Player currentWinner;
+    private Player lastPlayer;
     private int passCounter;
     private boolean won;
     private ServerModel serverModel;
 
     public Trick(ServerModel serverModel){
-        this.cards =  new ArrayList<Card>();
-        this.lastMove = new ArrayList<Card>();
+        this.cards = new ArrayList<>();
+        this.lastMove = new ArrayList<>();
         this.serverModel = serverModel;
         passCounter = 0;
         won = false;
@@ -27,10 +26,13 @@ public class Trick {
     /**
      * If the players move is empty, he passed. When all players have passed the trick is won. If the player has
      * played a move we check if it valid and if so we add the cards to the trick.
-     * @param player
-     * @param move
+     * @param player player who played the move
+     * @param move move he played
      */
     public void update(Player player, ArrayList<Card> move){
+        // last player is added even if he passed
+        lastPlayer = player;
+
         if (move.isEmpty()){
             passCounter++;
             if (passCounter == serverModel.getGame().getNumberOfRemainingPlayers()){
@@ -66,19 +68,31 @@ public class Trick {
         return totalScore;
     }
 
-    public boolean isWon(){
+    boolean isWon(){
         return won;
     }
 
-    public boolean addMove(){
-        return true;
+    public void addMove(ArrayList<Card> move){
+        this.cards.addAll(move);
     }
 
-    public Player getCurrentWinner() {
+    Player getCurrentWinner() {
         return currentWinner;
     }
 
     public ArrayList<Card> getLastMove() {
         return lastMove;
+    }
+
+    public Player getLastPlayer() {
+        return lastPlayer;
+    }
+
+    String getLastPlayerName(){
+        if (this.lastPlayer != null) {
+            return this.lastPlayer.getPlayerName();
+        } else {
+            return "";
+        }
     }
 }

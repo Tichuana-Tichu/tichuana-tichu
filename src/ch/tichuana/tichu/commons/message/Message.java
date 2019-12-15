@@ -11,17 +11,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 public abstract class Message {
 
+	private static Logger logger = Logger.getLogger("");
 	private MessageType msgType;
 
 	/**
 	 * Sends the message (msg) of this instace through the socket given as a parameter
 	 * @author Christian
-	 * @param socket
+	 * @param socket socket to send message through
 	 */
 	public void send(Socket socket) {
 		OutputStreamWriter out;
@@ -37,14 +40,18 @@ public abstract class Message {
 	/**
 	 * Receives a JSON-String from a specified
 	 * @author Christian
-	 * @param socket
+	 * @param socket socket to receive message through
 	 */
 	public static Message receive(Socket socket) {
 		BufferedReader in;
 		String response = null;
 		try {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			response = in.readLine();
+			try {
+				response = in.readLine();
+			} catch (SocketException e) {
+				logger.warning("disconnected");
+			}
 		} catch (IOException e){
 			e.printStackTrace();
 		}
@@ -53,10 +60,11 @@ public abstract class Message {
 
 		if (response != null) {
 			try {
-				message = (JSONObject) parser.parse(response.toString());
+				message = (JSONObject) parser.parse(response);
 			} catch (Exception e){
 				e.printStackTrace();
 			}
+			assert message != null;
 			return parseMessage(message);
 		}
 		return null;
@@ -65,13 +73,12 @@ public abstract class Message {
 	/**
 	 * Parses a JSON-Message and returns a Message-object of the corresponding Message class
 	 * @author Christian
-	 * @param json
+	 * @param json json object as received
 	 * @return Message
 	 */
 	public static Message parseMessage(JSONObject json){
 		String playerName, password, status;
 		TichuType tichuType;
-		ArrayList<String> players = new ArrayList();
 		JSONArray array;
 		ArrayList cards;
 
@@ -114,11 +121,10 @@ public abstract class Message {
 				break;
 
 			case DealMsg:
-				cards= new ArrayList();
+				cards = new ArrayList();
 				array = (JSONArray) json.get("cards");
-				Iterator iterator2 = array.iterator();
-				while (iterator2.hasNext()){
-					cards.add(Card.cardFactory((JSONObject) iterator2.next()));
+				for (Object o : array) {
+					cards.add(Card.cardFactory((JSONObject) o));
 				}
 				newMessage = new DealMsg(cards);
 				break;
@@ -153,9 +159,8 @@ public abstract class Message {
 			case PlayMsg:
 				cards= new ArrayList();
 				array = (JSONArray) json.get("cards");
-				Iterator iterator3 = array.iterator();
-				while (iterator3.hasNext()){
-					cards.add(Card.cardFactory((JSONObject) iterator3.next()));
+				for (Object o : array) {
+					cards.add(Card.cardFactory((JSONObject) o));
 				}
 				newMessage = new PlayMsg(cards);
 				break;
@@ -163,13 +168,13 @@ public abstract class Message {
 			case UpdateMsg:
 				cards= new ArrayList();
 				array = (JSONArray) json.get("lastMove");
-				Iterator iterator4 = array.iterator();
-				while (iterator4.hasNext()){
-					cards.add(Card.cardFactory((JSONObject) iterator4.next()));
+				for (Object o : array) {
+					cards.add(Card.cardFactory((JSONObject) o));
 				}
 				int opponentScore = convertToInt(json.get("opponentScore"));
 				int ownScore = convertToInt(json.get("ownScore"));
 				playerName = (String) json.get("nextPlayer");
+				String lastPlayer = (String) json.get("lastPlayer");
 
 				JSONArray playerArray = (JSONArray) json.get("remainingCards");
 				int[] remainingCards = new int[4];
@@ -183,8 +188,15 @@ public abstract class Message {
 					counter++;
 				}
 
-				newMessage = new UpdateMsg(playerName,cards,opponentScore,ownScore,playerNames,remainingCards);
+				newMessage = new UpdateMsg(playerName,lastPlayer, cards,opponentScore,ownScore,playerNames,remainingCards);
 				break;
+
+			case GameDoneMsg:
+				int opponent = convertToInt(json.get("opponentScore"));
+				int own = convertToInt(json.get("ownScore"));
+				boolean done = (Boolean) json.get("done");
+				newMessage = new GameDoneMsg(own,opponent,done);
+
 		}
 		return newMessage;
 	}
@@ -192,10 +204,10 @@ public abstract class Message {
 	/**
 	 * fixes weird issue with SimpleJSON library, on different Java versions it seems to store numbers into the hashmap
 	 * as integers or as long. Same code returned int on java 9 and long on java 10.
-	 * @param o
+	 * @param o Object to convert to int
 	 * @return int
 	 */
-	public static int convertToInt(Object o){
+	private static int convertToInt(Object o){
 		if (o instanceof Integer) {
 			return (int) o;
 		} else if (o instanceof Long){
@@ -218,11 +230,11 @@ public abstract class Message {
 	public String getPassword(){ return null; }
 	public boolean getStatus(){ return false; }
 	public TichuType getTichuType() { return null; }
-	public ArrayList getPlayers(){ return null; }
+	public ArrayList<String> getPlayers(){ return null; }
 	public String[] getOpponents(){ return null; }
 	public String getTeamMate(){ return null; }
 	public Card getCard() { return null; }
-	public ArrayList getCards(){return null; }
+	public ArrayList<Card> getCards(){return null; }
 	public String getNextPlayer() { return null; }
 	public ArrayList<Card> getLastMove() {
 		return null;
@@ -238,5 +250,11 @@ public abstract class Message {
 	}
 	public int getRemainingCardsByPlayerName(String name){
 		return 0;
+	}
+	public String getLastPlayer(){
+		return null;
+	}
+	public boolean isDone() {
+		return false;
 	}
 }

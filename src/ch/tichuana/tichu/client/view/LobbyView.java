@@ -57,7 +57,7 @@ public class LobbyView extends BorderPane {
   * updates the lobby view with new translator
   * @author Christian
   */
-	public void update(){
+	public void update() {
 		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
 		this.userField.setPromptText(translator.getString("lobbyview.username"));
 		this.passwordField.setPromptText(translator.getString("lobbyview.password"));

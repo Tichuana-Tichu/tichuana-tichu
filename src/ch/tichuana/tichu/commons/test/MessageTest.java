@@ -1,6 +1,5 @@
 package ch.tichuana.tichu.commons.test;
 
-import ch.tichuana.tichu.commons.message.DealMsg;
 import ch.tichuana.tichu.commons.message.Message;
 import ch.tichuana.tichu.commons.message.MessageType;
 import ch.tichuana.tichu.commons.message.UpdateMsg;
@@ -30,7 +29,7 @@ class MessageTest {
         assertEquals("player1", msg.getPlayerName());
         assertEquals("pw123", msg.getPassword());
         assertEquals(json.toJSONString(), msg.toString());
-        //System.out.println("joinmsg: "+msg);
+        //System.out.println("joinMsg: "+msg);
     }
 
     @Test
@@ -44,7 +43,7 @@ class MessageTest {
         assertEquals("player1", msg.getPlayerName());
         assertEquals("pw123", msg.getPassword());
         assertEquals(json.toJSONString(), msg.toString());
-        //System.out.println("createplayermsg: "+msg);
+        //System.out.println("createPlayerMsg: "+msg);
     }
 
     @Test
@@ -56,7 +55,7 @@ class MessageTest {
         assertEquals(MessageType.ConnectedMsg, msg.getMsgType());
         assertEquals("true", Boolean.toString(msg.getStatus()));
         assertEquals(json.toJSONString(), msg.toString());
-        //System.out.println("connectedmsg: "+msg);
+        //System.out.println("connectedMsg: "+msg);
     }
 
     @Test
@@ -68,7 +67,7 @@ class MessageTest {
         assertEquals(MessageType.DemandSchupfenMsg, msg.getMsgType());
         assertEquals("player1", msg.getPlayerName());
         assertEquals(json.toJSONString(), msg.toString());
-        //System.out.println("demandschupfenmsg: "+msg);
+        //System.out.println("demandSchupfenMsg: "+msg);
     }
 
     @Test
@@ -82,7 +81,7 @@ class MessageTest {
         assertEquals("player1", msg.getPlayerName());
         assertEquals(TichuType.GrandTichu, msg.getTichuType());
         assertEquals(json.toJSONString(), msg.toString());
-        //System.out.println("tichumsg: "+msg);
+        //System.out.println("tichuMsg: "+msg);
     }
 
     @Test
@@ -94,7 +93,7 @@ class MessageTest {
         assertEquals(MessageType.ReceivedMsg, msg.getMsgType());
         assertEquals("true", Boolean.toString(msg.getStatus()));
         assertEquals(json.toJSONString(), msg.toString());
-        //System.out.println("receivedmsg: "+msg);
+        //System.out.println("receivedMsg: "+msg);
     }
 
     @Test
@@ -106,7 +105,7 @@ class MessageTest {
         assertEquals(MessageType.DemandTichuMsg, msg.getMsgType());
         assertEquals(TichuType.GrandTichu, msg.getTichuType());
         assertEquals(json.toJSONString(), msg.toString());
-        //System.out.println("demandtichumsg: "+msg);
+        //System.out.println("demandTichuMsg: "+msg);
     }
 
     @Test
@@ -120,7 +119,7 @@ class MessageTest {
         assertEquals(TichuType.GrandTichu, msg.getTichuType());
         assertEquals("Christian", msg.getPlayerName());
         assertEquals(json.toJSONString(), msg.toString());
-        //System.out.println("announcedtichumsg: "+msg);
+        //System.out.println("announcedTichuMsg: "+msg);
     }
 
     @Test
@@ -206,6 +205,7 @@ class MessageTest {
         Card c2 = new Card(Suit.Swords, Rank.Ace);
         array.add(c1.toJSON());
         array.add(c2.toJSON());
+        json.put("lastPlayer", "");
         json.put("msg", "UpdateMsg");
         json.put("nextPlayer", "player1");
         json.put("lastMove", array);
@@ -226,7 +226,7 @@ class MessageTest {
         ArrayList<Card> move = new ArrayList<>();
         move.add(c1);
         move.add(c2);
-        UpdateMsg upmsg = new UpdateMsg("player1",move,0,0,new String[]{"player1","player2","3","4"}, new int[]{14,14,14,14});
+        UpdateMsg upmsg = new UpdateMsg("player1","player4", move,0,0,new String[]{"player1","player2","3","4"}, new int[]{14,14,14,14});
         assertTrue(upmsg.getLastMove().contains(c1));
 
 
@@ -235,6 +235,7 @@ class MessageTest {
 
 
         Message msg = Message.parseMessage(json);
+        assertEquals("", msg.getLastPlayer());
         assertEquals(MessageType.UpdateMsg, msg.getMsgType());
         assertTrue(msg.getLastMove().contains(c1));
         assertTrue(msg.getLastMove().contains(c2));
@@ -246,5 +247,18 @@ class MessageTest {
         System.out.println("updatemsg: "+msg);
     }
 
+    @Test
+    public void testGameDone() {
+        JSONObject json = new JSONObject();
+        json.put("msg","GameDoneMsg");
+        json.put("ownScore",20);
+        json.put("opponentScore",100);
+        json.put("done",true);
 
+        Message msg = Message.parseMessage(json);
+
+        assertTrue(msg.isDone());
+        assertEquals(20,msg.getOwnScore());
+        assertEquals(100, msg.getOpponentScore());
+    }
 }

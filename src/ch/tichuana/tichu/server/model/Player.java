@@ -23,7 +23,6 @@ public class Player {
 	private TichuType tichuType = TichuType.none;
 	private volatile SimpleMessageProperty playProperty = new SimpleMessageProperty(false);
 	private boolean done;
-	private ArrayList currentMove;
 	private ArrayList<Card> hand;
 	private ArrayList<Trick> tricksWon;
 
@@ -38,8 +37,8 @@ public class Player {
 		this.serverModel = serverModel;
 		this.socket = socket;
 		this.closed = false;
-		this.hand = new ArrayList<Card>();
-		this.tricksWon = new ArrayList<Trick>();
+		this.hand = new ArrayList<>();
+		this.tricksWon = new ArrayList<>();
 		this.done = false;
 
 		Runnable r = () -> {
@@ -47,11 +46,11 @@ public class Player {
 				Message msg = Message.receive(socket);
 
 				if (msg instanceof JoinMsg) {
-					Player.this.playerName = msg.getPlayerName();
+					this.playerName = msg.getPlayerName();
 					this.password = msg.getPassword();
 
 					// check if password is correct
-					if (verifyPassword()){
+					if (verifyPassword() && verifyUserName()){
 						sendMessage(new ConnectedMsg(true));
 						logger.info("Player: "+msg.getPlayerName()+" logged in");
 						serverModel.getPlayers().add(this);
@@ -121,7 +120,7 @@ public class Player {
 	 * stops listening and closes socket
 	 * @author Philipp
 	 */
-	public void stop() {
+	protected void stop() {
 		this.closed = true;
 		try {
 			socket.close();
@@ -133,9 +132,9 @@ public class Player {
 	/**
 	 * Sends a given message to the client of this player instance.
 	 * @author Christian
-	 * @param message
+	 * @param message message to send to player
 	 */
-	public void sendMessage(Message message){
+	protected void sendMessage(Message message){
 		message.send(this.socket);
 	}
 
@@ -143,20 +142,31 @@ public class Player {
 	 * Checks if password matches password in database belonging to player
 	 * @return boolean
 	 */
-	public boolean verifyPassword(){
+	private boolean verifyPassword(){
 		// TODO: Check if password is correct
-		// this.password
-		// this.playerName
-		// get DatabaseConnection from ServiceLocator
+		return true;
+	}
+
+	/**
+	 * checks if the username is already taken
+	 * @return is valid name
+	 */
+	private boolean verifyUserName() {
+		// make sure no two players have the same name
+		for (Player p : serverModel.getPlayers()){
+			if (p.getPlayerName().equals(this.playerName)){
+				return false;
+			}
+		}
 		return true;
 	}
 
 	/**
 	 * adds a won trick to this player
 	 * @author Christian
-	 * @param trick
+	 * @param trick trick this player has won
 	 */
-	public void addTrick(Trick trick){
+	protected void addTrick(Trick trick){
 		this.tricksWon.add(trick);
 	}
 
@@ -179,19 +189,13 @@ public class Player {
 	public final void setPlayProperty(boolean playProperty) {
 		this.playProperty.set(playProperty);
 	}
-	public ArrayList<Card> getCurrentMove() {
-		return currentMove;
-	}
-	public void setCurrentMove(ArrayList<Card> currentMove) {
-		this.currentMove = currentMove;
-	}
 	public ArrayList<Card> getHand() {
 		return hand;
 	}
-	public boolean isDone() {
+	boolean isDone() {
 		return done;
 	}
-    public void setDone(boolean done) {
+    void setDone(boolean done) {
         this.done = done;
     }
     public SimpleMessageProperty getAnnouncedGrandTichuProperty(){
@@ -205,7 +209,7 @@ public class Player {
 		return schupfenProperty;
 	}
 
-	public ArrayList<Trick> getTricksWon() {
+	ArrayList<Trick> getTricksWon() {
 		return tricksWon;
 	}
 }

@@ -20,7 +20,7 @@ class CombinationTest {
         // Test with normal cards
         Card c1 = new Card(Suit.Swords, Rank.Ace);
         Card c2 = new Card(Suit.Pagodas,Rank.Ace);
-        ArrayList<Card> hand = new ArrayList<Card>();
+        ArrayList<Card> hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         assertTrue(Combination.isOnePair(hand));
@@ -28,7 +28,7 @@ class CombinationTest {
         // Test with wrong cards
         c1 = new Card(Suit.Swords, Rank.Ace);
         c2 = new Card(Suit.Pagodas,Rank.two);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         assertFalse(Combination.isOnePair(hand));
@@ -36,7 +36,7 @@ class CombinationTest {
         // Test with special Card dog
         c1 = new Card(Rank.dog);
         c2 = new Card(Suit.Pagodas,Rank.two);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         assertFalse(Combination.isOnePair(hand));
@@ -45,7 +45,7 @@ class CombinationTest {
         // Test with special Card dog
         c1 = new Card(Rank.mahjong);
         c2 = new Card(Suit.Pagodas,Rank.two);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         assertFalse(Combination.isOnePair(hand));
@@ -53,7 +53,7 @@ class CombinationTest {
         // Test with special Card dog
         c1 = new Card(Rank.dragon);
         c2 = new Card(Suit.Pagodas,Rank.two);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         assertFalse(Combination.isOnePair(hand));
@@ -62,15 +62,14 @@ class CombinationTest {
         // Test with Phoenix
         c1 = new Card(Suit.Swords, Rank.Ace);
         c2 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         assertTrue(Combination.isOnePair(hand));
     }
 
-    /** Test for method isThreeofAKind()
+    /** Test for method isThreeOfAKind()
      * @author dominik
-     * @return
      */
     @Test
     void isThreeOfAKind(){
@@ -78,7 +77,7 @@ class CombinationTest {
         Card c1 = new Card(Suit.Swords, Rank.Ace);
         Card c2 = new Card(Suit.Pagodas,Rank.Ace);
         Card c3 = new Card(Suit.Jade, Rank.Ace);
-        ArrayList<Card> hand = new ArrayList<Card>();
+        ArrayList<Card> hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -88,17 +87,17 @@ class CombinationTest {
         c1 = new Card(Suit.Jade, Rank.Ace);
         c2 = new Card(Suit.Swords, Rank.Ace);
         c3 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
         assertTrue(Combination.isThreeOfAKind(hand));
 
-        // Test with phoenix but no threeofakind
+        // Test with phoenix but no threeOfAKind
         c1 = new Card(Suit.Jade, Rank.two);
         c2 = new Card(Suit.Swords, Rank.Ace);
         c3 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -108,17 +107,17 @@ class CombinationTest {
         c1 = new Card(Rank.dragon);
         c2 = new Card(Suit.Swords, Rank.Ace);
         c3 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
         assertFalse(Combination.isThreeOfAKind(hand));
 
-        // Test with another special card majhong
+        // Test with another special card mahjong
         c1 = new Card(Suit.Jade, Rank.two);
         c2 = new Card(Suit.Swords, Rank.Ace);
         c3 = new Card(Rank.mahjong);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -128,7 +127,7 @@ class CombinationTest {
         c1 = new Card(Suit.Jade, Rank.two);
         c2 = new Card(Suit.Swords, Rank.Ace);
         c3 = new Card(Rank.dog);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -138,7 +137,7 @@ class CombinationTest {
         c1 = new Card(Suit.Jade, Rank.two);
         c2 = new Card(Rank.mahjong);
         c3 = new Card(Rank.dog);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -148,7 +147,7 @@ class CombinationTest {
         c1 = new Card(Suit.Jade, Rank.two);
         c2 = new Card(Suit.Swords, Rank.Ace);
         c3 = new Card(Rank.dragon);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -158,7 +157,7 @@ class CombinationTest {
         c1 = new Card(Rank.dragon);
         c2 = new Card(Suit.Swords, Rank.Ace);
         c3 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -167,7 +166,6 @@ class CombinationTest {
 
     /** Test for the method isSteps()
      * @author dominik
-     * @return
      */
     @Test
     void isSteps(){
@@ -179,7 +177,7 @@ class CombinationTest {
         Card c4 = new Card(Suit.Pagodas,Rank.four);
         Card c5 = new Card(Suit.Pagodas,Rank.five);
         Card c6 = new Card(Suit.Swords, Rank.five);
-        ArrayList<Card> hand = new ArrayList<Card>();
+        ArrayList<Card> hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -194,7 +192,7 @@ class CombinationTest {
         c2 = new Card(Suit.Pagodas,Rank.four);
         c3 = new Card(Suit.Jade, Rank.five);
         c4 = new Card(Suit.Swords, Rank.five);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -207,7 +205,7 @@ class CombinationTest {
         c2 = new Card(Suit.Pagodas,Rank.two);
         c3 = new Card(Suit.Jade, Rank.three);
         c4 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -222,7 +220,7 @@ class CombinationTest {
         c4 = new Card(Suit.Swords, Rank.three);
         c5 = new Card(Suit.Swords, Rank.four);
         c6 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -239,7 +237,7 @@ class CombinationTest {
         c4 = new Card(Suit.Swords, Rank.four);
         c5 = new Card(Suit.Swords, Rank.four);
         c6 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -255,7 +253,7 @@ class CombinationTest {
         c3 = new Card(Suit.Jade, Rank.six);
         c4 = new Card(Suit.Swords, Rank.seven);
         c5 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -263,26 +261,27 @@ class CombinationTest {
         hand.add(c5);
         assertFalse(Combination.isSteps(hand));
 
-        // Test with majhong and phoenix
+        // Test with mahjong and phoenix
         c1 = new Card(Rank.mahjong);
         c2 = new Card(Suit.Pagodas,Rank.two);
         c3 = new Card(Suit.Jade, Rank.two);
         c4 = new Card(Suit.Swords, Rank.three);
         c5 = new Card(Suit.Swords, Rank.three);
         c6 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
         hand.add(c4);
         hand.add(c5);
+        hand.add(c6);
         assertFalse(Combination.isSteps(hand));
 
         // Test with not enough cards
         c1 = new Card(Suit.Swords, Rank.two);
         c2 = new Card(Suit.Pagodas,Rank.three);
         c5 = new Card(Suit.Swords, Rank.four);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c5);
@@ -294,7 +293,7 @@ class CombinationTest {
         c3 = new Card(Suit.Jade, Rank.three);
         c4 = new Card(Rank.dragon);
         c5 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -306,7 +305,6 @@ class CombinationTest {
     /**
      * Test for the Method isFullHouse()
      * @author dominik
-     * @return
      */
     @Test
     void isFullHouse(){
@@ -316,7 +314,7 @@ class CombinationTest {
         Card c3 = new Card(Suit.Jade, Rank.four);
         Card c4 = new Card(Suit.Swords, Rank.four);
         Card c5 = new Card(Suit.Pagodas,Rank.four);
-        ArrayList<Card> hand = new ArrayList<Card>();
+        ArrayList<Card> hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -330,7 +328,7 @@ class CombinationTest {
         c3 = new Card(Suit.Jade, Rank.four);
         c4 = new Card(Suit.Swords, Rank.four);
         c5 = new Card(Suit.Stars, Rank.four);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -344,7 +342,7 @@ class CombinationTest {
         c3 = new Card(Suit.Jade, Rank.four);
         c4 = new Card(Suit.Swords, Rank.four);
         c5 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -358,7 +356,7 @@ class CombinationTest {
         c3 = new Card(Suit.Jade, Rank.four);
         c4 = new Card(Suit.Swords, Rank.four);
         c5 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -372,7 +370,7 @@ class CombinationTest {
         c3 = new Card(Suit.Jade, Rank.four);
         c4 = new Card(Suit.Swords, Rank.three);
         c5 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -385,7 +383,7 @@ class CombinationTest {
         c3 = new Card(Suit.Jade, Rank.four);
         c4 = new Card(Suit.Swords, Rank.four);
         c5 = new Card(Suit.Swords, Rank.Ace);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c2);
         hand.add(c3);
         hand.add(c4);
@@ -397,7 +395,7 @@ class CombinationTest {
         c2 = new Card(Suit.Pagodas, Rank.four);
         c3 = new Card(Suit.Jade, Rank.four);
         c5 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -408,7 +406,6 @@ class CombinationTest {
     /**
      * Test for the method isStraight()
      * @author dominik
-     * @return
      */
     @Test
     void isStraight(){
@@ -418,7 +415,7 @@ class CombinationTest {
         Card c3 = new Card(Suit.Jade, Rank.four);
         Card c4 = new Card(Suit.Swords, Rank.five);
         Card c5 = new Card(Suit.Pagodas,Rank.six);
-        ArrayList<Card> hand = new ArrayList<Card>();
+        ArrayList<Card> hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -432,7 +429,7 @@ class CombinationTest {
         c3 = new Card(Suit.Jade, Rank.five);
         c4 = new Card(Suit.Swords, Rank.six);
         c5 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -446,7 +443,7 @@ class CombinationTest {
         c3 = new Card(Suit.Jade, Rank.three);
         c4 = new Card(Suit.Swords, Rank.four);
         c5 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -460,7 +457,7 @@ class CombinationTest {
         c3 = new Card(Suit.Jade, Rank.five);
         c4 = new Card(Suit.Swords, Rank.six);
         c5 = new Card(Rank.dragon);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -472,7 +469,6 @@ class CombinationTest {
     /**
      * Test for the method isFourOfAKindBomb()
      * @author dominik
-     * @return
      */
     @Test
     void isFourOfAKindBomb(){
@@ -481,7 +477,7 @@ class CombinationTest {
         Card c2 = new Card(Suit.Pagodas,Rank.two);
         Card c3 = new Card(Suit.Jade, Rank.two);
         Card c4 = new Card(Suit.Stars, Rank.two);
-        ArrayList<Card> hand = new ArrayList<Card>();
+        ArrayList<Card> hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -493,7 +489,7 @@ class CombinationTest {
         c2 = new Card(Suit.Pagodas,Rank.two);
         c3 = new Card(Suit.Jade, Rank.two);
         c4 = new Card(Suit.Stars, Rank.two);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -505,7 +501,7 @@ class CombinationTest {
         c2 = new Card(Suit.Pagodas,Rank.two);
         c3 = new Card(Suit.Jade, Rank.two);
         c4 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -517,7 +513,7 @@ class CombinationTest {
         c2 = new Card(Suit.Pagodas,Rank.two);
         c3 = new Card(Suit.Jade, Rank.two);
         c4 = new Card(Rank.mahjong);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -528,7 +524,6 @@ class CombinationTest {
     /**
      * Test for the method isFourOfAKindPhoenix()
      * @author dominik
-     * @return
      */
     @Test
     void isFourOfAKindPhoenix(){
@@ -536,7 +531,7 @@ class CombinationTest {
         Card c2 = new Card(Suit.Pagodas,Rank.two);
         Card c3 = new Card(Suit.Jade, Rank.two);
         Card c4 = new Card(Suit.Stars, Rank.two);
-        ArrayList<Card> hand = new ArrayList<Card>();
+        ArrayList<Card> hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -548,7 +543,7 @@ class CombinationTest {
         c2 = new Card(Suit.Pagodas,Rank.two);
         c3 = new Card(Suit.Jade, Rank.two);
         c4 = new Card(Suit.Stars, Rank.two);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -560,7 +555,7 @@ class CombinationTest {
         c2 = new Card(Suit.Pagodas,Rank.two);
         c3 = new Card(Suit.Jade, Rank.two);
         c1 = new Card(Suit.Stars, Rank.two);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -572,7 +567,6 @@ class CombinationTest {
     /**
      * method isStraightFlush()
      * @author dominik
-     * @return
      */
     @Test
     void isStraightFlush(){
@@ -582,7 +576,7 @@ class CombinationTest {
         Card c3 = new Card(Suit.Stars, Rank.five);
         Card c4 = new Card(Suit.Stars, Rank.six);
         Card c5 = new Card(Suit.Stars, Rank.seven);
-        ArrayList<Card> hand = new ArrayList<Card>();
+        ArrayList<Card> hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -597,7 +591,7 @@ class CombinationTest {
         c3 = new Card(Suit.Stars, Rank.seven);
         c4 = new Card(Suit.Stars, Rank.eight);
         c5 = new Card(Suit.Stars, Rank.nine);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -612,7 +606,7 @@ class CombinationTest {
         c3 = new Card(Suit.Stars, Rank.seven);
         c4 = new Card(Suit.Stars, Rank.eight);
         c5 = new Card(Rank.phoenix);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);
@@ -627,7 +621,7 @@ class CombinationTest {
         c3 = new Card(Suit.Stars, Rank.seven);
         c4 = new Card(Suit.Stars, Rank.eight);
         c5 = new Card(Rank.mahjong);
-        hand = new ArrayList<Card>();
+        hand = new ArrayList<>();
         hand.add(c1);
         hand.add(c2);
         hand.add(c3);

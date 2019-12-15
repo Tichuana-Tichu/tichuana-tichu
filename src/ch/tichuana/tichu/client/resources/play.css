@@ -77,11 +77,19 @@ CardLabel:hover {
 
 PlayArea CardArea {
     -fx-alignment: center-left;
-    -fx-effect: dropshadow(three-pass-box, rgb(69, 69, 70), 0.01, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgb(69, 69, 70), 0.01, 0, -1, -1);
 }
 
 .clickedLabel {
+    -fx-border-color: #a2a2a2;
+}
+
+.invalidCombination {
     -fx-border-color: #B20000;
+}
+
+.validCombination {
+    -fx-border-color: #04b202;
 }
 
 .teamLabel {

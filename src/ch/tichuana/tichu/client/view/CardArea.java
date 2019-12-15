@@ -51,7 +51,7 @@ public class CardArea extends HBox {
 	 * fills and updates the HBox with Thumbnails in the PlayView
 	 * depending on the current moves
 	 * @author Philipp
-	 * @param cards
+	 * @param cards cards that need to be updated
 	 */
 	public void updateThumbnails(ArrayList<Card> cards) {
 		this.getChildren().clear();

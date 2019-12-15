@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 
 public class LobbyController {
 
-	private static ServiceLocator serviceLocator;
 	private ClientModel clientModel;
 	private GameView gameView;
 	private Stage stage;
@@ -29,7 +28,7 @@ public class LobbyController {
 	 * @param stage following MVC pattern
      */
 	public LobbyController(ClientModel clientModel, GameView gameView, Stage stage) {
-		serviceLocator = ServiceLocator.getServiceLocator();
+		ServiceLocator serviceLocator = ServiceLocator.getServiceLocator();
 		this.t = serviceLocator.getTranslator();
 		this.clientModel = clientModel;
 		this.gameView = gameView;
@@ -48,6 +47,7 @@ public class LobbyController {
 		this.clientModel.getMsgCodeProperty().newestMsgProperty().addListener((observable, oldValue, newValue) ->
 				Platform.runLater(() -> this.gameView.getLobbyView().setLoginStatus(newValue)));
 
+
 		this.clientModel.getMsgCodeProperty().addListener((obs, oldVal, newVal) -> {
 			if (newVal.intValue() == 1) {
 				new PlayController(this.clientModel, this.gameView, this.stage);
@@ -55,10 +55,9 @@ public class LobbyController {
 			}
 		});
 
-		// moved Dominik's code here
-		// add listener to every language menu item
+		// add listener for every language menu item
 		for(MenuItem m : this.gameView.getLobbyView().getSettings().getLangMenu().getItems()){
-			m.setOnAction(event -> changeTranslator(event));
+			m.setOnAction(this::changeTranslator);
 		}
 	}
 
@@ -69,22 +68,28 @@ public class LobbyController {
 	public void changeTranslator(Event event){
 		MenuItem m = (MenuItem) event.getSource();
 
-		if (m.getText() == t.getString("langMenu.german")){
+		if (m.getText().equals(t.getString("langMenu.german"))){
 
 			Translator de = new Translator("de");
 			ServiceLocator.getServiceLocator().setTranslator(de);
 
-		} else if (m.getText() == t.getString("langMenu.english")){
+		} else if (m.getText().equals(t.getString("langMenu.english"))){
 
 			Translator en = new Translator("en");
 			ServiceLocator.getServiceLocator().setTranslator(en);
+		} else if (m.getText().equals(t.getString("langMenu.chinese"))){
+
+			Translator ch = new Translator("ch");
+			ServiceLocator.getServiceLocator().setTranslator(ch);
 		}
+		t = ServiceLocator.getServiceLocator().getTranslator();
 		gameView.getLobbyView().update();
 	}
 
 	/**
 	 * sets Login-Button & PasswordField on Action, reads user input and connects to server,
 	 * with credential from config.properties
+	 * @author Philipp
 	 * @param actionEvent button press or enter in passwordField
 	 */
 	private void login(ActionEvent actionEvent) {

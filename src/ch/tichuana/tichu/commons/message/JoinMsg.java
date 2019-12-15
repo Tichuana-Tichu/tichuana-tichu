@@ -7,20 +7,11 @@ public class JoinMsg extends Message {
 	private String playerName;
 	private String password;
 
-	@Override
-	public String getPlayerName() {
-		return this.playerName;
-	}
-
-	@Override
-	public String getPassword() {
-		return this.password;
-	}
-
 	/**
+	 * player sends his credentials, trying to join the game
 	 * @author Christian
-	 * @param playerName
-	 * @param password
+	 * @param playerName name of player wanting to join game
+	 * @param password password of player joining the game
 	 */
 	public JoinMsg(String playerName, String password) {
 		this.playerName = playerName;
@@ -28,6 +19,11 @@ public class JoinMsg extends Message {
 		super.setMsgType(MessageType.JoinMsg);
 	}
 
+	/**
+	 * returns a json string with content of message
+	 * @author Christian
+	 * @return json representation of Message
+	 */
 	@Override
 	public String toString(){
 		JSONObject json = new JSONObject();
@@ -37,4 +33,13 @@ public class JoinMsg extends Message {
 		return json.toJSONString();
 	}
 
+	@Override
+	public String getPlayerName() {
+		return this.playerName;
+	}
+
+	@Override
+	public String getPassword() {
+		return this.password;
+	}
 }

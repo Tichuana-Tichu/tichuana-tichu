@@ -9,8 +9,8 @@ public class CreatePlayerMsg extends Message {
 
 	/**
 	 * @author Christian
-	 * @param playerName
-	 * @param password
+	 * @param playerName name of player
+	 * @param password players password
 	 */
 	public CreatePlayerMsg(String playerName, String password) {
 		this.playerName = playerName;
@@ -18,6 +18,11 @@ public class CreatePlayerMsg extends Message {
 		super.setMsgType(MessageType.CreatePlayerMsg);
 	}
 
+	/**
+	 * returns a json string with content of message
+	 * @author Christian
+	 * @return json representation of Message
+	 */
 	@Override
 	public String toString() {
 		JSONObject json = new JSONObject();
