@@ -5,6 +5,7 @@ import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.client.view.GameView;
 import ch.tichuana.tichu.client.view.LobbyView;
+import ch.tichuana.tichu.client.view.ServerSelector;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.scene.control.MenuItem;
@@ -59,6 +60,14 @@ public class LobbyController {
 		for(MenuItem m : this.gameView.getLobbyView().getSettings().getLangMenu().getItems()){
 			m.setOnAction(this::changeTranslator);
 		}
+
+		ServerSelector serverSelector = ServerSelector.getServerSelector();
+		serverSelector.getConfirm().setOnAction(e -> {
+			serviceLocator.getConfiguration().setProperty("ipAddress",
+					serverSelector.getHost());
+			serviceLocator.getConfiguration().setProperty("port",
+					serverSelector.getPort());
+		});
 	}
 
 	/**

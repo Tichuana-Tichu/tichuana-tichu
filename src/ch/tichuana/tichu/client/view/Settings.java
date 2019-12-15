@@ -9,8 +9,8 @@ import javafx.scene.control.MenuItem;
 public class Settings extends MenuBar {
 
     private Translator translator;
-    private Menu langMenu, tutorial;
-    private MenuItem lang1, lang2, lang3, showTutorial;
+    private Menu langMenu, tutorial, config;
+    private MenuItem lang1, lang2, lang3, showTutorial, serverConfig;
     private static Settings settings = null;
 
     /**
@@ -32,7 +32,12 @@ public class Settings extends MenuBar {
         showTutorial.setOnAction(e -> Tutorial.getTutorial().show());
         tutorial.getItems().add(showTutorial);
 
-        this.getMenus().addAll(this.langMenu, this.tutorial);
+        config = new Menu(translator.getString("settings.settings"));
+        serverConfig = new MenuItem(translator.getString("settings.server"));
+        serverConfig.setOnAction(e -> ServerSelector.getServerSelector().show());
+        config.getItems().add(serverConfig);
+
+        this.getMenus().addAll(this.langMenu, this.tutorial, this.config);
     }
 
     /**

@@ -17,6 +17,7 @@ public class ServerSelector extends Stage {
     private TextField host, port;
     private CheckBox defaults;
     private Button confirm;
+    private static ServerSelector serverSelector;
     private static ServiceLocator serviceLocator;
 
     public ServerSelector(){
@@ -55,6 +56,18 @@ public class ServerSelector extends Stage {
         Scene scene = new Scene(root);
         this.setScene(scene);
         this.setTitle(translator.getString("serverselector.title"));
+    }
+
+    /**
+     * Factory Method to get Server Selector
+     * @author Christian
+     * @return serverSelector
+     */
+    public static ServerSelector getServerSelector(){
+        if (serverSelector == null) {
+            serverSelector = new ServerSelector();
+        }
+        return serverSelector;
     }
 
     public Button getConfirm() {
