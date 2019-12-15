@@ -196,7 +196,7 @@ public abstract class Message {
 			case ChatMsg:
 				playerName = (String) json.get("playerName");
 				String content = (String) json.get("content");
-				newMessage = new ChatMsg(playerName +" ",content);
+				newMessage = new ChatMsg(playerName ,content);
 				break;
 
 		}

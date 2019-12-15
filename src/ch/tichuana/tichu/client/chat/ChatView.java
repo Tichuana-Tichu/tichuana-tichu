@@ -50,6 +50,7 @@ public class ChatView extends Stage{
         this.setScene(scene);
         this.setWidth(500);
         this.setHeight(750);
+        this.setTitle("chat");
 
     }
 
