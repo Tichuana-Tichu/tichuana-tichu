@@ -20,20 +20,28 @@ public class ChatView extends Stage{
 
         //VBox as main overlay
         VBox box = new VBox();
+        box.setPrefHeight(500);
+        box.setPrefWidth(500);
+        box.getStyleClass().add("chat");
 
         //ScrollPane for Messages
         ScrollPane pane = new ScrollPane();
+        pane.setPrefSize(500, 400);
+        pane.getStyleClass().add("chat");
+
+
 
         //Vbox for showing seperate Messages in Scrollpane
         scrollBox = new VBox();
-        scrollBox.getChildren().add(new Label("test"));
         pane.setContent(scrollBox);
 
 
         //HBox for TextArea and Send Button
         HBox bottomBox = new HBox();
         txt = new TextField();
+        txt.setPrefSize(400, 90);
         btnSend = new Button("Send");
+        btnSend.setPrefSize(100, 90);
         bottomBox.getChildren().addAll(txt, btnSend);
 
         box.getChildren().addAll(pane,bottomBox);
@@ -50,6 +58,10 @@ public class ChatView extends Stage{
 
     public Button getBtnSend() {
         return btnSend;
+    }
+
+    public void clearText(){
+        txt.clear();
     }
 
     public String getContent(){
