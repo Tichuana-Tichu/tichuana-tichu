@@ -67,9 +67,11 @@ public class LobbyController {
 					serverSelector.getHost());
 			serviceLocator.getConfiguration().setProperty("port",
 					serverSelector.getPort());
+			serverSelector.getSave().setDisable(false);
 		});
 		serverSelector.getSave().setOnAction(e -> {
 			serviceLocator.getConfiguration().save();
+			serverSelector.getSave().setDisable(true);
 		});
 	}
 

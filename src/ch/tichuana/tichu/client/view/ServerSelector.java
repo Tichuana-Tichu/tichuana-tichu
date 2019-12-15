@@ -42,6 +42,7 @@ public class ServerSelector extends Stage {
 
         confirm = new Button(translator.getString("serverselector.confirm"));
         save = new Button(translator.getString("serverselector.save"));
+        save.setDisable(true);
 
         HBox selector = new HBox();
         selector.getChildren().addAll(defaults,defaultLbl);
