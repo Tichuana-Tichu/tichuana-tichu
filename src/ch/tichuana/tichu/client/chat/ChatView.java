@@ -4,6 +4,7 @@ import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -54,6 +55,7 @@ public class ChatView extends Stage{
         this.setScene(scene);
         this.setWidth(500);
         this.setHeight(750);
+        this.getIcons().add(new Image(ServiceLocator.getServiceLocator().getConfiguration().getProperty("tichu-icon")));
         this.setTitle(translator.getString("chat"));
 
     }
