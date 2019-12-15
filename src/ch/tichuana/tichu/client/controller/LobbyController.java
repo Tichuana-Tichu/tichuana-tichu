@@ -1,5 +1,6 @@
 package ch.tichuana.tichu.client.controller;
 
+import ch.tichuana.tichu.client.chat.ChatView;
 import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
@@ -99,6 +100,8 @@ public class LobbyController {
 		t = ServiceLocator.getServiceLocator().getTranslator();
 		gameView.getLobbyView().update();
 		ServerSelector.getServerSelector().update();
+		ChatView.getView().update();
+		gameView.update();
 	}
 
 	/**

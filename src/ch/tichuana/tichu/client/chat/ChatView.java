@@ -1,6 +1,7 @@
 package ch.tichuana.tichu.client.chat;
 
 import ch.tichuana.tichu.client.services.ServiceLocator;
+import ch.tichuana.tichu.client.services.Translator;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -17,8 +18,11 @@ public class ChatView extends Stage{
     private Button btnSend;
     private TextField txt;
     private static ChatView view;
+    private Translator translator;
 
     public ChatView(){
+
+        this.translator = ServiceLocator.getServiceLocator().getTranslator();
 
         //VBox as main overlay
         VBox box = new VBox();
@@ -39,7 +43,7 @@ public class ChatView extends Stage{
         txt = new TextField();
         HBox.setHgrow(txt, Priority.ALWAYS);
 
-        btnSend = new Button("Send");
+        btnSend = new Button(translator.getString("chat.send"));
         bottomBox.getChildren().addAll(txt, btnSend);
         box.getChildren().addAll(pane,bottomBox);
 
@@ -50,7 +54,7 @@ public class ChatView extends Stage{
         this.setScene(scene);
         this.setWidth(500);
         this.setHeight(750);
-        this.setTitle("chat");
+        this.setTitle(translator.getString("chat"));
 
     }
 
@@ -75,5 +79,11 @@ public class ChatView extends Stage{
         if(view == null)
             view = new ChatView();
         return view;
+    }
+
+    public void update() {
+        this.translator = ServiceLocator.getServiceLocator().getTranslator();
+        this.btnSend.setText(translator.getString("chat.send"));
+        this.setTitle(translator.getString("chat"));
     }
 }

@@ -63,6 +63,8 @@ public class Settings extends MenuBar {
         showTutorial.setText(translator.getString("tutorial.show"));
         config.setText(translator.getString("settings.settings"));
         serverConfig.setText(translator.getString("settings.server"));
+        chat.setText(translator.getString("chat"));
+        chatMenu.setText(translator.getString("chat"));
     }
 
     public static Settings getTopSettings(){
