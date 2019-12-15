@@ -1,5 +1,8 @@
 package ch.tichuana.tichu.client.view;
 
+import ch.tichuana.tichu.client.chat.ChatController;
+import ch.tichuana.tichu.client.chat.ChatView;
+import ch.tichuana.tichu.client.controller.LobbyController;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
 import javafx.scene.control.Menu;
@@ -9,9 +12,10 @@ import javafx.scene.control.MenuItem;
 public class Settings extends MenuBar {
 
     private Translator translator;
-    private Menu langMenu, tutorial, config;
-    private MenuItem lang1, lang2, lang3, showTutorial, serverConfig;
+    private Menu langMenu, tutorial, config, chatMenu;
+    private MenuItem lang1, lang2, lang3, showTutorial, serverConfig, chat;
     private static Settings settings = null;
+
 
     /**
      * @author Philipp
@@ -32,12 +36,17 @@ public class Settings extends MenuBar {
         showTutorial.setOnAction(e -> Tutorial.getTutorial().show());
         tutorial.getItems().add(showTutorial);
 
+        chatMenu = new Menu(translator.getString("chat"));
+        chat = new MenuItem(translator.getString("chat"));
+        chatMenu.getItems().add(chat);
+        chat.setOnAction(event -> ChatView.getView().show());
+
         config = new Menu(translator.getString("settings.settings"));
         serverConfig = new MenuItem(translator.getString("settings.server"));
         serverConfig.setOnAction(e -> ServerSelector.getServerSelector().show());
         config.getItems().add(serverConfig);
 
-        this.getMenus().addAll(this.langMenu, this.tutorial, this.config);
+        this.getMenus().addAll(this.langMenu, this.tutorial, this.config, this.chatMenu);
     }
 
     /**
@@ -67,4 +76,6 @@ public class Settings extends MenuBar {
     public Menu getLangMenu() {
         return langMenu;
     }
+
+    public Menu getChatMenu() { return chatMenu; }
 }

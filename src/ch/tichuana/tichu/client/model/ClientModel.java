@@ -1,8 +1,11 @@
 package ch.tichuana.tichu.client.model;
 
+import ch.tichuana.tichu.client.chat.ChatView;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
 import ch.tichuana.tichu.commons.message.*;
+import javafx.application.Platform;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Logger;
@@ -137,6 +140,10 @@ public class ClientModel {
                             this.msg.setNewestMsg(translator.getString("gameWon"));
                         this.msg.set(11); //triggers handleGameDoneMsg in playController
                         this.msg.set(30);//is only set to trigger an event for the next message
+                    }
+
+                    if (msg instanceof ChatMsg) {
+                        Platform.runLater(() -> ChatView.getView().addMessage(msg.getPlayerName(), msg.getContent()));
                     }
                 }
             };
