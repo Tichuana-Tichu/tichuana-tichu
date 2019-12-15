@@ -212,7 +212,7 @@ public enum Combination {
 					}
 				}
 			}else {
-				for (int i = 0; i < cards.size() - 2; i++) {
+				for (int i = 0; i < cards.size() - 1; i++) {
 					if (cards.get(i).getRank().ordinal() != cards.get(i + 1).getRank().ordinal() - 1) {
 						found = false;
 						break;
