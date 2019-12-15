@@ -52,7 +52,8 @@ public class Settings extends MenuBar {
         lang3.setText(translator.getString("langMenu.chinese"));
         tutorial.setText(translator.getString("tutorial"));
         showTutorial.setText(translator.getString("tutorial.show"));
-
+        config.setText(translator.getString("settings.settings"));
+        serverConfig.setText(translator.getString("settings.server"));
     }
 
     public static Settings getTopSettings(){

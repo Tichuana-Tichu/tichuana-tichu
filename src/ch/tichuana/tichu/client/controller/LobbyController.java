@@ -68,6 +68,9 @@ public class LobbyController {
 			serviceLocator.getConfiguration().setProperty("port",
 					serverSelector.getPort());
 		});
+		serverSelector.getSave().setOnAction(e -> {
+			serviceLocator.getConfiguration().save();
+		});
 	}
 
 	/**
@@ -93,6 +96,7 @@ public class LobbyController {
 		}
 		t = ServiceLocator.getServiceLocator().getTranslator();
 		gameView.getLobbyView().update();
+		ServerSelector.getServerSelector().update();
 	}
 
 	/**

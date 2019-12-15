@@ -16,7 +16,8 @@ public class ServerSelector extends Stage {
 
     private TextField host, port;
     private CheckBox defaults;
-    private Button confirm;
+    private Button confirm, save;
+    private Label hostLbl, portLbl, defaultLbl;
     private static ServerSelector serverSelector;
     private static ServiceLocator serviceLocator;
 
@@ -24,33 +25,30 @@ public class ServerSelector extends Stage {
 
         serviceLocator = ServiceLocator.getServiceLocator();
 
-        //temporary
-        serviceLocator.setConfiguration(new Configuration("src/ch/tichuana/tichu/client/resources/config.properties"));
-        serviceLocator.setTranslator(new Translator("de"));
-
         Configuration configuration = serviceLocator.getConfiguration();
         Translator translator = serviceLocator.getTranslator();
 
-        Label hostLbl = new Label("Host");
-        Label portLbl = new Label("Port");
-        Label defaultLbl = new Label(translator.getString("serverselector.defaults"));
+        hostLbl = new Label("Host");
+        portLbl = new Label("Port");
+        defaultLbl = new Label(translator.getString("serverselector.defaults"));
 
         host = new TextField();
         port = new TextField();
-        host.setPromptText("127.0.0.1");
-        port.setPromptText("8080");
+        host.setPromptText(configuration.getProperty("ipAddress"));
+        port.setPromptText(configuration.getProperty("post"));
 
         defaults =new CheckBox();
         defaults.setOnAction(e -> changeDefaults());
 
         confirm = new Button(translator.getString("serverselector.confirm"));
+        save = new Button(translator.getString("serverselector.save"));
 
         HBox selector = new HBox();
         selector.getChildren().addAll(defaults,defaultLbl);
 
 
         VBox root = new VBox();
-        root.getChildren().addAll(hostLbl,host,portLbl,port,selector,confirm);
+        root.getChildren().addAll(hostLbl,host,portLbl,port,selector,confirm,save);
         root.setSpacing(10);
 
         Scene scene = new Scene(root);
@@ -70,6 +68,9 @@ public class ServerSelector extends Stage {
         return serverSelector;
     }
 
+    public Button getSave() {
+        return save;
+    }
     public Button getConfirm() {
         return confirm;
     }
@@ -84,7 +85,7 @@ public class ServerSelector extends Stage {
      * changes to localhost if defaults are selected
      * @author Christian
      */
-    public void changeDefaults(){
+    private void changeDefaults(){
         if (defaults.isSelected()) {
             host.setText("127.0.0.1");
             host.setDisable(true);
@@ -94,5 +95,19 @@ public class ServerSelector extends Stage {
             host.setDisable(false);
             port.setDisable(false);
         }
+    }
+
+    /**
+     * updates the strings when translator changes
+     * @author Christian
+     */
+    public void update() {
+        Configuration configuration = ServiceLocator.getServiceLocator().getConfiguration();
+        Translator translator = ServiceLocator.getServiceLocator().getTranslator();
+        defaultLbl.setText(translator.getString("serverselector.defaults"));
+        confirm.setText(translator.getString("serverselector.confirm"));
+        save.setText(translator.getString("serverselector.save"));
+        host.setPromptText(configuration.getProperty("ipAddress"));
+        port.setPromptText(configuration.getProperty("post"));
     }
 }
