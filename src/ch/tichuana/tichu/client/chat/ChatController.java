@@ -17,8 +17,12 @@ public class ChatController {
         this.view = view;
         this.model = model;
 
-        view.getBtnSend().setOnAction(event -> sendMessage(model.getPlayerName(), view.getContent()));
-        view.getBtnSend().setOnMouseClicked(event -> view.clearText());
+        view.getBtnSend().setOnAction(event -> {
+            sendMessage(model.getPlayerName(), view.getContent());
+            view.clearText();
+        });
+
+
     }
 
     public void sendMessage(String name, String content){

@@ -1,8 +1,10 @@
 package ch.tichuana.tichu.client.chat;
 
+import ch.tichuana.tichu.client.services.ServiceLocator;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -20,15 +22,11 @@ public class ChatView extends Stage{
 
         //VBox as main overlay
         VBox box = new VBox();
-        box.setPrefHeight(500);
-        box.setPrefWidth(500);
-        box.getStyleClass().add("chat");
 
         //ScrollPane for Messages
         ScrollPane pane = new ScrollPane();
-        pane.setPrefSize(500, 400);
         pane.getStyleClass().add("chat");
-
+        VBox.setVgrow(pane, Priority.ALWAYS);
 
 
         //Vbox for showing seperate Messages in Scrollpane
@@ -39,15 +37,19 @@ public class ChatView extends Stage{
         //HBox for TextArea and Send Button
         HBox bottomBox = new HBox();
         txt = new TextField();
-        txt.setPrefSize(400, 90);
-        btnSend = new Button("Send");
-        btnSend.setPrefSize(100, 90);
-        bottomBox.getChildren().addAll(txt, btnSend);
+        HBox.setHgrow(txt, Priority.ALWAYS);
 
+        btnSend = new Button("Send");
+        bottomBox.getChildren().addAll(txt, btnSend);
         box.getChildren().addAll(pane,bottomBox);
 
         Scene scene = new Scene(box);
+        scene.getStylesheets().add(
+                getClass().getResource(ServiceLocator.getServiceLocator()
+                        .getConfiguration().getProperty("chatStyle")).toExternalForm());
         this.setScene(scene);
+        this.setWidth(500);
+        this.setHeight(750);
 
     }
 
