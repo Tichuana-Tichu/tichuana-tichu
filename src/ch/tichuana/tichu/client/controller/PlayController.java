@@ -346,7 +346,7 @@ class PlayController {
         ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
         ArrayList<CardLabel> selection = getSelectedCardLabels();
 
-        if (!selection.isEmpty()) {
+        if (!selection.isEmpty()) { //if at least one card is selected
             Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.play")));
 
             if (Combination.isValidMove(oldMove, getSelectedCards())) {
@@ -363,8 +363,14 @@ class PlayController {
                     cl.getStyleClass().remove("validCombination");
                 }
             }
-        } else
-            Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.pass")));
+        } else { //if no card is selected
+            //decide whether all players already passed and the Trick is ready to be claimed or not
+            //and alter the GUI accordingly
+            if (this.passCounter != clientModel.getMsgCodeProperty().getMessage().getRemainingPlayers()-1)
+                Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.pass")));
+            else
+                Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.get")));
+        }
     }
 
     /**
