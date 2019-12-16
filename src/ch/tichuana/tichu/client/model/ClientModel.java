@@ -216,4 +216,7 @@ public class ClientModel {
     public int getOwnScore() {
         return ownScore;
     }
+    public void updateTranslator() {
+        this.translator = ServiceLocator.getServiceLocator().getTranslator();
+    }
 }

@@ -445,5 +445,6 @@ class PlayController {
         }
         translator = ServiceLocator.getServiceLocator().getTranslator();
         gameView.getPlayView().update();
+        clientModel.updateTranslator();
     }
 }
