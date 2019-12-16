@@ -2,19 +2,16 @@ package ch.tichuana.tichu.client.chat;
 
 import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.commons.message.ChatMsg;
-import javafx.event.Event;
 
 public class ChatController {
 
-    private ChatView view;
     private ClientModel model;
 
     /**
      * @author Dominik
-     * @param view
+     * @param view following MVC pattern
      */
     public ChatController(ChatView view, ClientModel model){
-        this.view = view;
         this.model = model;
 
         view.getBtnSend().setOnAction(event -> {

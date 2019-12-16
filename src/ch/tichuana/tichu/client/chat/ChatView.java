@@ -2,7 +2,6 @@ package ch.tichuana.tichu.client.chat;
 
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -49,7 +48,7 @@ public class ChatView extends Stage{
         bottomBox.getChildren().addAll(txt, btnSend);
         box.getChildren().addAll(pane,bottomBox);
 
-        pane.vvalueProperty().bind((ObservableValue<? extends Number>) scrollBox.heightProperty());
+        pane.vvalueProperty().bind(scrollBox.heightProperty());
 
         Scene scene = new Scene(box);
         scene.getStylesheets().add(
