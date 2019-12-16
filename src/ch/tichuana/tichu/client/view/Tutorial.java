@@ -19,6 +19,7 @@ public class Tutorial extends Stage {
     private static Translator translator;
     private static Tutorial tutorial;
     private Button nextBtnRules, nextBtnCards, nextBtnMoves;
+    private Scene scene;
 
     private Tutorial(){
 
@@ -69,7 +70,7 @@ public class Tutorial extends Stage {
         nextBtnCards.setOnAction(e -> select.select(credits));
 
         // scene
-        Scene scene = new Scene(tabPane);
+        this.scene = new Scene(tabPane);
         this.setScene(scene);
         this.setHeight(600);
         this.setWidth(1000);
@@ -81,6 +82,7 @@ public class Tutorial extends Stage {
 
     /**
      * factory method to return singleton Tutorial. We only ever need one instance
+     * @author Christian
      * @return the only existing instance of this class
      */
     public static Tutorial getTutorial(){
@@ -128,6 +130,7 @@ public class Tutorial extends Stage {
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setId("validmove");
+        grid.setMaxWidth(700);
         scrollPane.getStyleClass().add("red");
         scrollPane.setContent(grid);
         validMoves.setContent(scrollPane);
@@ -144,6 +147,8 @@ public class Tutorial extends Stage {
     public Tab makeRulesTab(){
         Tab rulesTab = new Tab(translator.getString("tutorial.rules"));
 
+        ScrollPane scrollPane = new ScrollPane();
+
         VBox root = new VBox();
         String[] rules = {"players", "matches", "tricks", "smalltichu", "grandtichu", "push", "start", "combo", "points"};
         int ruleCounter = 0;
@@ -155,7 +160,10 @@ public class Tutorial extends Stage {
         }
         root.getChildren().add(nextBtnRules);
         root.setSpacing(10);
-        rulesTab.setContent(root);
+
+        root.setMaxWidth(700);
+        scrollPane.setContent(root);
+        rulesTab.setContent(scrollPane);
         rulesTab.setClosable(false);
         return rulesTab;
     }
@@ -167,6 +175,7 @@ public class Tutorial extends Stage {
      */
     public Tab makeCardsTab(){
         Tab cardsTab = new Tab(translator.getString("tutorial.cards"));
+        ScrollPane scrollPane = new ScrollPane();
         VBox root = new VBox();
 
         String[] rules = {"deck", "suit", "score"};
@@ -198,8 +207,10 @@ public class Tutorial extends Stage {
         root.getChildren().add(grid);
         root.getChildren().add(nextBtnCards);
 
+        root.setMaxWidth(700);
         root.setSpacing(10);
-        cardsTab.setContent(root);
+        scrollPane.setContent(root);
+        cardsTab.setContent(scrollPane);
         cardsTab.setClosable(false);
         return cardsTab;
     }
@@ -208,13 +219,17 @@ public class Tutorial extends Stage {
         Tab tab = new Tab(translator.getString("tutorial.credits"));
         tab.setClosable(false);
 
+        ScrollPane scrollPane = new ScrollPane();
+
         VBox root = new VBox();
         Label text = new Label(translator.getString("tutorial.credits.text"));
         Label col = new Label(translator.getString("tutorial.credits.collaborators"));
 
         text.setWrapText(true);
         root.getChildren().addAll(text,col);
-        tab.setContent(root);
+        root.setMaxWidth(700);
+        scrollPane.setContent(root);
+        tab.setContent(scrollPane);
 
         return tab;
     }
