@@ -19,8 +19,13 @@ public class ChatController {
             view.clearText();
         });
 
-
+        //Textfield on Action to send with Keyboard (Enter Button)
+        view.getTxt().setOnAction(event -> {
+            sendMessage(model.getPlayerName(), view.getContent());
+            view.clearText();
+        });
     }
+
 
     public void sendMessage(String name, String content){
         ChatMsg msg = new ChatMsg(name, content);
