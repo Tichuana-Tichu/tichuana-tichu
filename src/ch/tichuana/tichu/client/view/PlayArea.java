@@ -158,7 +158,7 @@ public class PlayArea extends GridPane {
 	}
 
 	/**
-	 * sets the hand sizes of all players in real-time during initializing game process (pushing & announcing)
+	 * sets the hand sizes of all players in real-time during initializing game process (pushing and announcing)
 	 * @author Philipp
 	 * @param handSize size of the current hand during initial game processes
 	 */

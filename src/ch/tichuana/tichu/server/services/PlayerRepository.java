@@ -12,7 +12,8 @@ public class PlayerRepository {
 
 	/**
 	 * 
-	 * @param username
+	 * @param username not yet implemented
+	 * @return not yet implemented
 	 */
 	public Player getPlayerByUsername(String username) {
 		// TODO - implement PlayerRepository.getPlayerByUsername
@@ -21,7 +22,8 @@ public class PlayerRepository {
 
 	/**
 	 * 
-	 * @param id
+	 * @param id not yet implemented
+	 * @return not yet implemented
 	 */
 	public Player getPlayerById(int id) {
 		// TODO - implement PlayerRepository.getPlayerById

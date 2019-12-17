@@ -79,6 +79,7 @@ public class LobbyController {
 	/**
 	 * initialize new Translator for language change.
 	 * @author dominik
+	 * @param event clickEvent on MenuItem
 	 */
 	public void changeTranslator(Event event){
 		MenuItem m = (MenuItem) event.getSource();
