@@ -97,7 +97,6 @@ public class ClientModel {
                             this.msg.setNewestMsg(translator.getString("demandPush1")+msg.getPlayerName());
                             this.msg.set(20); //is only set to trigger an event for the next message
                         } else { //this player is being pushed
-                            sendMessage(new ReceivedMsg(true));
                             this.msg.set(7); //disables the schupfen button in playController
                             this.msg.setNewestMsg(translator.getString("demandPush2"));
                         }
@@ -120,12 +119,10 @@ public class ClientModel {
                         if (!this.playerName.equals(msg.getNextPlayer())) {
                             this.myTurn = false;
                             this.msg.setNewestMsg(msg.getNextPlayer()+" "+translator.getString("elsesTurn"));
-                            sendMessage(new ReceivedMsg(true));
                         } else {
                             this.myTurn = true;
                             this.msg.setNewestMsg(translator.getString("yourTurn"));
                         }
-
                         this.msg.set(10); //triggers handleUpdateMsg in playController
                         this.msg.set(30);//is only set to trigger an event for the next message
                     }
