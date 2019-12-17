@@ -23,6 +23,9 @@ public class Tutorial extends Stage {
 
     private Tutorial(){
 
+        this.setMinWidth(800);
+        this.setMinHeight(400);
+
         ServiceLocator serviceLocator = ServiceLocator.getServiceLocator();
 
         // needs to stay
@@ -82,7 +85,7 @@ public class Tutorial extends Stage {
 
     /**
      * factory method to return singleton Tutorial. We only ever need one instance
-     * @author Christian
+     * @author Dominik
      * @return the only existing instance of this class
      */
     public static Tutorial getTutorial(){
@@ -98,7 +101,7 @@ public class Tutorial extends Stage {
 
     /**
      * creates the valid moves tab
-     * @author Christian
+     * @author Dominik
      * @return validMoves tab
      */
     public Tab makeValidMoveTab(){
@@ -141,7 +144,7 @@ public class Tutorial extends Stage {
 
     /**
      * creates the rules Tab
-     * @author Christian
+     * @author Dominik
      * @return rulesTab
      */
     public Tab makeRulesTab(){
@@ -170,7 +173,7 @@ public class Tutorial extends Stage {
 
     /**
      * creates the cards tab
-     * @author Christian
+     * @author Dominik
      * @return cardsTab
      */
     public Tab makeCardsTab(){

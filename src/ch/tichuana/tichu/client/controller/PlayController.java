@@ -203,6 +203,7 @@ class PlayController {
      * decides whether all clients are done with pushing and the saved cards can be handed out,
      * or if not and the cards only need to be saved
      * @author Philipp
+     * @param finished indicates, if process of pushing is done
      */
     private void handleSchupfenMsg(boolean finished) {
         if (!finished)
@@ -424,6 +425,7 @@ class PlayController {
     /**
      * initialize new a translator object for language change.
      * @author dominik
+     * @param event click event on menuItem
      */
     public void changeTranslator(Event event) {
         MenuItem m = (MenuItem) event.getSource();

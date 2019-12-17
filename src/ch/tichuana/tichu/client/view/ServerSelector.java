@@ -24,6 +24,9 @@ public class ServerSelector extends Stage {
 
     public ServerSelector(){
 
+        this.setMinHeight(325);
+        this.setMinWidth(300);
+
         serviceLocator = ServiceLocator.getServiceLocator();
 
         Configuration configuration = serviceLocator.getConfiguration();
