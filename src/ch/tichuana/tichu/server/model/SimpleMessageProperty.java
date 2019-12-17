@@ -13,6 +13,7 @@ public class SimpleMessageProperty extends SimpleBooleanProperty {
      * to know what the message was or who sent it.
      * Simple concept, big effect
      * @author Christian
+     * @param value status if message has already been received
      */
     protected SimpleMessageProperty(boolean value){
         super(value);

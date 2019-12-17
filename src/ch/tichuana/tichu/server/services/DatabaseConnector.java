@@ -17,7 +17,8 @@ public class DatabaseConnector {
 
 	/**
 	 * 
-	 * @param statement
+	 * @param statement not yet implemented
+	 * @return not yet implemented
 	 */
 	public ResultSet executeQuery(PreparedStatement statement) {
 		// TODO - implement DatabaseConnector.executeQuery

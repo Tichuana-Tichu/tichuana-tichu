@@ -11,7 +11,7 @@ public class Server {
 
 	/**
 	 * 
-	 * @param args
+	 * @param args command line parameter
 	 */
 	public static void main(String[] args) {
 		initialize();

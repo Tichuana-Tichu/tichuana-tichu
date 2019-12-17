@@ -37,6 +37,7 @@ public class Translator {
 	 * Returns the value belonging to its key.
 	 * @author Christian
 	 * @param key identify the property by key
+	 * @return string in a given language
 	 */
 	public String getString(String key) {
 		return resourceBundle.getString(key);

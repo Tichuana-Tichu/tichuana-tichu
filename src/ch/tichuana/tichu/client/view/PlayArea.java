@@ -22,7 +22,6 @@ public class PlayArea extends GridPane {
 	private Label[] headings = new Label[6];
 	private Label onwTeamLbl;
 	private Label opponentLbl;
-	private Label[] tichuLbl;
 	public static final int NAME_COLUMN_INDEX = 0;
 	public static final int HAND_COLUMN_INDEX = 1;
 	public static final int TICHU_COLUMN_INDEX = 2;
@@ -60,7 +59,7 @@ public class PlayArea extends GridPane {
 			playerLbl[i] = new Label(t.getString("initPlayerColumn"));
 		}
 
-		this.tichuLbl = new Label[4];
+		Label[] tichuLbl = new Label[4];
 		for (int i = 0; i < tichuLbl.length; i++) {
 			tichuLbl[i] = new Label("");
 		}
@@ -159,7 +158,7 @@ public class PlayArea extends GridPane {
 	}
 
 	/**
-	 * sets the hand sizes of all players in real-time during initializing game process (pushing & announcing)
+	 * sets the hand sizes of all players in real-time during initializing game process (pushing and announcing)
 	 * @author Philipp
 	 * @param handSize size of the current hand during initial game processes
 	 */
@@ -261,7 +260,7 @@ public class PlayArea extends GridPane {
 	 * @author Philipp
 	 * @param row index of a given node
 	 * @param column index of a given node
-	 * @return node at a given row & column index
+	 * @return node at a given row and column index
 	 */
 	private Node getNodeByRowColumnIndex (final int row, final int column) {
 		Node result = null;

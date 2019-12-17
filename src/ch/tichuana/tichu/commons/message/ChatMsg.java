@@ -19,8 +19,8 @@ public class ChatMsg extends Message{
 
     /**
      * @author Christian
-     * @param playerName
-     * @param content
+     * @param playerName the player who send a Msg
+     * @param content content of the ChatMsg
      */
     public ChatMsg(String playerName, String content) {
         this.playerName = playerName;

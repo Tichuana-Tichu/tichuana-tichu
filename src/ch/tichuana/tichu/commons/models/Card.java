@@ -30,6 +30,7 @@ public class Card implements Comparable {
 	/**
 	 * Constructor for special cards, as they do not have a suit
 	 * @author Christian
+	 * @param rank the rank of the card
 	 */
 	public Card(Rank rank){
 		this.rank = rank;

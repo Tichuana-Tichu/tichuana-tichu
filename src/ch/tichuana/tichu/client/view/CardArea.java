@@ -14,6 +14,7 @@ public class CardArea extends HBox {
 	/**
 	 * contains all CardLabels, multi use for BottomView and PlayView
 	 * @author Philipp
+	 * @param clientModel following MVC pattern
 	 */
 	CardArea(ClientModel clientModel) {
 		this.clientModel = clientModel;

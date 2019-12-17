@@ -41,6 +41,7 @@ public abstract class Message {
 	 * Receives a JSON-String from a specified
 	 * @author Christian
 	 * @param socket socket to receive message through
+	 * @return instance of Message
 	 */
 	public static Message receive(Socket socket) {
 		BufferedReader in;

@@ -34,6 +34,7 @@ public class ServerController {
 	/**
 	 * attaches listeners to all Properties of the new Player
 	 * @author philipp (revised by Christian)
+	 * @param observable value from Player ObservableList
 	 */
 	private void activatePlayer(Observable observable) {
 		int size = serverModel.getPlayers().size();
@@ -137,6 +138,7 @@ public class ServerController {
 	/**
 	 * If the value of Property is true it will call the handleUpdate method in Match-class.
 	 * @author Christian
+	 * @param messageProperty instance of the SimpleMessageProperty
 	 */
 	private void handleUpdate(SimpleMessageProperty messageProperty) {
 		if (messageProperty.getValue()){

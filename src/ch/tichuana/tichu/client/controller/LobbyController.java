@@ -79,6 +79,7 @@ public class LobbyController {
 	/**
 	 * initialize new Translator for language change.
 	 * @author dominik
+	 * @param event clickEvent on MenuItem
 	 */
 	public void changeTranslator(Event event){
 		MenuItem m = (MenuItem) event.getSource();
@@ -105,7 +106,7 @@ public class LobbyController {
 	}
 
 	/**
-	 * sets Login-Button & PasswordField on Action, reads user input and connects to server,
+	 * sets Login-Button and PasswordField on Action, reads user input and connects to server,
 	 * with credential from config.properties
 	 * @author Philipp
 	 * @param actionEvent button press or enter in passwordField

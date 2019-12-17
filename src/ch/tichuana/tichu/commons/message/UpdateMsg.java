@@ -22,9 +22,12 @@ public class UpdateMsg extends Message {
 	 * Message updating the client on last move, next player and current scores
 	 * @author Christian
 	 * @param nextPlayer next player in row
+	 * @param lastPlayer the player who made the last move
 	 * @param lastMove last move played
 	 * @param opponentScore score of opposing team
 	 * @param ownScore score of own team
+	 * @param players the players attending the game
+	 * @param remainingCards remaining cards every player has
 	 */
 	public UpdateMsg(String nextPlayer, String lastPlayer, ArrayList<Card> lastMove, int opponentScore, int ownScore,
 					 String[] players, int[] remainingCards) {

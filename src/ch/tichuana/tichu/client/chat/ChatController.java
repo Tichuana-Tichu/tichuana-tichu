@@ -10,6 +10,7 @@ public class ChatController {
     /**
      * @author Dominik
      * @param view following MVC pattern
+     * @param model following MVC pattern
      */
     public ChatController(ChatView view, ClientModel model){
         this.model = model;
