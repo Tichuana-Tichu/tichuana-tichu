@@ -280,20 +280,19 @@ public class PlayArea extends GridPane {
 	 * @author dominik
 	 */
 	public void update() {
-		Translator translator = ServiceLocator.getServiceLocator().getTranslator();
-		this.headings[0].setText(translator.getString("name"));
-		this.headings[1].setText(translator.getString("hand"));
-		this.headings[2].setText(translator.getString("tichu"));
-		this.headings[3].setText(translator.getString("played"));
-		this.headings[4].setText(translator.getString("team"));
-		this.headings[5].setText(translator.getString("total"));
-		this.onwTeamLbl.setText(translator.getString("yourTeam"));
-		this.opponentLbl.setText(translator.getString("opponents"));
+		this.headings[0].setText(t.getString("name"));
+		this.headings[1].setText(t.getString("hand"));
+		this.headings[2].setText(t.getString("tichu"));
+		this.headings[3].setText(t.getString("played"));
+		this.headings[4].setText(t.getString("team"));
+		this.headings[5].setText(t.getString("total"));
+		this.onwTeamLbl.setText(t.getString("yourTeam"));
+		this.opponentLbl.setText(t.getString("opponents"));
 
 		if (clientModel.getTeamMate() == null) {
-			this.playerLbl[1].setText(translator.getString("initPlayerColumn"));
-			this.playerLbl[2].setText(translator.getString("initPlayerColumn"));
-			this.playerLbl[3].setText(translator.getString("initPlayerColumn"));
+			this.playerLbl[1].setText(t.getString("initPlayerColumn"));
+			this.playerLbl[2].setText(t.getString("initPlayerColumn"));
+			this.playerLbl[3].setText(t.getString("initPlayerColumn"));
 		}
 	}
 }

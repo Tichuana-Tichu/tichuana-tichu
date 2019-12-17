@@ -304,7 +304,7 @@ class PlayController {
 
     /**
      * updating the CardsLabels when something changes in the Hand from the ClientModel and
-     * makeing cards clickable
+     * making cards clickable
      * @author Philipp
      * @param obs unused but necessary observable value from the listener
      */
