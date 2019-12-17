@@ -202,7 +202,7 @@ public enum Combination {
 
 		if(cards.size() > 4 && !containsDog(cards) && !containsDragon(cards)){
 			if(containsPhoenix(cards)){
-				for(int i = 0; i < cards.size() - 1; i++){
+				for(int i = 0; i < cards.size() - 2; i++){
 					if (cards.get(i).getRank().ordinal() != cards.get(i + 1).getRank().ordinal() -1){
 						if (phoenixUsed && cards.get(i + 1).getRank().ordinal() != 13){
 							return false;
@@ -330,6 +330,7 @@ public enum Combination {
 					if (comb == HighCard &&
 							containsPhoenix(oldMove)) {
 						if (beforePhoenix != null && beforePhoenix.compareTo(newMove.get(0)) < 0) {
+							beforePhoenix = null;
 							return true;
 						} else {
 							// this is a bit ugly, only because clients do not hav the beforePhoenix initialized
