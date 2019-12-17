@@ -23,6 +23,9 @@ public class Tutorial extends Stage {
 
     private Tutorial(){
 
+        this.setMinWidth(800);
+        this.setMinHeight(400);
+
         ServiceLocator serviceLocator = ServiceLocator.getServiceLocator();
 
         // needs to stay
