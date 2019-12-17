@@ -16,6 +16,7 @@ public class BottomView extends BorderPane {
 	 * extends BorderPane including a console in the top area
 	 * a CardArea in the left area and a ControlArea in the right area
 	 * @author Philipp
+	 * @param clientModel following MVC pattern
 	 */
 	BottomView(ClientModel clientModel) {
 		this.controlArea = new ControlArea();

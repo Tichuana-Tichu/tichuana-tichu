@@ -13,6 +13,7 @@ public class PlayView extends BorderPane {
      * extends BorderPane including a BottomView in the bottom area,
      * a MenuBar at the top and a PlayArea in the center
 	 * @author Philipp
+	 * @param clientModel following MVC pattern
      */
 	PlayView(ClientModel clientModel) {
 		this.bottomView = new BottomView(clientModel);

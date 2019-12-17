@@ -106,7 +106,7 @@ public class LobbyController {
 	}
 
 	/**
-	 * sets Login-Button & PasswordField on Action, reads user input and connects to server,
+	 * sets Login-Button and PasswordField on Action, reads user input and connects to server,
 	 * with credential from config.properties
 	 * @author Philipp
 	 * @param actionEvent button press or enter in passwordField
