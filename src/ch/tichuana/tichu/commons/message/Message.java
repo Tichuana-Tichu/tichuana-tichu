@@ -196,6 +196,7 @@ public abstract class Message {
 				int own = convertToInt(json.get("ownScore"));
 				boolean done = (Boolean) json.get("done");
 				newMessage = new GameDoneMsg(own,opponent,done);
+				break;
 
 			case ChatMsg:
 				playerName = (String) json.get("playerName");

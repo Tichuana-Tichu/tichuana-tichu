@@ -124,6 +124,24 @@ public class Match {
 		if (isTeamDone()) {
 			evaluateFinalMove();
 			logger.info("Evaluation done");
+			Team[] teams = serverModel.getGame().getTeams();
+			Player nextPlayer = serverModel.getGame().getNextPlayer();
+
+			// if the Player is already done, get the next one
+			while (nextPlayer.isDone()) {
+				nextPlayer = serverModel.getGame().getNextPlayer();
+			}
+			for (int i = 0; i < teams.length; i++) {
+				UpdateMsg msg = new UpdateMsg(
+						nextPlayer.getPlayerName(),
+						trick.getLastPlayerName(),
+						messageProperty.getMessage().getCards(), // was: last valid move, now: last move even when empty
+						teams[(i + 1) % 2].getCurrentScore(), teams[i].getCurrentScore(),
+						getPlayerNames(),getRemainingCards());
+				for (Player p : teams[i].getPlayers()) {
+					p.sendMessage(msg);
+				}
+			}
 			serverModel.getGame().startMatch();
 		} else {
 
