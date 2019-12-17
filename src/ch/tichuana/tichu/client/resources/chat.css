@@ -10,4 +10,6 @@ ScrollPane {
 }
 .chat {
     -fx-padding:10px;
+    -fx-spacing: 5px;
 }
+

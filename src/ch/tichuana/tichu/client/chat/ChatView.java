@@ -25,6 +25,10 @@ public class ChatView extends Stage{
 
         this.translator = ServiceLocator.getServiceLocator().getTranslator();
 
+        //Minimal size for chat window
+        this.setMinWidth(300);
+        this.setMinHeight(300);
+
         //VBox as main overlay
         VBox box = new VBox();
 
@@ -43,6 +47,7 @@ public class ChatView extends Stage{
         HBox bottomBox = new HBox();
         txt = new TextField();
         HBox.setHgrow(txt, Priority.ALWAYS);
+        bottomBox.getStyleClass().add("chat");
 
         btnSend = new Button(translator.getString("chat.send"));
         bottomBox.getChildren().addAll(txt, btnSend);
