@@ -1,5 +1,7 @@
 package ch.tichuana.tichu.client.controller;
 
+import ch.tichuana.tichu.client.chat.ChatController;
+import ch.tichuana.tichu.client.chat.ChatView;
 import ch.tichuana.tichu.client.model.ClientModel;
 import ch.tichuana.tichu.client.model.SimpleMessageProperty;
 import ch.tichuana.tichu.client.services.ServiceLocator;
@@ -50,6 +52,9 @@ class PlayController {
         this.clientModel = clientModel;
         this.gameView = gameView;
         this.stage = stage;
+
+        /* creating the chatController */
+        Platform.runLater(() -> new ChatController(ChatView.getView(), clientModel));
 
         /* computation of the negative spacing related to the stage size */
         this.stage.widthProperty().addListener((observable, oldVal, newVal) -> {
@@ -341,7 +346,7 @@ class PlayController {
         ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
         ArrayList<CardLabel> selection = getSelectedCardLabels();
 
-        if (!selection.isEmpty()) {
+        if (!selection.isEmpty()) { //if at least one card is selected
             Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.play")));
 
             if (Combination.isValidMove(oldMove, getSelectedCards())) {
@@ -358,8 +363,14 @@ class PlayController {
                     cl.getStyleClass().remove("validCombination");
                 }
             }
-        } else
-            Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.pass")));
+        } else { //if no card is selected
+            //decide whether all players already passed and the Trick is ready to be claimed or not
+            //and alter the GUI accordingly
+            if (this.passCounter != clientModel.getMsgCodeProperty().getMessage().getRemainingPlayers()-1)
+                Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.pass")));
+            else
+                Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.get")));
+        }
     }
 
     /**
@@ -434,5 +445,6 @@ class PlayController {
         }
         translator = ServiceLocator.getServiceLocator().getTranslator();
         gameView.getPlayView().update();
+        clientModel.updateTranslator();
     }
 }

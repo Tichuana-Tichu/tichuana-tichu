@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -59,6 +60,7 @@ public class ServerSelector extends Stage {
         root.getStyleClass().add("red");
         this.setScene(scene);
         this.setTitle(translator.getString("serverselector.title"));
+        this.getIcons().add(new Image(configuration.getProperty("tichu-icon")));
     }
 
     /**

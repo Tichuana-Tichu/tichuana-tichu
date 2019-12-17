@@ -197,6 +197,12 @@ public abstract class Message {
 				boolean done = (Boolean) json.get("done");
 				newMessage = new GameDoneMsg(own,opponent,done);
 
+			case ChatMsg:
+				playerName = (String) json.get("playerName");
+				String content = (String) json.get("content");
+				newMessage = new ChatMsg(playerName ,content);
+				break;
+
 		}
 		return newMessage;
 	}
@@ -256,5 +262,8 @@ public abstract class Message {
 	}
 	public boolean isDone() {
 		return false;
+	}
+	public String getContent() {
+		return null;
 	}
 }

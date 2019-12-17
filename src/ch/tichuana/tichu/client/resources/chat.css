@@ -1,0 +1,13 @@
+VBox {
+    -fx-background-color:#920108;
+}
+ScrollPane {
+    -fx-background:#920108;
+}
+.green {
+    -fx-text-fill: yellow;
+    -fx-font-weight: bold;
+}
+.chat {
+    -fx-padding:10px;
+}
