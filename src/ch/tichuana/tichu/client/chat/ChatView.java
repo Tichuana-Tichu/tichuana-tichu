@@ -71,6 +71,8 @@ public class ChatView extends Stage{
         return btnSend;
     }
 
+    public TextField getTxt(){ return txt;}
+
     public void clearText(){
         txt.clear();
     }
