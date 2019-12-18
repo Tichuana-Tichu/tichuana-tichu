@@ -180,7 +180,7 @@ class PlayController {
             this.passCounter = 0;
             Platform.runLater(() -> pa.updatePlayedColumn(lastPlayer, msg.getLastMove()));
         } else {
-            if (this.passCounter == msg.getRemainingPlayers()) {
+            if (this.passCounter == msg.getRemainingPlayers()-1) {
                 Platform.runLater(pa::clearPlayedColumn);
                 oldMove.clear();
                 this.passCounter = 0;
