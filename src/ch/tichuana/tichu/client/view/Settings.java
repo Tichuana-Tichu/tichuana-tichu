@@ -1,8 +1,6 @@
 package ch.tichuana.tichu.client.view;
 
-import ch.tichuana.tichu.client.chat.ChatController;
 import ch.tichuana.tichu.client.chat.ChatView;
-import ch.tichuana.tichu.client.controller.LobbyController;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
 import javafx.scene.control.Menu;
@@ -78,6 +76,4 @@ public class Settings extends MenuBar {
     public Menu getLangMenu() {
         return langMenu;
     }
-
-    public Menu getChatMenu() { return chatMenu; }
 }
