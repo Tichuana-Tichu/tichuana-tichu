@@ -32,7 +32,6 @@ class PlayController {
     private static ArrayList<Card> oldMove = new ArrayList<>();
     private Translator translator;
     private int passCounter = 0;
-    private int remainingPlayers;
 
     /**
      * attaches listener to the stage-width to make the CardArea responsive,
@@ -181,16 +180,12 @@ class PlayController {
             this.passCounter = 0;
             Platform.runLater(() -> pa.updatePlayedColumn(lastPlayer, msg.getLastMove()));
         } else {
-            if (remainingPlayers > msg.getRemainingPlayers()) {
-                this.passCounter = -1;
-            }
             if (this.passCounter == msg.getRemainingPlayers()-1) {
                 Platform.runLater(pa::clearPlayedColumn);
                 oldMove.clear();
                 this.passCounter = 0;
-            } else
-                this.passCounter++;
-            this.remainingPlayers = msg.getRemainingPlayers();
+            }
+            this.passCounter++;
         }
 
         if (this.clientModel.isMyTurn()) {
