@@ -180,12 +180,12 @@ class PlayController {
             this.passCounter = 0;
             Platform.runLater(() -> pa.updatePlayedColumn(lastPlayer, msg.getLastMove()));
         } else {
-            if (this.passCounter == msg.getRemainingPlayers()-1) {
+            if (this.passCounter == msg.getRemainingPlayers()) {
                 Platform.runLater(pa::clearPlayedColumn);
                 oldMove.clear();
                 this.passCounter = 0;
-            }
-            this.passCounter++;
+            } else
+                this.passCounter++;
         }
 
         if (this.clientModel.isMyTurn()) {
