@@ -376,7 +376,8 @@ class PlayController {
             if (this.passCounter != clientModel.getMsgCodeProperty().getMessage().getRemainingPlayers()-1)
                 Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.pass")));
             else
-                Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.get")));
+                if (clientModel.getPlayerName().equals(oldMove.getPlayer()))
+                    Platform.runLater(() -> ca.getPlayBtn().setText(this.translator.getString("controlarea.get")));
         }
     }
 
