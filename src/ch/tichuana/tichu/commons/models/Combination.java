@@ -391,6 +391,14 @@ public enum Combination {
 				// if their the same, higher pairs win
 				if (comb == Steps){
 
+					/* *******************************************
+					   *************** OWN RULE ******************
+					   ******************************************* */
+					// larger steps beat shorter steps, regardless if the ranks of the cards are higher.
+					if (newClone.size() > oldClone.size()){
+						return true;
+					}
+
 					// step can now only beat steps of the same size
 					if (newClone.size() == oldClone.size()){
 
