@@ -19,7 +19,6 @@ import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
 
 class PlayController {
@@ -180,8 +179,8 @@ class PlayController {
 
         if (!msg.getLastMove().isEmpty()) {
             this.oldMove.clear();
-            this.oldMove.addAll(msg.getLastMove()); //TODO - Testing
-            this.oldMove.setPlayer(msg.getLastPlayer()); //TODO - Testing
+            this.oldMove.addAll(msg.getLastMove());
+            this.oldMove.setPlayer(msg.getLastPlayer());
             this.passCounter = 0;
             Platform.runLater(() -> pa.updatePlayedColumn(lastPlayer, msg.getLastMove()));
         } else {
@@ -196,7 +195,7 @@ class PlayController {
 
         if (this.clientModel.isMyTurn()) {
             if (this.passCounter == msg.getRemainingPlayers()-1)
-                if (clientModel.getPlayerName().equals(oldMove.getPlayer())) //TODO - Testing
+                if (clientModel.getPlayerName().equals(oldMove.getPlayer()))
                     Platform.runLater(() -> ca.getPlayBtn().setText(translator.getString("controlarea.get")));
             else
                 Platform.runLater(() -> ca.getPlayBtn().setText(translator.getString("controlarea.pass")));
