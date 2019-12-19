@@ -3,6 +3,7 @@ package ch.tichuana.tichu.client.controller;
 import ch.tichuana.tichu.client.chat.ChatController;
 import ch.tichuana.tichu.client.chat.ChatView;
 import ch.tichuana.tichu.client.model.ClientModel;
+import ch.tichuana.tichu.client.model.OldMove;
 import ch.tichuana.tichu.client.model.SimpleMessageProperty;
 import ch.tichuana.tichu.client.services.ServiceLocator;
 import ch.tichuana.tichu.client.services.Translator;
@@ -29,7 +30,7 @@ class PlayController {
     private ArrayList<Card> receivedCards = new ArrayList<>();
     private static final int MAX_HANDSIZE = 14;
     private static final int INIT_HANDSIZE = 8;
-    private static ArrayList<Card> oldMove = new ArrayList<>();
+    private OldMove oldMove = new OldMove();
     private Translator translator;
     private int passCounter = 0;
 
@@ -138,7 +139,7 @@ class PlayController {
         });
 
         /* setting CardArea on action */
-        gameView.getPlayView().getBottomView().getCardArea().setOnMouseClicked(this::autoValidateMove);
+        gameView.getPlayView().getBottomView().getCardArea().setOnMouseClicked(e -> autoValidateMove());
 
         /* setting MenuItems in LangMenu on action */
         for(MenuItem m : this.gameView.getPlayView().getSettings().getLangMenu().getItems()) {
@@ -175,14 +176,19 @@ class PlayController {
         ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
         PlayArea pa = this.gameView.getPlayView().getPlayArea();
 
+        autoValidateMove();
+
         if (!msg.getLastMove().isEmpty()) {
-            oldMove = this.clientModel.getMsgCodeProperty().getMessage().getLastMove();
+            this.oldMove.clear();
+            this.oldMove.addAll(msg.getLastMove()); //TODO - Testing
+            this.oldMove.setPlayer(msg.getLastPlayer()); //TODO - Testing
             this.passCounter = 0;
             Platform.runLater(() -> pa.updatePlayedColumn(lastPlayer, msg.getLastMove()));
         } else {
             if (this.passCounter == msg.getRemainingPlayers()-1) {
                 Platform.runLater(pa::clearPlayedColumn);
                 oldMove.clear();
+                this.oldMove.setPlayer("");
                 this.passCounter = 0;
             }
             this.passCounter++;
@@ -190,7 +196,8 @@ class PlayController {
 
         if (this.clientModel.isMyTurn()) {
             if (this.passCounter == msg.getRemainingPlayers()-1)
-                Platform.runLater(() -> ca.getPlayBtn().setText(translator.getString("controlarea.get")));
+                if (clientModel.getPlayerName().equals(oldMove.getPlayer())) //TODO - Testing
+                    Platform.runLater(() -> ca.getPlayBtn().setText(translator.getString("controlarea.get")));
             else
                 Platform.runLater(() -> ca.getPlayBtn().setText(translator.getString("controlarea.pass")));
             Platform.runLater(() -> ca.getPlayBtn().setDisable(false));
@@ -341,9 +348,8 @@ class PlayController {
      * if the combination is valid according to the last move, the selected cards change their
      * border color to green, if not, they change their border color to red
      * @author Philipp
-     * @param mouseEvent handling mouse click in CardArea
      */
-    private void autoValidateMove(MouseEvent mouseEvent) {
+    private void autoValidateMove() {
         ControlArea ca = this.gameView.getPlayView().getBottomView().getControlArea();
         ArrayList<CardLabel> selection = getSelectedCardLabels();
 
