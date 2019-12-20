@@ -12,11 +12,11 @@ Once the server is running the four clients can connect to it by entering a user
 
 ## Credits
 
-This application was built as a part of the "IT-Project" module at the University of Applied Sciences and Art of 
+This application was built as a part of the "IT-Project" module at the University of Applied Sciences and Arts of 
 Northwestern Switzerland (FHNW) in the fall semester of 2019.
 
 ### Developers
 
-- Philipp Hartmann
-- Christian Roth
-- Dominik Spillmann
+- Philipp Hartmann (e-vents)
+- Christian Roth (sekthor)
+- Dominik Spillmann (Cykkra)
